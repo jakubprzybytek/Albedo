@@ -70,7 +70,7 @@ public class OrbitParameters {
 
     @Override
     public String toString() {
-        return String.format("[Epoch=%s, a=%.4f, e=%.3f, i=%.4f, Ω=%.3f°, ω=%.3f°, T=%.3fTD]",
+        return String.format("[Epoch=%s, a=%.4f, e=%.3f, i=%.4f, Ω=%.3f°, ω=%.3f°, T=%.4fTD]",
                 this.epoch,
                 this.semiMajorAxis,
                 this.eccentricity,
