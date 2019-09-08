@@ -17,4 +17,8 @@ public class Ephemeris {
     public String toString() {
         return String.format("T=%.4fTD, Coords: %s", this.jde, this.coordinates);
     }
+
+    public String toStringHighPrecision() {
+        return String.format("T=%.8fTD, Coords: %s", this.jde, this.coordinates.toStringHighPrecision());
+    }
 }

@@ -1,9 +1,9 @@
 package jp.astro.ephemeris;
 
-import jp.astro.common.AstronomicalCoordinates;
 import jp.astro.common.Epoch;
 import jp.astro.common.JulianDate;
-import jp.astro.ephemeris.common.OrbitParameters;
+import jp.astro.ephemeris.common.OrbitElements;
+import jp.astro.ephemeris.common.OrbitElementsBuilder;
 import jp.astro.vsop87.VSOPException;
 import org.junit.jupiter.api.Test;
 
@@ -16,25 +16,24 @@ class EllipticMotionTest {
     @Test
     void ephemerisForEnckeTest() throws VSOPException {
 
-        System.out.println("Encke");
+        System.out.println("\nEncke");
 
         double jde = JulianDate.fromDate(1990, 10, 6.0);
-        OrbitParameters enckeOrbitParams = new OrbitParameters(Epoch.J2000,
-                2.2091404,
-                0.8502196,
-                11.94524,
-                186.23352,
-                334.75006,
-                JulianDate.fromDate(1990, 10, 28.54502));
 
-        System.out.println("Orbit: " + enckeOrbitParams.toString());
+        OrbitElements enckeOrbitElements = new OrbitElementsBuilder()
+                .orbitShape(0.8502196, 2.2091404)
+                .orbitPosition(Epoch.J2000, 334.75006, 11.94524, 186.23352)
+                .bodyPosition(JulianDate.fromDate(1990, 10, 28.54502), 0.0)
+                .build();
 
-        Ephemeris ephemeris = EllipticMotion.compute(jde, enckeOrbitParams);
+        System.out.println("Orbit: " + enckeOrbitElements.toString());
+
+        Ephemeris ephemeris = EllipticMotion.compute(jde, enckeOrbitElements);
 
         System.out.println("Ephemeris: " + ephemeris.toString());
 
         assertEquals(jde, ephemeris.jde, 0.000001);
-        assertEquals(158.558965 / 15.0, ephemeris.coordinates.rightAscension, 0.000001);
+        assertEquals(158.558966, ephemeris.coordinates.rightAscension, 0.000001);
         assertEquals(19.158495, ephemeris.coordinates.declination, 0.000001);
     }
 
@@ -44,27 +43,41 @@ class EllipticMotionTest {
         System.out.println("\nCeres");
 
         double jde = JulianDate.fromDate(2019, 9, 6.0);
-        OrbitParameters ceresOrbitParams = new OrbitParameters(Epoch.J2000,
-                2.76916515450648,
-                0.07600902910070946,
-                10.59406704424526,
-                73.597694115971,
-                80.30553156826473,
-                JulianDate.fromDate(2018, 4, 30.25413581));
 
-        System.out.println("Orbit: " + ceresOrbitParams.toString());
+        // https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=ceres&full-prec=true
+        OrbitElements ceresOrbitElementsJPL = new OrbitElementsBuilder()
+                .orbitShape(0.07600902910070946, 2.76916515450648)
+                .orbitPosition(Epoch.J2000, 80.30553156826473, 10.59406704424526, 73.597694115971)
+                .bodyPosition(JulianDate.fromDate(2018, 4, 30.25413581), 0.0)
+                .build();
 
-        Ephemeris ephemeris = EllipticMotion.compute(jde, ceresOrbitParams);
+        // https://www.minorplanetcenter.net/data
+        OrbitElements ceresOrbitElementsMPC = new OrbitElementsBuilder()
+                .orbitShape(0.0760091, 2.7691652, 0.21388522)
+                .orbitPosition(Epoch.J2000, 80.30553, 10.59407, 73.59764)
+                .bodyPosition(JulianDate.fromDate(2019, 4, 27.0), 77.37215)
+                .build();
 
-        System.out.println("Ephemeris: " + ephemeris.toString());
+        System.out.println("Orbit JPL: " + ceresOrbitElementsJPL.toStringHighPrecision());
+        System.out.println("Orbit MPC: " + ceresOrbitElementsMPC.toStringHighPrecision());
 
-        assertEquals(jde, ephemeris.jde, 0.000001);
-        assertEquals(244.76501519 / 15.0, ephemeris.coordinates.rightAscension, 0.00000001);
-        assertEquals(-22.82033339, ephemeris.coordinates.declination, 0.00000001);
+        Ephemeris ephemerisJPL = EllipticMotion.compute(jde, ceresOrbitElementsJPL);
+        Ephemeris ephemerisMPC = EllipticMotion.compute(jde, ceresOrbitElementsMPC);
+
+        System.out.println("Ephemeris JPC: " + ephemerisJPL.toStringHighPrecision());
+        System.out.println("Ephemeris MPC: " + ephemerisMPC.toStringHighPrecision());
+
+        assertEquals(jde, ephemerisJPL.jde, 0.000001);
+        assertEquals(244.76501519, ephemerisJPL.coordinates.rightAscension, 0.00000001);
+        assertEquals(-22.82033339, ephemerisJPL.coordinates.declination, 0.00000001);
+
+        assertEquals(jde, ephemerisMPC.jde, 0.000001);
+        assertEquals(244.76501953, ephemerisMPC.coordinates.rightAscension, 0.00000001);
+        assertEquals(-22.82033521, ephemerisMPC.coordinates.declination, 0.00000001);
     }
 
     @Test
-    void ephemerisListForCeresTest() throws VSOPException {
+    void ephemerisListForCeres() throws VSOPException {
         System.out.println("\nCeres ephemeris list");
 
         List<Double> JDEs = JulianDate.forRange(
@@ -72,17 +85,16 @@ class EllipticMotionTest {
                 JulianDate.fromDate(2019, 9, 10.0),
                 1.0);
 
-        OrbitParameters ceresOrbitParams = new OrbitParameters(Epoch.J2000,
-                2.76916515450648,
-                0.07600902910070946,
-                10.59406704424526,
-                73.597694115971,
-                80.30553156826473,
-                JulianDate.fromDate(2018, 4, 30.25413581));
+        // https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=ceres&full-prec=true
+        OrbitElements ceresOrbitElements = new OrbitElementsBuilder()
+                .orbitShape(0.07600902910070946, 2.76916515450648)
+                .orbitPosition(Epoch.J2000, 80.30553156826473, 10.59406704424526, 73.597694115971)
+                .bodyPosition(JulianDate.fromDate(2018, 4, 30.25413581), 0.0)
+                .build();
 
-        System.out.println("Orbit: " + ceresOrbitParams.toString());
+        System.out.println("Orbit: " + ceresOrbitElements.toString());
 
-        List<Ephemeris> ephemerisList = EllipticMotion.compute(JDEs, ceresOrbitParams);
+        List<Ephemeris> ephemerisList = EllipticMotion.compute(JDEs, ceresOrbitElements);
 
         for (Ephemeris ephemeris : ephemerisList) {
             System.out.println(ephemeris);

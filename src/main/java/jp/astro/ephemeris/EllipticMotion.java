@@ -2,7 +2,7 @@ package jp.astro.ephemeris;
 
 import jp.astro.common.AstronomicalCoordinates;
 import jp.astro.ephemeris.common.LightTime;
-import jp.astro.ephemeris.common.OrbitParameters;
+import jp.astro.ephemeris.common.OrbitElements;
 import jp.astro.ephemeris.common.RectangularCoordinates;
 import jp.astro.ephemeris.common.SphericalCoordinates;
 import jp.astro.ephemeris.impl.OrbitCalculator;
@@ -24,11 +24,11 @@ public class EllipticMotion {
      * @return
      * @throws VSOPException
      */
-    static public Ephemeris compute(double JDE, OrbitParameters orbitParams) throws VSOPException {
+    static public Ephemeris compute(double JDE, OrbitElements orbitParams) throws VSOPException {
         return compute(Arrays.asList(JDE), orbitParams).get(0);
     }
 
-    static public List<Ephemeris> compute(List<Double> JDEs, OrbitParameters orbitParams) throws VSOPException {
+    static public List<Ephemeris> compute(List<Double> JDEs, OrbitElements orbitParams) throws VSOPException {
         OrbitCalculator orbitCalculator = new OrbitCalculator(orbitParams);
 
         List<Ephemeris> ephemerisList = new LinkedList<>();

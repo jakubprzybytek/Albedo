@@ -2,8 +2,14 @@ package jp.astro.common;
 
 public class AstronomicalCoordinates {
 
+    /**
+     * In degrees.
+     */
     public double rightAscension;
 
+    /**
+     * In degrees.
+     */
     public double declination;
 
     public AstronomicalCoordinates(double rightAscension, double declination) {
@@ -11,21 +17,30 @@ public class AstronomicalCoordinates {
         this.declination = declination;
     }
 
-    static public AstronomicalCoordinates fromDegreeses(double rightAscensionInDegrees, double declinationInDegrees) {
-        return new AstronomicalCoordinates(rightAscensionInDegrees / 15.0, declinationInDegrees);
+    static public AstronomicalCoordinates fromDegrees(double rightAscensionInDegrees, double declinationInDegrees) {
+        return new AstronomicalCoordinates(rightAscensionInDegrees, declinationInDegrees);
     }
 
     static public AstronomicalCoordinates fromRadians(double rightAscensionInRadians, double declinationInRadians) {
-        return fromDegreeses(Math.toDegrees(rightAscensionInRadians), Math.toDegrees(declinationInRadians));
+        return fromDegrees(Math.toDegrees(rightAscensionInRadians), Math.toDegrees(declinationInRadians));
     }
 
     @Override
     public String toString() {
-        double rightAscensionFractionInMinutes = (this.rightAscension - Math.floor(this.rightAscension)) * 60.0;
+        return format("[α=%dh%02dm%05.2fs (%f°), δ=%d°%02d'%04.1f\" (%f°)]");
+    }
+
+    public String toStringHighPrecision() {
+        return format("[α=%dh%02dm%09.6fs (%.10f°), δ=%d°%02d'%08.5f\" (%.10f°)]");
+    }
+
+    private String format(String pattern) {
+        double rightAscensionInHours = this.rightAscension / 15.0;
+        double rightAscensionFractionInMinutes = (rightAscensionInHours - Math.floor(rightAscensionInHours)) * 60.0;
         double declinationAbs = Math.abs(this.declination);
         double declinationFractionInMinutes = (declinationAbs - Math.floor(declinationAbs)) * 60.0;
-        return String.format("[α=%dh%02dm%05.2fs (%fh), δ=%d°%02d'%05.2f\" (%f°)]",
-                (int) this.rightAscension,
+        return String.format(pattern,
+                (int) rightAscensionInHours,
                 (int) (rightAscensionFractionInMinutes),
                 (rightAscensionFractionInMinutes - Math.floor(rightAscensionFractionInMinutes)) * 60,
                 this.rightAscension,

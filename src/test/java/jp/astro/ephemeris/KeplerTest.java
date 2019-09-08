@@ -31,7 +31,7 @@ class KeplerTest {
         };
 
         Arrays.stream(testParamsArray).forEach(testParams -> {
-            final double eccentricAnomaly = Kepler.resolve(Math.toRadians(testParams.meanAnomaly), testParams.eccentricity);
+            final double eccentricAnomaly = Kepler.solve(Math.toRadians(testParams.meanAnomaly), testParams.eccentricity);
             assertEquals(Math.toRadians(testParams.expectedEccentricAnomaly), eccentricAnomaly, testParams.expectedDelta);
         });
     }

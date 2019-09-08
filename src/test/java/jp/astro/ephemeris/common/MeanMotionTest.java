@@ -10,6 +10,6 @@ class MeanMotionTest {
 
     @Test
     void fromSemiMajorAxis() {
-        assertEquals(Math.toRadians(0.300171252), MeanMotion.fromSemiMajorAxis(2.2091404), 0.000000001);
+        assertEquals(0.300171252, MeanMotion.fromSemiMajorAxis(2.2091404), 0.000000001);
     }
 }

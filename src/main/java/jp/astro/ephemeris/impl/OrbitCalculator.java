@@ -1,12 +1,14 @@
 package jp.astro.ephemeris.impl;
 
 import jp.astro.ephemeris.Kepler;
-import jp.astro.ephemeris.common.*;
+import jp.astro.ephemeris.common.Obliquity;
+import jp.astro.ephemeris.common.OrbitElements;
+import jp.astro.ephemeris.common.RectangularCoordinates;
+import jp.astro.ephemeris.common.TrueAnomaly;
 
 public class OrbitCalculator {
 
-    final OrbitParameters orbitParams;
-    final double meanMotion;
+    final OrbitElements orbitParams;
 
     final double a;
     final double b;
@@ -15,9 +17,8 @@ public class OrbitCalculator {
     final double B;
     final double C;
 
-    public OrbitCalculator(OrbitParameters orbitParams) {
+    public OrbitCalculator(OrbitElements orbitParams) {
         this.orbitParams = orbitParams;
-        this.meanMotion = MeanMotion.fromSemiMajorAxis(orbitParams.getSemiMajorAxis());
 
         final double sinEpsilon = Math.sin(Obliquity.J2000_RAD);
         final double cosEpsilon = Math.cos(Obliquity.J2000_RAD);
@@ -32,6 +33,7 @@ public class OrbitCalculator {
         final double P = -sinOmega * cosI;
         final double Q = cosOmega * cosI * cosEpsilon - sinI * sinEpsilon;
         final double R = cosOmega * cosI * sinEpsilon + sinI * cosEpsilon;
+
         this.a = Math.sqrt(F * F + P * P);
         this.b = Math.sqrt(G * G + Q * Q);
         this.c = Math.sqrt(H * H + R * R);
@@ -41,8 +43,9 @@ public class OrbitCalculator {
     }
 
     public RectangularCoordinates computeForDay(double JDE) {
-        final double meanAnomaly = meanMotion * (JDE - orbitParams.getTime());
-        final double eccentricAnomaly = Kepler.resolve(meanAnomaly, orbitParams.getEccentricity());
+        final double meanAnomaly = orbitParams.getMeanAnomalyAtEpochInRadians() +
+                orbitParams.getMeanMotionInRadians() * (JDE - orbitParams.getMeanAnomalyEpoch());
+        final double eccentricAnomaly = Kepler.solve(meanAnomaly, orbitParams.getEccentricity());
         final double trueAnomaly = TrueAnomaly.fromEccentricAnomaly(eccentricAnomaly, orbitParams.getEccentricity());
         final double distance = orbitParams.getSemiMajorAxis() * (1 - orbitParams.getEccentricity() * Math.cos(eccentricAnomaly));
 

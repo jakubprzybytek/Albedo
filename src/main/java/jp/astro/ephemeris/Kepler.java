@@ -8,8 +8,8 @@ public class Kepler {
      * @param eccentricity
      * @return Eccentric anomaly for given mean anomaly in radians.
      */
-    static public double resolve(double meanAnomaly, double eccentricity) {
-        return resolve(meanAnomaly, eccentricity, 53);
+    static public double solve(double meanAnomaly, double eccentricity) {
+        return solve(meanAnomaly, eccentricity, 53);
     }
 
     /**
@@ -19,7 +19,7 @@ public class Kepler {
      * @param iterations
      * @return Eccentric anomaly for given mean anomaly in radians.
      */
-    static private double resolve(double meanAnomaly, double eccentricity, int iterations) {
+    static private double solve(double meanAnomaly, double eccentricity, int iterations) {
 
         double normalizedMeanAnomaly = meanAnomaly;
 
