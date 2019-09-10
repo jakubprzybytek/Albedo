@@ -2,18 +2,40 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6b6da86-5ad5-4fe4-90db-85b9e4ddbd95" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/OrbitElementsBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/common/Angles.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/sandbox/AsteroidsConjunctions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/common/AnglesTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/common/AstronomicalCoordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/astro/common/AstronomicalCoordinates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/EllipticMotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/EllipticMotion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Ephemeris.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Ephemeris.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Kepler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Kepler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/MeanMotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/MeanMotion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/OrbitParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/OrbitElements.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/impl/OrbitCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/impl/OrbitCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/EllipticMotionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/EllipticMotionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/KeplerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/KeplerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/common/MeanMotionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/common/MeanMotionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/common/AstronomicalCoordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/common/AstronomicalCoordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/common/Epoch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/common/Epoch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/common/JulianDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/common/JulianDate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/EllipticMotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/EllipticMotion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Ephemeris.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/Ephemeris.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Kepler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/impl/Kepler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/LightTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/LightTime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/MeanMotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/MeanMotion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/Obliquity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/Obliquity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/OrbitElements.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/OrbitElements.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/OrbitElementsBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/OrbitElementsBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/RectangularCoordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/RectangularCoordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/SphericalCoordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/SphericalCoordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/TrueAnomaly.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/TrueAnomaly.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/impl/OrbitCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/impl/OrbitCalculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/vsop87/Coefficients.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/Coefficients.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/vsop87/VSOP87Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/VSOP87Calculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/vsop87/VSOP87Coefficients.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/VSOP87Coefficients.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/vsop87/VSOPException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/VSOPException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/vsop87/files/VSOP87Files.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/files/VSOP87Files.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/astro/vsop87/files/VSOP87FilesLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/files/VSOP87FilesLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/common/JulianDateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/common/JulianDateTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/common/RectangularCoordinatesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/common/RectangularCoordinatesTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/EllipticMotionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/EllipticMotionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/KeplerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/impl/KeplerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/common/LightTimeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/common/LightTimeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/common/MeanMotionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/common/MeanMotionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/common/TrueAnomalyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/common/TrueAnomalyTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/vsop87/VSOP87CalculatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/vsop87/VSOP87CalculatorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/astro/vsop87/files/VSOP87FilesLoaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/vsop87/files/VSOP87FilesLoaderTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -29,10 +51,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/EllipticMotionTest.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/EllipticMotionTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="66" column="70" lean-forward="true" selection-start-line="66" selection-start-column="70" selection-end-line="66" selection-end-column="70" />
+            <state relative-caret-position="610">
+              <caret line="94" column="61" selection-start-line="94" selection-start-column="61" selection-end-line="94" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -41,46 +63,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Ephemeris.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/OrbitElements.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="86" selection-start-line="21" selection-start-column="86" selection-end-line="21" selection-end-column="86" />
-              <folding>
-                <element signature="e#363#364#0" expanded="true" />
-                <element signature="e#451#452#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="494">
+              <caret line="107" column="78" selection-start-line="107" selection-start-column="77" selection-end-line="107" selection-end-column="78" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/common/AstronomicalCoordinates.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/sandbox/AsteroidsConjunctions.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="33" column="76" selection-start-line="33" selection-start-column="76" selection-end-line="33" selection-end-column="76" />
+            <state relative-caret-position="372">
+              <caret line="31" column="39" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
               <folding>
-                <element signature="e#865#866#0" expanded="true" />
-                <element signature="e#895#896#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/OrbitElements.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/Ephemeris.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="508">
-              <caret line="107" column="105" selection-start-line="107" selection-start-column="105" selection-end-line="107" selection-end-column="105" />
-              <folding>
-                <element signature="e#1813#1814#0" expanded="true" />
-                <element signature="e#1846#1847#0" expanded="true" />
-                <element signature="e#2093#2094#0" expanded="true" />
-                <element signature="e#2150#2151#0" expanded="true" />
-                <element signature="e#2049#2050#0" expanded="true" />
-                <element signature="e#2083#2084#0" expanded="true" />
-                <element signature="e#2274#2275#0" expanded="true" />
-                <element signature="e#2330#2331#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="68">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -149,6 +156,15 @@
         <option value="$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/EllipticMotionTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Ephemeris.java" />
         <option value="$PROJECT_DIR$/src/main/java/jp/astro/common/AstronomicalCoordinates.java" />
+        <option value="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/EllipticMotion.java" />
+        <option value="$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/EllipticMotionTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/jp/albedo/common/AstronomicalCoordinates.java" />
+        <option value="$PROJECT_DIR$/src/main/java/jp/albedo/common/Angles.java" />
+        <option value="$PROJECT_DIR$/src/test/java/jp/albedo/common/AnglesTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/jp/albedo/sandbox/AsteroidsConiuntions.java" />
+        <option value="$PROJECT_DIR$/src/test/java/jp/albedo/sandbox/AsteroidsConjuntions.java" />
+        <option value="$PROJECT_DIR$/src/test/java/jp/albedo/sandbox/AsteroidsConjunctions.java" />
+        <option value="$PROJECT_DIR$/src/main/java/jp/albedo/sandbox/AsteroidsConjunctions.java" />
       </list>
     </option>
   </component>
@@ -160,9 +176,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="370" />
+    <option name="x" value="127" />
     <option name="y" value="51" />
-    <option name="width" value="2400" />
+    <option name="width" value="2642" />
     <option name="height" value="1989" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -204,7 +220,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="astro" type="462c0819:PsiDirectoryNode" />
+              <item name="albedo" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
@@ -212,86 +228,38 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="astro" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
+              <item name="albedo" type="462c0819:PsiDirectoryNode" />
+              <item name="sandbox" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
               <item name="Albedo" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="astro" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="albedo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="albedo" type="462c0819:PsiDirectoryNode" />
               <item name="ephemeris" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="astro" type="462c0819:PsiDirectoryNode" />
-              <item name="ephemeris" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="astro" type="462c0819:PsiDirectoryNode" />
-              <item name="ephemeris" type="462c0819:PsiDirectoryNode" />
-              <item name="impl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="astro" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="astro" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="astro" type="462c0819:PsiDirectoryNode" />
-              <item name="ephemeris" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Albedo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="astro" type="462c0819:PsiDirectoryNode" />
-              <item name="ephemeris" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="albedo" type="b2602c69:ProjectViewProjectNode" />
@@ -338,12 +306,15 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="jp.albedo.common" />
       <recent name="jp.astro.ephemeris" />
       <recent name="jp.astro.common" />
       <recent name="jp.astro.vsop87" />
       <recent name="jp.astro.ephemeris.common" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="jp.albedo" />
+      <recent name="jp.astro.ephemeris.impl" />
       <recent name="jp.astro.ephemeris" />
       <recent name="jp.astro.ephemeris.common" />
       <recent name="jp.astro.vsop87.files" />
@@ -371,22 +342,62 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.All in Albedo">
-    <configuration name="All in Albedo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Application.AsteroidsConjunctions">
+    <configuration name="AsteroidsConjunctions" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="jp.albedo.sandbox.AsteroidsConjunctions" />
       <module name="Albedo" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.albedo.sandbox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EllipticMotionTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AnglesTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Albedo" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="uniqueId" />
-      <uniqueIds>
-        <uniqueId value="[engine:junit-jupiter]/[class:jp.astro.ephemeris.EllipticMotionTest]" />
-      </uniqueIds>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.albedo.common.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.albedo.common" />
+      <option name="MAIN_CLASS_NAME" value="jp.albedo.common.AnglesTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AsteroidsConjunctions" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Albedo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.albedo.sandbox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.albedo.sandbox" />
+      <option name="MAIN_CLASS_NAME" value="jp.albedo.sandbox.AsteroidsConjunctions" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AsteroidsConjunctions.twoAseroidsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Albedo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.albedo.sandbox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.albedo.sandbox" />
+      <option name="MAIN_CLASS_NAME" value="jp.albedo.sandbox.AsteroidsConjunctions" />
+      <option name="METHOD_NAME" value="twoAseroidsTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -395,56 +406,24 @@
       <module name="Albedo" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="jp.astro.ephemeris.*" />
+          <option name="PATTERN" value="jp.albedo.ephemeris.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="jp.astro.ephemeris" />
-      <option name="MAIN_CLASS_NAME" value="jp.astro.ephemeris.EllipticMotionTest" />
+      <option name="PACKAGE_NAME" value="jp.albedo.ephemeris" />
+      <option name="MAIN_CLASS_NAME" value="jp.albedo.ephemeris.EllipticMotionTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EllipticMotionTest.ephemerisForCeresTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Albedo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="jp.astro.ephemeris.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="jp.astro.ephemeris" />
-      <option name="MAIN_CLASS_NAME" value="jp.astro.ephemeris.EllipticMotionTest" />
-      <option name="METHOD_NAME" value="ephemerisForCeresTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EllipticMotionTest.ephemerisListForCeresTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Albedo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="jp.astro.ephemeris.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="jp.astro.ephemeris" />
-      <option name="MAIN_CLASS_NAME" value="jp.astro.ephemeris.EllipticMotionTest" />
-      <option name="METHOD_NAME" value="ephemerisListForCeresTest" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.All in Albedo" />
-        <item itemvalue="JUnit.EllipticMotionTest (1)" />
-        <item itemvalue="JUnit.EllipticMotionTest.ephemerisForCeresTest" />
+        <item itemvalue="Application.AsteroidsConjunctions" />
+        <item itemvalue="JUnit.AsteroidsConjunctions" />
+        <item itemvalue="JUnit.AsteroidsConjunctions.twoAseroidsTest" />
         <item itemvalue="JUnit.EllipticMotionTest" />
-        <item itemvalue="JUnit.EllipticMotionTest.ephemerisListForCeresTest" />
+        <item itemvalue="JUnit.AnglesTest" />
       </list>
     </recent_temporary>
   </component>
@@ -459,42 +438,42 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="EllipticMotionTest_(1) - 2019.09.08 at 12h 06m 57s.xml">
-      <configuration name="EllipticMotionTest (1)" configurationId="JUnit" />
+    <history-entry file="EllipticMotionTest - 2019.09.10 at 18h 02m 55s.xml">
+      <configuration name="EllipticMotionTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EllipticMotionTest_(1) - 2019.09.08 at 12h 08m 09s.xml">
-      <configuration name="EllipticMotionTest (1)" configurationId="JUnit" />
+    <history-entry file="AsteroidsConjuntions_twoAseroidsTest - 2019.09.10 at 19h 07m 26s.xml">
+      <configuration name="AsteroidsConjuntions.twoAseroidsTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_Albedo - 2019.09.08 at 12h 08m 49s.xml">
-      <configuration name="All in Albedo" configurationId="JUnit" />
+    <history-entry file="AsteroidsConjuntions_twoAseroidsTest - 2019.09.10 at 19h 14m 09s.xml">
+      <configuration name="AsteroidsConjuntions.twoAseroidsTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_Albedo - 2019.09.08 at 12h 09m 34s.xml">
-      <configuration name="All in Albedo" configurationId="JUnit" />
+    <history-entry file="AsteroidsConjuntions - 2019.09.10 at 19h 14m 13s.xml">
+      <configuration name="AsteroidsConjuntions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_Albedo - 2019.09.08 at 12h 10m 01s.xml">
-      <configuration name="All in Albedo" configurationId="JUnit" />
+    <history-entry file="AsteroidsConjuntions - 2019.09.10 at 19h 14m 27s.xml">
+      <configuration name="AsteroidsConjuntions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_Albedo - 2019.09.08 at 12h 11m 19s.xml">
-      <configuration name="All in Albedo" configurationId="JUnit" />
+    <history-entry file="AsteroidsConjuntions - 2019.09.10 at 19h 14m 44s.xml">
+      <configuration name="AsteroidsConjuntions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_Albedo - 2019.09.08 at 12h 12m 15s.xml">
-      <configuration name="All in Albedo" configurationId="JUnit" />
+    <history-entry file="AsteroidsConjuntions - 2019.09.10 at 19h 16m 10s.xml">
+      <configuration name="AsteroidsConjuntions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_Albedo - 2019.09.08 at 12h 14m 43s.xml">
-      <configuration name="All in Albedo" configurationId="JUnit" />
+    <history-entry file="AsteroidsConjuntions - 2019.09.10 at 19h 16m 20s.xml">
+      <configuration name="AsteroidsConjuntions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_Albedo - 2019.09.08 at 12h 16m 54s.xml">
-      <configuration name="All in Albedo" configurationId="JUnit" />
+    <history-entry file="AsteroidsConjuntions - 2019.09.10 at 19h 16m 34s.xml">
+      <configuration name="AsteroidsConjuntions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_Albedo - 2019.09.08 at 12h 18m 17s.xml">
-      <configuration name="All in Albedo" configurationId="JUnit" />
+    <history-entry file="AsteroidsConjunctions - 2019.09.10 at 19h 21m 43s.xml">
+      <configuration name="AsteroidsConjunctions" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="247" y="34" width="1600" height="1326" extended-state="0" />
+    <frame x="85" y="34" width="1761" height="1326" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2564935" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23221634" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -502,7 +481,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3291874" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32914573" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3324958" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39966834" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -511,7 +490,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.3291874" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32914573" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -573,14 +552,14 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/common.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/common/Epoch.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/common/Epoch.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/Obliquity.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/Obliquity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="34" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="34" />
@@ -601,7 +580,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/common/LightTimeTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/common/LightTimeTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="10" column="62" selection-start-line="10" selection-start-column="62" selection-end-line="10" selection-end-column="62" />
@@ -612,7 +591,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/LightTime.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/LightTime.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="30" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
@@ -623,14 +602,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/vsop87/Coefficients.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/Coefficients.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="15" selection-start-line="15" selection-end-line="15" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/vsop87/files/VSOP87Files.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/files/VSOP87Files.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="38" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="38" />
@@ -644,7 +623,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/vsop87/VSOPException.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/VSOPException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" selection-start-line="7" selection-end-line="7" />
@@ -655,7 +634,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/vsop87/VSOP87Coefficients.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/VSOP87Coefficients.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
           <caret line="29" selection-start-line="29" selection-end-line="29" />
@@ -668,39 +647,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/vsop87/files/VSOP87FilesLoader.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/files/VSOP87FilesLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-160">
           <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/SphericalCoordinates.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="53" selection-start-line="18" selection-start-column="53" selection-end-line="18" selection-end-column="53" />
-          <folding>
-            <element signature="e#391#392#0" expanded="true" />
-            <element signature="e#452#453#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/common/RectangularCoordinatesTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/common/RectangularCoordinatesTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="11" column="75" selection-start-line="11" selection-start-column="75" selection-end-line="11" selection-end-column="75" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/vsop87/files/VSOP87FilesLoaderTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/vsop87/files/VSOP87FilesLoaderTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="17" column="35" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/RectangularCoordinates.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/RectangularCoordinates.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
@@ -711,7 +679,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/vsop87/VSOP87CalculatorTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/vsop87/VSOP87CalculatorTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="611">
           <caret line="46" column="20" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="20" />
@@ -721,7 +689,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/vsop87/VSOP87Calculator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/VSOP87Calculator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="42" column="39" selection-start-line="42" selection-start-column="39" selection-end-line="42" selection-end-column="39" />
@@ -731,21 +699,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Kepler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="15" selection-start-line="11" selection-start-column="15" selection-end-line="11" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/common/TrueAnomalyTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/common/TrueAnomalyTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="10" column="94" selection-start-line="10" selection-start-column="94" selection-end-line="10" selection-end-column="94" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/TrueAnomaly.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/TrueAnomaly.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="42" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
@@ -797,7 +758,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/common/JulianDate.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/common/JulianDate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
@@ -807,7 +768,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/common/JulianDateTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/common/JulianDateTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="21" column="64" selection-start-line="21" selection-start-column="64" selection-end-line="21" selection-end-column="64" />
@@ -821,17 +782,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/EllipticMotion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="523">
-          <caret line="41" column="54" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/KeplerTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/impl/KeplerTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
           <caret line="41" column="48" lean-forward="true" selection-start-line="41" selection-start-column="48" selection-end-line="41" selection-end-column="48" />
@@ -841,7 +792,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/common/MeanMotionTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/common/MeanMotionTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
@@ -852,14 +803,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/MeanMotion.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/MeanMotion.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/impl/OrbitCalculator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/impl/OrbitCalculator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="469">
           <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
@@ -869,58 +820,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/OrbitElementsBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/OrbitElementsBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
+        <state relative-caret-position="83">
           <caret line="27" column="51" selection-start-line="27" selection-start-column="51" selection-end-line="27" selection-end-column="51" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/common/OrbitElements.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/impl/Kepler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="107" column="105" selection-start-line="107" selection-start-column="105" selection-end-line="107" selection-end-column="105" />
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/common/AnglesTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="38" column="44" selection-start-line="38" selection-start-column="44" selection-end-line="38" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/common/AstronomicalCoordinates.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="98" selection-start-line="20" selection-start-column="98" selection-end-line="20" selection-end-column="98" />
           <folding>
-            <element signature="e#1813#1814#0" expanded="true" />
-            <element signature="e#1846#1847#0" expanded="true" />
-            <element signature="e#2093#2094#0" expanded="true" />
-            <element signature="e#2150#2151#0" expanded="true" />
-            <element signature="e#2049#2050#0" expanded="true" />
-            <element signature="e#2083#2084#0" expanded="true" />
-            <element signature="e#2274#2275#0" expanded="true" />
-            <element signature="e#2330#2331#0" expanded="true" />
+            <element signature="e#866#867#0" expanded="true" />
+            <element signature="e#950#951#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/jp/astro/ephemeris/EllipticMotionTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/SphericalCoordinates.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="66" column="70" lean-forward="true" selection-start-line="66" selection-start-column="70" selection-end-line="66" selection-end-column="70" />
+        <state relative-caret-position="34">
+          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/EllipticMotion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="542">
+          <caret line="60" column="76" selection-start-line="60" selection-start-column="76" selection-end-line="60" selection-end-column="76" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/ephemeris/Ephemeris.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/common/Angles.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="86" selection-start-line="21" selection-start-column="86" selection-end-line="21" selection-end-column="86" />
+        <state relative-caret-position="340">
+          <caret line="20" column="25" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/jp/albedo/ephemeris/EllipticMotionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="610">
+          <caret line="94" column="61" selection-start-line="94" selection-start-column="61" selection-end-line="94" selection-end-column="61" />
           <folding>
-            <element signature="e#363#364#0" expanded="true" />
-            <element signature="e#451#452#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jp/astro/common/AstronomicalCoordinates.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/OrbitElements.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="33" column="76" selection-start-line="33" selection-start-column="76" selection-end-line="33" selection-end-column="76" />
+        <state relative-caret-position="494">
+          <caret line="107" column="78" selection-start-line="107" selection-start-column="77" selection-end-line="107" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/Ephemeris.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/jp/albedo/sandbox/AsteroidsConjunctions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="31" column="39" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
           <folding>
-            <element signature="e#865#866#0" expanded="true" />
-            <element signature="e#895#896#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
