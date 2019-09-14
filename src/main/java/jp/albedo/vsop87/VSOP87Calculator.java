@@ -13,7 +13,8 @@ public class VSOP87Calculator {
 
     static private VSOP87Coefficients earthEclipticSphericalCoefficientsJ2000;
 
-    public static VSOP87Coefficients getEarthEclipticSphericalCoefficientsJ2000() throws IOException, URISyntaxException {
+    // TODO: Better synchronization
+    public static synchronized VSOP87Coefficients getEarthEclipticSphericalCoefficientsJ2000() throws IOException, URISyntaxException {
         if (earthEclipticSphericalCoefficientsJ2000 == null) {
             earthEclipticSphericalCoefficientsJ2000 = VSOP87FilesLoader.load(VSOP87Files.VSOP87B_EARTH);
             System.out.println("Loaded " + VSOP87Files.VSOP87B_EARTH);
@@ -21,7 +22,7 @@ public class VSOP87Calculator {
         return earthEclipticSphericalCoefficientsJ2000;
     }
 
-    static public SphericalCoordinates computeEarthEclipticSphericalCoordinatesJ2000(double jde) throws VSOPException {
+    public static SphericalCoordinates computeEarthEclipticSphericalCoordinatesJ2000(double jde) throws VSOPException {
         final double t = (jde - 2451545.0d) / 365250.0d;
 
         try {
@@ -40,7 +41,7 @@ public class VSOP87Calculator {
         }
     }
 
-    static public SphericalCoordinates computeSunEclipticSphericalCoordinatesJ2000(double jde) throws VSOPException {
+     public static SphericalCoordinates computeSunEclipticSphericalCoordinatesJ2000(double jde) throws VSOPException {
         SphericalCoordinates sphericalCoordinates = computeEarthEclipticSphericalCoordinatesJ2000(jde);
         return new SphericalCoordinates(sphericalCoordinates.longitude + Math.PI,
                 -sphericalCoordinates.latitude,

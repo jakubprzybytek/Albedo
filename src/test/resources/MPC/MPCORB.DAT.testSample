@@ -1,0 +1,63 @@
+MINOR PLANET CENTER ORBIT DATABASE (MPCORB)
+
+This file contains published orbital elements for all numbered and unnumbered
+multi-opposition minor planets for which it is possible to make reasonable
+predictions.  It also includes published elements for recent one-opposition
+minor planets and is intended to be complete through the last issued Daily
+Orbit Update MPEC.  As such it is intended to be of interest primarily
+to astrometric observers.
+
+   Software programs may include this datafile amongst their datasets, as
+   long as this header is included (it is acceptable if it is contained
+   in a file separate from the actual data) and that proper attribution
+   to the Minor Planet Center is given.  Credit to the individual orbit
+   computers is implicit by the inclusion of a reference and the name of
+   the orbit computer on each orbit record.  Information on how to obtain
+   updated copies of the datafile must also be included.
+
+   The work of the individual astrometric observers, without whom none of
+   the work of the Minor Planet Center would be possible, is gratefully
+   acknowledged.  Credit to the individual observers is implicit by the
+   inclusion of the reference to the publication of their observations in
+   all data sets distributed by the Minor Planet Center.
+
+New versions of this file, updated on a daily basis, will be available at:
+
+          https://www.minorplanetcenter.org/iau/MPCORB/MPCORB.DAT
+
+The elements contained within MPCORB are divided into three sections,
+separated by blank lines.  The first section contains the numbered objects,
+the second section contains the unnumbered objects with perturbed orbit
+solutions and the third contains the recent 1-opposition objects with
+unperturbed orbit solutions.  Each object's elements are stored on a single
+line, the format of which is described at:
+
+          http://www.minorplanetcenter.org/iau/info/MPOrbitFormat.html
+
+If you find a problem with any data herein, please contact mpc@cfa.harvard.edu.
+
+A brief header is given below:
+
+Des'n     H     G   Epoch     M        Peri.      Node       Incl.       e            n           a        Reference #Obs #Opp    Arc    rms  Perts   Computer
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+00001    3.34  0.12 K194R  77.37215   73.59764   80.30553   10.59407  0.0760091  0.21388522   2.7691652  0 MPO467603  6743 115 1801-2019 0.60 M-v 30h MPCLINUX   0000      (1) Ceres              20190302
+00002    4.13  0.11 K194R  59.69912  310.04884  173.08006   34.83623  0.2303369  0.21350337   2.7724660  0 MPO467603  8012 109 1821-2019 0.58 M-v 28h MPCLINUX   0000      (2) Pallas             20190509
+00003    5.33  0.32 K194R  34.92503  248.13861  169.85274   12.98892  0.2569423  0.22601887   2.6691496  0 MPO467603  7000 105 1821-2019 0.60 M-v 38h MPCLINUX   0000      (3) Juno               20190503
+00004    3.20  0.32 K194R  95.86200  150.72843  103.81084    7.14177  0.0887214  0.27160939   2.3614179  0 MPO452155  6920 101 1821-2018 0.60 M-p 18h MPCLINUX   0000      (4) Vesta              20180317
+00005    6.85  0.15 K194R 282.36631  358.68757  141.57661    5.36699  0.1910946  0.23863177   2.5742489  0 MPO467603  2695  76 1845-2019 0.54 M-v 38h MPCLINUX   0000      (5) Astraea            20190204
+00006    5.71  0.24 K194R  86.19795  239.80747  138.64020   14.73791  0.2030070  0.26097173   2.4251600  0 MPO467603  5727  89 1848-2019 0.53 M-v 38h MPCLINUX   0007      (6) Hebe               20190501
+00007    5.51  0.15 K194R 140.41971  145.26509  259.56321    5.52365  0.2312057  0.26753483   2.3853338  0 MPO467603  5093  85 1848-2019 0.58 M-v 38h MPCLINUX   0000      (7) Iris               20190427
+00008    6.49  0.28 K194R 194.88292  285.28745  110.88930    5.88696  0.1564993  0.30168093   2.2017642  0 MPO467603  2520  86 1847-2019 0.64 M-v 38h MPCLINUX   0000      (8) Flora              20190513
+00009    6.28  0.17 K194R 276.86164    6.41736   68.90857    5.57682  0.1231143  0.26748390   2.3856366  0 MPO467603  2585  76 1849-2018 0.60 M-v 38h MPCLINUX   0000      (9) Metis              20181103
+00010    5.43  0.15 K194R 152.18487  312.31518  283.20218    3.83156  0.1124606  0.17700696   3.1415392  0 MPO467603  3133  90 1849-2019 0.58 M-v 38h MPCLINUX   0000     (10) Hygiea             20190214
+00011    6.55  0.15 K194R 278.93071  195.55035  125.54660    4.62989  0.1004723  0.25652440   2.4531094  0 MPO467603  5178  92 1850-2019 0.58 M-v 38h MPCLINUX   0000     (11) Parthenope         20190513
+00012    7.24  0.22 K194R 133.33592   69.64179  235.41017    8.37307  0.2201716  0.27635342   2.3343151  0 MPO467603  2847  76 1850-2019 0.61 M-v 38h MPCLINUX   0000     (12) Victoria           20190426
+00013    6.74  0.15 K194R 187.48857   80.54478   43.22190   16.53613  0.0851214  0.23839111   2.5759811  0 MPO467603  2136  67 1850-2019 0.57 M-v 38h MPCLINUX   0000     (13) Egeria             20190510
+00014    6.30  0.15 K194R 164.93587   97.85894   86.12268    9.12165  0.1665823  0.23706656   2.5855674  0 MPO467603  2452  73 1851-2018 0.62 M-v 38h MPCLINUX   0000     (14) Irene              20181217
+00015    5.28  0.23 K194R 283.38773   98.49868  292.93432   11.75243  0.1860843  0.22923830   2.6441003  0 MPO467603  2310  79 1851-2019 0.55 M-v 38h MPCLINUX   0000     (15) Eunomia            20190511
+00016    5.90  0.20 K194R 288.33591  228.82306  150.04564    3.09601  0.1335685  0.19714216   2.9238138  0 MPO467603  2953  85 1852-2019 0.55 M-v 38h MPCLINUX   0000     (16) Psyche             20190507
+00017    7.76  0.15 K194R 303.36445  136.20826  125.55293    5.59120  0.1330317  0.25384305   2.4703540  0 MPO467603  3348  88 1853-2019 0.55 M-v 38h MPCLINUX   0000     (17) Thetis             20190501
+00018    6.51  0.25 K194R 267.25440  227.95081  150.38387   10.12873  0.2176744  0.28317887   2.2966536  0 MPO467603  4866  74 1852-2019 0.55 M-v 38h MPCLINUX   0000     (18) Melpomene          20190401
+00019    7.13  0.10 K194R 197.33866  182.06496  211.14406    1.57378  0.1580469  0.25816420   2.4427107  0 MPO467603  2999  88 1852-2019 0.55 M-v 38h MPCLINUX   0000     (19) Fortuna            20190509
+00020    6.50  0.25 K194R 117.69516  256.77315  206.10894    0.70875  0.1420667  0.26347384   2.4097818  0 MPO467603  2301  82 1856-2019 0.54 M-v 38h MPCLINUX   0000     (20) Massalia           20190513

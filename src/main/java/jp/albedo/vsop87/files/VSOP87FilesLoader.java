@@ -20,6 +20,7 @@ public class VSOP87FilesLoader {
 
     static private Pattern coefficientPattern = Pattern.compile("([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+) $");
 
+    //TODO: change param type to File
     static public VSOP87Coefficients load(String fileName) throws URISyntaxException, IOException {
         final URL coefficientsFileULR = VSOP87FilesLoader.class.getClassLoader().getResource(fileName);
         final Path coefficientFilePath = Paths.get(coefficientsFileULR.toURI());

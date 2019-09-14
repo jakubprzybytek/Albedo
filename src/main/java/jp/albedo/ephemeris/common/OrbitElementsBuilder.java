@@ -44,9 +44,9 @@ public class OrbitElementsBuilder {
         return this;
     }
 
-    public OrbitElementsBuilder bodyPosition(double meanAnomalyEpoch, double meanAnomaly) {
+    public OrbitElementsBuilder bodyPosition(double meanAnomalyEpoch, double meanAnomalyAtEpoch) {
         this.meanAnomalyEpoch = meanAnomalyEpoch;
-        this.meanAnomalyAtEpoch = meanAnomaly;
+        this.meanAnomalyAtEpoch = meanAnomalyAtEpoch;
         return this;
     }
 
