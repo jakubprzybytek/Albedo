@@ -1,7 +1,7 @@
 package jp.albedo.ephemeris;
 
 import jp.albedo.common.Epoch;
-import jp.albedo.common.JulianDate;
+import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.common.OrbitElements;
 import jp.albedo.ephemeris.common.OrbitElementsBuilder;
 import jp.albedo.vsop87.VSOPException;
@@ -18,12 +18,12 @@ class EllipticMotionTest {
 
         System.out.println("\nEncke");
 
-        double jde = JulianDate.fromDate(1990, 10, 6.0);
+        double jde = JulianDay.fromDate(1990, 10, 6.0);
 
         OrbitElements enckeOrbitElements = new OrbitElementsBuilder()
                 .orbitShape(0.8502196, 2.2091404)
                 .orbitPosition(Epoch.J2000, 186.23352, 334.75006, 11.94524)
-                .bodyPosition(JulianDate.fromDate(1990, 10, 28.54502), 0.0)
+                .bodyPosition(JulianDay.fromDate(1990, 10, 28.54502), 0.0)
                 .build();
 
         System.out.println("Orbit: " + enckeOrbitElements.toString());
@@ -42,20 +42,20 @@ class EllipticMotionTest {
 
         System.out.println("\nCeres");
 
-        double jde = JulianDate.fromDate(2019, 9, 6.0);
+        double jde = JulianDay.fromDate(2019, 9, 6.0);
 
         // https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=ceres&full-prec=true
         OrbitElements ceresOrbitElementsJPL = new OrbitElementsBuilder()
                 .orbitShape(0.07600902910070946, 2.76916515450648)
                 .orbitPosition(Epoch.J2000, 73.597694115971, 80.30553156826473, 10.59406704424526)
-                .bodyPosition(JulianDate.fromDate(2018, 4, 30.25413581), 0.0)
+                .bodyPosition(JulianDay.fromDate(2018, 4, 30.25413581), 0.0)
                 .build();
 
         // https://www.minorplanetcenter.net/data
         OrbitElements ceresOrbitElementsMPC = new OrbitElementsBuilder()
                 .orbitShape(0.0760091, 2.7691652, 0.21388522)
                 .orbitPosition(Epoch.J2000, 73.59764, 80.30553, 10.59407)
-                .bodyPosition(JulianDate.fromDate(2019, 4, 27.0), 77.37215)
+                .bodyPosition(JulianDay.fromDate(2019, 4, 27.0), 77.37215)
                 .build();
 
         System.out.println("Orbit JPL: " + ceresOrbitElementsJPL.toStringHighPrecision());
@@ -80,16 +80,16 @@ class EllipticMotionTest {
     void ephemerisListForCeres() throws VSOPException {
         System.out.println("\nCeres ephemeris list");
 
-        List<Double> JDEs = JulianDate.forRange(
-                JulianDate.fromDate(2019, 9, 6.0),
-                JulianDate.fromDate(2019, 9, 10.0),
+        List<Double> JDEs = JulianDay.forRange(
+                JulianDay.fromDate(2019, 9, 6.0),
+                JulianDay.fromDate(2019, 9, 10.0),
                 1.0);
 
         // https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=ceres&full-prec=true
         OrbitElements ceresOrbitElements = new OrbitElementsBuilder()
                 .orbitShape(0.07600902910070946, 2.76916515450648)
                 .orbitPosition(Epoch.J2000, 73.597694115971, 80.30553156826473, 10.59406704424526)
-                .bodyPosition(JulianDate.fromDate(2018, 4, 30.25413581), 0.0)
+                .bodyPosition(JulianDay.fromDate(2018, 4, 30.25413581), 0.0)
                 .build();
 
         System.out.println("Orbit: " + ceresOrbitElements.toString());

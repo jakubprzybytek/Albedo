@@ -1,7 +1,8 @@
 package jp.albedo.mpc;
 
+import jp.albedo.common.BodyDetails;
 import jp.albedo.common.Epoch;
-import jp.albedo.common.JulianDate;
+import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.common.OrbitElements;
 import jp.albedo.ephemeris.common.OrbitElementsBuilder;
 
@@ -17,14 +18,14 @@ import java.util.regex.Pattern;
 
 public class MPCORBFileLoader {
 
-    final private static Pattern orbitPattern = Pattern.compile("^(\\w+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)");
+    final private static Pattern orbitPattern = Pattern.compile("^(\\w+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)(\\s+[\\w.\\-()]+){11}\\s+(\\w+)");
 
-    public static List<OrbitElements> load(File sourceFile, int orbitsToLoad) throws IOException {
+    public static List<MPCORBRecord> load(File sourceFile, int orbitsToLoad) throws IOException {
 
         final FileReader fileReader = new FileReader(sourceFile);
 
         int orbitRead = 0;
-        List<OrbitElements> orbitElementsList = new ArrayList<>(orbitsToLoad);
+        List<MPCORBRecord> records = new ArrayList<>(orbitsToLoad);
 
         try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String line;
@@ -33,18 +34,18 @@ public class MPCORBFileLoader {
 
             while (orbitRead < orbitsToLoad && (line = bufferedReader.readLine()) != null) {
 
-                Optional<OrbitElements> orbitElementsOptional = parseOrbitLine(line);
-                if (orbitElementsOptional.isPresent()) {
-                    orbitElementsList.add(orbitElementsOptional.get());
+                Optional<MPCORBRecord> recordOptional = parseOrbitLine(line);
+                if (recordOptional.isPresent()) {
+                    records.add(recordOptional.get());
                     orbitRead++;
                 }
             }
         }
 
-        return orbitElementsList;
+        return records;
     }
 
-    protected static Optional<OrbitElements> parseOrbitLine(String line) {
+    protected static Optional<MPCORBRecord> parseOrbitLine(String line) {
         Matcher matcher = orbitPattern.matcher(line);
 
         if (matcher.find()) {
@@ -59,11 +60,15 @@ public class MPCORBFileLoader {
             final double meanMotion = Double.parseDouble(matcher.group(10));
             final double semiMajorAxis = Double.parseDouble(matcher.group(11));
 
-            return Optional.of(new OrbitElementsBuilder()
+            final String bodyName = matcher.group(13);
+
+            final OrbitElements orbitElements = new OrbitElementsBuilder()
                     .orbitShape(eccentricity, semiMajorAxis, meanMotion)
                     .orbitPosition(Epoch.J2000, argumentOfPerihelion, longitudeOfAscendingNode, inclination)
                     .bodyPosition(meanAnomalyEpoch, meanAnomalyAtEpoch)
-                    .build());
+                    .build();
+
+            return Optional.of(new MPCORBRecord(new BodyDetails(bodyName), orbitElements));
         }
 
         return Optional.empty();
@@ -83,7 +88,7 @@ public class MPCORBFileLoader {
         final char dayChar = dateString.charAt(4);
         final int day = dayChar - (dayChar < 58 ? 48 : 55);
 
-        return JulianDate.fromDate(year, month, day);
+        return JulianDay.fromDate(year, month, day);
     }
 
 }

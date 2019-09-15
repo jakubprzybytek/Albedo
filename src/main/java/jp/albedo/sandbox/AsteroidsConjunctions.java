@@ -1,13 +1,13 @@
 package jp.albedo.sandbox;
 
 import jp.albedo.common.Angles;
-import jp.albedo.common.Epoch;
-import jp.albedo.common.JulianDate;
+import jp.albedo.common.BodyDetails;
+import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.EllipticMotion;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.ephemeris.common.OrbitElements;
-import jp.albedo.ephemeris.common.OrbitElementsBuilder;
 import jp.albedo.mpc.MPCORBFileLoader;
+import jp.albedo.mpc.MPCORBRecord;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.vsop87.VSOPException;
 import org.apache.commons.math3.util.Pair;
@@ -15,38 +15,37 @@ import org.apache.commons.math3.util.Pair;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AsteroidsConjunctions {
 
-    public static void main(String args[]) throws VSOPException, IOException, URISyntaxException {
-        List<OrbitElements> orbits = MPCORBFileLoader.load(new File("d:/Workspace/Java/Albedo/misc/MPCORB.DAT"), 1000);
+    public static final double PRELIMINARY_INTERVAL = 1.0; // days
 
-        final double from = JulianDate.fromDate(2010, 1, 1.0);
-        final double to = JulianDate.fromDate(2030, 12, 31.0);
-        List<Double> JDEs = JulianDate.forRange(from, to, 10.0);
+    public static final double DETAILED_SPAN = 2.0; // days
+
+    public static final double DETAILED_INTERVAL = 1.0 / 24.0 / 6.0; // 10 mins
+
+    public static void main(String args[]) throws VSOPException, IOException, URISyntaxException {
+        final List<MPCORBRecord> orbits = MPCORBFileLoader.load(new File("d:/Workspace/Java/Albedo/misc/MPCORB.DAT"), 100);
+
+        final double from = JulianDay.fromDate(2010, 1, 1.0);
+        final double to = JulianDay.fromDate(2030, 12, 31.0);
+        final List<Double> JDEs = JulianDay.forRange(from, to, PRELIMINARY_INTERVAL);
 
         System.out.printf("Time period from %.1f to %.1f%n", from, to);
-
         System.out.printf("Used memory: %dMB%n", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576);
 
         long startTime = System.currentTimeMillis();
 
-        //List<List<Ephemeris>> ephemerisLists = new ArrayList<>();
-
-//        for (OrbitElements orbitElements : orbits) {
-//            List<Ephemeris> ephemerisList = EllipticMotion.compute(JDEs, orbitElements);
-//            ephemerisLists.add(ephemerisList);
-//        }
-
-        //VSOP87Calculator.getEarthEclipticSphericalCoefficientsJ2000();
-
-        final List<List<Ephemeris>> ephemerisLists = orbits.parallelStream()
-                .map(orbitElements -> {
+        // Compute ephemeris
+        final List<BodyData> bodies = orbits.parallelStream()
+                .map(mpcorbRecord -> new BodyData(mpcorbRecord.bodyDetails, mpcorbRecord.orbitElements))
+                .peek(bodyData -> {
                     try {
-                        return EllipticMotion.compute(JDEs, orbitElements);
+                        bodyData.ephemerisList = EllipticMotion.compute(JDEs, bodyData.orbitElements);
                     } catch (VSOPException e) {
                         throw new RuntimeException("Zonk!");
                     }
@@ -54,77 +53,106 @@ public class AsteroidsConjunctions {
                 .collect(Collectors.toList());
 
         System.out.printf("Used memory: %dMB%n", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576);
-        System.out.printf("Time elapsed: %.1fs%n", (System.currentTimeMillis() - startTime) / 1000.0);
+        System.out.printf("Computed %d ephemeris, time since start: %.1fs%n", bodies.size(), (System.currentTimeMillis() - startTime) / 1000.0);
 
-        List<Pair<List<Ephemeris>, List<Ephemeris>>> ephemerisToCompare = new ArrayList<>(ephemerisLists.size() * (ephemerisLists.size() - 1) / 2);
-
-        for (int i = 0; i < ephemerisLists.size(); i++) {
-            for (int j = i + 1; j < ephemerisLists.size(); j++) {
-                ephemerisToCompare.add(new Pair<>(ephemerisLists.get(i), ephemerisLists.get(j)));
+        // Prepare structure for comparing bodies between each other
+        List<BodyPair> bodiesToCompare = new ArrayList<>(bodies.size() * (bodies.size() - 1) / 2);
+        for (int i = 0; i < bodies.size(); i++) {
+            for (int j = i + 1; j < bodies.size(); j++) {
+                bodiesToCompare.add(new BodyPair(bodies.get(i), bodies.get(j)));
             }
         }
 
-        ephemerisToCompare.parallelStream()
-                .map(pair -> StreamUtils.zip(
-                        pair.getFirst().stream(),
-                        pair.getSecond().stream(),
-                        (left, right) -> Angles.separation(left.coordinates, right.coordinates))
-                        .reduce(Double.MAX_VALUE, (localMin, separation) -> Double.min(localMin, separation)))
-                .map(Math::toDegrees)
-                .filter(minSeparation -> minSeparation < 0.01)
-                .peek(minSeparation -> System.out.printf("Separation: %.4f°%n", minSeparation))
+        // Compare all bodies between each other
+        List<BodyPair> bodiesWithSmallestSeparation = bodiesToCompare.parallelStream()
+                .peek(bodiesPair -> {
+                    Pair<Double, Double> minSeparation = findSmallestSeparation(bodiesPair.first.ephemerisList, bodiesPair.second.ephemerisList);
+                    bodiesPair.jde = minSeparation.getFirst();
+                    bodiesPair.separation = Math.toDegrees(minSeparation.getSecond());
+                })
+                .filter(bodiesPair -> bodiesPair.separation < 0.02)
+                .peek(bodiesPair -> System.out.printf("Separation between %s and %s on %.1fTD: %.4f°%n",
+                        bodiesPair.first.bodyDetails.name,
+                        bodiesPair.second.bodyDetails.name,
+                        bodiesPair.jde,
+                        bodiesPair.separation))
                 .collect(Collectors.toList());
 
+        System.out.printf("Used memory: %dMB%n", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576);
+        System.out.printf("Computed preliminary min separation for %d pairs of ehpemeris, time since start: %.1fs%n", bodiesToCompare.size(), (System.currentTimeMillis() - startTime) / 1000.0);
 
-
-        /*for (int i = 0; i < orbits.size(); i++) {
-            for (int j = i + 1; j < orbits.size(); j++) {
-                double minSeparation = StreamUtils.zip(
-                        ephemerisLists.get(i).stream(),
-                        ephemerisLists.get(j).stream(),
-                        (left, right) -> Angles.separation(left.coordinates, right.coordinates))
-                        .reduce(Double.MAX_VALUE, (localMin, separation) -> Double.min(localMin, separation));
-
-                if (minSeparation < Math.toRadians(0.01)) {
-                    System.out.printf("Minimal separtion between %d and %d: %.4f°%n", i, j, Math.toDegrees(minSeparation));
-                }
-            }
-        }*/
+        // Find better separation details using ephemeris with better resolution
+        bodiesWithSmallestSeparation.stream()
+                .peek(bodiesPair -> {
+                    final List<Double> localJDEs = JulianDay.forRange(
+                            bodiesPair.jde - DETAILED_SPAN / 2.0,
+                            bodiesPair.jde + DETAILED_SPAN / 2.0,
+                            DETAILED_INTERVAL);
+                    try {
+                        bodiesPair.first.ephemerisList = EllipticMotion.compute(localJDEs, bodiesPair.first.orbitElements);
+                        bodiesPair.second.ephemerisList = EllipticMotion.compute(localJDEs, bodiesPair.second.orbitElements);
+                    } catch (VSOPException e) {
+                        throw new RuntimeException("Zonk!");
+                    }
+                })
+                .peek(bodiesPair -> {
+                    Pair<Double, Double> minSeparation = findSmallestSeparation(bodiesPair.first.ephemerisList, bodiesPair.second.ephemerisList);
+                    bodiesPair.jde = minSeparation.getFirst();
+                    bodiesPair.separation = Math.toDegrees(minSeparation.getSecond());
+                })
+                .forEach(bodiesPair -> System.out.printf("Separation between %s and %s on %s TD: %.4f°%n",
+                        bodiesPair.first.bodyDetails.name,
+                        bodiesPair.second.bodyDetails.name,
+                        JulianDay.toDateTime(bodiesPair.jde).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                        bodiesPair.separation));
 
         System.out.printf("Used memory: %dMB%n", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576);
-        System.out.printf("Time elapsed: %.1fs%n", (System.currentTimeMillis() - startTime) / 1000.0);
+        System.out.printf("Computed detailed min separation for %d pairs of ehpemeris, time since start: %.1fs%n", bodiesWithSmallestSeparation.size(), (System.currentTimeMillis() - startTime) / 1000.0);
     }
 
-    public static void main2(String args[]) throws VSOPException {
-        // https://www.minorplanetcenter.net/data
-        OrbitElements ceresOrbitElementsMPC = new OrbitElementsBuilder()
-                .orbitShape(0.0760091, 2.7691652, 0.21388522)
-                .orbitPosition(Epoch.J2000, 73.59764, 80.30553, 10.59407)
-                .bodyPosition(JulianDate.fromDate(2019, 4, 27.0), 77.37215)
-                .build();
+    private static Pair<Double, Double> findSmallestSeparation(List<Ephemeris> first, List<Ephemeris> second) {
+        return StreamUtils.zip(first.stream(), second.stream(),
+                (left, right) -> new Pair<>(left.jde, Angles.separation(left.coordinates, right.coordinates)))
+                .reduce(new Pair(0.0, Double.MAX_VALUE),
+                        (localMin, separationPair) -> separationPair.getSecond() < localMin.getSecond() ? separationPair : localMin);
+    }
 
-        OrbitElements junoOrbitElementsMPC = new OrbitElementsBuilder()
-                .orbitShape(0.2569423, 2.6691496, 0.22601887)
-                .orbitPosition(Epoch.J2000, 248.13861, 169.85274, 12.98892)
-                .bodyPosition(JulianDate.fromDate(2019, 4, 27.0), 34.92503)
-                .build();
+    private static Pair<Double, Double> findSmallestSeparationPrint(List<Ephemeris> first, List<Ephemeris> second) {
+        return StreamUtils.zip(first.stream(), second.stream(),
+                (left, right) -> new Pair<>(left.jde, Angles.separation(left.coordinates, right.coordinates)))
+                .peek(pair -> System.out.printf("%.3f %.4f%n", pair.getFirst(), Math.toDegrees(pair.getSecond())))
+                .reduce(new Pair(0.0, Double.MAX_VALUE),
+                        (localMin, separationPair) -> separationPair.getSecond() < localMin.getSecond() ? separationPair : localMin);
+    }
 
-        List<Double> JDEs = JulianDate.forRange(
-                JulianDate.fromDate(2010, 1, 1.0),
-                JulianDate.fromDate(2030, 12, 31.0),
-                10.0);
+    private static class BodyData {
 
-        List<Ephemeris> ceresEphemerisList = EllipticMotion.compute(JDEs, ceresOrbitElementsMPC);
-        List<Ephemeris> junoEphemerisList = EllipticMotion.compute(JDEs, junoOrbitElementsMPC);
+        public BodyDetails bodyDetails;
 
-        for (int i = 0; i < ceresEphemerisList.size(); i++) {
-            Ephemeris ceresEphemeris = ceresEphemerisList.get(i);
-            Ephemeris junoEphemeris = junoEphemerisList.get(i);
-            double separation = Math.toDegrees(Angles.separation(ceresEphemeris.coordinates, junoEphemeris.coordinates));
-            System.out.println(String.format("T=%.1f, Ceres:%s, Juno:%s, separation=%.4f°",
-                    ceresEphemeris.jde, ceresEphemeris.coordinates, junoEphemeris.coordinates, separation));
+        public OrbitElements orbitElements;
+
+        public List<Ephemeris> ephemerisList;
+
+        public BodyData(BodyDetails bodyDetails, OrbitElements orbitElements) {
+            this.bodyDetails = bodyDetails;
+            this.orbitElements = orbitElements;
         }
     }
 
+    private static class BodyPair {
+
+        final public BodyData first;
+
+        final public BodyData second;
+
+        public double jde;
+
+        public double separation;
+
+        public BodyPair(BodyData first, BodyData second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
 
 }
