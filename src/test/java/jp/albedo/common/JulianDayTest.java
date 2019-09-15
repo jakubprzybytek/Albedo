@@ -32,6 +32,9 @@ class JulianDayTest {
         assertEquals(1957, dateTime.getYear());
         assertEquals(10, dateTime.getMonthValue());
         assertEquals(4, dateTime.getDayOfMonth());
+        assertEquals(19, dateTime.getHour());
+        assertEquals(26, dateTime.getMinute());
+        assertEquals(24, dateTime.getSecond());
     }
 
     @Test
@@ -42,6 +45,9 @@ class JulianDayTest {
         assertEquals(333, dateTime.getYear());
         assertEquals(1, dateTime.getMonthValue());
         assertEquals(27, dateTime.getDayOfMonth());
+        assertEquals(12, dateTime.getHour());
+        assertEquals(0, dateTime.getMinute());
+        assertEquals(0, dateTime.getSecond());
     }
 
     @Test
@@ -52,5 +58,8 @@ class JulianDayTest {
         assertEquals(-584, dateTime.getYear());
         assertEquals(5, dateTime.getMonthValue());
         assertEquals(28, dateTime.getDayOfMonth());
+        assertEquals(15, dateTime.getHour());
+        assertEquals(7, dateTime.getMinute());
+        assertEquals(12, dateTime.getSecond());
     }
 }

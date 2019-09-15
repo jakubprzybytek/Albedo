@@ -66,7 +66,7 @@ public class JulianDay {
                 (int) (C - (month > 2 ? 4716.0 : 4715.0)),
                 month,
                 (int) (B - D - Math.floor(30.6001 * E)),
-                (int) hours, (int) minutes, (int) (F * 60.0));
+                (int) hours, (int) minutes, (int) Math.rint(F * 60.0));
     }
 
 }
