@@ -8,6 +8,7 @@ import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.ephemeris.common.OrbitElements;
 import jp.albedo.mpc.MPCORBFileLoader;
 import jp.albedo.mpc.MPCORBRecord;
+import jp.albedo.utils.MixListsSupplier;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.vsop87.VSOPException;
 import org.apache.commons.math3.util.Pair;
@@ -15,10 +16,14 @@ import org.apache.commons.math3.util.Pair;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AsteroidsConjunctions {
 
@@ -29,19 +34,21 @@ public class AsteroidsConjunctions {
     public static final double DETAILED_INTERVAL = 1.0 / 24.0 / 6.0; // 10 mins
 
     public static void main(String args[]) throws VSOPException, IOException, URISyntaxException {
-        final List<MPCORBRecord> orbits = MPCORBFileLoader.load(new File("d:/Workspace/Java/Albedo/misc/MPCORB.DAT"), 100);
+        final List<MPCORBRecord> orbits = MPCORBFileLoader.load(new File("d:/Workspace/Java/Albedo/misc/MPCORB.DAT"), 500);
 
-        final double from = JulianDay.fromDate(2010, 1, 1.0);
-        final double to = JulianDay.fromDate(2030, 12, 31.0);
-        final List<Double> JDEs = JulianDay.forRange(from, to, PRELIMINARY_INTERVAL);
+        final LocalDateTime fromUtc = LocalDateTime.now(ZoneId.of("UTC"));
+        final LocalDateTime toUtc = fromUtc.plusYears(1);
+        final double fromJde = JulianDay.fromDateTime(fromUtc);
+        final double toJde = JulianDay.fromDateTime(toUtc);
+        final List<Double> JDEs = JulianDay.forRange(fromJde, toJde, PRELIMINARY_INTERVAL);
 
-        System.out.printf("Time period from %.1f to %.1f%n", from, to);
+        System.out.printf("Time period from %s (%.1f) to %s (%.1f)%n", fromUtc, fromJde, toUtc, toJde);
         System.out.printf("Used memory: %dMB%n", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576);
 
         long startTime = System.currentTimeMillis();
 
         // Compute ephemeris
-        final List<BodyData> bodies = orbits.parallelStream()
+        final List<BodyData> bodyEphemeries = orbits.parallelStream()
                 .map(mpcorbRecord -> new BodyData(mpcorbRecord.bodyDetails, mpcorbRecord.orbitElements))
                 .peek(bodyData -> {
                     try {
@@ -53,29 +60,23 @@ public class AsteroidsConjunctions {
                 .collect(Collectors.toList());
 
         System.out.printf("Used memory: %dMB%n", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576);
-        System.out.printf("Computed %d ephemeris, time since start: %.1fs%n", bodies.size(), (System.currentTimeMillis() - startTime) / 1000.0);
+        System.out.printf("Computed %d ephemeris, time since start: %.1fs%n", bodyEphemeries.size(), (System.currentTimeMillis() - startTime) / 1000.0);
 
-        // Prepare structure for comparing bodies between each other
-        List<BodyPair> bodiesToCompare = new ArrayList<>(bodies.size() * (bodies.size() - 1) / 2);
-        for (int i = 0; i < bodies.size(); i++) {
-            for (int j = i + 1; j < bodies.size(); j++) {
-                bodiesToCompare.add(new BodyPair(bodies.get(i), bodies.get(j)));
-            }
-        }
+        // Mix body data and generate all possible pairs
+        List<Pair<BodyData, BodyData>> bodiesToCompare = Stream.generate(new MixListsSupplier<>(bodyEphemeries))
+                .limit(bodyEphemeries.size() * (bodyEphemeries.size() - 1) / 2)
+                .collect(Collectors.toList());
 
         // Compare all bodies between each other
-        List<BodyPair> bodiesWithSmallestSeparation = bodiesToCompare.parallelStream()
-                .peek(bodiesPair -> {
-                    Pair<Double, Double> minSeparation = findSmallestSeparation(bodiesPair.first.ephemerisList, bodiesPair.second.ephemerisList);
-                    bodiesPair.jde = minSeparation.getFirst();
-                    bodiesPair.separation = Math.toDegrees(minSeparation.getSecond());
-                })
-                .filter(bodiesPair -> bodiesPair.separation < 0.02)
-                .peek(bodiesPair -> System.out.printf("Separation between %s and %s on %.1fTD: %.4f°%n",
-                        bodiesPair.first.bodyDetails.name,
-                        bodiesPair.second.bodyDetails.name,
-                        bodiesPair.jde,
-                        bodiesPair.separation))
+        List<Conjunction> bodiesWithSmallestSeparation = bodiesToCompare.parallelStream()
+                .map(AsteroidsConjunctions::findConjunctions2)
+                .flatMap(List<Conjunction>::stream)
+                .filter(bodiesPair -> bodiesPair.separation < Math.toRadians(0.02))
+                .peek(conjunction -> System.out.printf("Separation between %s and %s on %.1fTD: %.4f°%n",
+                        conjunction.first.bodyDetails.name,
+                        conjunction.second.bodyDetails.name,
+                        conjunction.jde,
+                        Math.toDegrees(conjunction.separation)))
                 .collect(Collectors.toList());
 
         System.out.printf("Used memory: %dMB%n", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576);
@@ -83,46 +84,66 @@ public class AsteroidsConjunctions {
 
         // Find better separation details using ephemeris with better resolution
         bodiesWithSmallestSeparation.stream()
-                .peek(bodiesPair -> {
+                .map(conjunction -> {
                     final List<Double> localJDEs = JulianDay.forRange(
-                            bodiesPair.jde - DETAILED_SPAN / 2.0,
-                            bodiesPair.jde + DETAILED_SPAN / 2.0,
+                            conjunction.jde - DETAILED_SPAN / 2.0,
+                            conjunction.jde + DETAILED_SPAN / 2.0,
                             DETAILED_INTERVAL);
                     try {
-                        bodiesPair.first.ephemerisList = EllipticMotion.compute(localJDEs, bodiesPair.first.orbitElements);
-                        bodiesPair.second.ephemerisList = EllipticMotion.compute(localJDEs, bodiesPair.second.orbitElements);
+                        conjunction.first.ephemerisList = EllipticMotion.compute(localJDEs, conjunction.first.orbitElements);
+                        conjunction.second.ephemerisList = EllipticMotion.compute(localJDEs, conjunction.second.orbitElements);
+                        return new Pair<>(conjunction.first, conjunction.second);
                     } catch (VSOPException e) {
                         throw new RuntimeException("Zonk!");
                     }
                 })
-                .peek(bodiesPair -> {
-                    Pair<Double, Double> minSeparation = findSmallestSeparation(bodiesPair.first.ephemerisList, bodiesPair.second.ephemerisList);
-                    bodiesPair.jde = minSeparation.getFirst();
-                    bodiesPair.separation = Math.toDegrees(minSeparation.getSecond());
-                })
-                .forEach(bodiesPair -> System.out.printf("Separation between %s and %s on %s TD: %.4f°%n",
+                .map(AsteroidsConjunctions::findConjunctions)
+                .sorted((c1, c2) -> Double.compare(c1.jde, c2.jde))
+                .forEach(bodiesPair -> System.out.printf("%s TD Conjunction between %s and %s with separation of: %.4f°%n",
+                        JulianDay.toDateTime(bodiesPair.jde).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                         bodiesPair.first.bodyDetails.name,
                         bodiesPair.second.bodyDetails.name,
-                        JulianDay.toDateTime(bodiesPair.jde).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                        bodiesPair.separation));
+                        Math.toDegrees(bodiesPair.separation)));
 
         System.out.printf("Used memory: %dMB%n", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576);
         System.out.printf("Computed detailed min separation for %d pairs of ehpemeris, time since start: %.1fs%n", bodiesWithSmallestSeparation.size(), (System.currentTimeMillis() - startTime) / 1000.0);
     }
 
-    private static Pair<Double, Double> findSmallestSeparation(List<Ephemeris> first, List<Ephemeris> second) {
-        return StreamUtils.zip(first.stream(), second.stream(),
+    private static Conjunction findConjunctions(Pair<BodyData, BodyData> bodiesPair) {
+        Pair<Double, Double> jdeSeparation = StreamUtils.zip(
+                bodiesPair.getFirst().ephemerisList.stream(),
+                bodiesPair.getSecond().ephemerisList.stream(),
                 (left, right) -> new Pair<>(left.jde, Angles.separation(left.coordinates, right.coordinates)))
-                .reduce(new Pair(0.0, Double.MAX_VALUE),
+                .reduce(new Pair<>(0.0, Double.MAX_VALUE),
                         (localMin, separationPair) -> separationPair.getSecond() < localMin.getSecond() ? separationPair : localMin);
+        return new Conjunction(jdeSeparation.getFirst(), jdeSeparation.getSecond(), bodiesPair.getFirst(), bodiesPair.getSecond());
     }
 
-    private static Pair<Double, Double> findSmallestSeparationPrint(List<Ephemeris> first, List<Ephemeris> second) {
-        return StreamUtils.zip(first.stream(), second.stream(),
-                (left, right) -> new Pair<>(left.jde, Angles.separation(left.coordinates, right.coordinates)))
-                .peek(pair -> System.out.printf("%.3f %.4f%n", pair.getFirst(), Math.toDegrees(pair.getSecond())))
-                .reduce(new Pair(0.0, Double.MAX_VALUE),
-                        (localMin, separationPair) -> separationPair.getSecond() < localMin.getSecond() ? separationPair : localMin);
+    private static List<Conjunction> findConjunctions2(Pair<BodyData, BodyData> bodiesPair) {
+
+        return StreamUtils.zip(
+                bodiesPair.getFirst().ephemerisList.stream(),
+                bodiesPair.getSecond().ephemerisList.stream(),
+                (leftEphemeris, rightEphemeris) -> new Pair<>(leftEphemeris, rightEphemeris))
+                .collect(Collector.of(
+                        () -> new ConjunctionFind(),
+                        (findContext, ephemerisPair) -> {
+                            double separation = Angles.separation(ephemerisPair.getFirst().coordinates, ephemerisPair.getSecond().coordinates);
+                            if (separation > findContext.lastMinSeparation) {
+                                if (!findContext.addedLocalMin) {
+                                    findContext.result.add(new Conjunction(findContext.lastJde, findContext.lastMinSeparation, bodiesPair.getFirst(), bodiesPair.getSecond()));
+                                    findContext.addedLocalMin = true;
+                                }
+                            } else {
+                                findContext.addedLocalMin = false;
+                            }
+                            findContext.lastMinSeparation = separation;
+                            findContext.lastJde = ephemerisPair.getFirst().jde;
+                        },
+                        (findContext1, findContext2) -> {
+                            throw new RuntimeException("Cannot collect concurrent results");
+                        },
+                        (findContext) -> findContext.result));
     }
 
     private static class BodyData {
@@ -139,20 +160,34 @@ public class AsteroidsConjunctions {
         }
     }
 
-    private static class BodyPair {
+    private static class Conjunction {
+
+        final public double jde;
+
+        final public double separation;
 
         final public BodyData first;
 
         final public BodyData second;
 
-        public double jde;
-
-        public double separation;
-
-        public BodyPair(BodyData first, BodyData second) {
+        public Conjunction(double jde, double separation, BodyData first, BodyData second) {
+            this.jde = jde;
+            this.separation = separation;
             this.first = first;
             this.second = second;
         }
+    }
+
+    private static class ConjunctionFind {
+
+        public double lastMinSeparation = Double.MAX_VALUE;
+
+        public double lastJde;
+
+        public boolean addedLocalMin;
+
+        public List<Conjunction> result = new ArrayList<>();
+
     }
 
 }

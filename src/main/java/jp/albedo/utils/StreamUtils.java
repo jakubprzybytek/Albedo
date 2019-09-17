@@ -1,6 +1,5 @@
 package jp.albedo.utils;
 
-import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.BiFunction;
