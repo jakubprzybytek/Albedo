@@ -1,5 +1,6 @@
 package jp.albedo.common;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,10 @@ public class JulianDay {
         final int B = 2 - A + A / 4;
 
         return Math.floor(365.25 * (year + 4716.0)) + Math.floor(30.6001 * (month + 1.0)) + day + (double) B - 1524.5;
+    }
+
+    public static double fromDateTime(LocalDate date) {
+        return fromDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
     }
 
     public static double fromDateTime(LocalDateTime dateTime) {

@@ -27,7 +27,7 @@ public class MPCORBFileLoader {
         int orbitRead = 0;
         List<MPCORBRecord> records = new ArrayList<>(orbitsToLoad);
 
-        try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+        try (final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String line;
             // skip to data
             while ((line = bufferedReader.readLine()) != null && !line.contains("-----")) ;
@@ -43,6 +43,26 @@ public class MPCORBFileLoader {
         }
 
         return records;
+    }
+
+    public static Optional<MPCORBRecord> find(File sourceFile, String bodyName) throws IOException {
+
+        final FileReader fileReader = new FileReader(sourceFile);
+
+        try (final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            String line;
+            // skip to data
+            while ((line = bufferedReader.readLine()) != null && !line.contains("-----")) ;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                Optional<MPCORBRecord> record = parseOrbitLine(line);
+                if (record.isPresent() && bodyName.equals(record.get().bodyDetails.name)) {
+                    return record;
+                }
+            }
+        }
+
+        return Optional.empty();
     }
 
     protected static Optional<MPCORBRecord> parseOrbitLine(String line) {

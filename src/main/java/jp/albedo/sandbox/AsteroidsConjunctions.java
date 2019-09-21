@@ -69,7 +69,7 @@ public class AsteroidsConjunctions {
 
         // Compare all bodies between each other
         List<Conjunction> bodiesWithSmallestSeparation = bodiesToCompare.parallelStream()
-                .map(AsteroidsConjunctions::findConjunctions2)
+                .map(AsteroidsConjunctions::findConjunctions)
                 .flatMap(List<Conjunction>::stream)
                 .filter(bodiesPair -> bodiesPair.separation < Math.toRadians(0.02))
                 .peek(conjunction -> System.out.printf("Separation between %s and %s on %.1fTD: %.4f°%n",
@@ -98,6 +98,7 @@ public class AsteroidsConjunctions {
                     }
                 })
                 .map(AsteroidsConjunctions::findConjunctions)
+                .flatMap(List<Conjunction>::stream)
                 .sorted((c1, c2) -> Double.compare(c1.jde, c2.jde))
                 .forEach(bodiesPair -> System.out.printf("%s TD Conjunction between %s and %s with separation of: %.4f°%n",
                         JulianDay.toDateTime(bodiesPair.jde).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
@@ -109,17 +110,7 @@ public class AsteroidsConjunctions {
         System.out.printf("Computed detailed min separation for %d pairs of ehpemeris, time since start: %.1fs%n", bodiesWithSmallestSeparation.size(), (System.currentTimeMillis() - startTime) / 1000.0);
     }
 
-    private static Conjunction findConjunctions(Pair<BodyData, BodyData> bodiesPair) {
-        Pair<Double, Double> jdeSeparation = StreamUtils.zip(
-                bodiesPair.getFirst().ephemerisList.stream(),
-                bodiesPair.getSecond().ephemerisList.stream(),
-                (left, right) -> new Pair<>(left.jde, Angles.separation(left.coordinates, right.coordinates)))
-                .reduce(new Pair<>(0.0, Double.MAX_VALUE),
-                        (localMin, separationPair) -> separationPair.getSecond() < localMin.getSecond() ? separationPair : localMin);
-        return new Conjunction(jdeSeparation.getFirst(), jdeSeparation.getSecond(), bodiesPair.getFirst(), bodiesPair.getSecond());
-    }
-
-    private static List<Conjunction> findConjunctions2(Pair<BodyData, BodyData> bodiesPair) {
+    protected static List<Conjunction> findConjunctions(Pair<BodyData, BodyData> bodiesPair) {
 
         return StreamUtils.zip(
                 bodiesPair.getFirst().ephemerisList.stream(),
@@ -146,7 +137,7 @@ public class AsteroidsConjunctions {
                         (findContext) -> findContext.result));
     }
 
-    private static class BodyData {
+    protected static class BodyData {
 
         public BodyDetails bodyDetails;
 
@@ -158,9 +149,13 @@ public class AsteroidsConjunctions {
             this.bodyDetails = bodyDetails;
             this.orbitElements = orbitElements;
         }
+
+        protected BodyData(List<Ephemeris> ephemerisList) {
+            this.ephemerisList = ephemerisList;
+        }
     }
 
-    private static class Conjunction {
+    protected static class Conjunction {
 
         final public double jde;
 

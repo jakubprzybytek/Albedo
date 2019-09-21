@@ -4,5 +4,8 @@
 # Log file
 *.log
 
+package-lock.json
+
 target
 misc
+node_modules

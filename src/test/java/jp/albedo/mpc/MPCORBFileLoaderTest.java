@@ -24,7 +24,6 @@ class MPCORBFileLoaderTest {
 
         final URL mpcorbFileULR = MPCORBFileLoaderTest.class.getClassLoader().getResource("MPC/MPCORB.DAT.testSample");
         final Path mpcorbFilePath = Paths.get(mpcorbFileULR.toURI());
-        ;
 
         System.out.println("Reading MPCORB file");
 
@@ -34,6 +33,22 @@ class MPCORBFileLoaderTest {
         }
 
         assertEquals(5, mpcorbRecords.size());
+    }
+
+    @Test
+    @DisplayName("Finding asteroid by name")
+    void find() throws IOException, URISyntaxException {
+
+        final URL mpcorbFileULR = MPCORBFileLoaderTest.class.getClassLoader().getResource("MPC/MPCORB.DAT.testSample");
+        final Path mpcorbFilePath = Paths.get(mpcorbFileULR.toURI());
+
+        System.out.println("Reading MPCORB file");
+
+        Optional<MPCORBRecord> mpcorbRecord = MPCORBFileLoader.find(mpcorbFilePath.toFile(), "Astraea");
+
+        assertTrue(mpcorbRecord.isPresent());
+        assertEquals("Astraea", mpcorbRecord.get().bodyDetails.name);
+        assertEquals(0.1910946, mpcorbRecord.get().orbitElements.getEccentricity(), 0.0000001);
     }
 
     @Test
