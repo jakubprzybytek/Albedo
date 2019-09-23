@@ -22,17 +22,25 @@ export default function EphemerisTable(props) {
 
 	const classes = useStyles();
 
-	function formatHourAngle(angleDegrees) {
-		const angle = angleDegrees / 15.0;
+	const angleUnits = {
+		ra: ['h', 'm', 's'],
+		d: ['°', '\'', '"']
+	}
+
+	function formatAngle(angle, units) {
 		const angleAbs = Math.abs(angle);
 		const angleFractionInMinutes = (angleAbs - Math.floor(angleAbs)) * 60.0;
-		return "" + Math.trunc(angle) + "h " + Math.trunc(angleFractionInMinutes) + "m " + ((angleFractionInMinutes - Math.trunc(angleFractionInMinutes)) * 60.0).toFixed(2) + "s";
+		const angleMinutes = Math.trunc(angleFractionInMinutes);
+		const angleSeconds = (angleFractionInMinutes - angleMinutes) * 60.0;
+		return "" + Math.trunc(angle) + units[0] + " " + ((angleMinutes < 10) ? "0" : "") + angleMinutes + units[1] + " " + ((angleSeconds < 10) ? "0" : "") + angleSeconds.toFixed(2) + units[2];
+	}
+
+	function formatHourAngle(angle) {
+		return formatAngle(angle / 15.0, angleUnits.ra);
 	}
 
 	function formatDegrees(angle) {
-		const angleAbs = Math.abs(angle);
-		const angleFractionInMinutes = (angleAbs - Math.floor(angleAbs)) * 60.0;
-		return "" + Math.trunc(angle) + "° " + Math.trunc(angleFractionInMinutes) + "' " + ((angleFractionInMinutes - Math.trunc(angleFractionInMinutes)) * 60.0).toFixed(2) + "\"";
+		return formatAngle(angle, angleUnits.d);
 	}
 
 	return (
@@ -48,7 +56,7 @@ export default function EphemerisTable(props) {
 				<TableBody>
 					{props.rows.map(row => (
 						<TableRow key={row.index}>
-							<TableCell component="th" scope="row">
+							<TableCell component="th" scope="row" title={row.jde}>
 								{format(Date.parse(row.jde), "yyyy-MM-dd hh:mm:ss")}
 							</TableCell>
 							<TableCell align="right">

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import EphemerisPanel from './ephemeris/EphemerisPanel';
+import Dashboard from './Dashboard';
 
 ReactDOM.render(
-  <EphemerisPanel />,
+  <Dashboard />,
   document.getElementById('root')
 );
