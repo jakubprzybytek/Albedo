@@ -12,14 +12,14 @@ const useStyles = makeStyles(theme => ({
 	paper: {
 		marginTop: theme.spacing(3),
 		marginBottom: theme.spacing(2),
-		width: '800px',
+		width: '800px'
 	},
 	table: {
 		width: '100%'
 	},
 }));
 
-export default function EphemerisTable(props) {
+export default function AsteroidConjunctionsTable(props) {
 
 	const classes = useStyles();
 
@@ -36,10 +36,6 @@ export default function EphemerisTable(props) {
 		return "" + Math.trunc(angle) + units[0] + " " + ((angleMinutes < 10) ? "0" : "") + angleMinutes + units[1] + " " + ((angleSeconds < 10) ? "0" : "") + angleSeconds.toFixed(2) + units[2];
 	}
 
-	function formatHourAngle(angle) {
-		return formatAngle(angle / 15.0, angleUnits.ra);
-	}
-
 	function formatDegrees(angle) {
 		return formatAngle(angle, angleUnits.d);
 	}
@@ -50,21 +46,25 @@ export default function EphemerisTable(props) {
 				<TableHead>
 					<TableRow>
 						<TableCell>Time (TD)</TableCell>
-						<TableCell align="right">R.A.</TableCell>
-						<TableCell align="right">Dec.</TableCell>
+						<TableCell>First body</TableCell>
+						<TableCell>Second body</TableCell>
+						<TableCell align="right">Separation</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{props.rows.map(row => (
 						<TableRow key={row.index}>
-							<TableCell component="th" scope="row" title={row.jde}>
-								{format(Date.parse(row.jde), "yyyy-MM-dd hh:mm:ss")}
+							<TableCell component="th" scope="row" title={row.dateTimeTD}>
+								{format(Date.parse(row.dateTimeTD), "yyyy-MM-dd hh:mm:ss")}
 							</TableCell>
-							<TableCell align="right">
-								{formatHourAngle(row.coordinates.rightAscension)}
+							<TableCell>
+								{row.firstBody.name}
 							</TableCell>
-							<TableCell align="right">
-								{formatDegrees(row.coordinates.declination)}
+							<TableCell>
+								{row.secondBody.name}
+							</TableCell>
+							<TableCell align="right" title={row.separation.toFixed(6)}>
+								{formatDegrees(row.separation)}
 							</TableCell>
 						</TableRow>
 					))}

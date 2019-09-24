@@ -34,9 +34,9 @@ export default function EphemerisPanel() {
   const classes = useStyles();
 
   return (
-    <Grid className={classes.root} container direction="column">
+    <div>
       <EphemerisForm submitForm={fetchData} />
       <EphemerisTable rows={rows} />
-    </Grid>
+    </div>
   );
 }

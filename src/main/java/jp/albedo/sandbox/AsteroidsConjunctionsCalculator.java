@@ -35,7 +35,7 @@ public class AsteroidsConjunctionsCalculator {
   public static final double DETAILED_INTERVAL = 1.0 / 24.0 / 6.0; // 10 mins
 
   public static List<Conjunction> calculate() throws VSOPException, IOException, URISyntaxException {
-    final List<MPCORBRecord> orbits = MPCORBFileLoader.load(new File("d:/Workspace/Java/Albedo/misc/MPCORB.DAT"), 1000);
+    final List<MPCORBRecord> orbits = MPCORBFileLoader.load(new File("d:/Workspace/Java/Albedo/misc/MPCORB.DAT"), 400);
 
     final LocalDateTime fromUtc = LocalDateTime.now(ZoneId.of("UTC"));
     final LocalDateTime toUtc = fromUtc.plusYears(1);

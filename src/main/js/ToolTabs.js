@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import ToolTabs from './ToolTabs';
+import EphemerisPanel from './ephemeris/EphemerisPanel';
+import AsteroidConjunctionsPanel from './asteroidConjunctions/AsteroidConjunctionsPanel';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -16,8 +16,8 @@ function TabPanel(props) {
       component="div"
       role="tabpanel"
       hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
+      id={`vertical-tabpanel-${index}`}
+      aria-labelledby={`vertical-tab-${index}`}
       {...other}>
       <Box p={3}>{children}</Box>
     </Typography>
@@ -32,47 +32,52 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `scrollable-auto-tab-${index}`,
-    'aria-controls': `scrollable-auto-tabpanel-${index}`,
+    id: `vertical-tab-${index}`,
+    'aria-controls': `vertical-tabpanel-${index}`,
   };
 }
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    width: '100%',
     backgroundColor: theme.palette.background.paper,
+    display: 'flex',
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
   },
 }));
 
-export default function Dashboard() {
+export default function ToolTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  function handleChange(event, newValue) {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
-  }
+  };
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="scrollable auto tabs example">
-          <Tab label="Tools" {...a11yProps(0)} />
-          <Tab label="Tab 2" {...a11yProps(1)} />
-        </Tabs>
-      </AppBar>
+      <Tabs
+        orientation="vertical"
+        variant="scrollable"
+        value={value}
+        onChange={handleChange}
+        aria-label="Vertical tabs example"
+        className={classes.tabs}>
+        <Tab label="Ephemeris" {...a11yProps(0)} />
+        <Tab label="Asteroid Conjunctions" {...a11yProps(1)} />
+        <Tab label="Item Three" {...a11yProps(2)} />
+      </Tabs>
+      
       <TabPanel value={value} index={0}>
-        <ToolTabs />
+        <EphemerisPanel />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Six
+        <AsteroidConjunctionsPanel />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        Item Three
       </TabPanel>
     </div>
   );
