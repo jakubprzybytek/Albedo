@@ -1,4 +1,4 @@
-package jp.albedo.sandbox;
+package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.EllipticMotion;
@@ -13,9 +13,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Component
-public class EphemerisOrchestrator {
+public class EphemerisCalculator {
 
-    private static Log LOG = LogFactory.getLog(EphemerisOrchestrator.class);
+    private static Log LOG = LogFactory.getLog(EphemerisCalculator.class);
 
     public List<Ephemeris> compute(OrbitElements orbitElements, LocalDate fromDate, LocalDate toDate, double interval) throws VSOPException {
         LOG.info(String.format("Starting calculations, params: [from=%s, to=%s, interval=%.2f]", fromDate, toDate, interval));

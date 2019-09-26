@@ -5,11 +5,15 @@ import jp.albedo.common.Epoch;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.common.OrbitElements;
 import jp.albedo.ephemeris.common.OrbitElementsBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +22,13 @@ import java.util.regex.Pattern;
 
 public class MPCORBFileLoader {
 
+    private static Log LOG = LogFactory.getLog(MPCORBFileLoader.class);
+
     final private static Pattern orbitPattern = Pattern.compile("^(\\w+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)(\\s+[\\w.\\-()]+){11}\\s+(\\w+)");
 
     public static List<MPCORBRecord> load(File sourceFile, int orbitsToLoad) throws IOException {
+
+        final Instant start = Instant.now();
 
         final FileReader fileReader = new FileReader(sourceFile);
 
@@ -41,6 +49,8 @@ public class MPCORBFileLoader {
                 }
             }
         }
+
+        LOG.info(String.format("Loaded %d orbit details from %s in %s", records.size(), sourceFile.getPath(), Duration.between(start, Instant.now())));
 
         return records;
     }

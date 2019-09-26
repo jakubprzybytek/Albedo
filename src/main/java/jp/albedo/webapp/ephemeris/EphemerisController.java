@@ -1,9 +1,7 @@
 package jp.albedo.webapp.ephemeris;
 
-import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.mpc.MPCORBFileLoader;
 import jp.albedo.mpc.MPCORBRecord;
-import jp.albedo.sandbox.EphemerisOrchestrator;
 import jp.albedo.vsop87.VSOPException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,7 +21,7 @@ import java.util.stream.Collectors;
 public class EphemerisController {
 
     @Autowired
-    private EphemerisOrchestrator ephemerisOrchestrator;
+    private EphemerisCalculator ephemerisCalculator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/ephemeris")
     public EphemerisResponse ephemeris(@RequestParam(value = "body", defaultValue = "Ceres") String bodyName,
@@ -34,7 +32,7 @@ public class EphemerisController {
         final Optional<MPCORBRecord> mpcorbRecordOptional = MPCORBFileLoader.find(new File("d:/Workspace/Java/Albedo/misc/MPCORB.DAT"), bodyName);
         final MPCORBRecord mpcorbRecord = mpcorbRecordOptional.get();
 
-        List<RestEphemeris> ephemerisList = this.ephemerisOrchestrator.compute(mpcorbRecord.orbitElements, fromDate, toDate, interval)
+        List<RestEphemeris> ephemerisList = this.ephemerisCalculator.compute(mpcorbRecord.orbitElements, fromDate, toDate, interval)
                 .stream()
                 .map(RestEphemeris::fromEphemeris)
                 .collect(Collectors.toList());

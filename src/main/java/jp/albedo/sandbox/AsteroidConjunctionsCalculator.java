@@ -6,8 +6,6 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.EllipticMotion;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.ephemeris.common.OrbitElements;
-import jp.albedo.mpc.MPCORBFileLoader;
-import jp.albedo.mpc.MPCORBRecord;
 import jp.albedo.utils.MixListsSupplier;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.vsop87.VSOPException;
@@ -16,9 +14,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.util.Pair;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -40,13 +35,11 @@ public class AsteroidConjunctionsCalculator {
 
     public static final double DETAILED_INTERVAL = 1.0 / 24.0 / 6.0; // 10 mins
 
-    public List<Conjunction> calculate(LocalDate fromDate, LocalDate toDate) throws VSOPException, IOException, URISyntaxException {
+    public List<Conjunction> calculate(List<Pair<BodyDetails, OrbitElements>> bodies, LocalDate fromDate, LocalDate toDate) {
 
         LOG.info(String.format("Starting calculations, user params: [from=%s, to=%s], " +
                         "system params: [preliminaryInterval=%.2f days, detailedSpan=%.2f days, detailedInterval=%.5f days]",
                 fromDate, toDate, PRELIMINARY_INTERVAL, DETAILED_SPAN, DETAILED_INTERVAL));
-
-        final List<MPCORBRecord> orbits = MPCORBFileLoader.load(new File("d:/Workspace/Java/Albedo/misc/MPCORB.DAT"), 400);
 
         final double fromJde = JulianDay.fromDateTime(fromDate);
         final double toJde = JulianDay.fromDateTime(toDate);
@@ -55,8 +48,8 @@ public class AsteroidConjunctionsCalculator {
         Instant beforeEphemeris = Instant.now();
 
         // Compute ephemeris
-        final List<BodyData> bodyEphemeries = orbits.parallelStream()
-                .map(mpcorbRecord -> new BodyData(mpcorbRecord.bodyDetails, mpcorbRecord.orbitElements))
+        final List<BodyData> bodyEphemeries = bodies.parallelStream()
+                .map(body -> new BodyData(body.getFirst(), body.getSecond()))
                 .peek(bodyData -> {
                     try {
                         bodyData.ephemerisList = EllipticMotion.compute(JDEs, bodyData.orbitElements);

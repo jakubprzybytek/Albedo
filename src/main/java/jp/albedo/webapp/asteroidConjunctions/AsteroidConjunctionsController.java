@@ -1,7 +1,6 @@
 package jp.albedo.webapp.asteroidConjunctions;
 
 import jp.albedo.common.JulianDay;
-import jp.albedo.sandbox.AsteroidConjunctionsCalculator;
 import jp.albedo.sandbox.AsteroidConjunctionsCalculator.Conjunction;
 import jp.albedo.vsop87.VSOPException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 public class AsteroidConjunctionsController {
 
     @Autowired
-    private AsteroidConjunctionsCalculator asteroidConjunctionsCalculator;
+    private AsteroidConjunctionsOrchestrator asteroidConjunctionsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/asteroidConjunctions")
     public List<RestConjunction> ephemeris(
@@ -29,7 +28,7 @@ public class AsteroidConjunctionsController {
             @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate)
             throws IOException, VSOPException, URISyntaxException {
 
-        List<Conjunction> conjunctions = this.asteroidConjunctionsCalculator.calculate(fromDate, toDate);
+        List<Conjunction> conjunctions = this.asteroidConjunctionsOrchestrator.orchestrate(fromDate, toDate);
 
         return conjunctions.stream()
                 .map(c -> new RestConjunction(c.first.bodyDetails, c.second.bodyDetails, JulianDay.toDateTime(c.jde), Math.toDegrees(c.separation)))
