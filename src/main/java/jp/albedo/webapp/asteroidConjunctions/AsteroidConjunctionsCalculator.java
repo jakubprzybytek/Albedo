@@ -1,4 +1,4 @@
-package jp.albedo.sandbox;
+package jp.albedo.webapp.asteroidConjunctions;
 
 import jp.albedo.common.Angles;
 import jp.albedo.common.BodyDetails;

@@ -1,7 +1,7 @@
 package jp.albedo.webapp.asteroidConjunctions;
 
 import jp.albedo.common.JulianDay;
-import jp.albedo.sandbox.AsteroidConjunctionsCalculator.Conjunction;
+import jp.albedo.webapp.asteroidConjunctions.AsteroidConjunctionsCalculator.Conjunction;
 import jp.albedo.vsop87.VSOPException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
