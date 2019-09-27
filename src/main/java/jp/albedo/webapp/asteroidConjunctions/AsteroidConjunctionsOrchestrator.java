@@ -27,7 +27,6 @@ public class AsteroidConjunctionsOrchestrator {
         LOG.info(String.format("Processing request for asteroid conjunctions, params: [from=%s, to=%s]", fromDate, toDate));
 
         final List<BodyRecord> bodies = this.solarSystemService.getAll();
-
         return this.asteroidConjunctionsCalculator.calculate(bodies, fromDate, toDate);
     }
 

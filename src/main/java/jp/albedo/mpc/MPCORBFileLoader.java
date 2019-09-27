@@ -24,7 +24,7 @@ public class MPCORBFileLoader {
 
     private static Log LOG = LogFactory.getLog(MPCORBFileLoader.class);
 
-    final private static Pattern orbitPattern = Pattern.compile("^(\\w+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)(\\s+[\\w.\\-()]+){11}\\s+(\\w+)");
+    final private static Pattern orbitPattern = Pattern.compile("^(\\w+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)(\\s+[\\w.\\-()]+){11}\\s+(.{18})");
 
     public static List<MPCORBRecord> load(File sourceFile, int orbitsToLoad) throws IOException {
 
@@ -90,7 +90,7 @@ public class MPCORBFileLoader {
             final double meanMotion = Double.parseDouble(matcher.group(10));
             final double semiMajorAxis = Double.parseDouble(matcher.group(11));
 
-            final String bodyName = matcher.group(13);
+            final String bodyName = matcher.group(13).trim();
 
             final OrbitElements orbitElements = new OrbitElementsBuilder()
                     .orbitShape(eccentricity, semiMajorAxis, meanMotion)

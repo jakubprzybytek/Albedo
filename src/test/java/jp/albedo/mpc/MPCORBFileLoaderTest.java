@@ -84,6 +84,17 @@ class MPCORBFileLoaderTest {
     }
 
     @Test
+    @DisplayName("Parsing astoroid name with space")
+    void parseOrbitLineNameWithSpace() {
+        String lineToParse = "01008   10.6   0.15 K194R 179.87298   14.71605   20.55261    8.93362  0.0775509  0.18123176   3.0925247  0 MPO467621  2309  34 1923-2019 0.40 M-v 38h MPCLINUX   0000   (1008) La Paz             20190511";
+
+        Optional<MPCORBRecord> recordOptional = MPCORBFileLoader.parseOrbitLine(lineToParse);
+        assertTrue(recordOptional.isPresent());
+
+        assertEquals("La Paz", recordOptional.get().bodyDetails.name);
+    }
+
+    @Test
     @DisplayName("Unpacking date string")
     void unpackDate() {
         assertEquals(JulianDay.fromDate(1996, 1, 1), MPCORBFileLoader.unpackDate("J9611"), 0.000001);
