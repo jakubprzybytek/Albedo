@@ -9,6 +9,7 @@ import jp.albedo.ephemeris.common.OrbitElements;
 import jp.albedo.utils.MixListsSupplier;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.vsop87.VSOPException;
+import jp.albedo.webapp.external.BodyRecord;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.util.Pair;
@@ -35,7 +36,7 @@ public class AsteroidConjunctionsCalculator {
 
     public static final double DETAILED_INTERVAL = 1.0 / 24.0 / 6.0; // 10 mins
 
-    public List<Conjunction> calculate(List<Pair<BodyDetails, OrbitElements>> bodies, LocalDate fromDate, LocalDate toDate) {
+    public List<Conjunction> calculate(List<BodyRecord> bodies, LocalDate fromDate, LocalDate toDate) {
 
         LOG.info(String.format("Starting calculations, user params: [from=%s, to=%s], " +
                         "system params: [preliminaryInterval=%.2f days, detailedSpan=%.2f days, detailedInterval=%.5f days]",
@@ -49,7 +50,7 @@ public class AsteroidConjunctionsCalculator {
 
         // Compute ephemeris
         final List<BodyData> bodyEphemeries = bodies.parallelStream()
-                .map(body -> new BodyData(body.getFirst(), body.getSecond()))
+                .map(body -> new BodyData(body.getBodyDetails(), body.getOrbitElements()))
                 .peek(bodyData -> {
                     try {
                         bodyData.ephemerisList = EllipticMotion.compute(JDEs, bodyData.orbitElements);
