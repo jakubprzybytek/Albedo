@@ -1,11 +1,9 @@
 package jp.albedo.webapp.asteroidConjunctions;
 
 import jp.albedo.common.Angles;
-import jp.albedo.common.BodyDetails;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.EllipticMotion;
 import jp.albedo.ephemeris.Ephemeris;
-import jp.albedo.ephemeris.common.OrbitElements;
 import jp.albedo.utils.MixListsSupplier;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.vsop87.VSOPException;
@@ -50,10 +48,10 @@ public class AsteroidConjunctionsCalculator {
 
         // Compute ephemeris
         final List<BodyData> bodyEphemeries = bodies.parallelStream()
-                .map(body -> new BodyData(body.getBodyDetails(), body.getOrbitElements()))
+                .map(BodyData::new)
                 .peek(bodyData -> {
                     try {
-                        bodyData.ephemerisList = EllipticMotion.compute(JDEs, bodyData.orbitElements);
+                        bodyData.ephemerisList = EllipticMotion.compute(JDEs, bodyData.bodyRecord.getMagnitudeParameters(), bodyData.bodyRecord.getOrbitElements());
                     } catch (VSOPException e) {
                         throw new RuntimeException("Zonk!");
                     }
@@ -77,7 +75,7 @@ public class AsteroidConjunctionsCalculator {
                 .peek(conjunction -> {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug(String.format("Separation between %s and %s on %.1fTD: %.4f°",
-                                conjunction.first.bodyDetails.name, conjunction.second.bodyDetails.name, conjunction.jde,
+                                conjunction.first.bodyRecord.getBodyDetails().name, conjunction.second.bodyRecord.getBodyDetails().name, conjunction.jde,
                                 Math.toDegrees(conjunction.separation)));
                     }
                 })
@@ -92,8 +90,8 @@ public class AsteroidConjunctionsCalculator {
             final List<Double> localJDEs = JulianDay.forRange(conjunction.jde - DETAILED_SPAN / 2.0,
                     conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL);
             try {
-                conjunction.first.ephemerisList = EllipticMotion.compute(localJDEs, conjunction.first.orbitElements);
-                conjunction.second.ephemerisList = EllipticMotion.compute(localJDEs, conjunction.second.orbitElements);
+                conjunction.first.ephemerisList = EllipticMotion.compute(localJDEs, conjunction.first.bodyRecord.getMagnitudeParameters(), conjunction.first.bodyRecord.getOrbitElements());
+                conjunction.second.ephemerisList = EllipticMotion.compute(localJDEs, conjunction.second.bodyRecord.getMagnitudeParameters(), conjunction.second.bodyRecord.getOrbitElements());
                 return new Pair<>(conjunction.first, conjunction.second);
             } catch (VSOPException e) {
                 throw new RuntimeException("Zonk!");
@@ -106,7 +104,7 @@ public class AsteroidConjunctionsCalculator {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug(String.format("%s TD Conjunction between %s and %s with separation of: %.4f°%n",
                                 JulianDay.toDateTime(bodiesPair.jde).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                                bodiesPair.first.bodyDetails.name, bodiesPair.second.bodyDetails.name,
+                                bodiesPair.first.bodyRecord.getBodyDetails().name, bodiesPair.second.bodyRecord.getBodyDetails().name,
                                 Math.toDegrees(bodiesPair.separation)));
                     }
                 })
@@ -143,15 +141,12 @@ public class AsteroidConjunctionsCalculator {
 
     public static class BodyData {
 
-        public BodyDetails bodyDetails;
-
-        public OrbitElements orbitElements;
+        public BodyRecord bodyRecord;
 
         public List<Ephemeris> ephemerisList;
 
-        public BodyData(BodyDetails bodyDetails, OrbitElements orbitElements) {
-            this.bodyDetails = bodyDetails;
-            this.orbitElements = orbitElements;
+        public BodyData(BodyRecord bodyRecord) {
+            this.bodyRecord = bodyRecord;
         }
 
         protected BodyData(List<Ephemeris> ephemerisList) {

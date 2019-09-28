@@ -3,6 +3,7 @@ package jp.albedo.mpc;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.Epoch;
 import jp.albedo.common.JulianDay;
+import jp.albedo.ephemeris.common.MagnitudeParameters;
 import jp.albedo.ephemeris.common.OrbitElements;
 import jp.albedo.ephemeris.common.OrbitElementsBuilder;
 import org.apache.commons.logging.Log;
@@ -79,6 +80,10 @@ public class MPCORBFileLoader {
         Matcher matcher = orbitPattern.matcher(line);
 
         if (matcher.find()) {
+
+            final double H = Double.parseDouble(matcher.group(2));
+            final double G = Double.parseDouble(matcher.group(3));
+
             final double meanAnomalyEpoch = unpackDate(matcher.group(4));
             final double meanAnomalyAtEpoch = Double.parseDouble(matcher.group(5));
 
@@ -92,13 +97,15 @@ public class MPCORBFileLoader {
 
             final String bodyName = matcher.group(13).trim();
 
+            final MagnitudeParameters magnitudeParameters = new MagnitudeParameters(H, G);
+
             final OrbitElements orbitElements = new OrbitElementsBuilder()
                     .orbitShape(eccentricity, semiMajorAxis, meanMotion)
                     .orbitPosition(Epoch.J2000, argumentOfPerihelion, longitudeOfAscendingNode, inclination)
                     .bodyPosition(meanAnomalyEpoch, meanAnomalyAtEpoch)
                     .build();
 
-            return Optional.of(new MPCORBRecord(new BodyDetails(bodyName), orbitElements));
+            return Optional.of(new MPCORBRecord(new BodyDetails(bodyName), magnitudeParameters, orbitElements));
         }
 
         return Optional.empty();

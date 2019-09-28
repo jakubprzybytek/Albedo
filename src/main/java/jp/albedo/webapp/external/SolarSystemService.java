@@ -1,8 +1,6 @@
 package jp.albedo.webapp.external;
 
 import jp.albedo.mpc.MPCORBFileLoader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +13,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class SolarSystemService {
-
-    private static Log LOG = LogFactory.getLog(SolarSystemService.class);
 
     @Value("${mpcorb.fileName}")
     private String mpcorbFileName;
@@ -50,7 +46,7 @@ public class SolarSystemService {
         return MPCORBFileLoader.load(new File(this.mpcorbFileName), 1000).stream()
                 .collect(Collectors.toMap(
                         mpcorbRecord -> mpcorbRecord.bodyDetails.name,
-                        mpcorbRecord -> new BodyRecord(mpcorbRecord.bodyDetails, mpcorbRecord.orbitElements)
+                        mpcorbRecord -> new BodyRecord(mpcorbRecord.bodyDetails, mpcorbRecord.magnitudeParameters, mpcorbRecord.orbitElements)
                 ));
     }
 

@@ -2,6 +2,7 @@ package jp.albedo.mpc;
 
 import jp.albedo.common.Epoch;
 import jp.albedo.common.JulianDay;
+import jp.albedo.ephemeris.common.MagnitudeParameters;
 import jp.albedo.ephemeris.common.OrbitElements;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,9 +68,13 @@ class MPCORBFileLoaderTest {
 
         assertEquals("Hebe", recordOptional.get().bodyDetails.name);
 
+        MagnitudeParameters magnitudeParameters = recordOptional.get().magnitudeParameters;
         OrbitElements orbitElements = recordOptional.get().orbitElements;
 
         assertEquals(Epoch.J2000, orbitElements.getEpoch());
+
+        assertEquals(5.71, magnitudeParameters.H, 0.01);
+        assertEquals(0.24, magnitudeParameters.G, 0.01);
 
         assertEquals(239.80747, orbitElements.getArgumentOfPerihelion(), 0.00001);
         assertEquals(138.64020, orbitElements.getLongitudeOfAscendingNode(), 0.00001);

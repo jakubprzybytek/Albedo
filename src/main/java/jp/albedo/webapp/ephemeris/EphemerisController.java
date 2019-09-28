@@ -37,7 +37,7 @@ public class EphemerisController {
 
         final BodyRecord bodyRecord = bodyRecordOptional.get();
 
-        List<RestEphemeris> ephemerisList = this.ephemerisCalculator.compute(bodyRecord.getOrbitElements(), fromDate, toDate, interval)
+        List<RestEphemeris> ephemerisList = this.ephemerisCalculator.compute(bodyRecord, fromDate, toDate, interval)
                 .stream()
                 .map(RestEphemeris::fromEphemeris)
                 .collect(Collectors.toList());

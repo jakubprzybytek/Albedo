@@ -31,7 +31,7 @@ public class AsteroidConjunctionsController {
         List<Conjunction> conjunctions = this.asteroidConjunctionsOrchestrator.orchestrate(fromDate, toDate);
 
         return conjunctions.stream()
-                .map(c -> new RestConjunction(c.first.bodyDetails, c.second.bodyDetails, JulianDay.toDateTime(c.jde), Math.toDegrees(c.separation)))
+                .map(c -> new RestConjunction(c.first.bodyRecord.getBodyDetails(), c.second.bodyRecord.getBodyDetails(), JulianDay.toDateTime(c.jde), Math.toDegrees(c.separation)))
                 .collect(Collectors.toList());
     }
 
