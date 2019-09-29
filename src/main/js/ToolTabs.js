@@ -8,6 +8,21 @@ import Box from '@material-ui/core/Box';
 import EphemerisPanel from './ephemeris/EphemerisPanel';
 import AsteroidConjunctionsPanel from './asteroidConjunctions/AsteroidConjunctionsPanel';
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    display: 'flex',
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+  tabPanel: {
+    width: '100%',
+    backgroundColor: theme.palette.background.default,
+  }
+}));
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -37,17 +52,6 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: 'flex',
-  },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-  },
-}));
-
 export default function ToolTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -67,17 +71,13 @@ export default function ToolTabs() {
         className={classes.tabs}>
         <Tab label="Ephemeris" {...a11yProps(0)} />
         <Tab label="Asteroid Conjunctions" {...a11yProps(1)} />
-        <Tab label="Item Three" {...a11yProps(2)} />
       </Tabs>
-      
-      <TabPanel value={value} index={0}>
+
+      <TabPanel className={classes.tabPanel} value={value} index={0}>
         <EphemerisPanel />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel className={classes.tabPanel} value={value} index={1}>
         <AsteroidConjunctionsPanel />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
       </TabPanel>
     </div>
   );

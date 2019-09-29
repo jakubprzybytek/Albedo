@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { format } from 'date-fns';
+import { formatHourAngle, formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -23,48 +24,35 @@ export default function EphemerisTable(props) {
 
 	const classes = useStyles();
 
-	const angleUnits = {
-		ra: ['h', 'm', 's'],
-		d: ['°', '\'', '"']
-	}
-
-	function formatAngle(angle, units) {
-		const angleAbs = Math.abs(angle);
-		const angleFractionInMinutes = (angleAbs - Math.floor(angleAbs)) * 60.0;
-		const angleMinutes = Math.trunc(angleFractionInMinutes);
-		const angleSeconds = (angleFractionInMinutes - angleMinutes) * 60.0;
-		return "" + Math.trunc(angle) + units[0] + " " + ((angleMinutes < 10) ? "0" : "") + angleMinutes + units[1] + " " + ((angleSeconds < 10) ? "0" : "") + angleSeconds.toFixed(2) + units[2];
-	}
-
-	function formatHourAngle(angle) {
-		return formatAngle(angle / 15.0, angleUnits.ra);
-	}
-
-	function formatDegrees(angle) {
-		return formatAngle(angle, angleUnits.d);
-	}
-
 	return (
 		<Paper className={classes.paper}>
 			<Table className={classes.table} size="small">
 				<TableHead>
 					<TableRow>
-						<TableCell>Time (TD)</TableCell>
-						<TableCell align="right">R.A.</TableCell>
-						<TableCell align="right">Dec.</TableCell>
+						<TableCell>Time [TD]</TableCell>
+						<TableCell align="center">R.A.</TableCell>
+						<TableCell align="center">Dec.</TableCell>
+						<TableCell align="center">Magnitude</TableCell>
+						<TableCell align="right">Distance from Earth [AU]</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{props.rows.map(row => (
 						<TableRow key={row.index}>
 							<TableCell component="th" scope="row" title={row.jde}>
-								{format(Date.parse(row.jde), "yyyy-MM-dd hh:mm:ss")}
+								{format(Date.parse(row.jde), "yyyy-MM-dd HH:mm:ss")}
 							</TableCell>
-							<TableCell align="right">
+							<TableCell align="center" title={row.coordinates.rightAscension}>
 								{formatHourAngle(row.coordinates.rightAscension)}
 							</TableCell>
-							<TableCell align="right">
+							<TableCell align="center" title={row.coordinates.declination}>
 								{formatDegrees(row.coordinates.declination)}
+							</TableCell>
+							<TableCell align="center">
+								{row.apparentMagnitude.toFixed(2)}
+							</TableCell>
+							<TableCell align="right">
+								{row.distanceFromEarth.toFixed(6)}
 							</TableCell>
 						</TableRow>
 					))}

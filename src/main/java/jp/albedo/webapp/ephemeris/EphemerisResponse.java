@@ -1,26 +1,26 @@
 package jp.albedo.webapp.ephemeris;
 
-import java.util.List;
+import jp.albedo.webapp.external.BodyRecord;
 
-import jp.albedo.common.BodyDetails;
+import java.util.List;
 
 public class EphemerisResponse {
 
-  private BodyDetails bodyDetails;
+    private BodyRecord bodyRecord;
 
-  private List<RestEphemeris> ephemerisList;
+    private List<RestEphemeris> ephemerisList;
 
-  public EphemerisResponse(BodyDetails bodyDetails, List<RestEphemeris> ephemerisList) {
-    this.bodyDetails = bodyDetails;
-    this.ephemerisList = ephemerisList;
-  }
+    public EphemerisResponse(BodyRecord bodyRecord, List<RestEphemeris> ephemerisList) {
+        this.bodyRecord = bodyRecord;
+        this.ephemerisList = ephemerisList;
+    }
 
-  public BodyDetails getBodyDetails() {
-    return bodyDetails;
-  }
+    public BodyRecord getBodyRecord() {
+        return bodyRecord;
+    }
 
-  public List<RestEphemeris> getEphemerisList() {
-    return ephemerisList;
-  }
+    public List<RestEphemeris> getEphemerisList() {
+        return ephemerisList;
+    }
 
 }

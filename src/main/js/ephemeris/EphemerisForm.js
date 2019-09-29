@@ -40,8 +40,8 @@ export default function Forms(props) {
         }
       })
       .then(res => {
-        const ephemerisList = res.data.ephemerisList;
-        props.updateRows(ephemerisList);
+        props.updateBodyRecord(res.data.bodyRecord);
+        props.updateRows(res.data.ephemerisList);
       });
   }
 

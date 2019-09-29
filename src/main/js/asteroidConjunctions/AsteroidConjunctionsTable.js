@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { format } from 'date-fns';
+import { formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -36,7 +37,7 @@ export default function AsteroidConjunctionsTable(props) {
 		return "" + Math.trunc(angle) + units[0] + " " + ((angleMinutes < 10) ? "0" : "") + angleMinutes + units[1] + " " + ((angleSeconds < 10) ? "0" : "") + angleSeconds.toFixed(2) + units[2];
 	}
 
-	function formatDegrees(angle) {
+	function formatDegrees2(angle) {
 		return formatAngle(angle, angleUnits.d);
 	}
 
@@ -46,8 +47,8 @@ export default function AsteroidConjunctionsTable(props) {
 				<TableHead>
 					<TableRow>
 						<TableCell>Time (TD)</TableCell>
-						<TableCell>First body</TableCell>
-						<TableCell>Second body</TableCell>
+						<TableCell align="center">First body</TableCell>
+						<TableCell align="center">Second body</TableCell>
 						<TableCell align="right">Separation</TableCell>
 					</TableRow>
 				</TableHead>
@@ -55,12 +56,12 @@ export default function AsteroidConjunctionsTable(props) {
 					{props.rows.map(row => (
 						<TableRow key={row.index}>
 							<TableCell component="th" scope="row" title={row.dateTimeTD}>
-								{format(Date.parse(row.dateTimeTD), "yyyy-MM-dd hh:mm:ss")}
+								{format(Date.parse(row.dateTimeTD), "yyyy-MM-dd HH:mm:ss")}
 							</TableCell>
-							<TableCell>
+							<TableCell align="center">
 								{row.firstBody.name}
 							</TableCell>
-							<TableCell>
+							<TableCell align="center">
 								{row.secondBody.name}
 							</TableCell>
 							<TableCell align="right" title={row.separation.toFixed(6)}>

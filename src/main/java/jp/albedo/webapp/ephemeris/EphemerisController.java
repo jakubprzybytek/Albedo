@@ -42,7 +42,7 @@ public class EphemerisController {
                 .map(RestEphemeris::fromEphemeris)
                 .collect(Collectors.toList());
 
-        return new EphemerisResponse(bodyRecord.getBodyDetails(), ephemerisList);
+        return new EphemerisResponse(bodyRecord, ephemerisList);
     }
 
 }

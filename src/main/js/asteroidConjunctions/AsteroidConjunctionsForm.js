@@ -9,8 +9,8 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { addMonths } from 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
 import axios from 'axios';
+import DateFnsUtils from '@date-io/date-fns';
 import format from 'date-fns/format';
 
 const useStyles = makeStyles(theme => ({

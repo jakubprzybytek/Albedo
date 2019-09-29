@@ -118,25 +118,34 @@ public class AsteroidConjunctionsCalculator {
     protected List<Conjunction> findConjunctions(Pair<BodyData, BodyData> bodiesPair) {
 
         return StreamUtils
-                .zip(bodiesPair.getFirst().ephemerisList.stream(), bodiesPair.getSecond().ephemerisList.stream(),
+                .zip(
+                        bodiesPair.getFirst().ephemerisList.stream(),
+                        bodiesPair.getSecond().ephemerisList.stream(),
                         (leftEphemeris, rightEphemeris) -> new Pair<>(leftEphemeris, rightEphemeris))
-                .collect(Collector.of(() -> new ConjunctionFind(), (findContext, ephemerisPair) -> {
-                    double separation = Angles.separation(ephemerisPair.getFirst().coordinates,
-                            ephemerisPair.getSecond().coordinates);
-                    if (separation > findContext.lastMinSeparation) {
-                        if (!findContext.addedLocalMin) {
-                            findContext.result.add(new Conjunction(findContext.lastJde, findContext.lastMinSeparation,
-                                    bodiesPair.getFirst(), bodiesPair.getSecond()));
-                            findContext.addedLocalMin = true;
-                        }
-                    } else {
-                        findContext.addedLocalMin = false;
-                    }
-                    findContext.lastMinSeparation = separation;
-                    findContext.lastJde = ephemerisPair.getFirst().jde;
-                }, (findContext1, findContext2) -> {
-                    throw new RuntimeException("Cannot collect concurrent results");
-                }, (findContext) -> findContext.result));
+                .collect(Collector.of(
+                        () -> new ConjunctionFind(),
+                        (findContext, ephemerisPair) -> {
+                            final double separation = Angles.separation(ephemerisPair.getFirst().coordinates, ephemerisPair.getSecond().coordinates);
+                            if (separation > findContext.lastMinSeparation) {
+                                if (!findContext.addedLocalMin) {
+                                    findContext.result.add(new Conjunction(
+                                            findContext.lastJde,
+                                            findContext.lastMinSeparation,
+                                            bodiesPair.getFirst(),
+                                            bodiesPair.getSecond()));
+
+                                    findContext.addedLocalMin = true;
+                                }
+                            } else {
+                                findContext.addedLocalMin = false;
+                            }
+                            findContext.lastMinSeparation = separation;
+                            findContext.lastJde = ephemerisPair.getFirst().jde;
+                        },
+                        (findContext1, findContext2) -> {
+                            throw new RuntimeException("Cannot collect concurrent results");
+                        },
+                        (findContext) -> findContext.result));
     }
 
     public static class BodyData {

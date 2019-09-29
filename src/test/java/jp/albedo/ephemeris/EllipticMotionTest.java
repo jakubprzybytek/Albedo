@@ -39,9 +39,33 @@ class EllipticMotionTest {
         assertEquals(158.558966, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.000001);
         assertEquals(19.158495, Math.toDegrees(ephemeris.coordinates.declination), 0.000001);
         assertEquals(0.824, ephemeris.distanceFromEarth, 0.001);
-        assertEquals(10.7, ephemeris.mag, 0.0001);
+        assertEquals(15.91, ephemeris.apparentMagnitude, 0.0001);
     }
 
+    @Test
+    void ephemerisForJunoTest() throws VSOPException {
+
+        System.out.println("\nJuno");
+
+        double jde = JulianDay.fromDate(2019, 9, 28.0);
+
+        MagnitudeParameters magnitudeParameters = new MagnitudeParameters(5.33, 0.32);
+
+        OrbitElements junoOrbitElements = new OrbitElementsBuilder()
+                .orbitShape(0.2569423, 2.6691496, 0.22601887)
+                .orbitPosition(Epoch.J2000, 248.13861, 169.85274, 12.98892)
+                .bodyPosition(JulianDay.fromDate(2019, 4, 27.0), 34.92503)
+                .build();
+
+        System.out.println("Orbit: " + junoOrbitElements.toString());
+
+        Ephemeris ephemeris = EllipticMotion.compute(jde, magnitudeParameters, junoOrbitElements);
+
+        System.out.println("Ephemeris: " + ephemeris.toString());
+
+        assertEquals(jde, ephemeris.jde, 0.000001);
+        assertEquals(10.57, ephemeris.apparentMagnitude, 0.0001);
+    }
     @Test
     void ephemerisForCeresTest() throws VSOPException {
 
@@ -78,13 +102,13 @@ class EllipticMotionTest {
         assertEquals(244.76501519, Math.toDegrees(ephemerisJPL.coordinates.rightAscension), 0.00000001);
         assertEquals(-22.82033339, Math.toDegrees(ephemerisJPL.coordinates.declination), 0.00000001);
         assertEquals(2.7627, ephemerisMPC.distanceFromEarth, 0.0001);
-        assertEquals(8.87, ephemerisJPL.mag, 0.0001);
+        assertEquals(8.87, ephemerisJPL.apparentMagnitude, 0.0001);
 
         assertEquals(jde, ephemerisMPC.jde, 0.000001);
         assertEquals(244.76501953, Math.toDegrees(ephemerisMPC.coordinates.rightAscension), 0.00000001);
         assertEquals(-22.82033521, Math.toDegrees(ephemerisMPC.coordinates.declination), 0.00000001);
         assertEquals(2.7627, ephemerisMPC.distanceFromEarth, 0.0001);
-        assertEquals(8.87, ephemerisMPC.mag, 0.0001);
+        assertEquals(8.87, ephemerisMPC.apparentMagnitude, 0.0001);
     }
 
     @Test

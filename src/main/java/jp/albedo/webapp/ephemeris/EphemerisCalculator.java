@@ -20,7 +20,7 @@ public class EphemerisCalculator {
     private static Log LOG = LogFactory.getLog(EphemerisCalculator.class);
 
     public List<Ephemeris> compute(BodyRecord bodyRecord, LocalDate fromDate, LocalDate toDate, double interval) throws VSOPException {
-        LOG.info(String.format("Starting calculations, params: [from=%s, to=%s, interval=%.2f]", fromDate, toDate, interval));
+        LOG.info(String.format("Starting calculations, params: [body: %s, from=%s, to=%s, interval=%.2f]", bodyRecord.getBodyDetails().name, fromDate, toDate, interval));
 
         Instant start = Instant.now();
 
