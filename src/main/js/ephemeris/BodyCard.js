@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Link from '@material-ui/core/Link';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
@@ -42,6 +43,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	inline: {
 		display: 'inline',
+		fontSize: '0.8rem',
+	},
+	link: {
 		fontSize: '0.8rem',
 	},
 }));
@@ -145,6 +149,7 @@ export default function BodyCard(props) {
 							</React.Fragment>} />
 					</ListItem>
 				</List>
+				<Link href='https://minorplanetcenter.net/data' className={classes.link}>Source</Link>
 			</CardContent>
 		</Collapse>
 	</Card>
