@@ -81659,6 +81659,14 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
+    }, "Epoch: "), props.bodyRecord.orbitElements.epoch)
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
     }, "Eccentricity (e): "), props.bodyRecord.orbitElements.eccentricity)
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
@@ -81675,7 +81683,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Mean motion (n): "), props.bodyRecord.orbitElements.meanMotion + ' °/day')
+    }, "Mean motion (n): "), props.bodyRecord.orbitElements.meanMotion + '°/day')
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81683,7 +81691,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Argument of perihelion (\u03C9): "), props.bodyRecord.orbitElements.argumentOfPerihelion + ' °')
+    }, "Argument of perihelion (\u03C9): "), props.bodyRecord.orbitElements.argumentOfPerihelion + '°')
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81691,7 +81699,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Longitude of ascending node (\u03A9): "), props.bodyRecord.orbitElements.longitudeOfAscendingNode + " °")
+    }, "Longitude of ascending node (\u03A9): "), props.bodyRecord.orbitElements.longitudeOfAscendingNode + "°")
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81699,7 +81707,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Inclination (i): "), props.bodyRecord.orbitElements.inclination + ' °')
+    }, "Inclination (i): "), props.bodyRecord.orbitElements.inclination + '°')
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81715,7 +81723,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Mean anomaly at epoch (M): "), props.bodyRecord.orbitElements.meanAnomalyAtEpoch + ' °')
+    }, "Mean anomaly at epoch (M): "), props.bodyRecord.orbitElements.meanAnomalyAtEpoch + '°')
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], null, "Magnitude System:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_7__["default"], {
     dense: true
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
@@ -82052,10 +82060,10 @@ function EphemerisTable(props) {
       title: row.jde
     }, Object(date_fns__WEBPACK_IMPORTED_MODULE_8__["format"])(Date.parse(row.jde), "yyyy-MM-dd HH:mm:ss")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
       align: "center",
-      title: row.coordinates.rightAscension
+      title: row.coordinates.rightAscension + '°'
     }, Object(_utils_Angles__WEBPACK_IMPORTED_MODULE_9__["formatHourAngle"])(row.coordinates.rightAscension)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
       align: "center",
-      title: row.coordinates.declination
+      title: row.coordinates.declination + '°'
     }, Object(_utils_Angles__WEBPACK_IMPORTED_MODULE_9__["formatDegrees"])(row.coordinates.declination)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
       align: "center"
     }, row.apparentMagnitude.toFixed(2)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {

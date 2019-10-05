@@ -22,6 +22,10 @@ public class RectangularCoordinates {
         return new RectangularCoordinates(x, y, z);
     }
 
+    public double getDistance() {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+
     @Override
     public String toString() {
         return String.format("[x=%s, y=%s, z=%s]", x, y, z);

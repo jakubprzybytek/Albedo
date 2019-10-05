@@ -87,6 +87,12 @@ export default function BodyCard(props) {
 				<List dense={true}>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
+								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Epoch: </Typography>
+								{props.bodyRecord.orbitElements.epoch}
+							</React.Fragment>} />
+					</ListItem>
+					<ListItem>
+						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Eccentricity (e): </Typography>
 								{props.bodyRecord.orbitElements.eccentricity}
 							</React.Fragment>} />
@@ -100,25 +106,25 @@ export default function BodyCard(props) {
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean motion (n): </Typography>
-								{props.bodyRecord.orbitElements.meanMotion + ' °/day'}
+								{props.bodyRecord.orbitElements.meanMotion + '°/day'}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Argument of perihelion (ω): </Typography>
-								{props.bodyRecord.orbitElements.argumentOfPerihelion + ' °'}
+								{props.bodyRecord.orbitElements.argumentOfPerihelion + '°'}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Longitude of ascending node (Ω): </Typography>
-								{props.bodyRecord.orbitElements.longitudeOfAscendingNode + " °"}
+								{props.bodyRecord.orbitElements.longitudeOfAscendingNode + "°"}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Inclination (i): </Typography>
-								{props.bodyRecord.orbitElements.inclination + ' °'}
+								{props.bodyRecord.orbitElements.inclination + '°'}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
@@ -130,7 +136,7 @@ export default function BodyCard(props) {
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean anomaly at epoch (M): </Typography>
-								{props.bodyRecord.orbitElements.meanAnomalyAtEpoch + ' °'}
+								{props.bodyRecord.orbitElements.meanAnomalyAtEpoch + '°'}
 							</React.Fragment>} />
 					</ListItem>
 				</List>

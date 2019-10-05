@@ -16,7 +16,7 @@ public class SphericalCoordinates {
 
     @Override
     public String toString() {
-        return String.format("[long=%s, lat=%s, dist=%s]", longitude, latitude, distance);
+        return String.format("[φ=%s, θ=%s, ρ=%s]", longitude, latitude, distance);
     }
 
 }

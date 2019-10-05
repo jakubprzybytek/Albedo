@@ -42,10 +42,10 @@ export default function EphemerisTable(props) {
 							<TableCell component="th" scope="row" title={row.jde}>
 								{format(Date.parse(row.jde), "yyyy-MM-dd HH:mm:ss")}
 							</TableCell>
-							<TableCell align="center" title={row.coordinates.rightAscension}>
+							<TableCell align="center" title={row.coordinates.rightAscension + '°'}>
 								{formatHourAngle(row.coordinates.rightAscension)}
 							</TableCell>
-							<TableCell align="center" title={row.coordinates.declination}>
+							<TableCell align="center" title={row.coordinates.declination + '°'}>
 								{formatDegrees(row.coordinates.declination)}
 							</TableCell>
 							<TableCell align="center">
