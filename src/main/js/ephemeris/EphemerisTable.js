@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 		width: '800px',
 	},
 	table: {
-		width: '100%'
+		width: '100%',
 	},
 }));
 

@@ -1,15 +1,12 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
 import DateFnsUtils from '@date-io/date-fns';
 import { addMonths, format } from 'date-fns';
+import SubmitBar from './../components/SubmitBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,19 +27,18 @@ export default function Forms(props) {
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
   const [interval, setInterval] = React.useState("1.0");
 
-  function handleSubmit() {
-    axios.get('http://localhost:8080/api/ephemeris', {
-        params: {
-          body: bodyName,
-          from: format(fromDate, "yyyy-MM-dd"),
-          to: format(toDate, "yyyy-MM-dd"),
-          interval: interval
-        }
-      })
-      .then(res => {
-        props.updateBodyRecord(res.data.bodyRecord);
-        props.updateRows(res.data.ephemerisList);
-      });
+  function onBuildProps() {
+    return {
+      body: bodyName,
+      from: format(fromDate, "yyyy-MM-dd"),
+      to: format(toDate, "yyyy-MM-dd"),
+      interval: interval
+    }
+  }
+
+  function onSubmitResponse(data) {
+    props.updateBodyRecord(data.bodyRecord);
+    props.updateRows(data.ephemerisList);
   }
 
   const classes = useStyles();
@@ -93,12 +89,7 @@ export default function Forms(props) {
             onChange={event => setInterval(event.target.value)}
             margin="normal" />
         </div>
-        <Grid container direction="row" justify="flex-end">
-          <Button variant="contained" color="primary" className={classes.button} onClick={handleSubmit}>
-            Send
-            <Icon className={classes.rightIcon}>send</Icon>
-          </Button>
-        </Grid>
+        <SubmitBar url='http://localhost:8080/api/ephemeris' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
       </form>
     </Paper>
   );

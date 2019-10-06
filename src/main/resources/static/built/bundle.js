@@ -81169,7 +81169,7 @@ function a11yProps(index) {
 function ToolTabs() {
   var classes = useStyles();
 
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(0),
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(1),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       value = _React$useState2[0],
       setValue = _React$useState2[1];
@@ -81237,20 +81237,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AsteroidConjunctionsForm; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
-/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
-/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
-/* harmony import */ var _material_ui_core_Icon__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Icon */ "./node_modules/@material-ui/core/esm/Icon/index.js");
-/* harmony import */ var _material_ui_core_CircularProgress__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/CircularProgress */ "./node_modules/@material-ui/core/esm/CircularProgress/index.js");
-/* harmony import */ var _material_ui_pickers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/pickers */ "./node_modules/@material-ui/pickers/esm/index.js");
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _date_io_date_fns__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @date-io/date-fns */ "./node_modules/@date-io/date-fns/build/index.esm.js");
-/* harmony import */ var date_fns_format__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! date-fns/format */ "./node_modules/date-fns/esm/format/index.js");
+/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_pickers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/pickers */ "./node_modules/@material-ui/pickers/esm/index.js");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
+/* harmony import */ var _date_io_date_fns__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @date-io/date-fns */ "./node_modules/@date-io/date-fns/build/index.esm.js");
+/* harmony import */ var date_fns_format__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! date-fns/format */ "./node_modules/date-fns/esm/format/index.js");
+/* harmony import */ var _components_SubmitBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../components/SubmitBar */ "./src/main/js/components/SubmitBar.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -81268,12 +81262,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
-
-
-
-
-var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__["makeStyles"])(function (theme) {
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__["makeStyles"])(function (theme) {
   return {
     root: {
       display: 'inline-block',
@@ -81283,18 +81272,6 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__["ma
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
       width: 200
-    },
-    wrapper: {
-      margin: theme.spacing(1),
-      position: 'relative'
-    },
-    buttonProgress: {
-      color: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_9__["green"][500],
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      marginTop: -12,
-      marginLeft: -12
     }
   };
 });
@@ -81304,42 +81281,30 @@ function AsteroidConjunctionsForm(props) {
       fromDate = _React$useState2[0],
       setFromDate = _React$useState2[1];
 
-  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(Object(date_fns__WEBPACK_IMPORTED_MODULE_10__["addMonths"])(new Date(), 1)),
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(Object(date_fns__WEBPACK_IMPORTED_MODULE_5__["addMonths"])(new Date(), 1)),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
       toDate = _React$useState4[0],
       setToDate = _React$useState4[1];
 
-  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
-      _React$useState6 = _slicedToArray(_React$useState5, 2),
-      loading = _React$useState6[0],
-      setLoading = _React$useState6[1];
-
-  function handleSubmit() {
-    setLoading(true);
-    axios__WEBPACK_IMPORTED_MODULE_11___default.a.get('http://localhost:8080/api/asteroidConjunctions', {
-      params: {
-        from: Object(date_fns_format__WEBPACK_IMPORTED_MODULE_13__["default"])(fromDate, "yyyy-MM-dd"),
-        to: Object(date_fns_format__WEBPACK_IMPORTED_MODULE_13__["default"])(toDate, "yyyy-MM-dd")
-      }
-    }).then(function (res) {
-      var conjList = res.data;
-      props.updateRows(conjList);
-      setLoading(false);
-    });
+  function onBuildProps() {
+    return {
+      from: Object(date_fns_format__WEBPACK_IMPORTED_MODULE_7__["default"])(fromDate, "yyyy-MM-dd"),
+      to: Object(date_fns_format__WEBPACK_IMPORTED_MODULE_7__["default"])(toDate, "yyyy-MM-dd")
+    };
   }
 
   var classes = useStyles();
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_1__["default"], {
     className: classes.root
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_2__["default"], {
     component: "h3"
   }, "Provide asteroid conjunctions computation parameters:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
     className: classes.container,
     noValidate: true,
     autoComplete: "off"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_7__["MuiPickersUtilsProvider"], {
-    utils: _date_io_date_fns__WEBPACK_IMPORTED_MODULE_12__["default"]
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_7__["KeyboardDatePicker"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_3__["MuiPickersUtilsProvider"], {
+    utils: _date_io_date_fns__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_3__["KeyboardDatePicker"], {
     disableToolbar: true,
     variant: "inline",
     format: "yyy-MM-dd",
@@ -81353,7 +81318,7 @@ function AsteroidConjunctionsForm(props) {
     KeyboardButtonProps: {
       'aria-label': 'change date'
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_7__["KeyboardDatePicker"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_3__["KeyboardDatePicker"], {
     disableToolbar: true,
     variant: "inline",
     format: "yyy-MM-dd",
@@ -81367,24 +81332,11 @@ function AsteroidConjunctionsForm(props) {
     KeyboardButtonProps: {
       'aria-label': 'change date'
     }
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    container: true,
-    direction: "row",
-    justify: "flex-end"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: classes.wrapper
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    variant: "contained",
-    color: "primary",
-    className: classes.button,
-    onClick: handleSubmit,
-    disabled: loading
-  }, "Send", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Icon__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: classes.rightIcon
-  }, "send")), loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CircularProgress__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    size: 24,
-    className: classes.buttonProgress
-  })))));
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_SubmitBar__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    url: "http://localhost:8080/api/asteroidConjunctions",
+    buildProps: onBuildProps,
+    submitResponse: props.updateRows
+  })));
 }
 
 /***/ }),
@@ -81474,23 +81426,6 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["ma
 });
 function AsteroidConjunctionsTable(props) {
   var classes = useStyles();
-  var angleUnits = {
-    ra: ['h', 'm', 's'],
-    d: ['°', '\'', '"']
-  };
-
-  function formatAngle(angle, units) {
-    var angleAbs = Math.abs(angle);
-    var angleFractionInMinutes = (angleAbs - Math.floor(angleAbs)) * 60.0;
-    var angleMinutes = Math.trunc(angleFractionInMinutes);
-    var angleSeconds = (angleFractionInMinutes - angleMinutes) * 60.0;
-    return "" + Math.trunc(angle) + units[0] + " " + (angleMinutes < 10 ? "0" : "") + angleMinutes + units[1] + " " + (angleSeconds < 10 ? "0" : "") + angleSeconds.toFixed(2) + units[2];
-  }
-
-  function formatDegrees2(angle) {
-    return formatAngle(angle, angleUnits.d);
-  }
-
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: classes.paper
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Table__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -81518,6 +81453,152 @@ function AsteroidConjunctionsTable(props) {
       title: row.separation.toFixed(6)
     }, Object(_utils_Angles__WEBPACK_IMPORTED_MODULE_9__["formatDegrees"])(row.separation)));
   }))));
+}
+
+/***/ }),
+
+/***/ "./src/main/js/components/SubmitBar.js":
+/*!*********************************************!*\
+  !*** ./src/main/js/components/SubmitBar.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SubmitBar; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+/* harmony import */ var _material_ui_core_Link__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/Link */ "./node_modules/@material-ui/core/esm/Link/index.js");
+/* harmony import */ var _material_ui_core_Icon__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Icon */ "./node_modules/@material-ui/core/esm/Icon/index.js");
+/* harmony import */ var _material_ui_core_CircularProgress__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/CircularProgress */ "./node_modules/@material-ui/core/esm/CircularProgress/index.js");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var date_fns_format__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! date-fns/format */ "./node_modules/date-fns/esm/format/index.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_7__["makeStyles"])(function (theme) {
+  return {
+    status: {
+      fontSize: '0.7rem'
+    },
+    error: {
+      fontSize: '0.7rem',
+      color: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_8__["red"][500]
+    },
+    wrapper: {
+      marginLeft: theme.spacing(1),
+      marginTop: theme.spacing(1),
+      position: 'relative'
+    },
+    buttonProgress: {
+      color: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_8__["green"][500],
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      marginTop: -12,
+      marginLeft: -12
+    }
+  };
+});
+function SubmitBar(props) {
+  var classes = useStyles();
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      loading = _React$useState2[0],
+      setLoading = _React$useState2[1];
+
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(""),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      lastCall = _React$useState4[0],
+      setLastCall = _React$useState4[1];
+
+  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(""),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      errorMessage = _React$useState6[0],
+      setErrorMessage = _React$useState6[1];
+
+  var _React$useState7 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(""),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      linkUrl = _React$useState8[0],
+      setLinkUrl = _React$useState8[1];
+
+  var _React$useState9 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(0),
+      _React$useState10 = _slicedToArray(_React$useState9, 2),
+      duration = _React$useState10[0],
+      setDuration = _React$useState10[1];
+
+  function handleSubmit() {
+    setLoading(true);
+    var startTime = new Date();
+    axios__WEBPACK_IMPORTED_MODULE_9___default.a.get(props.url, {
+      params: props.buildProps()
+    }).then(function (res) {
+      setDuration(new Date() - startTime);
+      setLastCall(Object(date_fns_format__WEBPACK_IMPORTED_MODULE_10__["default"])(new Date(), "yyyy-MM-dd HH:mm:ss"));
+      setLinkUrl(res.request.responseURL);
+      props.submitResponse(res.data);
+      setLoading(false);
+    }, function (error) {
+      setLinkUrl(error.request.responseURL);
+      setErrorMessage(error.message);
+      setLoading(false);
+    });
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    container: true,
+    direction: "row",
+    justify: "space-between"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    item: true,
+    className: classes.wrapper
+  }, !loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: classes.status
+  }, lastCall && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    className: classes.status
+  }, "Data received at ", lastCall, " in ", duration, "ms."), errorMessage && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    className: classes.error
+  }, errorMessage), linkUrl && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Link__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    href: linkUrl
+  }, "API link"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    item: true,
+    className: classes.wrapper
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    variant: "contained",
+    color: "primary",
+    className: classes.button,
+    onClick: handleSubmit,
+    disabled: loading
+  }, "Send", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Icon__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: classes.rightIcon
+  }, "send")), loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CircularProgress__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    size: 24,
+    className: classes.buttonProgress
+  })));
 }
 
 /***/ }),
@@ -81762,18 +81843,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Forms; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
-/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
-/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
-/* harmony import */ var _material_ui_core_Icon__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Icon */ "./node_modules/@material-ui/core/esm/Icon/index.js");
-/* harmony import */ var _material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/esm/TextField/index.js");
-/* harmony import */ var _material_ui_pickers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/pickers */ "./node_modules/@material-ui/pickers/esm/index.js");
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _date_io_date_fns__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @date-io/date-fns */ "./node_modules/@date-io/date-fns/build/index.esm.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
+/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/esm/TextField/index.js");
+/* harmony import */ var _material_ui_pickers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/pickers */ "./node_modules/@material-ui/pickers/esm/index.js");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _date_io_date_fns__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @date-io/date-fns */ "./node_modules/@date-io/date-fns/build/index.esm.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
+/* harmony import */ var _components_SubmitBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../components/SubmitBar */ "./src/main/js/components/SubmitBar.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -81791,10 +81868,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
-
-
-var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__["makeStyles"])(function (theme) {
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_5__["makeStyles"])(function (theme) {
   return {
     root: {
       display: 'inline-block',
@@ -81818,7 +81892,7 @@ function Forms(props) {
       fromDate = _React$useState4[0],
       setFromDate = _React$useState4[1];
 
-  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(Object(date_fns__WEBPACK_IMPORTED_MODULE_11__["addMonths"])(new Date(), 1)),
+  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(Object(date_fns__WEBPACK_IMPORTED_MODULE_7__["addMonths"])(new Date(), 1)),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
       toDate = _React$useState6[0],
       setToDate = _React$useState6[1];
@@ -81828,30 +81902,30 @@ function Forms(props) {
       interval = _React$useState8[0],
       setInterval = _React$useState8[1];
 
-  function handleSubmit() {
-    axios__WEBPACK_IMPORTED_MODULE_9___default.a.get('http://localhost:8080/api/ephemeris', {
-      params: {
-        body: bodyName,
-        from: Object(date_fns__WEBPACK_IMPORTED_MODULE_11__["format"])(fromDate, "yyyy-MM-dd"),
-        to: Object(date_fns__WEBPACK_IMPORTED_MODULE_11__["format"])(toDate, "yyyy-MM-dd"),
-        interval: interval
-      }
-    }).then(function (res) {
-      props.updateBodyRecord(res.data.bodyRecord);
-      props.updateRows(res.data.ephemerisList);
-    });
+  function onBuildProps() {
+    return {
+      body: bodyName,
+      from: Object(date_fns__WEBPACK_IMPORTED_MODULE_7__["format"])(fromDate, "yyyy-MM-dd"),
+      to: Object(date_fns__WEBPACK_IMPORTED_MODULE_7__["format"])(toDate, "yyyy-MM-dd"),
+      interval: interval
+    };
+  }
+
+  function onSubmitResponse(data) {
+    props.updateBodyRecord(data.bodyRecord);
+    props.updateRows(data.ephemerisList);
   }
 
   var classes = useStyles();
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_1__["default"], {
     className: classes.root
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_2__["default"], {
     component: "h3"
   }, "Provide ephemeris parameters:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
     className: classes.container,
     noValidate: true,
     autoComplete: "off"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_3__["default"], {
     label: "Name",
     value: bodyName,
     className: classes.field,
@@ -81859,9 +81933,9 @@ function Forms(props) {
       return setBodyName(event.target.value);
     },
     margin: "normal"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_7__["MuiPickersUtilsProvider"], {
-    utils: _date_io_date_fns__WEBPACK_IMPORTED_MODULE_10__["default"]
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_7__["KeyboardDatePicker"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_4__["MuiPickersUtilsProvider"], {
+    utils: _date_io_date_fns__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_4__["KeyboardDatePicker"], {
     disableToolbar: true,
     variant: "inline",
     format: "yyy-MM-dd",
@@ -81875,7 +81949,7 @@ function Forms(props) {
     KeyboardButtonProps: {
       'aria-label': 'change date'
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_7__["KeyboardDatePicker"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_pickers__WEBPACK_IMPORTED_MODULE_4__["KeyboardDatePicker"], {
     disableToolbar: true,
     variant: "inline",
     format: "yyy-MM-dd",
@@ -81889,7 +81963,7 @@ function Forms(props) {
     KeyboardButtonProps: {
       'aria-label': 'change date'
     }
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_3__["default"], {
     label: "Interval",
     value: interval,
     className: classes.field,
@@ -81897,18 +81971,11 @@ function Forms(props) {
       return setInterval(event.target.value);
     },
     margin: "normal"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    container: true,
-    direction: "row",
-    justify: "flex-end"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    variant: "contained",
-    color: "primary",
-    className: classes.button,
-    onClick: handleSubmit
-  }, "Send", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Icon__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: classes.rightIcon
-  }, "send")))));
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_SubmitBar__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    url: "http://localhost:8080/api/ephemeris",
+    buildProps: onBuildProps,
+    submitResponse: onSubmitResponse
+  })));
 }
 
 /***/ }),

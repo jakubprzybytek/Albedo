@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6b6da86-5ad5-4fe4-90db-85b9e4ddbd95" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/AsciiFileLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/SPKernel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/SPKernel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/StateCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/StateCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/files/Body.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/Body.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/files/BodyCoefficientDescriptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/files/AsciiFileBodyCoefficientDescriptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/files/DeAsciiFileReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/files/AsciiFileReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/StateCalculatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/StateCalculatorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/files/DeAsciiFileReaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/files/AsciiFileReaderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/js/ToolTabs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/js/ToolTabs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/js/asteroidConjunctions/AsteroidConjunctionsForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/js/asteroidConjunctions/AsteroidConjunctionsForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/built/bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/built/bundle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/built/bundle.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/built/bundle.js.map" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
