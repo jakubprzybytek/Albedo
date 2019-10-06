@@ -1,6 +1,5 @@
 package jp.albedo.jpl.files;
 
-import jp.albedo.jpl.SPKernel;
 import jp.albedo.jpl.impl.TimeSpan;
 import jp.albedo.jpl.math.XYZCoefficients;
 import org.apache.commons.logging.Log;
@@ -17,11 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeAsciiFileReader {
+public class AsciiFileReader {
 
-    private static Log LOG = LogFactory.getLog(DeAsciiFileReader.class);
+    private static Log LOG = LogFactory.getLog(AsciiFileReader.class);
 
-    protected List<BodyCoefficientDescriptor> contentDescriptor;
+    protected List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
 
     protected Map<Integer, Map<TimeSpan, List<XYZCoefficients>>> coefficientsMap = new HashMap<>();
 
@@ -47,7 +46,7 @@ public class DeAsciiFileReader {
         LOG.info(String.format("Loaded %d coefficient descriptors from %s in %s", this.contentDescriptor.size(), file.getPath(), Duration.between(start, Instant.now())));
     }
 
-    private List<BodyCoefficientDescriptor> parseContentDescriptor1050(BufferedReader bufferedReader) throws IOException {
+    private List<AsciiFileBodyCoefficientDescriptor> parseContentDescriptor1050(BufferedReader bufferedReader) throws IOException {
         // skip empty line
         bufferedReader.readLine();
 
@@ -55,10 +54,10 @@ public class DeAsciiFileReader {
         String[] coefficientNumbers = bufferedReader.readLine().trim().split("\\s+");
         String[] setsNumbers = bufferedReader.readLine().trim().split("\\s+");
 
-        List<BodyCoefficientDescriptor> contentDescriptor = new ArrayList<>(startIndexes.length);
+        List<AsciiFileBodyCoefficientDescriptor> contentDescriptor = new ArrayList<>(startIndexes.length);
 
         for (int i = 0; i < startIndexes.length; i++) {
-            contentDescriptor.add(new BodyCoefficientDescriptor(
+            contentDescriptor.add(new AsciiFileBodyCoefficientDescriptor(
                     Integer.parseInt(startIndexes[i]),
                     Integer.parseInt(coefficientNumbers[i]),
                     Integer.parseInt(setsNumbers[i])
@@ -91,7 +90,7 @@ public class DeAsciiFileReader {
 
                 for (int bodyIndex = 0; bodyIndex < this.contentDescriptor.size(); bodyIndex++) {
 
-                    final BodyCoefficientDescriptor coefficientDescriptor = this.contentDescriptor.get(bodyIndex);
+                    final AsciiFileBodyCoefficientDescriptor coefficientDescriptor = this.contentDescriptor.get(bodyIndex);
 
                     final List<XYZCoefficients> coefficientsSet = new ArrayList<>(coefficientDescriptor.getSetsNumber());
                     for (int setIndex = 0; setIndex < coefficientDescriptor.getSetsNumber(); setIndex++) {
@@ -123,8 +122,8 @@ public class DeAsciiFileReader {
         LOG.info(String.format("Loaded %d blocks of coefficients for %d bodies from %s in %s", blocksRead, this.coefficientsMap.size(), file.getPath(), Duration.between(start, Instant.now())));
     }
 
-    public SPKernel createSPKernel() {
-        return new SPKernel(this.coefficientsMap);
+    public Map<TimeSpan, List<XYZCoefficients>> getCoefficientsMapForIndex(int index) {
+        return coefficientsMap.get(index);
     }
 
 }

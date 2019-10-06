@@ -2,7 +2,6 @@ package jp.albedo.jpl;
 
 import jp.albedo.ephemeris.common.RectangularCoordinates;
 import jp.albedo.ephemeris.common.SphericalCoordinates;
-import jp.albedo.jpl.files.Body;
 import jp.albedo.vsop87.VSOP87Calculator;
 import jp.albedo.vsop87.VSOPException;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,12 +21,15 @@ class StateCalculatorTest {
     private StateCalculator stateCalculator;
 
     @BeforeAll
-    void loadKernels() throws URISyntaxException, IOException {
+    void loadKernels() throws URISyntaxException, IOException, JPLException {
         final URL headerFileULR = StateCalculatorTest.class.getClassLoader().getResource("JPL/DE438/header.438");
         final URL fileULR = StateCalculatorTest.class.getClassLoader().getResource("JPL/DE438/ascp01950.438.sample");
 
-        this.stateCalculator = new StateCalculator();
-        this.stateCalculator.loadKernels(new File(headerFileULR.toURI()), new File(fileULR.toURI()));
+        AsciiFileLoader asciiFileLoader = new AsciiFileLoader();
+        asciiFileLoader.loadHeader(new File(headerFileULR.toURI()));
+        asciiFileLoader.load(new File(fileULR.toURI()));
+
+        this.stateCalculator = new StateCalculator(asciiFileLoader.createSpKernel());
     }
 
     @Test
@@ -50,7 +52,7 @@ class StateCalculatorTest {
     void computeForJdEarth() throws JPLException, VSOPException {
 
         final double jde = 2433264.5;
-        RectangularCoordinates earthJPLCoords = this.stateCalculator.computeForJd(Body.Earth, jde);
+        RectangularCoordinates earthJPLCoords = this.stateCalculator.computeForJd(Body.EarthMoonBarycenter, jde);
         SphericalCoordinates earthVSOPCoords = VSOP87Calculator.computeEarthEclipticSphericalCoordinatesJ2000(jde);
         RectangularCoordinates earthVSOPRectCoords = RectangularCoordinates.fromSphericalCoordinates(earthVSOPCoords);
         earthVSOPRectCoords = VSOP87Calculator.toFK5(earthVSOPRectCoords);

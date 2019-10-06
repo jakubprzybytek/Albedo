@@ -1,6 +1,5 @@
 package jp.albedo.jpl.files;
 
-import jp.albedo.jpl.SPKernel;
 import jp.albedo.jpl.impl.TimeSpan;
 import jp.albedo.jpl.math.XYZCoefficients;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,14 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DeAsciiFileReaderTest {
+class AsciiFileReaderTest {
 
-    DeAsciiFileReader asciiReader = new DeAsciiFileReader();
+    AsciiFileReader asciiReader = new AsciiFileReader();
 
     @BeforeAll
     void loadFiles() throws URISyntaxException, IOException {
-        final URL headerFileULR = DeAsciiFileReaderTest.class.getClassLoader().getResource("JPL/DE438/header.438");
-        final URL fileULR = DeAsciiFileReaderTest.class.getClassLoader().getResource("JPL/DE438/ascp01950.438.sample");
+        final URL headerFileULR = AsciiFileReaderTest.class.getClassLoader().getResource("JPL/DE438/header.438");
+        final URL fileULR = AsciiFileReaderTest.class.getClassLoader().getResource("JPL/DE438/ascp01950.438.sample");
 
         this.asciiReader.loadHeaderFile(new File(headerFileULR.toURI()));
         this.asciiReader.loadFile(new File(fileULR.toURI()));
@@ -35,12 +34,12 @@ class DeAsciiFileReaderTest {
     void testCoefficientsDescriptor() {
         assertEquals(15, this.asciiReader.contentDescriptor.size());
 
-        final BodyCoefficientDescriptor firstBody = this.asciiReader.contentDescriptor.get(0);
+        final AsciiFileBodyCoefficientDescriptor firstBody = this.asciiReader.contentDescriptor.get(0);
         assertEquals(3, firstBody.getStartIndex());
         assertEquals(14, firstBody.getCoefficientNumber());
         assertEquals(4, firstBody.getSetsNumber());
 
-        final BodyCoefficientDescriptor secondBody = this.asciiReader.contentDescriptor.get(1);
+        final AsciiFileBodyCoefficientDescriptor secondBody = this.asciiReader.contentDescriptor.get(1);
         assertEquals(171, secondBody.getStartIndex());
         assertEquals(10, secondBody.getCoefficientNumber());
         assertEquals(2, secondBody.getSetsNumber());
@@ -50,8 +49,7 @@ class DeAsciiFileReaderTest {
     void testCoefficientsMap() {
         assertEquals(15, this.asciiReader.coefficientsMap.size());
 
-        final SPKernel spKernel = this.asciiReader.createSPKernel();
-        Map<TimeSpan, List<XYZCoefficients>> firstBodyCoefficientsMap = spKernel.getCoefficientsForBody(0);
+        Map<TimeSpan, List<XYZCoefficients>> firstBodyCoefficientsMap = asciiReader.getCoefficientsMapForIndex(0);
 
         assertEquals(2, firstBodyCoefficientsMap.size());
 

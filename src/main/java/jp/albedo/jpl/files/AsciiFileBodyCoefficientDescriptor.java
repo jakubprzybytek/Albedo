@@ -1,6 +1,6 @@
 package jp.albedo.jpl.files;
 
-public class BodyCoefficientDescriptor {
+public class AsciiFileBodyCoefficientDescriptor {
 
     private int startIndex;
 
@@ -8,7 +8,7 @@ public class BodyCoefficientDescriptor {
 
     private int setsNumber;
 
-    public BodyCoefficientDescriptor(int startIndex, int coefficientNumber, int setsNumber) {
+    public AsciiFileBodyCoefficientDescriptor(int startIndex, int coefficientNumber, int setsNumber) {
         this.startIndex = startIndex;
         this.coefficientNumber = coefficientNumber;
         this.setsNumber = setsNumber;

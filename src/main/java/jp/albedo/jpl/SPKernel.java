@@ -3,19 +3,24 @@ package jp.albedo.jpl;
 import jp.albedo.jpl.impl.TimeSpan;
 import jp.albedo.jpl.math.XYZCoefficients;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class SPKernel {
 
-    private Map<Integer, Map<TimeSpan, List<XYZCoefficients>>> coefficientsMap;
+    private Map<Body, Map<TimeSpan, List<XYZCoefficients>>> coefficientsMap = new HashMap<>();
 
-    public SPKernel(Map<Integer, Map<TimeSpan, List<XYZCoefficients>>> coefficientsMap) {
-        this.coefficientsMap = coefficientsMap;
+    public void registerBodyCoefficients(Body body, Map<TimeSpan, List<XYZCoefficients>> coefficientsByTime) {
+        if (!coefficientsMap.containsKey(body)) {
+            this.coefficientsMap.put(body, new HashMap<>());
+        }
+        this.coefficientsMap.get(body).putAll(coefficientsByTime);
     }
 
-    public Map<TimeSpan, List<XYZCoefficients>> getCoefficientsForBody(int bodyIndex) {
-        return this.coefficientsMap.get(bodyIndex);
+    public Optional<Map<TimeSpan, List<XYZCoefficients>>> getCoefficientsForBody(Body body) {
+        return Optional.ofNullable(this.coefficientsMap.get(body));
     }
 
 }
