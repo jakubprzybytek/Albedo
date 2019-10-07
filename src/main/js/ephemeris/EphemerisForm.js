@@ -60,7 +60,7 @@ export default function Forms(props) {
             <KeyboardDatePicker
               disableToolbar
               variant="inline"
-              format="yyy-MM-dd"
+              format="yyyy-MM-dd"
               className={classes.field}
               margin="normal"
               label="From"
@@ -72,7 +72,7 @@ export default function Forms(props) {
             <KeyboardDatePicker
               disableToolbar
               variant="inline"
-              format="yyy-MM-dd"
+              format="yyyy-MM-dd"
               className={classes.field}
               margin="normal"
               label="To"

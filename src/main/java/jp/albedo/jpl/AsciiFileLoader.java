@@ -1,11 +1,14 @@
 package jp.albedo.jpl;
 
 import jp.albedo.jpl.files.AsciiFileReader;
+import jp.albedo.jpl.files.AsciiHeaderFileReader;
 
 import java.io.File;
 import java.io.IOException;
 
 public class AsciiFileLoader {
+
+    private AsciiHeaderFileReader asciiHeaderFileReader;
 
     private AsciiFileReader asciiFileReader;
 
@@ -14,8 +17,10 @@ public class AsciiFileLoader {
             throw new JPLException("Header file already loaded!");
         }
 
-        this.asciiFileReader = new AsciiFileReader();
-        this.asciiFileReader.loadHeaderFile(asciiHeaderFile);
+        this.asciiHeaderFileReader = new AsciiHeaderFileReader();
+        this.asciiHeaderFileReader.loadHeaderFile(asciiHeaderFile);
+
+        this.asciiFileReader = new AsciiFileReader(this.asciiHeaderFileReader.getContentDescriptor());
     }
 
     public void load(File asciiFile) throws IOException, JPLException {

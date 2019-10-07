@@ -1,5 +1,6 @@
 package jp.albedo.jpl.files;
 
+import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.impl.TimeSpan;
 import jp.albedo.jpl.math.XYZCoefficients;
 import org.apache.commons.logging.Log;
@@ -20,51 +21,14 @@ public class AsciiFileReader {
 
     private static Log LOG = LogFactory.getLog(AsciiFileReader.class);
 
+    protected Map<Constant, Double> constants;
+
     protected List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
 
     protected Map<Integer, Map<TimeSpan, List<XYZCoefficients>>> coefficientsMap = new HashMap<>();
 
-    /**
-     * Loads ASCII formatted header file.
-     *
-     * @param file
-     * @throws IOException
-     */
-    public void loadHeaderFile(File file) throws IOException {
-
-        final Instant start = Instant.now();
-
-        final FileReader fileReader = new FileReader(file);
-
-        try (final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-            String line;
-            // skip to data
-            while ((line = bufferedReader.readLine()) != null && !line.contains("GROUP   1050")) ;
-            this.contentDescriptor = parseContentDescriptor1050(bufferedReader);
-        }
-
-        LOG.info(String.format("Loaded %d coefficient descriptors from %s in %s", this.contentDescriptor.size(), file.getPath(), Duration.between(start, Instant.now())));
-    }
-
-    private List<AsciiFileBodyCoefficientDescriptor> parseContentDescriptor1050(BufferedReader bufferedReader) throws IOException {
-        // skip empty line
-        bufferedReader.readLine();
-
-        String[] startIndexes = bufferedReader.readLine().trim().split("\\s+");
-        String[] coefficientNumbers = bufferedReader.readLine().trim().split("\\s+");
-        String[] setsNumbers = bufferedReader.readLine().trim().split("\\s+");
-
-        List<AsciiFileBodyCoefficientDescriptor> contentDescriptor = new ArrayList<>(startIndexes.length);
-
-        for (int i = 0; i < startIndexes.length; i++) {
-            contentDescriptor.add(new AsciiFileBodyCoefficientDescriptor(
-                    Integer.parseInt(startIndexes[i]),
-                    Integer.parseInt(coefficientNumbers[i]),
-                    Integer.parseInt(setsNumbers[i])
-            ));
-        }
-
-        return contentDescriptor;
+    public AsciiFileReader(List<AsciiFileBodyCoefficientDescriptor> contentDescriptor) {
+        this.contentDescriptor = contentDescriptor;
     }
 
     /**
@@ -86,7 +50,7 @@ public class AsciiFileReader {
             DoublesBlockReader blockReader = new DoublesBlockReader(bufferedReader);
             while ((line = bufferedReader.readLine()) != null && !line.isEmpty()) {
                 // skip description
-                final TimeSpan timeSpan = new TimeSpan(blockReader.readDouble(), blockReader.readDouble());
+                final TimeSpan timeSpan = new TimeSpan(blockReader.read(), blockReader.read());
 
                 for (int bodyIndex = 0; bodyIndex < this.contentDescriptor.size(); bodyIndex++) {
 
@@ -97,15 +61,15 @@ public class AsciiFileReader {
 
                         if (bodyIndex != 12) {
                             final XYZCoefficients coefficients = new XYZCoefficients();
-                            coefficients.x = blockReader.readDoubles(coefficientDescriptor.getCoefficientNumber());
-                            coefficients.y = blockReader.readDoubles(coefficientDescriptor.getCoefficientNumber());
-                            coefficients.z = blockReader.readDoubles(coefficientDescriptor.getCoefficientNumber());
+                            coefficients.x = blockReader.read(coefficientDescriptor.getCoefficientNumber());
+                            coefficients.y = blockReader.read(coefficientDescriptor.getCoefficientNumber());
+                            coefficients.z = blockReader.read(coefficientDescriptor.getCoefficientNumber());
 
                             coefficientsSet.add(coefficients);
                         } else {
                             // body 12 has two coefficients. ignoring for now
-                            blockReader.readDoubles(coefficientDescriptor.getCoefficientNumber());
-                            blockReader.readDoubles(coefficientDescriptor.getCoefficientNumber());
+                            blockReader.read(coefficientDescriptor.getCoefficientNumber());
+                            blockReader.read(coefficientDescriptor.getCoefficientNumber());
                         }
                     }
 

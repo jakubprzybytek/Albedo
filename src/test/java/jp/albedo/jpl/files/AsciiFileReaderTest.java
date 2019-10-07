@@ -1,5 +1,6 @@
 package jp.albedo.jpl.files;
 
+import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.impl.TimeSpan;
 import jp.albedo.jpl.math.XYZCoefficients;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,30 +20,43 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AsciiFileReaderTest {
 
-    AsciiFileReader asciiReader = new AsciiFileReader();
+    AsciiHeaderFileReader asciiHeaderFileReader;
+
+    AsciiFileReader asciiReader;
 
     @BeforeAll
     void loadFiles() throws URISyntaxException, IOException {
         final URL headerFileULR = AsciiFileReaderTest.class.getClassLoader().getResource("JPL/DE438/header.438");
         final URL fileULR = AsciiFileReaderTest.class.getClassLoader().getResource("JPL/DE438/ascp01950.438.sample");
 
-        this.asciiReader.loadHeaderFile(new File(headerFileULR.toURI()));
+        this.asciiHeaderFileReader = new AsciiHeaderFileReader();
+        this.asciiHeaderFileReader.loadHeaderFile(new File(headerFileULR.toURI()));
+
+        this.asciiReader = new AsciiFileReader(this.asciiHeaderFileReader.getContentDescriptor());
         this.asciiReader.loadFile(new File(fileULR.toURI()));
     }
 
     @Test
     void testCoefficientsDescriptor() {
-        assertEquals(15, this.asciiReader.contentDescriptor.size());
+        assertEquals(15, this.asciiHeaderFileReader.contentDescriptor.size());
 
-        final AsciiFileBodyCoefficientDescriptor firstBody = this.asciiReader.contentDescriptor.get(0);
+        final AsciiFileBodyCoefficientDescriptor firstBody = this.asciiHeaderFileReader.contentDescriptor.get(0);
         assertEquals(3, firstBody.getStartIndex());
         assertEquals(14, firstBody.getCoefficientNumber());
         assertEquals(4, firstBody.getSetsNumber());
 
-        final AsciiFileBodyCoefficientDescriptor secondBody = this.asciiReader.contentDescriptor.get(1);
+        final AsciiFileBodyCoefficientDescriptor secondBody = this.asciiHeaderFileReader.contentDescriptor.get(1);
         assertEquals(171, secondBody.getStartIndex());
         assertEquals(10, secondBody.getCoefficientNumber());
         assertEquals(2, secondBody.getSetsNumber());
+    }
+
+    @Test
+    void testConstants() {
+        assertEquals(2, this.asciiHeaderFileReader.constants.size());
+
+        assertEquals(149597870.699999988, this.asciiHeaderFileReader.constants.get(Constant.AU));
+        assertEquals(81.3005683381650925, this.asciiHeaderFileReader.constants.get(Constant.EarthMoonMassRatio));
     }
 
     @Test
