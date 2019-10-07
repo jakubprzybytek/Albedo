@@ -38,14 +38,16 @@ class AsciiFileReaderTest {
 
     @Test
     void testCoefficientsDescriptor() {
-        assertEquals(15, this.asciiHeaderFileReader.contentDescriptor.size());
+        final List<AsciiFileBodyCoefficientDescriptor> contentDescriptor = this.asciiHeaderFileReader.getContentDescriptor();
 
-        final AsciiFileBodyCoefficientDescriptor firstBody = this.asciiHeaderFileReader.contentDescriptor.get(0);
+        assertEquals(15, contentDescriptor.size());
+
+        final AsciiFileBodyCoefficientDescriptor firstBody = contentDescriptor.get(0);
         assertEquals(3, firstBody.getStartIndex());
         assertEquals(14, firstBody.getCoefficientNumber());
         assertEquals(4, firstBody.getSetsNumber());
 
-        final AsciiFileBodyCoefficientDescriptor secondBody = this.asciiHeaderFileReader.contentDescriptor.get(1);
+        final AsciiFileBodyCoefficientDescriptor secondBody = contentDescriptor.get(1);
         assertEquals(171, secondBody.getStartIndex());
         assertEquals(10, secondBody.getCoefficientNumber());
         assertEquals(2, secondBody.getSetsNumber());
@@ -53,10 +55,12 @@ class AsciiFileReaderTest {
 
     @Test
     void testConstants() {
-        assertEquals(2, this.asciiHeaderFileReader.constants.size());
+        final Map<Constant, Double> constants = this.asciiHeaderFileReader.getConstants();
 
-        assertEquals(149597870.699999988, this.asciiHeaderFileReader.constants.get(Constant.AU));
-        assertEquals(81.3005683381650925, this.asciiHeaderFileReader.constants.get(Constant.EarthMoonMassRatio));
+        assertEquals(2, constants.size());
+
+        assertEquals(149597870.699999988, constants.get(Constant.AU));
+        assertEquals(81.3005683381650925, constants.get(Constant.EarthMoonMassRatio));
     }
 
     @Test

@@ -19,9 +19,9 @@ public class AsciiHeaderFileReader {
 
     private static Log LOG = LogFactory.getLog(AsciiHeaderFileReader.class);
 
-    protected Map<Constant, Double> constants;
+    private Map<Constant, Double> constants;
 
-    protected List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
+    private List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
 
     /**
      * Loads ASCII formatted header file.
