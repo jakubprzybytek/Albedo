@@ -4,6 +4,8 @@ import jp.albedo.ephemeris.common.RectangularCoordinates;
 import jp.albedo.ephemeris.common.SphericalCoordinates;
 import jp.albedo.vsop87.files.VSOP87Files;
 import jp.albedo.vsop87.files.VSOP87FilesLoader;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -11,13 +13,15 @@ import java.util.List;
 
 public class VSOP87Calculator {
 
+    private static Log LOG = LogFactory.getLog(VSOP87Calculator.class);
+
     static private VSOP87Coefficients earthEclipticSphericalCoefficientsJ2000;
 
     // TODO: Better synchronization
     public static synchronized VSOP87Coefficients getEarthEclipticSphericalCoefficientsJ2000() throws IOException, URISyntaxException {
         if (earthEclipticSphericalCoefficientsJ2000 == null) {
             earthEclipticSphericalCoefficientsJ2000 = VSOP87FilesLoader.load(VSOP87Files.VSOP87B_EARTH);
-            System.out.println("Loaded " + VSOP87Files.VSOP87B_EARTH);
+            LOG.info("Loaded " + VSOP87Files.VSOP87B_EARTH);
         }
         return earthEclipticSphericalCoefficientsJ2000;
     }

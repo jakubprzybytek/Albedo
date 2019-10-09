@@ -33,10 +33,15 @@ public class AsciiFileLoader {
 
     public SPKernel createSpKernel() {
         SPKernel spKernel = new SPKernel();
+
+        spKernel.addConstants(this.asciiHeaderFileReader.getConstants());
+
         spKernel.registerBodyCoefficients(Body.Mercury, this.asciiFileReader.getCoefficientsMapForIndex(0));
         spKernel.registerBodyCoefficients(Body.Venus, this.asciiFileReader.getCoefficientsMapForIndex(1));
         spKernel.registerBodyCoefficients(Body.EarthMoonBarycenter, this.asciiFileReader.getCoefficientsMapForIndex(2));
         spKernel.registerBodyCoefficients(Body.Mars, this.asciiFileReader.getCoefficientsMapForIndex(3));
+        spKernel.registerBodyCoefficients(Body.Moon, this.asciiFileReader.getCoefficientsMapForIndex(9));
+        spKernel.registerBodyCoefficients(Body.Sun, this.asciiFileReader.getCoefficientsMapForIndex(10));
 
         return spKernel;
     }

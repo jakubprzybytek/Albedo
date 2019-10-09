@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class DoublesBlockReader {
 
-    private BufferedReader reader;
+    final private BufferedReader reader;
 
     private String[] buffer;
 

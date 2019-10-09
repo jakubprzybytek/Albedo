@@ -1,5 +1,7 @@
 package jp.albedo.jpl.impl;
 
+import jp.albedo.jpl.JPLException;
+
 import java.util.Objects;
 
 public class TimeSpan {
@@ -25,8 +27,18 @@ public class TimeSpan {
         return jd >= this.from && jd <= this.to;
     }
 
-    public double normalizeFor(double jd) {
-        return (jd - this.from) / (this.to - this.from);
+    public double normalizeFor(double jd) throws JPLException {
+
+        if (jd < this.from || jd > this.to) {
+            throw new JPLException(String.format("Cannot normalize %f for %s", jd, this.toString()));
+        }
+
+        return (jd - this.from) * 2 / (this.to - this.from) - 1;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%f,%f]", this.from, this.to);
     }
 
     @Override

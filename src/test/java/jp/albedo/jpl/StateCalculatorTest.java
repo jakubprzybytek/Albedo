@@ -1,5 +1,6 @@
 package jp.albedo.jpl;
 
+import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.common.RectangularCoordinates;
 import jp.albedo.ephemeris.common.SphericalCoordinates;
 import jp.albedo.vsop87.VSOP87Calculator;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StateCalculatorTest {
 
+    private SPKernel spKernel;
     private StateCalculator stateCalculator;
 
     @BeforeAll
@@ -29,45 +31,78 @@ class StateCalculatorTest {
         asciiFileLoader.loadHeader(new File(headerFileULR.toURI()));
         asciiFileLoader.load(new File(fileULR.toURI()));
 
-        this.stateCalculator = new StateCalculator(asciiFileLoader.createSpKernel());
+        this.spKernel = asciiFileLoader.createSpKernel();
+        this.stateCalculator = new StateCalculator(spKernel);
     }
 
     @Test
-    void computeForJdMars() throws JPLException {
+    void computeForJdVenusTimeSpanBegin() throws JPLException {
 
-        RectangularCoordinates coords = this.stateCalculator.computeForJd(Body.Mars, 2433264.5);
+        RectangularCoordinates coordsAU = this.stateCalculator.computeForJd(Body.Venus, 2433264.5);
+        RectangularCoordinates coordsKm = coordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
 
-        coords.x /= 149597870.699999988;
-        coords.y /= 149597870.699999988;
-        coords.z /= 149597870.699999988;
+        System.out.printf("Venus coords [AU]: %s, distance=%f%n", coordsAU, coordsAU.getDistance());
+        System.out.printf("Venus coords [km]: %s, distance=%f%n", coordsKm, coordsKm.getDistance());
 
-        System.out.printf("Mars coords: %s, distance=%f%n", coords, coords.getDistance());
+        assertEquals(0.43036628856962117, coordsAU.x);
+        assertEquals(0.5417453916406629, coordsAU.y);
+        assertEquals(0.21631065679349926, coordsAU.z);
+    }
 
-        assertEquals(-1.3803320089150373, coords.x);
-        assertEquals(0.8300671661081752, coords.y);
-        assertEquals(0.41806472150122326, coords.z);
+    @Test
+    void computeForJdVenus() throws JPLException {
+        double jde = JulianDay.fromDate(2019, 10, 9);
+        RectangularCoordinates coordsAU = this.stateCalculator.computeForJd(Body.Venus, jde);
+        RectangularCoordinates coordsKm = coordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
+
+        System.out.printf("T [JDE]: %f%n", jde);
+        System.out.printf("Venus coords [AU]: %s, distance=%f%n", coordsAU, coordsAU.getDistance());
+        System.out.printf("Venus coords [km]: %s, distance=%f%n", coordsKm, coordsKm.getDistance());
+
+        assertEquals(-0.6415287437449809, coordsAU.x);
+        assertEquals(-0.3138545187437509, coordsAU.y);
+        assertEquals(-0.10092868194112768, coordsAU.z);
     }
 
     @Test
     void computeForJdEarth() throws JPLException, VSOPException {
 
         final double jde = 2433264.5;
-        RectangularCoordinates earthJPLCoords = this.stateCalculator.computeForJd(Body.EarthMoonBarycenter, jde);
-        SphericalCoordinates earthVSOPCoords = VSOP87Calculator.computeEarthEclipticSphericalCoordinatesJ2000(jde);
+        final SphericalCoordinates earthVSOPCoords = VSOP87Calculator.computeEarthEclipticSphericalCoordinatesJ2000(jde);
         RectangularCoordinates earthVSOPRectCoords = RectangularCoordinates.fromSphericalCoordinates(earthVSOPCoords);
         earthVSOPRectCoords = VSOP87Calculator.toFK5(earthVSOPRectCoords);
-
-        earthJPLCoords.x /= 149597870.699999988;
-        earthJPLCoords.y /= 149597870.699999988;
-        earthJPLCoords.z /= 149597870.699999988;
-
-        System.out.printf("Earth JLP coords: %s, distance=%f%n", earthJPLCoords, earthJPLCoords.getDistance());
         System.out.printf("Earth VSOP87 coords: %s%n", earthVSOPCoords);
         System.out.printf("Earth VSOP87 coords: %s, distance=%f%n", earthVSOPRectCoords, earthVSOPRectCoords.getDistance());
 
-        assertEquals(-0.007977043189703777, earthJPLCoords.x);
-        assertEquals(0.9047130563174, earthJPLCoords.y);
-        assertEquals(0.39227868260621407, earthJPLCoords.z);
+        final RectangularCoordinates earthJPLCoords = this.stateCalculator.computeForJd(Body.EarthMoonBarycenter, jde);
+        System.out.printf("Earth JLP coords: %s, distance=%f%n", earthJPLCoords, earthJPLCoords.getDistance());
+
+        assertEquals(0.13156325736639987, earthJPLCoords.x);
+        assertEquals(0.8973838323183663, earthJPLCoords.y);
+        assertEquals(0.3891009866482363, earthJPLCoords.z);
+
+        final RectangularCoordinates moonGeocentricJPLCoordsAu = this.stateCalculator.computeForJd(Body.Moon, jde);
+        final RectangularCoordinates moonGeocentricJplCoordsKm = moonGeocentricJPLCoordsAu.multiplyBy(this.spKernel.getConstant(Constant.AU));
+
+        System.out.printf("Moon JLP coords [AU]: %s, distance=%f%n", moonGeocentricJPLCoordsAu, moonGeocentricJPLCoordsAu.getDistance());
+        System.out.printf("Moon JLP coords [km]: %s, distance=%f%n", moonGeocentricJplCoordsKm, moonGeocentricJplCoordsKm.getDistance());
+
+        final double earthToBarycenterDistance = moonGeocentricJplCoordsKm.getDistance() / (1 + this.spKernel.getConstant(Constant.EarthMoonMassRatio));
+        System.out.printf("Earth to earth-moon barycenter distance: %f%n", earthToBarycenterDistance);
+    }
+
+    @Test
+    void computeForJdMars() throws JPLException {
+
+        RectangularCoordinates coordsAU = this.stateCalculator.computeForJd(Body.Mars, 2433264.5);
+        RectangularCoordinates coordsKm = coordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
+
+        System.out.printf("Mars coords [AU]: %s, distance=%f%n", coordsAU, coordsAU.getDistance());
+        System.out.printf("Mars coords [km]: %s, distance=%f%n", coordsKm, coordsKm.getDistance());
+
+        assertEquals(-1.2530729563820122, coordsAU.x);
+        assertEquals(0.9758247108886894, coordsAU.y);
+        assertEquals(0.4814597780730875, coordsAU.z);
     }
 
 }

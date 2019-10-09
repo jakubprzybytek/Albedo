@@ -21,7 +21,10 @@ public class StateCalculator {
                 .orElseThrow(() -> new JPLException(String.format("No coefficients for %s found in SPKernel", body)));
 
         PositionCalculator positionCalculator = new PositionCalculator(coefficientsByTime);
-        return positionCalculator.compute(jde);
+        Double au = this.spKernel.getConstant(Constant.AU);
+
+        final RectangularCoordinates coordinates = positionCalculator.compute(jde);
+        return coordinates.divideBy(au);
     }
 
 }

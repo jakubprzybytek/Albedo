@@ -2,11 +2,11 @@ package jp.albedo.ephemeris.common;
 
 public class RectangularCoordinates {
 
-    public double x;
+    final public double x;
 
-    public double y;
+    final public double y;
 
-    public double z;
+    final public double z;
 
     public RectangularCoordinates(double x, double y, double z) {
         this.x = x;
@@ -20,6 +20,22 @@ public class RectangularCoordinates {
         double z = sphericalCoordinates.distance * Math.sin(sphericalCoordinates.latitude);
 
         return new RectangularCoordinates(x, y, z);
+    }
+
+    public RectangularCoordinates multiplyBy(double value) {
+        return new RectangularCoordinates(
+                this.x * value,
+                this.y * value,
+                this.z * value
+        );
+    }
+
+    public RectangularCoordinates divideBy(double value) {
+        return new RectangularCoordinates(
+                this.x / value,
+                this.y / value,
+                this.z / value
+        );
     }
 
     public double getDistance() {

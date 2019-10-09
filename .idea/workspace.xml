@@ -3,10 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="b6b6da86-5ad5-4fe4-90db-85b9e4ddbd95" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/RectangularCoordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/ephemeris/common/RectangularCoordinates.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/AsciiFileLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/AsciiFileLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/Body.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/Body.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/SPKernel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/SPKernel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/StateCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/StateCalculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/files/DoublesBlockReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/files/DoublesBlockReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/impl/PositionCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/impl/PositionCalculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/impl/TimeSpan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/impl/TimeSpan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/VSOP87Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/vsop87/VSOP87Calculator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/StateCalculatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/StateCalculatorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/files/AsciiFileReaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/files/AsciiFileReaderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/impl/TimeSpanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/impl/TimeSpanTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/JPL/DE438/ascp01950.438.sample" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/JPL/DE438/ascp01950.438.sample" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -102,18 +112,11 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.StateCalculatorTest">
-    <configuration name="AsciiFileReaderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.StateCalculatorTest.computeForJdVenusTimeSpanBegin">
+    <configuration name="All in Albedo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Albedo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="jp.albedo.jpl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="jp.albedo.jpl.files" />
-      <option name="MAIN_CLASS_NAME" value="jp.albedo.jpl.files.AsciiFileReaderTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -133,6 +136,38 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="StateCalculatorTest.computeForJdVenus" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Albedo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.albedo.jpl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.albedo.jpl" />
+      <option name="MAIN_CLASS_NAME" value="jp.albedo.jpl.StateCalculatorTest" />
+      <option name="METHOD_NAME" value="computeForJdVenus" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StateCalculatorTest.computeForJdVenusTimeSpanBegin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Albedo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.albedo.jpl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.albedo.jpl" />
+      <option name="MAIN_CLASS_NAME" value="jp.albedo.jpl.StateCalculatorTest" />
+      <option name="METHOD_NAME" value="computeForJdVenusTimeSpanBegin" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TimeSpanTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Albedo" />
       <extension name="coverage">
@@ -148,40 +183,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="jp.albedo in Albedo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Albedo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="jp.albedo.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="jp.albedo" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="jp.albedo.jpl in Albedo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Albedo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="jp.albedo.jpl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="jp.albedo.jpl" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.StateCalculatorTest.computeForJdVenusTimeSpanBegin" />
         <item itemvalue="JUnit.StateCalculatorTest" />
-        <item itemvalue="JUnit.jp.albedo.jpl in Albedo" />
-        <item itemvalue="JUnit.DeAsciiFileReaderTest" />
-        <item itemvalue="JUnit.jp.albedo in Albedo" />
+        <item itemvalue="JUnit.StateCalculatorTest.computeForJdVenus" />
+        <item itemvalue="JUnit.All in Albedo" />
         <item itemvalue="JUnit.TimeSpanTest" />
       </list>
     </recent_temporary>
@@ -229,7 +236,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570481599355</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="JPL DE 438 AU is now used in state computations">
+      <created>1570558529223</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1570558529223</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -248,7 +262,8 @@
     <MESSAGE value="Spinner added" />
     <MESSAGE value="JPL DE 438 ephemeris code introduced" />
     <MESSAGE value="JPL DE 438 reading constants" />
-    <option name="LAST_COMMIT_MESSAGE" value="JPL DE 438 reading constants" />
+    <MESSAGE value="JPL DE 438 AU is now used in state computations" />
+    <option name="LAST_COMMIT_MESSAGE" value="JPL DE 438 AU is now used in state computations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -257,11 +272,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/jp/albedo/mpc/MPCORBFileLoader.java</url>
           <line>67</line>
           <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/jp/albedo/jpl/StateCalculator.java</url>
-          <line>26</line>
-          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

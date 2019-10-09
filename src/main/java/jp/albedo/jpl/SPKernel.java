@@ -1,5 +1,6 @@
 package jp.albedo.jpl;
 
+import jp.albedo.jpl.files.DoublesBlockReader;
 import jp.albedo.jpl.impl.TimeSpan;
 import jp.albedo.jpl.math.XYZCoefficients;
 
@@ -10,7 +11,17 @@ import java.util.Optional;
 
 public class SPKernel {
 
-    private Map<Body, Map<TimeSpan, List<XYZCoefficients>>> coefficientsMap = new HashMap<>();
+    final private Map<Constant, Double> constants = new HashMap<>();
+
+    final private Map<Body, Map<TimeSpan, List<XYZCoefficients>>> coefficientsMap = new HashMap<>();
+
+    public void addConstants(Map<Constant, Double> newConstants) {
+        this.constants.putAll(newConstants);
+    }
+
+    public Double getConstant(Constant constant) {
+        return this.constants.get(constant);
+    }
 
     public void registerBodyCoefficients(Body body, Map<TimeSpan, List<XYZCoefficients>> coefficientsByTime) {
         if (!coefficientsMap.containsKey(body)) {
