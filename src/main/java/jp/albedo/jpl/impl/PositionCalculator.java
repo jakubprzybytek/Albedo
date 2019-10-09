@@ -5,14 +5,13 @@ import jp.albedo.jpl.JPLException;
 import jp.albedo.jpl.math.ChebyshevPolynomialExpander;
 import jp.albedo.jpl.math.XYZCoefficients;
 
-import java.util.List;
 import java.util.Map;
 
 public class PositionCalculator {
 
-    private Map<TimeSpan, List<XYZCoefficients>> coefficientsByTime;
+    private Map<TimeSpan, XYZCoefficients> coefficientsByTime;
 
-    public PositionCalculator(Map<TimeSpan, List<XYZCoefficients>> coefficientsByTime) {
+    public PositionCalculator(Map<TimeSpan, XYZCoefficients> coefficientsByTime) {
         this.coefficientsByTime = coefficientsByTime;
     }
 
@@ -22,7 +21,7 @@ public class PositionCalculator {
                 .findFirst()
                 .orElseThrow(() -> new JPLException(String.format("Couldn't find coefficients for T=%f", jde)));
 
-        final XYZCoefficients coefficients = this.coefficientsByTime.get(timeSpan).get(0);
+        final XYZCoefficients coefficients = this.coefficientsByTime.get(timeSpan);
 
         final double normalizedTime = timeSpan.normalizeFor(jde);
 

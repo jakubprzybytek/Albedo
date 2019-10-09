@@ -59,9 +59,9 @@ class StateCalculatorTest {
         System.out.printf("Venus coords [AU]: %s, distance=%f%n", coordsAU, coordsAU.getDistance());
         System.out.printf("Venus coords [km]: %s, distance=%f%n", coordsKm, coordsKm.getDistance());
 
-        assertEquals(-0.6415287437449809, coordsAU.x);
-        assertEquals(-0.3138545187437509, coordsAU.y);
-        assertEquals(-0.10092868194112768, coordsAU.z);
+        assertEquals(-0.45898163735571323, coordsAU.x);
+        assertEquals(-0.5163160963310165, coordsAU.y);
+        assertEquals(-0.20358089622446124, coordsAU.z);
     }
 
     @Test

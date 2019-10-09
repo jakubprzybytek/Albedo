@@ -65,24 +65,21 @@ class AsciiFileReaderTest {
 
     @Test
     void testCoefficientsMap() {
-        assertEquals(15, this.asciiReader.coefficientsMap.size());
+        assertEquals(12, this.asciiReader.coefficientsMap.size());
 
-        Map<TimeSpan, List<XYZCoefficients>> firstBodyCoefficientsMap = asciiReader.getCoefficientsMapForIndex(0);
+        Map<TimeSpan, XYZCoefficients> firstBodyCoefficientsMap = asciiReader.getCoefficientsMapForIndex(0);
 
-        assertEquals(3, firstBodyCoefficientsMap.size());
+        assertEquals(12, firstBodyCoefficientsMap.size());
 
-        final TimeSpan firstTimeSpan = new TimeSpan(2433264.5, 2433296.5);
-        final TimeSpan secondTimeSpan = new TimeSpan(2433296.5, 2433328.5);
+        final TimeSpan firstTimeSpan = new TimeSpan(2433264.5, 2433272.5);
+        final TimeSpan secondTimeSpan = new TimeSpan(2433272.5, 2433280.5);
 
         assertNotNull(firstBodyCoefficientsMap.get(firstTimeSpan));
         assertNotNull(firstBodyCoefficientsMap.get(secondTimeSpan));
 
-        final List<XYZCoefficients> firstBodyCoefficientsSet = firstBodyCoefficientsMap.get(firstTimeSpan);
+        final XYZCoefficients firstBodyCoefficients = firstBodyCoefficientsMap.get(firstTimeSpan);
 
-        assertEquals(4, firstBodyCoefficientsSet.size());
-
-        final XYZCoefficients firstCoefficients = firstBodyCoefficientsSet.get(0);
-        assertEquals(44169514.68071251, firstCoefficients.x[0]);
-        assertEquals(8080851.859133677, firstCoefficients.x[1]);
+        assertEquals(44169514.68071251, firstBodyCoefficients.x[0]);
+        assertEquals(8080851.859133677, firstBodyCoefficients.x[1]);
     }
 }

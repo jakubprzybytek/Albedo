@@ -2,13 +2,15 @@ package jp.albedo.jpl.impl;
 
 import jp.albedo.jpl.JPLException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class TimeSpan {
 
-    private double from;
+    final private double from;
 
-    private double to;
+    final private double to;
 
     public TimeSpan(double from, double to) {
         this.from = from;
@@ -34,6 +36,21 @@ public class TimeSpan {
         }
 
         return (jd - this.from) * 2 / (this.to - this.from) - 1;
+    }
+
+    public List<TimeSpan> splitTo(int spans) {
+        List<TimeSpan> timeSpans = new ArrayList<>(spans);
+
+        double length = this.to - this.from;
+
+        for (int i = 0; i < spans; i++) {
+            timeSpans.add(new TimeSpan(
+                    this.from + length / spans * i,
+                    this.from + length / spans * (i + 1)
+            ));
+        }
+
+        return timeSpans;
     }
 
     @Override

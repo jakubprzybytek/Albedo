@@ -17,7 +17,7 @@ public class StateCalculator {
     }
 
     public RectangularCoordinates computeForJd(Body body, double jde) throws JPLException {
-        Map<TimeSpan, List<XYZCoefficients>> coefficientsByTime = this.spKernel.getCoefficientsForBody(body)
+        Map<TimeSpan, XYZCoefficients> coefficientsByTime = this.spKernel.getCoefficientsForBody(body)
                 .orElseThrow(() -> new JPLException(String.format("No coefficients for %s found in SPKernel", body)));
 
         PositionCalculator positionCalculator = new PositionCalculator(coefficientsByTime);

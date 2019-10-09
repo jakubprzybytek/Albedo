@@ -12,7 +12,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class AsciiFileReader {
 
     protected List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
 
-    protected Map<Integer, Map<TimeSpan, List<XYZCoefficients>>> coefficientsMap = new HashMap<>();
+    protected Map<Integer, Map<TimeSpan, XYZCoefficients>> coefficientsMap = new HashMap<>();
 
     public AsciiFileReader(List<AsciiFileBodyCoefficientDescriptor> contentDescriptor) {
         this.contentDescriptor = contentDescriptor;
@@ -50,14 +49,14 @@ public class AsciiFileReader {
             DoublesBlockReader blockReader = new DoublesBlockReader(bufferedReader);
             while ((line = bufferedReader.readLine()) != null && !line.isEmpty()) {
                 // skip description
-                final TimeSpan timeSpan = new TimeSpan(blockReader.read(), blockReader.read());
+                final TimeSpan blockTimeSpan = new TimeSpan(blockReader.read(), blockReader.read());
 
                 for (int bodyIndex = 0; bodyIndex < this.contentDescriptor.size(); bodyIndex++) {
 
                     final AsciiFileBodyCoefficientDescriptor coefficientDescriptor = this.contentDescriptor.get(bodyIndex);
 
-                    final List<XYZCoefficients> coefficientsSet = new ArrayList<>(coefficientDescriptor.getSetsNumber());
-                    for (int setIndex = 0; setIndex < coefficientDescriptor.getSetsNumber(); setIndex++) {
+                    final List<TimeSpan> timeSpans = blockTimeSpan.splitTo(coefficientDescriptor.getSetsNumber());
+                    for (TimeSpan timeSpan : timeSpans) {
 
                         if (bodyIndex != 12) {
                             final XYZCoefficients coefficients = new XYZCoefficients();
@@ -65,19 +64,17 @@ public class AsciiFileReader {
                             coefficients.y = blockReader.read(coefficientDescriptor.getCoefficientNumber());
                             coefficients.z = blockReader.read(coefficientDescriptor.getCoefficientNumber());
 
-                            coefficientsSet.add(coefficients);
+                            if (!this.coefficientsMap.containsKey(bodyIndex)) {
+                                this.coefficientsMap.put(bodyIndex, new HashMap<>());
+                            }
+
+                            this.coefficientsMap.get(bodyIndex).put(timeSpan, coefficients);
                         } else {
                             // body 12 has two coefficients. ignoring for now
                             blockReader.read(coefficientDescriptor.getCoefficientNumber());
                             blockReader.read(coefficientDescriptor.getCoefficientNumber());
                         }
                     }
-
-                    if (!this.coefficientsMap.containsKey(bodyIndex)) {
-                        this.coefficientsMap.put(bodyIndex, new HashMap<>());
-                    }
-
-                    this.coefficientsMap.get(bodyIndex).put(timeSpan, coefficientsSet);
                 }
                 blocksRead++;
             }
@@ -86,7 +83,7 @@ public class AsciiFileReader {
         LOG.info(String.format("Loaded %d blocks of coefficients for %d bodies from %s in %s", blocksRead, this.coefficientsMap.size(), file.getPath(), Duration.between(start, Instant.now())));
     }
 
-    public Map<TimeSpan, List<XYZCoefficients>> getCoefficientsMapForIndex(int index) {
+    public Map<TimeSpan, XYZCoefficients> getCoefficientsMapForIndex(int index) {
         return coefficientsMap.get(index);
     }
 

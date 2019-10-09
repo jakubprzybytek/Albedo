@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TimeSpanTest {
@@ -43,6 +45,33 @@ class TimeSpanTest {
         });
 
         assertTrue(thrown.getMessage().startsWith("Cannot normalize"));
+    }
+
+    @Test
+    void spittingToOneSpan() {
+        List<TimeSpan> splitTimeSpans = this.timeSpan.splitTo(1);
+        assertEquals(1, splitTimeSpans.size());
+
+        assertEquals(100.0, splitTimeSpans.get(0).getFrom());
+        assertEquals(200.0, splitTimeSpans.get(0).getTo());
+    }
+
+    @Test
+    void spittingToFourSpans() {
+        List<TimeSpan> splitTimeSpans = this.timeSpan.splitTo(4);
+        assertEquals(4, splitTimeSpans.size());
+
+        assertEquals(100.0, splitTimeSpans.get(0).getFrom());
+        assertEquals(125.0, splitTimeSpans.get(0).getTo());
+
+        assertEquals(125.0, splitTimeSpans.get(1).getFrom());
+        assertEquals(150.0, splitTimeSpans.get(1).getTo());
+
+        assertEquals(150.0, splitTimeSpans.get(2).getFrom());
+        assertEquals(175.0, splitTimeSpans.get(2).getTo());
+
+        assertEquals(175.0, splitTimeSpans.get(3).getFrom());
+        assertEquals(200.0, splitTimeSpans.get(3).getTo());
     }
 
 }
