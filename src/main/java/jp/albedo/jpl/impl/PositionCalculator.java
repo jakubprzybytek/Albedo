@@ -18,7 +18,7 @@ public class PositionCalculator {
     public RectangularCoordinates compute(double jde) throws JPLException {
         final TimeSpan timeSpan = this.coefficientsByTime.keySet().stream()
                 .filter(ts -> ts.inside(jde))
-                .findFirst()
+                .reduce((a, b) -> b) // find last
                 .orElseThrow(() -> new JPLException(String.format("Couldn't find coefficients for T=%f", jde)));
 
         final XYZCoefficients coefficients = this.coefficientsByTime.get(timeSpan);

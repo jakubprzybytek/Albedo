@@ -36,17 +36,42 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForJdVenusTimeSpanBegin() throws JPLException {
+    void computeForJdVenusVariousTimeSpanPoints() throws JPLException {
 
-        RectangularCoordinates coordsAU = this.stateCalculator.computeForJd(Body.Venus, 2433264.5);
-        RectangularCoordinates coordsKm = coordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
+        final double beginningJde = 2433264.5;
+        final RectangularCoordinates beginningCoordsAU = this.stateCalculator.computeForJd(Body.Venus, beginningJde);
+        final RectangularCoordinates beginningCoordsKm = beginningCoordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
 
-        System.out.printf("Venus coords [AU]: %s, distance=%f%n", coordsAU, coordsAU.getDistance());
-        System.out.printf("Venus coords [km]: %s, distance=%f%n", coordsKm, coordsKm.getDistance());
+        System.out.printf("Venus coords [km] for %.1f [JDE]: %s, distance=%f%n", beginningJde, beginningCoordsKm, beginningCoordsKm.getDistance());
 
-        assertEquals(0.43036628856962117, coordsAU.x);
-        assertEquals(0.5417453916406629, coordsAU.y);
-        assertEquals(0.21631065679349926, coordsAU.z);
+        assertEquals(64381880.39107707, beginningCoordsKm.x);
+        assertEquals(81043957.05098075, beginningCoordsKm.y);
+        //assertEquals(81043957.05098076, beginningCoordsKm.y);
+        assertEquals(32359613.666025978, beginningCoordsKm.z);
+        //assertEquals(32359613.66602598, beginningCoordsKm.z);
+
+        final double middleJde = 2433280.5;
+        final RectangularCoordinates middleCoordsAU = this.stateCalculator.computeForJd(Body.Venus, middleJde);
+        final RectangularCoordinates middleCoordsKm = middleCoordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
+
+        System.out.printf("Venus coords [km] for %.1f [JDE]: %s, distance=%f%n", middleJde, middleCoordsKm, middleCoordsKm.getDistance());
+
+        assertEquals(20230700.80839136, middleCoordsKm.x);
+        assertEquals(97367801.62804152, middleCoordsKm.y);
+        assertEquals(42496398.48356129, middleCoordsKm.z);
+
+        final double endingJde = 2433296.5;
+        final RectangularCoordinates endingCoordsAU = this.stateCalculator.computeForJd(Body.Venus, endingJde);
+        final RectangularCoordinates endingCoordsKm = endingCoordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
+
+        System.out.printf("Venus coords [km] for %.1f [JDE]: %s, distance=%f%n", endingJde, endingCoordsKm, endingCoordsKm.getDistance());
+
+        assertEquals(-27913817.750632998, endingCoordsKm.x);
+        //assertEquals(-27913817.75063300, endingCoordsKm.x);
+        assertEquals(94357865.3933443, endingCoordsKm.y);
+        //assertEquals(94357865.39334433, endingCoordsKm.y);
+        assertEquals(44191400.4656817, endingCoordsKm.z);
+        //assertEquals(44191400.46568169, endingCoordsKm.z);
     }
 
     @Test

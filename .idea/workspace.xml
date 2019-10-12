@@ -3,14 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b6b6da86-5ad5-4fe4-90db-85b9e4ddbd95" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/SPKernel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/SPKernel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/StateCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/StateCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/files/AsciiFileReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/files/AsciiFileReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/impl/PositionCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/impl/PositionCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/impl/TimeSpan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jp/albedo/jpl/impl/TimeSpan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/StateCalculatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/StateCalculatorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/files/AsciiFileReaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/files/AsciiFileReaderTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/impl/TimeSpanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jp/albedo/jpl/impl/TimeSpanTest.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -106,7 +100,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.AsciiFileReaderTest (1)">
+  <component name="RunManager" selected="JUnit.StateCalculatorTest.computeForJdVenusVariousTimeSpanPoints">
     <configuration name="All in Albedo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Albedo" />
       <option name="PACKAGE_NAME" value="" />
@@ -156,7 +150,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TimeSpanTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StateCalculatorTest.computeForJdVenusVariousTimeSpanPoints" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Albedo" />
       <extension name="coverage">
         <pattern>
@@ -164,20 +158,21 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="jp.albedo.jpl.impl" />
-      <option name="MAIN_CLASS_NAME" value="jp.albedo.jpl.impl.TimeSpanTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="jp.albedo.jpl" />
+      <option name="MAIN_CLASS_NAME" value="jp.albedo.jpl.StateCalculatorTest" />
+      <option name="METHOD_NAME" value="computeForJdVenusVariousTimeSpanPoints" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.AsciiFileReaderTest (1)" />
-        <item itemvalue="JUnit.StateCalculatorTest" />
-        <item itemvalue="JUnit.AsciiFileReaderTest" />
+        <item itemvalue="JUnit.StateCalculatorTest.computeForJdVenusVariousTimeSpanPoints" />
         <item itemvalue="JUnit.All in Albedo" />
-        <item itemvalue="JUnit.TimeSpanTest" />
+        <item itemvalue="JUnit.StateCalculatorTest" />
+        <item itemvalue="JUnit.AsciiFileReaderTest (1)" />
+        <item itemvalue="JUnit.AsciiFileReaderTest" />
       </list>
     </recent_temporary>
   </component>
@@ -238,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570652574909</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="JPL DE 438 Better time spans reading from file">
+      <created>1570654332385</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1570654332385</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -259,7 +261,8 @@
     <MESSAGE value="JPL DE 438 reading constants" />
     <MESSAGE value="JPL DE 438 AU is now used in state computations" />
     <MESSAGE value="JPL DE 438 Time normalization for Chebyshev fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="JPL DE 438 Time normalization for Chebyshev fixed" />
+    <MESSAGE value="JPL DE 438 Better time spans reading from file" />
+    <option name="LAST_COMMIT_MESSAGE" value="JPL DE 438 Better time spans reading from file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
