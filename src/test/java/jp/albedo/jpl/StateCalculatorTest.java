@@ -94,7 +94,7 @@ class StateCalculatorTest {
 
         final double jde = 2433264.5;
         final SphericalCoordinates earthVSOPCoords = VSOP87Calculator.computeEarthEclipticSphericalCoordinatesJ2000(jde);
-        RectangularCoordinates earthVSOPRectCoords = RectangularCoordinates.fromSphericalCoordinates(earthVSOPCoords);
+        RectangularCoordinates earthVSOPRectCoords = RectangularCoordinates.fromSpherical(earthVSOPCoords);
         earthVSOPRectCoords = VSOP87Calculator.toFK5(earthVSOPRectCoords);
         System.out.printf("Earth VSOP87 coords: %s%n", earthVSOPCoords);
         System.out.printf("Earth VSOP87 coords: %s, distance=%f%n", earthVSOPRectCoords, earthVSOPRectCoords.getDistance());

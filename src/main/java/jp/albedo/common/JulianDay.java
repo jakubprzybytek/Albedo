@@ -37,7 +37,10 @@ public class JulianDay {
     }
 
     public static List<Double> forRange(double jdFrom, double jdTo, double interval) {
-        return DoubleStream.iterate(jdFrom, day -> day <= jdTo, day -> day + interval).boxed().collect(Collectors.toList());
+        return DoubleStream.iterate(jdFrom, day -> day + interval)
+                .limit((int) ((jdTo - jdFrom) / interval) + 1)
+                .boxed()
+                .collect(Collectors.toList());
     }
 
     /**

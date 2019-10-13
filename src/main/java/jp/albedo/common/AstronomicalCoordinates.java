@@ -1,5 +1,8 @@
 package jp.albedo.common;
 
+import jp.albedo.ephemeris.common.RectangularCoordinates;
+import org.apache.commons.math3.util.MathUtils;
+
 public class AstronomicalCoordinates {
 
     /**
@@ -19,6 +22,13 @@ public class AstronomicalCoordinates {
 
     static public AstronomicalCoordinates fromDegrees(double rightAscensionInDegrees, double declinationInDegrees) {
         return new AstronomicalCoordinates(Math.toRadians(rightAscensionInDegrees), Math.toRadians(declinationInDegrees));
+    }
+
+    public static AstronomicalCoordinates fromRectangular(RectangularCoordinates rectangular) {
+        return new AstronomicalCoordinates(
+                MathUtils.normalizeAngle(Math.atan2(rectangular.y, rectangular.x), Math.PI),
+                Math.atan2(rectangular.z, Math.sqrt(rectangular.x * rectangular.x + rectangular.y * rectangular.y))
+        );
     }
 
     @Override

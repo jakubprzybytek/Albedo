@@ -36,7 +36,7 @@ public class OrbitCalculator {
         this.C = Math.atan2(H, R);
     }
 
-    public OrbitPosition computeForDay(double jde) {
+    public RectangularCoordinates computeForDay(double jde) {
         final double meanAnomaly = orbitParams.getMeanAnomalyAtEpochInRadians() +
                 orbitParams.getMeanMotionInRadians() * (jde - orbitParams.getMeanAnomalyEpoch());
         final double eccentricAnomaly = Kepler.solve(meanAnomaly, orbitParams.getEccentricity());
@@ -48,19 +48,7 @@ public class OrbitCalculator {
         final double y = distance * b * Math.sin(B + orbitParams.getArgumentOfPerihelionInRadians() + trueAnomaly);
         final double z = distance * c * Math.sin(C + orbitParams.getArgumentOfPerihelionInRadians() + trueAnomaly);
 
-        return new OrbitPosition(new RectangularCoordinates(x, y, z), distance);
+        return new RectangularCoordinates(x, y, z);
     }
 
-    public static class OrbitPosition {
-
-        public RectangularCoordinates coordinates;
-
-        public double distance;
-
-        public OrbitPosition(RectangularCoordinates coordinates, double distance) {
-            this.coordinates = coordinates;
-            this.distance = distance;
-        }
-
-    }
 }

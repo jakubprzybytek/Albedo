@@ -19,15 +19,15 @@ class AsteroidConjunctionsCalculatorTest {
     void findEdgeConjunctions() {
 
         List<Ephemeris> ephemeris1 = Arrays.asList(
-                new Ephemeris(1.0, new AstronomicalCoordinates(1.0, 2.0), 1.0, 0.0),
-                new Ephemeris(2.0, new AstronomicalCoordinates(2.0, 4.0), 1.0, 0.0),
-                new Ephemeris(3.0, new AstronomicalCoordinates(3.0, 3.0), 1.0, 0.0)
+                new Ephemeris(1.0, new AstronomicalCoordinates(1.0, 2.0), 2.0, 1.0, 0.0),
+                new Ephemeris(2.0, new AstronomicalCoordinates(2.0, 4.0), 2.0, 1.0, 0.0),
+                new Ephemeris(3.0, new AstronomicalCoordinates(3.0, 3.0), 2.0, 1.0, 0.0)
         );
 
         List<Ephemeris> ephemeris2 = Arrays.asList(
-                new Ephemeris(1.0, new AstronomicalCoordinates(1.0, 1.0), 1.0, 0.0),
-                new Ephemeris(2.0, new AstronomicalCoordinates(2.0, 1.0), 1.0, 0.0),
-                new Ephemeris(3.0, new AstronomicalCoordinates(3.0, 1.0), 1.0, 0.0)
+                new Ephemeris(1.0, new AstronomicalCoordinates(1.0, 1.0), 2.0, 1.0, 0.0),
+                new Ephemeris(2.0, new AstronomicalCoordinates(2.0, 1.0), 2.0, 1.0, 0.0),
+                new Ephemeris(3.0, new AstronomicalCoordinates(3.0, 1.0), 2.0, 1.0, 0.0)
         );
 
         Pair<AsteroidConjunctionsCalculator.BodyData, AsteroidConjunctionsCalculator.BodyData> pair = new Pair<>(
@@ -47,19 +47,19 @@ class AsteroidConjunctionsCalculatorTest {
     void findTwoConjunctions() {
 
         List<Ephemeris> ephemeris1 = Arrays.asList(
-                new Ephemeris(1.0, new AstronomicalCoordinates(1.0, 3.0), 1.0, 0.0),
-                new Ephemeris(2.0, new AstronomicalCoordinates(2.0, 2.0), 1.0, 0.0),
-                new Ephemeris(3.0, new AstronomicalCoordinates(3.0, 4.0), 1.0, 0.0),
-                new Ephemeris(4.0, new AstronomicalCoordinates(4.0, 3.0), 1.0, 0.0),
-                new Ephemeris(5.0, new AstronomicalCoordinates(5.0, 5.0), 1.0, 0.0)
+                new Ephemeris(1.0, new AstronomicalCoordinates(1.0, 3.0), 2.0, 1.0, 0.0),
+                new Ephemeris(2.0, new AstronomicalCoordinates(2.0, 2.0), 2.0, 1.0, 0.0),
+                new Ephemeris(3.0, new AstronomicalCoordinates(3.0, 4.0), 2.0, 1.0, 0.0),
+                new Ephemeris(4.0, new AstronomicalCoordinates(4.0, 3.0), 2.0, 1.0, 0.0),
+                new Ephemeris(5.0, new AstronomicalCoordinates(5.0, 5.0), 2.0, 1.0, 0.0)
         );
 
         List<Ephemeris> ephemeris2 = Arrays.asList(
-                new Ephemeris(1.0, new AstronomicalCoordinates(1.0, 1.0), 1.0, 0.0),
-                new Ephemeris(2.0, new AstronomicalCoordinates(2.0, 1.0), 1.0, 0.0),
-                new Ephemeris(3.0, new AstronomicalCoordinates(3.0, 1.0), 1.0, 0.0),
-                new Ephemeris(4.0, new AstronomicalCoordinates(4.0, 1.0), 1.0, 0.0),
-                new Ephemeris(5.0, new AstronomicalCoordinates(5.0, 1.0), 1.0, 0.0)
+                new Ephemeris(1.0, new AstronomicalCoordinates(1.0, 1.0), 2.0, 1.0, 0.0),
+                new Ephemeris(2.0, new AstronomicalCoordinates(2.0, 1.0), 2.0, 1.0, 0.0),
+                new Ephemeris(3.0, new AstronomicalCoordinates(3.0, 1.0), 2.0, 1.0, 0.0),
+                new Ephemeris(4.0, new AstronomicalCoordinates(4.0, 1.0), 2.0, 1.0, 0.0),
+                new Ephemeris(5.0, new AstronomicalCoordinates(5.0, 1.0), 2.0, 1.0, 0.0)
         );
 
         Pair<AsteroidConjunctionsCalculator.BodyData, AsteroidConjunctionsCalculator.BodyData> pair = new Pair<>(new AsteroidConjunctionsCalculator.BodyData(ephemeris1), new AsteroidConjunctionsCalculator.BodyData(ephemeris2));

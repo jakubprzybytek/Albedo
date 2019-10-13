@@ -14,12 +14,20 @@ public class RectangularCoordinates {
         this.z = z;
     }
 
-    static public RectangularCoordinates fromSphericalCoordinates(SphericalCoordinates sphericalCoordinates) {
+    static public RectangularCoordinates fromSpherical(SphericalCoordinates sphericalCoordinates) {
         double x = sphericalCoordinates.distance * Math.cos(sphericalCoordinates.latitude) * Math.cos(sphericalCoordinates.longitude);
         double y = sphericalCoordinates.distance * Math.cos(sphericalCoordinates.latitude) * Math.sin(sphericalCoordinates.longitude);
         double z = sphericalCoordinates.distance * Math.sin(sphericalCoordinates.latitude);
 
         return new RectangularCoordinates(x, y, z);
+    }
+
+    public RectangularCoordinates add(RectangularCoordinates second) {
+        return new RectangularCoordinates(
+                this.x + second.x,
+                this.y + second.y,
+                this.z + second.z
+        );
     }
 
     public RectangularCoordinates multiplyBy(double value) {
