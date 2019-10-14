@@ -1,7 +1,11 @@
 package jp.albedo.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
-import jp.albedo.ephemeris.common.*;
+import jp.albedo.ephemeris.common.LightTime;
+import jp.albedo.ephemeris.common.MagnitudeParameters;
+import jp.albedo.ephemeris.common.OrbitElements;
+import jp.albedo.ephemeris.common.RectangularCoordinates;
+import jp.albedo.ephemeris.common.SphericalCoordinates;
 import jp.albedo.ephemeris.impl.MagnitudeCalculator;
 import jp.albedo.ephemeris.impl.OrbitCalculator;
 import jp.albedo.vsop87.VSOP87Calculator;
@@ -43,28 +47,28 @@ public class EllipticMotion {
         List<Ephemeris> ephemerisList = new LinkedList<>();
 
         for (Double day : JDEs) {
-            final RectangularCoordinates bodyHeliocentricCoords = orbitCalculator.computeForDay(day);
+            final RectangularCoordinates bodyHeliocentricEquatorialCoords = orbitCalculator.computeForDay(day);
 
             // Sun's geocentric rectangular equatorial coordinates J2000 for JDE
             final SphericalCoordinates sunEclipticSphericalCoordsFK4 = VSOP87Calculator.computeSunEclipticSphericalCoordinatesJ2000(day);
             final RectangularCoordinates sunEclipticCoordsFK4 = RectangularCoordinates.fromSpherical(sunEclipticSphericalCoordsFK4);
-            final RectangularCoordinates sunEquatorialCoords = VSOP87Calculator.toFK5(sunEclipticCoordsFK4);
+            final RectangularCoordinates sunGeocentricEquatorialCoords = VSOP87Calculator.toFK5(sunEclipticCoordsFK4);
 
             // Body geocentric equatorial coords
-            final RectangularCoordinates bodyEquatorialCoords = sunEquatorialCoords.add(bodyHeliocentricCoords);
+            final RectangularCoordinates bodyGeocentricEquatorialCoords = sunGeocentricEquatorialCoords.add(bodyHeliocentricEquatorialCoords);
 
             // correction for light travel
-            final double distanceFromEarth = bodyEquatorialCoords.getDistance();
-            final RectangularCoordinates bodyHeliocentricTCCoords = orbitCalculator.computeForDay(day - LightTime.fromDistance(distanceFromEarth));
+            final double distanceFromEarth = bodyGeocentricEquatorialCoords.getDistance();
+            final RectangularCoordinates bodyHeliocentricEquatorialTCCoords = orbitCalculator.computeForDay(day - LightTime.fromDistance(distanceFromEarth));
 
-            final RectangularCoordinates bodyEquatorialTCCoords = sunEquatorialCoords.add(bodyHeliocentricTCCoords);
+            final RectangularCoordinates bodyGeocentricEquatorialTCCoords = sunGeocentricEquatorialCoords.add(bodyHeliocentricEquatorialTCCoords);
 
             ephemerisList.add(new Ephemeris(
                     day,
-                    AstronomicalCoordinates.fromRectangular(bodyEquatorialTCCoords),
-                    bodyHeliocentricTCCoords.getDistance(),
+                    AstronomicalCoordinates.fromRectangular(bodyGeocentricEquatorialTCCoords),
+                    bodyHeliocentricEquatorialTCCoords.getDistance(),
                     distanceFromEarth,
-                    magnitudeCalculator.compute(bodyHeliocentricTCCoords, bodyEquatorialTCCoords)));
+                    magnitudeCalculator.compute(bodyHeliocentricEquatorialTCCoords, bodyGeocentricEquatorialTCCoords)));
         }
 
         return ephemerisList;
