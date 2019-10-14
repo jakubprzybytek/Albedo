@@ -4,6 +4,8 @@
 # Log file
 *.log
 
+.idea
+
 package-lock.json
 
 target
