@@ -30,6 +30,14 @@ public class RectangularCoordinates {
         );
     }
 
+    public RectangularCoordinates subtract(RectangularCoordinates second) {
+        return new RectangularCoordinates(
+                this.x - second.x,
+                this.y - second.y,
+                this.z - second.z
+        );
+    }
+
     public RectangularCoordinates multiplyBy(double value) {
         return new RectangularCoordinates(
                 this.x * value,

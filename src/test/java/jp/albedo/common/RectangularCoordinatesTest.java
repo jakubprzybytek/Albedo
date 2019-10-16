@@ -4,7 +4,7 @@ import jp.albedo.ephemeris.common.RectangularCoordinates;
 import jp.albedo.ephemeris.common.SphericalCoordinates;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RectangularCoordinatesTest {
 
@@ -28,9 +28,20 @@ class RectangularCoordinatesTest {
         RectangularCoordinates second = new RectangularCoordinates(4.0, 5.0, 6.0);
         RectangularCoordinates sum = first.add(second);
 
-        assertEquals(5, sum.x);
-        assertEquals(7, sum.y);
-        assertEquals(9, sum.z);
+        assertEquals(5.0, sum.x);
+        assertEquals(7.0, sum.y);
+        assertEquals(9.0, sum.z);
+    }
+
+    @Test
+    public void subtracting() {
+        RectangularCoordinates first = new RectangularCoordinates(1.0, 2.0, 3.0);
+        RectangularCoordinates second = new RectangularCoordinates(4.0, 5.0, 6.0);
+        RectangularCoordinates sum = first.subtract(second);
+
+        assertEquals(-3.0, sum.x);
+        assertEquals(-3.0, sum.y);
+        assertEquals(-3.0, sum.z);
     }
 
     @Test
