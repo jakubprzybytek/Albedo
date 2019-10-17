@@ -29,7 +29,7 @@ export default function AsteroidConjunctionsTable(props) {
 			<Table className={classes.table} size="small">
 				<TableHead>
 					<TableRow>
-						<TableCell>Time (TD)</TableCell>
+						<TableCell>Time [TDE]</TableCell>
 						<TableCell align="center">First body</TableCell>
 						<TableCell align="center">Second body</TableCell>
 						<TableCell align="right">Separation</TableCell>

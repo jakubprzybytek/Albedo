@@ -48,6 +48,10 @@ public class RestEphemeris {
         return coordinates;
     }
 
+    public double getDistanceFromSun() {
+        return distanceFromSun;
+    }
+
     public double getDistanceFromEarth() {
         return distanceFromEarth;
     }

@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 	paper: {
 		marginTop: theme.spacing(3),
 		marginBottom: theme.spacing(2),
-		width: '800px',
+//		width: '800px',
 	},
 	table: {
 		width: '100%',
@@ -29,11 +29,12 @@ export default function EphemerisTable(props) {
 			<Table className={classes.table} size="small">
 				<TableHead>
 					<TableRow>
-						<TableCell>Time [TD]</TableCell>
+						<TableCell>Time [TDE]</TableCell>
 						<TableCell align="center">R.A.</TableCell>
 						<TableCell align="center">Dec.</TableCell>
-						<TableCell align="center">Magnitude</TableCell>
-						<TableCell align="right">Distance from Earth [AU]</TableCell>
+						<TableCell align="center">Distance from Sun [AU]</TableCell>
+						<TableCell align="center">Distance from Earth [AU]</TableCell>
+						<TableCell align="right">Magnitude</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -49,10 +50,13 @@ export default function EphemerisTable(props) {
 								{formatDegrees(row.coordinates.declination)}
 							</TableCell>
 							<TableCell align="center">
-								{row.apparentMagnitude.toFixed(2)}
+								{row.distanceFromSun.toFixed(6)}
+							</TableCell>
+							<TableCell align="center">
+								{row.distanceFromEarth.toFixed(6)}
 							</TableCell>
 							<TableCell align="right">
-								{row.distanceFromEarth.toFixed(6)}
+								{row.apparentMagnitude.toFixed(2)}
 							</TableCell>
 						</TableRow>
 					))}
