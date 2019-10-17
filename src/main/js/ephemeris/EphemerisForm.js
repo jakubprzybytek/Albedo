@@ -38,8 +38,8 @@ export default function Forms(props) {
 
   function onSubmitResponse(data) {
     props.updateRows(data.ephemerisList);
-    if (data.hasOwnProperty('bodyRecord')) {
-      props.updateBodyRecord(data.bodyRecord);
+    if (data.hasOwnProperty('orbitingBodyRecord') && data.orbitingBodyRecord != null) {
+      props.updateBodyRecord(data.orbitingBodyRecord);
     }
   }
 
