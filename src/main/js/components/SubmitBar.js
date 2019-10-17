@@ -38,6 +38,7 @@ export default function SubmitBar(props) {
   const classes = useStyles();
 
   const [loading, setLoading] = React.useState(false);
+  
   const [lastCall, setLastCall] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
   const [linkUrl, setLinkUrl] = React.useState("");
@@ -55,6 +56,7 @@ export default function SubmitBar(props) {
         setDuration(new Date() - startTime);
         setLastCall(format(new Date(), "yyyy-MM-dd HH:mm:ss"));
         setLinkUrl(res.request.responseURL);
+        setErrorMessage('');
 
         props.submitResponse(res.data);
 

@@ -1,4 +1,4 @@
-package jp.albedo.webapp.external;
+package jp.albedo.webapp.services;
 
 import jp.albedo.mpc.MPCORBFileLoader;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,14 +12,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class SolarSystemService {
+public class OrbitsService {
 
     @Value("${mpcorb.fileName}")
     private String mpcorbFileName;
 
-    private Map<String, BodyRecord> bodyRecordByName;
+    private Map<String, OrbitingBodyRecord> bodyRecordByName;
 
-    public Optional<BodyRecord> getByName(String name) throws IOException {
+    public Optional<OrbitingBodyRecord> getByName(String name) throws IOException {
 
         if (this.bodyRecordByName == null) {
             this.bodyRecordByName = loadBodyRecords();
@@ -28,7 +28,7 @@ public class SolarSystemService {
         return Optional.ofNullable(this.bodyRecordByName.get(name));
     }
 
-    public List<BodyRecord> getAll() throws IOException {
+    public List<OrbitingBodyRecord> getAll() throws IOException {
 
         if (this.bodyRecordByName == null) {
             this.bodyRecordByName = loadBodyRecords();
@@ -37,7 +37,7 @@ public class SolarSystemService {
         return this.bodyRecordByName.values().stream().collect(Collectors.toList());
     }
 
-    private synchronized Map<String, BodyRecord> loadBodyRecords() throws IOException {
+    private synchronized Map<String, OrbitingBodyRecord> loadBodyRecords() throws IOException {
 
         if (this.bodyRecordByName != null) {
             return this.bodyRecordByName;
@@ -46,7 +46,7 @@ public class SolarSystemService {
         return MPCORBFileLoader.load(new File(this.mpcorbFileName), 1000).stream()
                 .collect(Collectors.toMap(
                         mpcorbRecord -> mpcorbRecord.bodyDetails.name,
-                        mpcorbRecord -> new BodyRecord(mpcorbRecord.bodyDetails, mpcorbRecord.magnitudeParameters, mpcorbRecord.orbitElements)
+                        mpcorbRecord -> new OrbitingBodyRecord(mpcorbRecord.bodyDetails, mpcorbRecord.magnitudeParameters, mpcorbRecord.orbitElements)
                 ));
     }
 

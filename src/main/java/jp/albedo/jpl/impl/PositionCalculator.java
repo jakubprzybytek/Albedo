@@ -9,26 +9,33 @@ import java.util.Map;
 
 public class PositionCalculator {
 
-    private Map<TimeSpan, XYZCoefficients> coefficientsByTime;
+    final private Map<TimeSpan, XYZCoefficients> coefficientsByTime;
+
+    private TimeSpan cachedTimeSpan;
+
+    private XYZCoefficients cachedCoefficients;
 
     public PositionCalculator(Map<TimeSpan, XYZCoefficients> coefficientsByTime) {
         this.coefficientsByTime = coefficientsByTime;
     }
 
     public RectangularCoordinates compute(double jde) throws JPLException {
-        final TimeSpan timeSpan = this.coefficientsByTime.keySet().stream()
-                .filter(ts -> ts.inside(jde))
-                .reduce((a, b) -> b) // find last
-                .orElseThrow(() -> new JPLException(String.format("Couldn't find coefficients for T=%f", jde)));
 
-        final XYZCoefficients coefficients = this.coefficientsByTime.get(timeSpan);
+        if (this.cachedTimeSpan == null || !this.cachedTimeSpan.inside(jde)) {
+            this.cachedTimeSpan = this.coefficientsByTime.keySet().stream()
+                    .filter(ts -> ts.inside(jde))
+                    .reduce((a, b) -> b) // find last
+                    .orElseThrow(() -> new JPLException(String.format("Couldn't find coefficients for T=%f", jde)));
 
-        final double normalizedTime = timeSpan.normalizeFor(jde);
+            this.cachedCoefficients = this.coefficientsByTime.get(this.cachedTimeSpan);
+        }
+
+        final double normalizedTime = this.cachedTimeSpan.normalizeFor(jde);
 
         return new RectangularCoordinates(
-                new ChebyshevPolynomialExpander(coefficients.x).computeFor(normalizedTime),
-                new ChebyshevPolynomialExpander(coefficients.y).computeFor(normalizedTime),
-                new ChebyshevPolynomialExpander(coefficients.z).computeFor(normalizedTime)
+                new ChebyshevPolynomialExpander(this.cachedCoefficients.x).computeFor(normalizedTime),
+                new ChebyshevPolynomialExpander(this.cachedCoefficients.y).computeFor(normalizedTime),
+                new ChebyshevPolynomialExpander(this.cachedCoefficients.z).computeFor(normalizedTime)
         );
     }
 

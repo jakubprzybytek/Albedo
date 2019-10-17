@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class StateCalculatorTest {
 
     private SPKernel spKernel;
+
     private StateCalculator stateCalculator;
 
     @BeforeAll
@@ -36,7 +37,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForJdVenusVariousTimeSpanPoints() throws JPLException {
+    void computeForVenusWithVariousTimeSpanPoints() throws JPLException {
 
         final double beginningJde = 2433264.5;
         final RectangularCoordinates beginningCoordsAU = this.stateCalculator.computeForJd(Body.Venus, beginningJde);
@@ -75,7 +76,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForJdVenus() throws JPLException {
+    void computeForVenus() throws JPLException {
         double jde = JulianDay.fromDate(2019, 10, 9);
         RectangularCoordinates coordsAU = this.stateCalculator.computeForJd(Body.Venus, jde);
         RectangularCoordinates coordsKm = coordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
@@ -188,9 +189,9 @@ class StateCalculatorTest {
         final double earthToBarycenterDistance = moonGeocentricCoordsKm.getDistance() / (1 + this.spKernel.getConstant(Constant.EarthMoonMassRatio));
         System.out.printf("Earth to earth-moon barycenter distance: %f%n", earthToBarycenterDistance);
 
+        // shouldn't it be multiplied by -1 ?
         final RectangularCoordinates earthFromEarthBarycenterCoordsKm = moonGeocentricCoordsKm.multiplyBy(
-                (earthToBarycenterDistance)
-                        / moonGeocentricCoordsKm.getDistance());
+                (earthToBarycenterDistance) / moonGeocentricCoordsKm.getDistance());
 
         System.out.printf("Earth from Earth-Moon barycenter coords [km]: %s, distance=%f%n", earthFromEarthBarycenterCoordsKm, earthFromEarthBarycenterCoordsKm.getDistance());
 

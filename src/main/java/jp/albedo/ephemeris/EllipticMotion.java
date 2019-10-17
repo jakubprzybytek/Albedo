@@ -1,11 +1,7 @@
 package jp.albedo.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
-import jp.albedo.ephemeris.common.LightTime;
-import jp.albedo.ephemeris.common.MagnitudeParameters;
-import jp.albedo.ephemeris.common.OrbitElements;
-import jp.albedo.ephemeris.common.RectangularCoordinates;
-import jp.albedo.ephemeris.common.SphericalCoordinates;
+import jp.albedo.ephemeris.common.*;
 import jp.albedo.ephemeris.impl.MagnitudeCalculator;
 import jp.albedo.ephemeris.impl.OrbitCalculator;
 import jp.albedo.vsop87.VSOP87Calculator;
@@ -20,13 +16,13 @@ public class EllipticMotion {
     /**
      * Computes astronomical coordinates for given orbit elements and epoch (TDB).
      *
-     * @param JDE
+     * @param jde
      * @param orbitParams
      * @return
      * @throws VSOPException
      */
-    static public Ephemeris compute(double JDE, MagnitudeParameters magnitudeParameters, OrbitElements orbitParams) throws VSOPException {
-        return compute(Arrays.asList(JDE), magnitudeParameters, orbitParams).get(0);
+    static public Ephemeris compute(double jde, MagnitudeParameters magnitudeParameters, OrbitElements orbitParams) throws VSOPException {
+        return compute(Arrays.asList(jde), magnitudeParameters, orbitParams).get(0);
     }
 
     /**
@@ -34,19 +30,19 @@ public class EllipticMotion {
      * <p>
      * All computations to J2000!
      *
-     * @param JDEs
+     * @param jdes
      * @param magnitudeParameters
      * @param orbitParams
      * @return
      * @throws VSOPException
      */
-    static public List<Ephemeris> compute(List<Double> JDEs, MagnitudeParameters magnitudeParameters, OrbitElements orbitParams) throws VSOPException {
+    static public List<Ephemeris> compute(List<Double> jdes, MagnitudeParameters magnitudeParameters, OrbitElements orbitParams) throws VSOPException {
         OrbitCalculator orbitCalculator = new OrbitCalculator(orbitParams);
         MagnitudeCalculator magnitudeCalculator = new MagnitudeCalculator(magnitudeParameters);
 
         List<Ephemeris> ephemerisList = new LinkedList<>();
 
-        for (Double day : JDEs) {
+        for (Double day : jdes) {
             final RectangularCoordinates bodyHeliocentricEquatorialCoords = orbitCalculator.computeForDay(day);
 
             // Sun's geocentric rectangular equatorial coordinates J2000 for JDE

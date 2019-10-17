@@ -7,7 +7,7 @@ import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.utils.MixListsSupplier;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.vsop87.VSOPException;
-import jp.albedo.webapp.external.BodyRecord;
+import jp.albedo.webapp.services.OrbitingBodyRecord;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.util.Pair;
@@ -34,7 +34,7 @@ public class AsteroidConjunctionsCalculator {
 
     public static final double DETAILED_INTERVAL = 1.0 / 24.0 / 6.0; // 10 mins
 
-    public List<Conjunction> calculate(List<BodyRecord> bodies, LocalDate fromDate, LocalDate toDate) {
+    public List<Conjunction> calculate(List<OrbitingBodyRecord> bodies, LocalDate fromDate, LocalDate toDate) {
 
         LOG.info(String.format("Starting calculations, user params: [from=%s, to=%s], " +
                         "system params: [preliminaryInterval=%.2f days, detailedSpan=%.2f days, detailedInterval=%.5f days]",
@@ -53,7 +53,7 @@ public class AsteroidConjunctionsCalculator {
                     try {
                         bodyData.ephemerisList = EllipticMotion.compute(JDEs, bodyData.bodyRecord.getMagnitudeParameters(), bodyData.bodyRecord.getOrbitElements());
                     } catch (VSOPException e) {
-                        throw new RuntimeException("Zonk!");
+                        throw new RuntimeException("Zonk!", e); //FixMe
                     }
                 })
                 .collect(Collectors.toList());
@@ -150,12 +150,12 @@ public class AsteroidConjunctionsCalculator {
 
     public static class BodyData {
 
-        public BodyRecord bodyRecord;
+        public OrbitingBodyRecord bodyRecord;
 
         public List<Ephemeris> ephemerisList;
 
-        public BodyData(BodyRecord bodyRecord) {
-            this.bodyRecord = bodyRecord;
+        public BodyData(OrbitingBodyRecord orbitingBodyRecord) {
+            this.bodyRecord = orbitingBodyRecord;
         }
 
         protected BodyData(List<Ephemeris> ephemerisList) {

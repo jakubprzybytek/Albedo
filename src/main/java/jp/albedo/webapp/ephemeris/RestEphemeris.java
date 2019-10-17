@@ -13,13 +13,16 @@ public class RestEphemeris {
 
     private AstronomicalCoordinates coordinates;
 
+    private double distanceFromSun;
+
     private double distanceFromEarth;
 
     private double apparentMagnitude;
 
-    private RestEphemeris(LocalDateTime jde, AstronomicalCoordinates coordinates, double distanceFromEarth, double apparentMagnitude) {
+    private RestEphemeris(LocalDateTime jde, AstronomicalCoordinates coordinates, double distanceFromSun, double distanceFromEarth, double apparentMagnitude) {
         this.jde = jde;
         this.coordinates = coordinates;
+        this.distanceFromSun = distanceFromSun;
         this.distanceFromEarth = distanceFromEarth;
         this.apparentMagnitude = apparentMagnitude;
     }
@@ -32,6 +35,7 @@ public class RestEphemeris {
         return new RestEphemeris(
                 JulianDay.toDateTime(ephemeris.jde),
                 coordsInDegrees,
+                Precision.round(ephemeris.distanceFromSun, 6),
                 Precision.round(ephemeris.distanceFromEarth, 6),
                 ephemeris.apparentMagnitude);
     }

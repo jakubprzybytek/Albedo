@@ -5,6 +5,9 @@
 *.log
 
 .idea
+.classpath
+.project
+.settings
 
 package-lock.json
 

@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Forms(props) {
 
-  const [bodyName, setBodyName] = React.useState("Ceres");
+  const [bodyName, setBodyName] = React.useState("Venus");
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
   const [interval, setInterval] = React.useState("1.0");
@@ -37,8 +37,10 @@ export default function Forms(props) {
   }
 
   function onSubmitResponse(data) {
-    props.updateBodyRecord(data.bodyRecord);
     props.updateRows(data.ephemerisList);
+    if (data.hasOwnProperty('bodyRecord')) {
+      props.updateBodyRecord(data.bodyRecord);
+    }
   }
 
   const classes = useStyles();

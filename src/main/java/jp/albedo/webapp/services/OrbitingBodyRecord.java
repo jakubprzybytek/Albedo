@@ -1,10 +1,10 @@
-package jp.albedo.webapp.external;
+package jp.albedo.webapp.services;
 
 import jp.albedo.common.BodyDetails;
 import jp.albedo.ephemeris.common.MagnitudeParameters;
 import jp.albedo.ephemeris.common.OrbitElements;
 
-public class BodyRecord {
+public class OrbitingBodyRecord {
 
     private BodyDetails bodyDetails;
 
@@ -12,7 +12,7 @@ public class BodyRecord {
 
     private OrbitElements orbitElements;
 
-    public BodyRecord(BodyDetails bodyDetails, MagnitudeParameters magnitudeParameters, OrbitElements orbitElements) {
+    public OrbitingBodyRecord(BodyDetails bodyDetails, MagnitudeParameters magnitudeParameters, OrbitElements orbitElements) {
         this.bodyDetails = bodyDetails;
         this.magnitudeParameters = magnitudeParameters;
         this.orbitElements = orbitElements;

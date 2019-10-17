@@ -1,10 +1,10 @@
-package jp.albedo.webapp.ephemeris;
+package jp.albedo.webapp.ephemeris.orbitbased;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.EllipticMotion;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.vsop87.VSOPException;
-import jp.albedo.webapp.external.BodyRecord;
+import jp.albedo.webapp.services.OrbitingBodyRecord;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
@@ -15,12 +15,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Component
-public class EphemerisCalculator {
+public class OrbitBasedEphemerisCalculator {
 
-    private static Log LOG = LogFactory.getLog(EphemerisCalculator.class);
+    private static Log LOG = LogFactory.getLog(OrbitBasedEphemerisCalculator.class);
 
-    public List<Ephemeris> compute(BodyRecord bodyRecord, LocalDate fromDate, LocalDate toDate, double interval) throws VSOPException {
-        LOG.info(String.format("Starting calculations, params: [body: %s, from=%s, to=%s, interval=%.2f]", bodyRecord.getBodyDetails().name, fromDate, toDate, interval));
+    public List<Ephemeris> compute(OrbitingBodyRecord bodyRecord, LocalDate fromDate, LocalDate toDate, double interval) throws VSOPException {
+        LOG.info(String.format("Starting calculations based on orbit elements, params: [body: %s, from=%s, to=%s, interval=%.2f]", bodyRecord.getBodyDetails().name, fromDate, toDate, interval));
 
         Instant start = Instant.now();
 

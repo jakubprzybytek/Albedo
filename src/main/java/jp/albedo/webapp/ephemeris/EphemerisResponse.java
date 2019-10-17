@@ -1,22 +1,22 @@
 package jp.albedo.webapp.ephemeris;
 
-import jp.albedo.webapp.external.BodyRecord;
+import jp.albedo.webapp.services.OrbitingBodyRecord;
 
 import java.util.List;
 
 public class EphemerisResponse {
 
-    private BodyRecord bodyRecord;
+    private OrbitingBodyRecord orbitingBodyRecord;
 
     private List<RestEphemeris> ephemerisList;
 
-    public EphemerisResponse(BodyRecord bodyRecord, List<RestEphemeris> ephemerisList) {
-        this.bodyRecord = bodyRecord;
+    public EphemerisResponse(OrbitingBodyRecord orbitingBodyRecord, List<RestEphemeris> ephemerisList) {
+        this.orbitingBodyRecord = orbitingBodyRecord;
         this.ephemerisList = ephemerisList;
     }
 
-    public BodyRecord getBodyRecord() {
-        return bodyRecord;
+    public OrbitingBodyRecord getOrbitingBodyRecord() {
+        return orbitingBodyRecord;
     }
 
     public List<RestEphemeris> getEphemerisList() {
