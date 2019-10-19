@@ -6,14 +6,9 @@ import BodyCard from './BodyCard';
 
 export default function EphemerisPanel() {
 
-  const [rows, setRows] = React.useState([]);
-  const [bodyRecord, setBodyRecord] = React.useState({
+  const defaultBodyCard = {
     bodyDetails: {
       name: "n/a"
-    },
-    magnitudeParameters: {
-      H: 'n/a',
-      G: 'n/a'
     },
     orbitElements: {
       epoch: 'n/a',
@@ -25,17 +20,28 @@ export default function EphemerisPanel() {
       inclination: 'n/a',
       meanAnomalyEpoch: 'n/a',
       meanAnomalyAtEpoch: 'n/a'
-    }
-  });
+    },
+    magnitudeParameters: {
+      H: 'n/a',
+      G: 'n/a'
+    }, ...{}
+  };
+
+  const [rows, setRows] = React.useState([]);
+  const [bodyCard, setBodyCard] = React.useState(defaultBodyCard);
+
+  function updateBodyCard(newBodyCard) {
+    setBodyCard({...defaultBodyCard, ...newBodyCard});
+  }
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={8}>
-        <EphemerisForm updateRows={setRows} updateBodyRecord={setBodyRecord} />
+        <EphemerisForm updateRows={setRows} updateBodyCard={updateBodyCard} />
         <EphemerisTable rows={rows} />
       </Grid>
       <Grid item xs={4}>
-        <BodyCard bodyRecord={bodyRecord} />
+        <BodyCard bodyCard={bodyCard} />
       </Grid>
     </Grid>
   );

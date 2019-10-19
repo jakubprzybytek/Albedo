@@ -1,4 +1,4 @@
-package jp.albedo.webapp.ephemeris;
+package jp.albedo.webapp.ephemeris.rest;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.JulianDay;

@@ -30,8 +30,8 @@ export default function EphemerisTable(props) {
 				<TableHead>
 					<TableRow>
 						<TableCell>Time [TDE]</TableCell>
-						<TableCell align="center">R.A.</TableCell>
-						<TableCell align="center">Dec.</TableCell>
+						<TableCell align="center">R.A. [hms]</TableCell>
+						<TableCell align="center">Dec. [°]</TableCell>
 						<TableCell align="center">Distance from Sun [AU]</TableCell>
 						<TableCell align="center">Distance from Earth [AU]</TableCell>
 						<TableCell align="right">Magnitude</TableCell>

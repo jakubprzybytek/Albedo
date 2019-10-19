@@ -81715,7 +81715,7 @@ function BodyCard(props) {
       "aria-label": "recipe",
       className: classes.avatar
     }, "A"),
-    title: props.bodyRecord.bodyDetails.name,
+    title: props.bodyCard.bodyDetails.name,
     subheader: "Asteroid"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
     variant: "body2",
@@ -81741,7 +81741,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Epoch: "), props.bodyRecord.orbitElements.epoch)
+    }, "Epoch: "), props.bodyCard.orbitElements.epoch)
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81749,7 +81749,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Eccentricity (e): "), props.bodyRecord.orbitElements.eccentricity)
+    }, "Eccentricity (e): "), props.bodyCard.orbitElements.eccentricity)
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81757,7 +81757,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Semimajor axis (a): "), props.bodyRecord.orbitElements.semiMajorAxis + " AU")
+    }, "Semimajor axis (a): "), props.bodyCard.orbitElements.semiMajorAxis + " AU")
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81765,7 +81765,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Mean motion (n): "), props.bodyRecord.orbitElements.meanMotion + '°/day')
+    }, "Mean motion (n): "), props.bodyCard.orbitElements.meanMotion + '°/day')
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81773,7 +81773,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Argument of perihelion (\u03C9): "), props.bodyRecord.orbitElements.argumentOfPerihelion + '°')
+    }, "Argument of perihelion (\u03C9): "), props.bodyCard.orbitElements.argumentOfPerihelion + '°')
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81781,7 +81781,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Longitude of ascending node (\u03A9): "), props.bodyRecord.orbitElements.longitudeOfAscendingNode + "°")
+    }, "Longitude of ascending node (\u03A9): "), props.bodyCard.orbitElements.longitudeOfAscendingNode + "°")
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81789,7 +81789,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Inclination (i): "), props.bodyRecord.orbitElements.inclination + '°')
+    }, "Inclination (i): "), props.bodyCard.orbitElements.inclination + '°')
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81797,7 +81797,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Mean anomaly epoch (T): "), props.bodyRecord.orbitElements.meanAnomalyEpoch + ' JDE')
+    }, "Mean anomaly epoch (T): "), props.bodyCard.orbitElements.meanAnomalyEpoch + ' JDE')
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81805,7 +81805,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Mean anomaly at epoch (M): "), props.bodyRecord.orbitElements.meanAnomalyAtEpoch + '°')
+    }, "Mean anomaly at epoch (M): "), props.bodyCard.orbitElements.meanAnomalyAtEpoch + '°')
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], null, "Magnitude System:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_7__["default"], {
     dense: true
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
@@ -81815,7 +81815,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Absolute Magnitude (H): "), props.bodyRecord.magnitudeParameters.H)
+    }, "Absolute Magnitude (H): "), props.bodyCard.magnitudeParameters.H)
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: classes.listItem,
     secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -81823,7 +81823,7 @@ function BodyCard(props) {
       variant: "body2",
       className: classes.inline,
       color: "textPrimary"
-    }, "Slope parameter (G): "), props.bodyRecord.magnitudeParameters.G)
+    }, "Slope parameter (G): "), props.bodyCard.magnitudeParameters.G)
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Link__WEBPACK_IMPORTED_MODULE_10__["default"], {
     href: "https://minorplanetcenter.net/data",
     className: classes.link
@@ -81914,10 +81914,7 @@ function Forms(props) {
 
   function onSubmitResponse(data) {
     props.updateRows(data.ephemerisList);
-
-    if (data.hasOwnProperty('orbitingBodyRecord') && data.orbitingBodyRecord != null) {
-      props.updateBodyRecord(data.orbitingBodyRecord);
-    }
+    props.updateBodyCard(data.bodyInfo);
   }
 
   var classes = useStyles();
@@ -81976,7 +81973,7 @@ function Forms(props) {
     },
     margin: "normal"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_SubmitBar__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    url: "http://localhost:8080/api/ephemeris",
+    url: "http://localhost:8080/api/ephemerides",
     buildProps: onBuildProps,
     submitResponse: onSubmitResponse
   })));
@@ -82008,24 +82005,21 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
 
 
 function EphemerisPanel() {
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState([]),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      rows = _React$useState2[0],
-      setRows = _React$useState2[1];
-
-  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({
+  var defaultBodyCard = _objectSpread({
     bodyDetails: {
       name: "n/a"
-    },
-    magnitudeParameters: {
-      H: 'n/a',
-      G: 'n/a'
     },
     orbitElements: {
       epoch: 'n/a',
@@ -82037,11 +82031,26 @@ function EphemerisPanel() {
       inclination: 'n/a',
       meanAnomalyEpoch: 'n/a',
       meanAnomalyAtEpoch: 'n/a'
+    },
+    magnitudeParameters: {
+      H: 'n/a',
+      G: 'n/a'
     }
-  }),
+  }, {});
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState([]),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      rows = _React$useState2[0],
+      setRows = _React$useState2[1];
+
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(defaultBodyCard),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
-      bodyRecord = _React$useState4[0],
-      setBodyRecord = _React$useState4[1];
+      bodyCard = _React$useState4[0],
+      setBodyCard = _React$useState4[1];
+
+  function updateBodyCard(newBodyCard) {
+    setBodyCard(_objectSpread({}, defaultBodyCard, {}, newBodyCard));
+  }
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__["default"], {
     container: true,
@@ -82051,14 +82060,14 @@ function EphemerisPanel() {
     xs: 8
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EphemerisForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
     updateRows: setRows,
-    updateBodyRecord: setBodyRecord
+    updateBodyCard: updateBodyCard
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EphemerisTable__WEBPACK_IMPORTED_MODULE_3__["default"], {
     rows: rows
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__["default"], {
     item: true,
     xs: 4
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_BodyCard__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    bodyRecord: bodyRecord
+    bodyCard: bodyCard
   })));
 }
 
@@ -82116,9 +82125,9 @@ function EphemerisTable(props) {
     size: "small"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableHead__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], null, "Time [TDE]"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
     align: "center"
-  }, "R.A."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, "R.A. [hms]"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
     align: "center"
-  }, "Dec."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, "Dec. [\xB0]"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
     align: "center"
   }, "Distance from Sun [AU]"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
     align: "center"

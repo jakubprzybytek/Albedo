@@ -12,4 +12,5 @@ public class BodyDetails {
     public String toString() {
         return this.name;
     }
+
 }

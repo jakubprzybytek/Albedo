@@ -38,9 +38,7 @@ export default function Forms(props) {
 
   function onSubmitResponse(data) {
     props.updateRows(data.ephemerisList);
-    if (data.hasOwnProperty('orbitingBodyRecord') && data.orbitingBodyRecord != null) {
-      props.updateBodyRecord(data.orbitingBodyRecord);
-    }
+    props.updateBodyCard(data.bodyInfo);
   }
 
   const classes = useStyles();
@@ -91,7 +89,7 @@ export default function Forms(props) {
             onChange={event => setInterval(event.target.value)}
             margin="normal" />
         </div>
-        <SubmitBar url='http://localhost:8080/api/ephemeris' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar url='http://localhost:8080/api/ephemerides' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
       </form>
     </Paper>
   );

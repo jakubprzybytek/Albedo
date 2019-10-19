@@ -63,7 +63,7 @@ export default function BodyCard(props) {
 	<Card className={classes.card}>
 		<CardHeader
 			avatar={<Avatar aria-label="recipe" className={classes.avatar}>A</Avatar>}
-			title={props.bodyRecord.bodyDetails.name}
+			title={props.bodyCard.bodyDetails.name}
 			subheader="Asteroid"/>
 		<CardContent>
 			<Typography variant="body2" color="textSecondary" component="p">
@@ -88,55 +88,55 @@ export default function BodyCard(props) {
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Epoch: </Typography>
-								{props.bodyRecord.orbitElements.epoch}
+								{props.bodyCard.orbitElements.epoch}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Eccentricity (e): </Typography>
-								{props.bodyRecord.orbitElements.eccentricity}
+								{props.bodyCard.orbitElements.eccentricity}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Semimajor axis (a): </Typography>
-								{props.bodyRecord.orbitElements.semiMajorAxis + " AU"}
+								{props.bodyCard.orbitElements.semiMajorAxis + " AU"}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean motion (n): </Typography>
-								{props.bodyRecord.orbitElements.meanMotion + '°/day'}
+								{props.bodyCard.orbitElements.meanMotion + '°/day'}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Argument of perihelion (ω): </Typography>
-								{props.bodyRecord.orbitElements.argumentOfPerihelion + '°'}
+								{props.bodyCard.orbitElements.argumentOfPerihelion + '°'}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Longitude of ascending node (Ω): </Typography>
-								{props.bodyRecord.orbitElements.longitudeOfAscendingNode + "°"}
+								{props.bodyCard.orbitElements.longitudeOfAscendingNode + "°"}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Inclination (i): </Typography>
-								{props.bodyRecord.orbitElements.inclination + '°'}
+								{props.bodyCard.orbitElements.inclination + '°'}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean anomaly epoch (T): </Typography>
-								{props.bodyRecord.orbitElements.meanAnomalyEpoch + ' JDE'}
+								{props.bodyCard.orbitElements.meanAnomalyEpoch + ' JDE'}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean anomaly at epoch (M): </Typography>
-								{props.bodyRecord.orbitElements.meanAnomalyAtEpoch + '°'}
+								{props.bodyCard.orbitElements.meanAnomalyAtEpoch + '°'}
 							</React.Fragment>} />
 					</ListItem>
 				</List>
@@ -145,13 +145,13 @@ export default function BodyCard(props) {
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Absolute Magnitude (H): </Typography>
-								{props.bodyRecord.magnitudeParameters.H}
+								{props.bodyCard.magnitudeParameters.H}
 							</React.Fragment>} />
 					</ListItem>
 					<ListItem>
 						<ListItemText className={classes.listItem} secondary={<React.Fragment>
 								<Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Slope parameter (G): </Typography>
-								{props.bodyRecord.magnitudeParameters.G}
+								{props.bodyCard.magnitudeParameters.G}
 							</React.Fragment>} />
 					</ListItem>
 				</List>
