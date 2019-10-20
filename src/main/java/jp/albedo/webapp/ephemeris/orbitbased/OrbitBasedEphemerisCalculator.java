@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,15 +29,19 @@ public class OrbitBasedEphemerisCalculator {
         return this.orbitsService.getByName(bodyName);
     }
 
-    public List<Ephemeris> compute(OrbitingBodyRecord bodyRecord, LocalDate fromDate, LocalDate toDate, double interval) throws VSOPException {
-        LOG.info(String.format("Starting calculations based on orbit elements, params: [body: %s, from=%s, to=%s, interval=%.2f]", bodyRecord.getBodyDetails().name, fromDate, toDate, interval));
+    public List<Ephemeris> compute(OrbitingBodyRecord bodyRecord, Double fromDate, Double toDate, double interval) throws VSOPException {
+        if (LOG.isDebugEnabled()) {
+            LOG.info(String.format("Starting calculations based on orbit elements, params: [body: %s, from=%s, to=%s, interval=%.2f]", bodyRecord.getBodyDetails().name, fromDate, toDate, interval));
+        }
 
         Instant start = Instant.now();
 
-        List<Double> JDEs = JulianDay.forRange(JulianDay.fromDateTime(fromDate), JulianDay.fromDateTime(toDate), interval);
+        List<Double> JDEs = JulianDay.forRange(fromDate, toDate, interval);
         final List<Ephemeris> ephemeris = EllipticMotion.compute(JDEs, bodyRecord.getMagnitudeParameters(), bodyRecord.getOrbitElements());
 
-        LOG.info(String.format("Calculated %d ephemeris in %s", ephemeris.size(), Duration.between(start, Instant.now())));
+        if (LOG.isDebugEnabled()) {
+            LOG.info(String.format("Calculated %d ephemeris in %s", ephemeris.size(), Duration.between(start, Instant.now())));
+        }
 
         return ephemeris;
     }

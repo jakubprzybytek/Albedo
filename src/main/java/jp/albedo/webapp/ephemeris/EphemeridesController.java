@@ -1,7 +1,10 @@
 package jp.albedo.webapp.ephemeris;
 
+import jp.albedo.common.JulianDay;
 import jp.albedo.webapp.ephemeris.rest.EphemeridesResponse;
 import jp.albedo.webapp.ephemeris.rest.RestEphemeris;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,8 @@ import java.util.stream.Collectors;
 @RestController
 public class EphemeridesController {
 
+    private static Log LOG = LogFactory.getLog(EphemeridesController.class);
+
     @Autowired
     private EphemeridesOrchestrator ephemeridesOrchestrator;
 
@@ -25,7 +30,9 @@ public class EphemeridesController {
                                          @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                          @RequestParam(value = "interval") double interval) throws Exception {
 
-        ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.ephemeris(bodyName, fromDate, toDate, interval);
+        LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f]", bodyName, fromDate, toDate, interval));
+
+        ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDateTime(fromDate), JulianDay.fromDateTime(toDate), interval);
 
         List<RestEphemeris> ephemerides = computedEphemerides.getEphemerides()
                 .stream()

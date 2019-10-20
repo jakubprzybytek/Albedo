@@ -1,8 +1,8 @@
 package jp.albedo.webapp.asteroidConjunctions;
 
 import jp.albedo.common.JulianDay;
-import jp.albedo.webapp.asteroidConjunctions.AsteroidConjunctionsCalculator.Conjunction;
 import jp.albedo.vsop87.VSOPException;
+import jp.albedo.webapp.asteroidConjunctions.rest.RestConjunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class AsteroidConjunctionsController {
+public class ConjunctionsController {
+
+    @Autowired
+    private ConjunctionsOrchestrator conjunctionsOrchestrator;
 
     @Autowired
     private AsteroidConjunctionsOrchestrator asteroidConjunctionsOrchestrator;
@@ -28,10 +31,10 @@ public class AsteroidConjunctionsController {
             @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate)
             throws IOException, VSOPException, URISyntaxException {
 
-        List<Conjunction> conjunctions = this.asteroidConjunctionsOrchestrator.orchestrate(fromDate, toDate);
+        List<Conjunction> conjunctions = this.conjunctionsOrchestrator.compute(JulianDay.fromDateTime(fromDate), JulianDay.fromDateTime(toDate));
 
         return conjunctions.stream()
-                .map(c -> new RestConjunction(c.first.bodyRecord.getBodyDetails(), c.second.bodyRecord.getBodyDetails(), JulianDay.toDateTime(c.jde), Math.toDegrees(c.separation)))
+                .map(c -> new RestConjunction(c.first.getBodyDetails(), c.second.getBodyDetails(), JulianDay.toDateTime(c.jde), Math.toDegrees(c.separation)))
                 .collect(Collectors.toList());
     }
 

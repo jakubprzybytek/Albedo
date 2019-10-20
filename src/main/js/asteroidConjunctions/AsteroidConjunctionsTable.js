@@ -32,7 +32,7 @@ export default function AsteroidConjunctionsTable(props) {
 						<TableCell>Time [TDE]</TableCell>
 						<TableCell align="center">First body</TableCell>
 						<TableCell align="center">Second body</TableCell>
-						<TableCell align="right">Separation</TableCell>
+						<TableCell align="right">Separation [°]</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>

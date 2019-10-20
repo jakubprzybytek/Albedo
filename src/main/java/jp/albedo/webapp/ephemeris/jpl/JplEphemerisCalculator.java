@@ -1,5 +1,6 @@
 package jp.albedo.webapp.ephemeris.jpl;
 
+import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jpl.Body;
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,21 +29,57 @@ public class JplEphemerisCalculator {
     @Autowired
     private JplKernelsService jplKernelsService;
 
+    /**
+     * Tries to parse body name. Works only for bodies that this calculator can support.
+     *
+     * @param bodyName
+     * @return
+     */
     public Optional<Body> parseBody(String bodyName) {
         return Optional.ofNullable(EnumUtils.getEnum(Body.class, bodyName));
     }
 
-    public List<Ephemeris> compute(Body body, LocalDate fromDate, LocalDate toDate, double interval) throws IOException, JPLException {
-        LOG.info(String.format("Starting calculations based on JPL's SPICE Kernels, params: [body: %s, from=%s, to=%s, interval=%.2f]", body.name(), fromDate, toDate, interval));
+    /**
+     * Returns list of bodies of given type that this calculator supports.
+     *
+     * @param bodyType
+     * @return
+     */
+    public List<Body> getSupportedBodiesByType(BodyType bodyType) {
+        if (bodyType == BodyType.Planet) {
+            return Arrays.asList(Body.Mercury, Body.Venus, Body.Mars, Body.Jupiter);
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
+     * Computes ephemerides for given body and other parameters.
+     *
+     * @param body
+     * @param fromDate
+     * @param toDate
+     * @param interval
+     * @return
+     * @throws IOException
+     * @throws JPLException
+     */
+    public List<Ephemeris> compute(Body body, Double fromDate, Double toDate, double interval) throws IOException, JPLException {
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(String.format("Starting calculations based on JPL's SPICE Kernels, params: [body: %s, from=%s, to=%s, interval=%.2f]", body.name(), fromDate, toDate, interval));
+        }
 
         final Instant start = Instant.now();
 
         final StateCalculator stateCalculator = new StateCalculator(this.jplKernelsService.getSpKernel());
 
-        final List<Double> jdes = JulianDay.forRange(JulianDay.fromDateTime(fromDate), JulianDay.fromDateTime(toDate), interval);
+        final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
         final List<Ephemeris> ephemeris = stateCalculator.computeEphemeridesForJds(body, jdes);
 
-        LOG.info(String.format("Calculated %d ephemeris in %s", ephemeris.size(), Duration.between(start, Instant.now())));
+        if (LOG.isDebugEnabled()) {
+            LOG.info(String.format("Calculated %d ephemeris in %s", ephemeris.size(), Duration.between(start, Instant.now())));
+        }
 
         return ephemeris;
     }
