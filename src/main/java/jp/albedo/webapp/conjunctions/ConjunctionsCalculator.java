@@ -1,7 +1,6 @@
-package jp.albedo.webapp.asteroidConjunctions;
+package jp.albedo.webapp.conjunctions;
 
 import jp.albedo.common.Angles;
-import jp.albedo.utils.MixListsSupplier;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import org.apache.commons.logging.Log;
@@ -15,21 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class ConjunctionsCalculator {
 
     private static Log LOG = LogFactory.getLog(ConjunctionsCalculator.class);
 
-    public List<Pair<ComputedEphemerides, ComputedEphemerides>> mix(List<ComputedEphemerides> bodies) {
-
-        // Mix body data and generate all possible pairs
-        return Stream.generate(new MixListsSupplier<>(bodies))
-                .limit(bodies.size() * (bodies.size() - 1) / 2)
-                .collect(Collectors.toList());
-    }
-
+    /**
+     * Finds conjunctions between pairs of ephemerides by looking for smallest separation.
+     *
+     * @param bodyPairs
+     * @return
+     */
     public List<Conjunction> calculate(List<Pair<ComputedEphemerides, ComputedEphemerides>> bodyPairs) {
 
         if (LOG.isDebugEnabled()) {

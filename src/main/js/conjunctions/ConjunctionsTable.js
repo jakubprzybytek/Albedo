@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-export default function AsteroidConjunctionsTable(props) {
+export default function ConjunctionsTable(props) {
 
 	const classes = useStyles();
 

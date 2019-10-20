@@ -1,4 +1,4 @@
-package jp.albedo.webapp.asteroidConjunctions.rest;
+package jp.albedo.webapp.conjunctions.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.BodyDetails;

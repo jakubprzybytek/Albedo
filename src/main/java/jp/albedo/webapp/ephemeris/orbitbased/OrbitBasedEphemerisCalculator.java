@@ -1,5 +1,6 @@
 package jp.albedo.webapp.ephemeris.orbitbased;
 
+import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.EllipticMotion;
 import jp.albedo.ephemeris.Ephemeris;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +29,20 @@ public class OrbitBasedEphemerisCalculator {
 
     public Optional<OrbitingBodyRecord> findBody(String bodyName) throws IOException {
         return this.orbitsService.getByName(bodyName);
+    }
+
+    /**
+     * Returns list of bodies of given type that this calculator supports.
+     *
+     * @param bodyType
+     * @return
+     */
+    public List<OrbitingBodyRecord> getSupportedBodiesByType(BodyType bodyType) throws IOException {
+        if (bodyType == BodyType.Asteroid) {
+            return this.orbitsService.getAll();
+        }
+
+        return Collections.emptyList();
     }
 
     public List<Ephemeris> compute(OrbitingBodyRecord bodyRecord, Double fromDate, Double toDate, double interval) throws VSOPException {

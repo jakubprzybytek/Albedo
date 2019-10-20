@@ -1,8 +1,7 @@
-package jp.albedo.webapp.asteroidConjunctions;
+package jp.albedo.webapp.conjunctions;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.ephemeris.Ephemeris;
-import jp.albedo.webapp.asteroidConjunctions.AsteroidConjunctionsCalculator;
 import org.apache.commons.math3.util.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

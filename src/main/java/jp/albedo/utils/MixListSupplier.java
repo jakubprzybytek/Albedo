@@ -5,7 +5,7 @@ import org.apache.commons.math3.util.Pair;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class MixListsSupplier<T> implements Supplier<Pair<T, T>> {
+public class MixListSupplier<T> implements Supplier<Pair<T, T>> {
 
     final private Iterator<T> mainIterator;
 
@@ -15,7 +15,7 @@ public class MixListsSupplier<T> implements Supplier<Pair<T, T>> {
 
     private Iterator<T> supportingIterator;
 
-    public MixListsSupplier(List<T> list) {
+    public MixListSupplier(List<T> list) {
         this.mainIterator = list.iterator();
         this.currentMainObject = this.mainIterator.next();
         this.supportingQueue = new ArrayDeque<>(list);

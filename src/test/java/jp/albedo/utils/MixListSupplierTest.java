@@ -10,12 +10,12 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MixListsSupplierTest {
+class MixListSupplierTest {
 
     @Test
     public void mixingListSupplier() {
         List<String> list = Arrays.asList("A", "B", "C", "D");
-        List<String> pairsString = Stream.generate(new MixListsSupplier<String>(list))
+        List<String> pairsString = Stream.generate(new MixListSupplier<String>(list))
                 .limit(6)
                 .map(Pair::toString)
                 .collect(Collectors.toList());

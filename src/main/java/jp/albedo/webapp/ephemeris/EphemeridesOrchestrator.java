@@ -3,6 +3,7 @@ package jp.albedo.webapp.ephemeris;
 import jp.albedo.common.BodyType;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jpl.Body;
+import jp.albedo.vsop87.VSOPException;
 import jp.albedo.webapp.ephemeris.jpl.JplEphemerisCalculator;
 import jp.albedo.webapp.ephemeris.orbitbased.OrbitBasedEphemerisCalculator;
 import jp.albedo.webapp.services.OrbitingBodyRecord;
@@ -11,11 +12,12 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 public class EphemeridesOrchestrator {
@@ -71,14 +73,15 @@ public class EphemeridesOrchestrator {
      * @param interval
      * @return
      */
-    public List<ComputedEphemerides> computeAll(BodyType bodyType, Double fromDate, Double toDate, double interval) {
+    public List<ComputedEphemerides> computeAll(BodyType bodyType, Double fromDate, Double toDate, double interval) throws IOException {
 
         LOG.info(String.format("Computing ephemerides for multiple bodies, params: [bodyType=%s, from=%s, to=%s, interval=%f]", bodyType, fromDate, toDate, interval));
 
         final Instant start = Instant.now();
 
-        List<Body> bodies = this.jplEphemerisCalculator.getSupportedBodiesByType(bodyType);
-        final List<ComputedEphemerides> ephemeridesList = bodies.parallelStream()
+        final List<ComputedEphemerides> ephemeridesList = new ArrayList<>();
+
+        this.jplEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
                 .map(body -> {
                     try {
                         final List<Ephemeris> ephemerides = this.jplEphemerisCalculator.compute(body, fromDate, toDate, interval);
@@ -87,7 +90,18 @@ public class EphemeridesOrchestrator {
                         throw new RuntimeException(e); // FixMe
                     }
                 })
-                .collect(Collectors.toList());
+                .forEachOrdered(ephemeridesList::add);
+
+        this.orbitBasedEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
+                .map(orbitingBodyRecord -> {
+                    try {
+                        final List<Ephemeris> ephemerides = this.orbitBasedEphemerisCalculator.compute(orbitingBodyRecord, fromDate, toDate, interval);
+                        return new ComputedEphemerides(orbitingBodyRecord.getBodyDetails(), ephemerides);
+                    } catch (VSOPException e) {
+                        throw new RuntimeException(e); // FixMe
+                    }
+                })
+                .forEachOrdered(ephemeridesList::add);
 
         LOG.info(String.format("Computed %d ephemerides in %s", ephemeridesList.size(), Duration.between(start, Instant.now())));
 

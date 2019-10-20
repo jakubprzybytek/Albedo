@@ -1,4 +1,4 @@
-package jp.albedo.webapp.asteroidConjunctions;
+package jp.albedo.webapp.conjunctions;
 
 import jp.albedo.webapp.services.OrbitingBodyRecord;
 import jp.albedo.webapp.services.OrbitsService;

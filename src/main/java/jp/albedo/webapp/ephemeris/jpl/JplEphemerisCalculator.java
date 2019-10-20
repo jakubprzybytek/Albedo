@@ -47,7 +47,7 @@ public class JplEphemerisCalculator {
      */
     public List<Body> getSupportedBodiesByType(BodyType bodyType) {
         if (bodyType == BodyType.Planet) {
-            return Arrays.asList(Body.Mercury, Body.Venus, Body.Mars, Body.Jupiter);
+            return Arrays.asList(Body.Mercury, Body.Venus, Body.Mars, Body.Jupiter, Body.Saturn, Body.Neptune, Body.Uranus);
         }
 
         return Collections.emptyList();

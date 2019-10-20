@@ -1,10 +1,10 @@
-package jp.albedo.webapp.asteroidConjunctions;
+package jp.albedo.webapp.conjunctions;
 
 import jp.albedo.common.Angles;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.EllipticMotion;
 import jp.albedo.ephemeris.Ephemeris;
-import jp.albedo.utils.MixListsSupplier;
+import jp.albedo.utils.MixListSupplier;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.vsop87.VSOPException;
 import jp.albedo.webapp.services.OrbitingBodyRecord;
@@ -63,7 +63,7 @@ public class AsteroidConjunctionsCalculator {
         Instant beforeConjunctions = Instant.now();
 
         // Mix body data and generate all possible pairs
-        List<Pair<BodyData, BodyData>> bodiesToCompare = Stream.generate(new MixListsSupplier<>(bodyEphemeries))
+        List<Pair<BodyData, BodyData>> bodiesToCompare = Stream.generate(new MixListSupplier<>(bodyEphemeries))
                 .limit(bodyEphemeries.size() * (bodyEphemeries.size() - 1) / 2)
                 .collect(Collectors.toList());
 
