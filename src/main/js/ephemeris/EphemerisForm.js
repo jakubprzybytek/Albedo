@@ -89,7 +89,7 @@ export default function Forms(props) {
             onChange={event => setInterval(event.target.value)}
             margin="normal" />
         </div>
-        <SubmitBar url='http://localhost:8080/api/ephemerides' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar url='/api/ephemerides' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
       </form>
     </Paper>
   );

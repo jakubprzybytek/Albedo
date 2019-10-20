@@ -82430,7 +82430,7 @@ function ConjunctionsForm(props) {
       color: "primary"
     })
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_SubmitBar__WEBPACK_IMPORTED_MODULE_12__["default"], {
-    url: "http://localhost:8080/api/asteroidConjunctions",
+    url: "/api/asteroidConjunctions",
     buildProps: onBuildProps,
     submitResponse: props.updateRows
   })));
@@ -82923,7 +82923,7 @@ function Forms(props) {
     },
     margin: "normal"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_SubmitBar__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    url: "http://localhost:8080/api/ephemerides",
+    url: "/api/ephemerides",
     buildProps: onBuildProps,
     submitResponse: onSubmitResponse
   })));
