@@ -46,10 +46,10 @@ public class AsciiFileReader {
         try (final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String line;
 
-            DoublesBlockReader blockReader = new DoublesBlockReader(bufferedReader);
+            DoublesBlockReader doublesReader = new DoublesBlockReader(bufferedReader);
             while ((line = bufferedReader.readLine()) != null && !line.isEmpty()) {
                 // skip description
-                final TimeSpan blockTimeSpan = new TimeSpan(blockReader.read(), blockReader.read());
+                final TimeSpan blockTimeSpan = new TimeSpan(doublesReader.read(), doublesReader.read());
 
                 for (int bodyIndex = 0; bodyIndex < this.contentDescriptor.size(); bodyIndex++) {
 
@@ -60,9 +60,9 @@ public class AsciiFileReader {
 
                         if (bodyIndex != 12) {
                             final XYZCoefficients coefficients = new XYZCoefficients();
-                            coefficients.x = blockReader.read(coefficientDescriptor.getCoefficientNumber());
-                            coefficients.y = blockReader.read(coefficientDescriptor.getCoefficientNumber());
-                            coefficients.z = blockReader.read(coefficientDescriptor.getCoefficientNumber());
+                            coefficients.x = doublesReader.read(coefficientDescriptor.getCoefficientNumber());
+                            coefficients.y = doublesReader.read(coefficientDescriptor.getCoefficientNumber());
+                            coefficients.z = doublesReader.read(coefficientDescriptor.getCoefficientNumber());
 
                             if (!this.coefficientsMap.containsKey(bodyIndex)) {
                                 this.coefficientsMap.put(bodyIndex, new HashMap<>());
@@ -71,8 +71,8 @@ public class AsciiFileReader {
                             this.coefficientsMap.get(bodyIndex).put(timeSpan, coefficients);
                         } else {
                             // body 12 has two coefficients. ignoring for now
-                            blockReader.read(coefficientDescriptor.getCoefficientNumber());
-                            blockReader.read(coefficientDescriptor.getCoefficientNumber());
+                            doublesReader.read(coefficientDescriptor.getCoefficientNumber());
+                            doublesReader.read(coefficientDescriptor.getCoefficientNumber());
                         }
                     }
                 }

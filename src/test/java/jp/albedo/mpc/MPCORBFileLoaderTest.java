@@ -7,6 +7,7 @@ import jp.albedo.ephemeris.common.OrbitElements;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -24,11 +25,10 @@ class MPCORBFileLoaderTest {
     void load() throws IOException, URISyntaxException {
 
         final URL mpcorbFileULR = MPCORBFileLoaderTest.class.getClassLoader().getResource("MPC/MPCORB.DAT.testSample");
-        final Path mpcorbFilePath = Paths.get(mpcorbFileULR.toURI());
 
         System.out.println("Reading MPCORB file");
 
-        List<MPCORBRecord> mpcorbRecords = MPCORBFileLoader.load(mpcorbFilePath.toFile(), 5);
+        List<MPCORBRecord> mpcorbRecords = MPCORBFileLoader.load(new File(mpcorbFileULR.toURI()), 5);
         for (MPCORBRecord record : mpcorbRecords) {
             System.out.printf("%s: %s%n", record.bodyDetails.name, record.orbitElements);
         }
@@ -41,11 +41,10 @@ class MPCORBFileLoaderTest {
     void find() throws IOException, URISyntaxException {
 
         final URL mpcorbFileULR = MPCORBFileLoaderTest.class.getClassLoader().getResource("MPC/MPCORB.DAT.testSample");
-        final Path mpcorbFilePath = Paths.get(mpcorbFileULR.toURI());
 
         System.out.println("Reading MPCORB file");
 
-        Optional<MPCORBRecord> mpcorbRecord = MPCORBFileLoader.find(mpcorbFilePath.toFile(), "Astraea");
+        Optional<MPCORBRecord> mpcorbRecord = MPCORBFileLoader.find(new File(mpcorbFileULR.toURI()), "Astraea");
 
         assertTrue(mpcorbRecord.isPresent());
         assertEquals("Astraea", mpcorbRecord.get().bodyDetails.name);
