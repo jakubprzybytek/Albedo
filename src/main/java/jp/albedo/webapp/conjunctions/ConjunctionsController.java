@@ -21,9 +21,6 @@ public class ConjunctionsController {
     @Autowired
     private ConjunctionsOrchestrator conjunctionsOrchestrator;
 
-    @Autowired
-    private AsteroidConjunctionsOrchestrator asteroidConjunctionsOrchestrator;
-
     @RequestMapping(method = RequestMethod.GET, path = "/api/asteroidConjunctions")
     public List<RestConjunction> ephemeris(
             @RequestParam(value = "primary", required = false, defaultValue = "Planet") List<String> primaryTypeStrings,

@@ -2,6 +2,7 @@ package jp.albedo.webapp.conjunctions;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import org.apache.commons.math3.util.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,12 +30,12 @@ class AsteroidConjunctionsCalculatorTest {
                 new Ephemeris(3.0, new AstronomicalCoordinates(3.0, 1.0), 2.0, 1.0, 0.0)
         );
 
-        Pair<AsteroidConjunctionsCalculator.BodyData, AsteroidConjunctionsCalculator.BodyData> pair = new Pair<>(
-                new AsteroidConjunctionsCalculator.BodyData(ephemeris1),
-                new AsteroidConjunctionsCalculator.BodyData(ephemeris2));
+        Pair<ComputedEphemerides, ComputedEphemerides> pair = new Pair<>(
+                new ComputedEphemerides(null, ephemeris1),
+                new ComputedEphemerides(null, ephemeris2));
 
-        AsteroidConjunctionsCalculator calculator = new AsteroidConjunctionsCalculator();
-        List<AsteroidConjunctionsCalculator.Conjunction> conjunctions = calculator.findConjunctions(pair);
+        ConjunctionsCalculator calculator = new ConjunctionsCalculator();
+        List<Conjunction> conjunctions = calculator.findConjunctions(pair);
 
         assertEquals(1, conjunctions.size());
         assertEquals(1.0, conjunctions.get(0).jde);
@@ -61,10 +62,12 @@ class AsteroidConjunctionsCalculatorTest {
                 new Ephemeris(5.0, new AstronomicalCoordinates(5.0, 1.0), 2.0, 1.0, 0.0)
         );
 
-        Pair<AsteroidConjunctionsCalculator.BodyData, AsteroidConjunctionsCalculator.BodyData> pair = new Pair<>(new AsteroidConjunctionsCalculator.BodyData(ephemeris1), new AsteroidConjunctionsCalculator.BodyData(ephemeris2));
+        Pair<ComputedEphemerides, ComputedEphemerides> pair = new Pair<>(
+                new ComputedEphemerides(null, ephemeris1),
+                new ComputedEphemerides(null, ephemeris2));
 
-        AsteroidConjunctionsCalculator calculator = new AsteroidConjunctionsCalculator();
-        List<AsteroidConjunctionsCalculator.Conjunction> conjunctions = calculator.findConjunctions(pair);
+        ConjunctionsCalculator calculator = new ConjunctionsCalculator();
+        List<Conjunction> conjunctions = calculator.findConjunctions(pair);
 
         assertEquals(2, conjunctions.size());
         assertEquals(2.0, conjunctions.get(0).jde);
