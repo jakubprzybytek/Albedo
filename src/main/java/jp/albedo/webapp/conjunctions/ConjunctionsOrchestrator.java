@@ -1,11 +1,12 @@
 package jp.albedo.webapp.conjunctions;
 
-
+import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.common.BodyType;
 import jp.albedo.utils.MixListSupplier;
 import jp.albedo.utils.MixTwoListsSupplier;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
+import jp.albedo.webapp.services.CatalogueService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.util.Pair;
@@ -39,8 +40,11 @@ public class ConjunctionsOrchestrator {
     @Autowired
     private ConjunctionsCalculator conjunctionsCalculator;
 
-    public List<Conjunction> compute(Set<BodyType> primaryBodyTypes, Set<BodyType> secondaryBodyTypes, Double fromDate, Double toDate) {
-        LOG.info(String.format("Computing conjunctions, params: [primary types:%s, secondary types:%s, from=%s, to=%s]", primaryBodyTypes, secondaryBodyTypes, fromDate, toDate));
+    @Autowired
+    private CatalogueService catalogueService;
+
+    public List<Conjunction<ComputedEphemerides, ComputedEphemerides>> computeForTwoMovingBodies(Set<BodyType> primaryBodyTypes, Set<BodyType> secondaryBodyTypes, Double fromDate, Double toDate) {
+        LOG.info(String.format("Computing conjunctions for two moving bodies, params: [primary types:%s, secondary types:%s, from=%s, to=%s]", primaryBodyTypes, secondaryBodyTypes, fromDate, toDate));
 
         final Instant start = Instant.now();
 
@@ -76,7 +80,7 @@ public class ConjunctionsOrchestrator {
                 .flatMap(Function.identity())
                 .collect(Collectors.toList());
 
-        final List<Conjunction> preliminaryConjunctions = this.conjunctionsCalculator.calculate(bodyPairs);
+        final List<Conjunction<ComputedEphemerides, ComputedEphemerides>> preliminaryConjunctions = this.conjunctionsCalculator.calculateForTwoBodies(bodyPairs);
 
         final List<Pair<ComputedEphemerides, ComputedEphemerides>> closeEncounters = preliminaryConjunctions.parallelStream()
                 .map(conjunction -> {
@@ -94,11 +98,71 @@ public class ConjunctionsOrchestrator {
 
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
 
-        final List<Conjunction> detailedConjunctions = this.conjunctionsCalculator.calculate(closeEncounters).stream()
+        final List<Conjunction<ComputedEphemerides, ComputedEphemerides>> detailedConjunctions = this.conjunctionsCalculator.calculateForTwoBodies(closeEncounters).stream()
                 .sorted((c1, c2) -> Double.compare(c1.jde, c2.jde))
                 .collect(Collectors.toList());
 
         LOG.info(String.format("Found %d conjunctions in %s", closeEncounters.size(), Duration.between(start, Instant.now())));
+
+        return detailedConjunctions;
+    }
+
+    public List<Conjunction<ComputedEphemerides, CatalogueEntry>> computeForBodyAndCatalogueEntry(Set<BodyType> primaryBodyTypes, Double fromDate, Double toDate) {
+
+        LOG.info(String.format("Computing conjunctions of one moving body and catalogue, params: [primary types:%s, from=%s, to=%s]", primaryBodyTypes, fromDate, toDate));
+
+        final Instant start = Instant.now();
+
+        // compute ephemerides for all required body types
+        Map<BodyType, List<ComputedEphemerides>> ephemeridesByType = primaryBodyTypes.stream()
+                .collect(Collectors.toMap(
+                        bodyType -> bodyType,
+                        bodyType -> {
+                            try {
+                                return this.ephemeridesOrchestrator.computeAll(bodyType, fromDate, toDate, PRELIMINARY_INTERVAL);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e); // FixMe
+                            }
+                        }
+                ));
+
+        // generate pairs of ephemerides for further computations
+        final List<Pair<ComputedEphemerides, CatalogueEntry>> pairsToCompare = primaryBodyTypes.stream()
+                .map(bodyType -> {
+                    try {
+                        final List<ComputedEphemerides> firstEphemeridesList = ephemeridesByType.get(bodyType);
+                        final List<CatalogueEntry> catalogueEntries = this.catalogueService.getOpenNgcCatalogue().getAllEntries();
+                        return Stream.generate(new MixTwoListsSupplier<>(firstEphemeridesList, catalogueEntries))
+                                .limit(firstEphemeridesList.size() * catalogueEntries.size());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e); // FixMe
+                    }
+                })
+                .flatMap(Function.identity())
+                .collect(Collectors.toList());
+
+        final List<Conjunction<ComputedEphemerides, CatalogueEntry>> preliminaryConjunctions = this.conjunctionsCalculator.calculateForBodyAndCatalogueEntry(pairsToCompare);
+
+        final List<Pair<ComputedEphemerides, CatalogueEntry>> closeEncounters = preliminaryConjunctions.parallelStream()
+                .map(conjunction -> {
+                    try {
+                        return new Pair<>(
+                                this.ephemeridesOrchestrator.compute(conjunction.first.getBodyDetails().name, conjunction.jde - DETAILED_SPAN / 2.0,
+                                        conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL),
+                                conjunction.second);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e); // FixMe
+                    }
+                })
+                .collect(Collectors.toList());
+
+        LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
+
+        final List<Conjunction<ComputedEphemerides, CatalogueEntry>> detailedConjunctions = this.conjunctionsCalculator.calculateForBodyAndCatalogueEntry(closeEncounters).stream()
+                .sorted((c1, c2) -> Double.compare(c1.jde, c2.jde))
+                .collect(Collectors.toList());
+
+        LOG.info(String.format("Found %d conjunctions in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
 
         return detailedConjunctions;
     }

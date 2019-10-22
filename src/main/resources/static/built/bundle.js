@@ -82430,7 +82430,7 @@ function ConjunctionsForm(props) {
       color: "primary"
     })
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_SubmitBar__WEBPACK_IMPORTED_MODULE_12__["default"], {
-    url: "/api/asteroidConjunctions",
+    url: "/api/conjunctions",
     buildProps: onBuildProps,
     submitResponse: props.updateRows
   })));

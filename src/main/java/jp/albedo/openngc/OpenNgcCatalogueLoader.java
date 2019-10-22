@@ -2,6 +2,7 @@ package jp.albedo.openngc;
 
 import jp.albedo.catalogue.Catalogue;
 import jp.albedo.catalogue.CatalogueEntry;
+import jp.albedo.common.AstronomicalCoordinates;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -14,30 +15,34 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenNGCCatalogueLoader {
+public class OpenNgcCatalogueLoader {
 
-    private static Log LOG = LogFactory.getLog(OpenNGCCatalogueLoader.class);
+    private static Log LOG = LogFactory.getLog(OpenNgcCatalogueLoader.class);
 
     public static Catalogue load(File file) throws IOException {
         final Instant start = Instant.now();
 
         final List<CatalogueEntry> catalogueEntries = new ArrayList<>();
 
+        int loadedEntries = 0;
         final FileReader fileReader = new FileReader(file);
         try (final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             // skip header
             String line = bufferedReader.readLine();
 
-            while ((line = bufferedReader.readLine()) != null && !line.isEmpty()) {
+            while (loadedEntries < 1000 && (line = bufferedReader.readLine()) != null && !line.isEmpty()) {
 
                 String[] values = line.split(";");
 
                 catalogueEntries.add(new CatalogueEntry(
                         values[0],
                         values[1],
-                        parseAngle(values[2]) * 15.0,
-                        parseAngle(values[3])
+                        new AstronomicalCoordinates(
+                                Math.toRadians(parseAngle(values[2]) * 15.0),
+                                Math.toRadians(parseAngle(values[3]))
+                        )
                 ));
+                loadedEntries++;
             }
         }
 

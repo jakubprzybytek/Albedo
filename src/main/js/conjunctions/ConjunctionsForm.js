@@ -82,7 +82,7 @@ export default function ConjunctionsForm(props) {
               <Switch checked={asteroidsChecked} onChange={event => setAsteroidsChecked(event.target.checked)} color="primary" />
             }/>
         </FormGroup>
-        <SubmitBar url='/api/asteroidConjunctions' buildProps={onBuildProps} submitResponse={props.updateRows} />
+        <SubmitBar url='/api/conjunctions' buildProps={onBuildProps} submitResponse={props.updateRows} />
       </form>
     </Paper>
   );

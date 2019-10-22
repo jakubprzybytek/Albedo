@@ -6,17 +6,17 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Supplier;
 
-public class MixTwoListsSupplier<T> implements Supplier<Pair<T, T>> {
+public class MixTwoListsSupplier<A, B> implements Supplier<Pair<A, B>> {
 
-    final private Iterator<T> fistIterator;
+    final private Iterator<A> fistIterator;
 
-    final private Collection<T> secondList;
+    final private Collection<B> secondList;
 
-    private Iterator<T> secondIterator;
+    private Iterator<B> secondIterator;
 
-    private T currentMainObject;
+    private A currentMainObject;
 
-    public MixTwoListsSupplier(Collection<T> firstList, Collection<T> secondList) {
+    public MixTwoListsSupplier(Collection<A> firstList, Collection<B> secondList) {
         this.fistIterator = firstList.iterator();
         this.currentMainObject = this.fistIterator.next();
 
@@ -25,7 +25,7 @@ public class MixTwoListsSupplier<T> implements Supplier<Pair<T, T>> {
     }
 
     @Override
-    public Pair<T, T> get() {
+    public Pair<A, B> get() {
         if (this.secondIterator.hasNext()) {
             return new Pair<>(this.currentMainObject, secondIterator.next());
         } else {

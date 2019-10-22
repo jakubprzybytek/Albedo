@@ -1,18 +1,16 @@
 package jp.albedo.webapp.conjunctions;
 
-import jp.albedo.webapp.ephemeris.ComputedEphemerides;
-
-public class Conjunction {
+public class Conjunction<A, B> {
 
     final public double jde;
 
     final public double separation;
 
-    final public ComputedEphemerides first;
+    final public A first;
 
-    final public ComputedEphemerides second;
+    final public B second;
 
-    public Conjunction(double jde, double separation, ComputedEphemerides first, ComputedEphemerides second) {
+    public Conjunction(double jde, double separation, A first, B second) {
         this.jde = jde;
         this.separation = separation;
         this.first = first;

@@ -1,23 +1,20 @@
 package jp.albedo.catalogue;
 
+import jp.albedo.common.AstronomicalCoordinates;
+
 public class CatalogueEntry {
 
     // main designation
-    public String name;
+    final public String name;
 
-    public String type;
+    final public String type;
 
-    // in degrees
-    public double rightAscention;
+    final public AstronomicalCoordinates coordinates;
 
-    // in degress
-    public double declination;
-
-    public CatalogueEntry(String name, String type, double rightAscention, double declination) {
+    public CatalogueEntry(String name, String type, AstronomicalCoordinates coordinates) {
         this.name = name;
         this.type = type;
-        this.rightAscention = rightAscention;
-        this.declination = declination;
+        this.coordinates = coordinates;
     }
 
 }
