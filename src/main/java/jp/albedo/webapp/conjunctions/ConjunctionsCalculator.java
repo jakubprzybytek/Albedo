@@ -101,7 +101,7 @@ public class ConjunctionsCalculator {
                         (ephemerisPair) -> Angles.separation(ephemerisPair.getFirst().coordinates, ephemerisPair.getSecond().coordinates),
                         (findContext) -> new Conjunction<>(
                                 findContext.lastJde,
-                                findContext.lastMinSeparation,
+                                findContext.lastMinValue,
                                 bodiesPair.getFirst(),
                                 bodiesPair.getSecond()),
                         (ephemerisPair) -> ephemerisPair.getFirst().jde
@@ -121,7 +121,7 @@ public class ConjunctionsCalculator {
                         (ephemeris) -> Angles.separation(ephemeris.coordinates, pairToCompare.getSecond().coordinates),
                         (findContext) -> new Conjunction<>(
                                 findContext.lastJde,
-                                findContext.lastMinSeparation,
+                                findContext.lastMinValue,
                                 pairToCompare.getFirst(),
                                 pairToCompare.getSecond()),
                         (ephemeris) -> ephemeris.jde
