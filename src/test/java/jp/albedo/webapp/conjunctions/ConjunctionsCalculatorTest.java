@@ -36,7 +36,7 @@ class ConjunctionsCalculatorTest {
                 new ComputedEphemerides(null, ephemeris2));
 
         ConjunctionsCalculator calculator = new ConjunctionsCalculator();
-        List<Conjunction<ComputedEphemerides, ComputedEphemerides>> conjunctions = calculator.findConjunctions(pair);
+        List<Conjunction<ComputedEphemerides, ComputedEphemerides>> conjunctions = calculator.findConjunctionsBetweenTwoBodies(pair);
 
         assertEquals(1, conjunctions.size());
         assertEquals(1.0, conjunctions.get(0).jde);
@@ -68,7 +68,7 @@ class ConjunctionsCalculatorTest {
                 new ComputedEphemerides(null, ephemeris2));
 
         ConjunctionsCalculator calculator = new ConjunctionsCalculator();
-        List<Conjunction<ComputedEphemerides, ComputedEphemerides>> conjunctions = calculator.findConjunctions(pair);
+        List<Conjunction<ComputedEphemerides, ComputedEphemerides>> conjunctions = calculator.findConjunctionsBetweenTwoBodies(pair);
 
         assertEquals(2, conjunctions.size());
         assertEquals(2.0, conjunctions.get(0).jde);
@@ -95,7 +95,7 @@ class ConjunctionsCalculatorTest {
                 new CatalogueEntry(null, null, catalogueEntryCoords));
 
         ConjunctionsCalculator calculator = new ConjunctionsCalculator();
-        List<Conjunction<ComputedEphemerides, CatalogueEntry>> conjunctions = calculator.findConjunctionsWithCatalogue(pair);
+        List<Conjunction<ComputedEphemerides, CatalogueEntry>> conjunctions = calculator.findConjunctionsBetweenBodyAndCatalogueEntry(pair);
 
         assertEquals(1, conjunctions.size());
         assertEquals(2.0, conjunctions.get(0).jde);

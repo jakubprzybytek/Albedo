@@ -4,62 +4,55 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Collector;
 
-public class LocalMinimumsFindingCollector<A, R> implements Collector<A, LocalMinimumsFindingCollector.CollectingContext<R>, List<R>> {
+public class LocalMinimumsFindingCollector<A, R> implements Collector<A, LocalMinimumsFindingCollector.CollectingContext<A, R>, List<R>> {
 
     final private Function<A, Double> valueProvider;
 
-    //final private BiFunction<A, Double, R> resultProvider;
-    final private Function<CollectingContext<R>, R> resultProvider;
+    final private BiFunction<A, Double, R> resultProvider;
 
-    final private Function<A, Double> timestampProvider;
-
-    private LocalMinimumsFindingCollector(Function<A, Double> valueProvider, Function<CollectingContext<R>, R> resultProvider, Function<A, Double> timestampProvider) {
+    private LocalMinimumsFindingCollector(Function<A, Double> valueProvider, BiFunction<A, Double, R> resultProvider) {
         this.valueProvider = valueProvider;
         this.resultProvider = resultProvider;
-        this.timestampProvider = timestampProvider;
     }
 
-    public static <A, R> LocalMinimumsFindingCollector<A, R> of(Function<A, Double> valueProvider, Function<CollectingContext<R>, R> resultProvider, Function<A, Double> timestampProvider) {
-        return new LocalMinimumsFindingCollector<>(valueProvider, resultProvider, timestampProvider);
+    public static <A, R> LocalMinimumsFindingCollector<A, R> of(Function<A, Double> valueProvider, BiFunction<A, Double, R> resultProvider) {
+        return new LocalMinimumsFindingCollector<>(valueProvider, resultProvider);
     }
 
     @Override
-    public Supplier<CollectingContext<R>> supplier() {
+    public Supplier<CollectingContext<A, R>> supplier() {
         return CollectingContext::new;
     }
 
     @Override
-    public BiConsumer<CollectingContext<R>, A> accumulator() {
+    public BiConsumer<CollectingContext<A, R>, A> accumulator() {
         return (findContext, item) -> {
             final double currentValue = this.valueProvider.apply(item);
             if (currentValue > findContext.lastMinValue) {
                 if (!findContext.addedLocalMin) {
-                    findContext.result.add(this.resultProvider.apply(findContext));
+                    findContext.result.add(this.resultProvider.apply(findContext.lastObject, findContext.lastMinValue));
                     findContext.addedLocalMin = true;
                 }
             } else {
                 findContext.addedLocalMin = false;
             }
             findContext.lastMinValue = currentValue;
-            findContext.lastJde = this.timestampProvider.apply(item);
+            findContext.lastObject = item;
         };
     }
 
     @Override
-    public BinaryOperator<CollectingContext<R>> combiner() {
+    public BinaryOperator<CollectingContext<A, R>> combiner() {
         return (a, b) -> {
             throw new RuntimeException("Cannot collect concurrent results");
         };
     }
 
     @Override
-    public Function<CollectingContext<R>, List<R>> finisher() {
+    public Function<CollectingContext<A, R>, List<R>> finisher() {
         return (findContext) -> findContext.result;
     }
 
@@ -68,14 +61,14 @@ public class LocalMinimumsFindingCollector<A, R> implements Collector<A, LocalMi
         return Collections.emptySet();
     }
 
-    public static class CollectingContext<A> {
+    public static class CollectingContext<A, R> {
 
-        public double lastMinValue = Double.MAX_VALUE;
+        double lastMinValue = Double.MAX_VALUE;
 
-        public double lastJde;
+        A lastObject;
 
         boolean addedLocalMin;
 
-        public List<A> result = new ArrayList<>();
+        public List<R> result = new ArrayList<>();
     }
 }

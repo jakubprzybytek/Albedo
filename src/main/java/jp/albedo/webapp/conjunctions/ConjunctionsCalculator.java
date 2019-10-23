@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class ConjunctionsCalculator {
+class ConjunctionsCalculator {
 
     private static Log LOG = LogFactory.getLog(ConjunctionsCalculator.class);
 
@@ -26,7 +26,7 @@ public class ConjunctionsCalculator {
      * @param bodyPairs
      * @return List of conjunctions.
      */
-    public List<Conjunction<ComputedEphemerides, ComputedEphemerides>> calculateForTwoBodies(List<Pair<ComputedEphemerides, ComputedEphemerides>> bodyPairs) {
+    List<Conjunction<ComputedEphemerides, ComputedEphemerides>> calculateForTwoBodies(List<Pair<ComputedEphemerides, ComputedEphemerides>> bodyPairs) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d body pairs", bodyPairs.size()));
@@ -36,7 +36,7 @@ public class ConjunctionsCalculator {
 
         // Compare all bodies between each other
         List<Conjunction<ComputedEphemerides, ComputedEphemerides>> conjunctions = bodyPairs.parallelStream()
-                .map(this::findConjunctions)
+                .map(this::findConjunctionsBetweenTwoBodies)
                 .flatMap(List<Conjunction<ComputedEphemerides, ComputedEphemerides>>::stream)
                 .filter(bodiesPair -> bodiesPair.separation < Math.toRadians(1.00))
                 .peek(conjunction -> {
@@ -58,7 +58,7 @@ public class ConjunctionsCalculator {
      * @param pairToCompare
      * @return List of conjunctions.
      */
-    public List<Conjunction<ComputedEphemerides, CatalogueEntry>> calculateForBodyAndCatalogueEntry(List<Pair<ComputedEphemerides, CatalogueEntry>> pairToCompare) {
+    List<Conjunction<ComputedEphemerides, CatalogueEntry>> calculateForBodyAndCatalogueEntry(List<Pair<ComputedEphemerides, CatalogueEntry>> pairToCompare) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d pairs of objects", pairToCompare.size()));
@@ -68,7 +68,7 @@ public class ConjunctionsCalculator {
 
         // Compare all bodies between each other
         List<Conjunction<ComputedEphemerides, CatalogueEntry>> conjunctions = pairToCompare.parallelStream()
-                .map(this::findConjunctionsWithCatalogue)
+                .map(this::findConjunctionsBetweenBodyAndCatalogueEntry)
                 .flatMap(List<Conjunction<ComputedEphemerides, CatalogueEntry>>::stream)
                 .filter(bodiesPair -> bodiesPair.separation < Math.toRadians(1.00))
                 .peek(conjunction -> {
@@ -90,7 +90,7 @@ public class ConjunctionsCalculator {
      * @param bodiesPair
      * @return List of conjunctions.
      */
-    protected List<Conjunction<ComputedEphemerides, ComputedEphemerides>> findConjunctions(Pair<ComputedEphemerides, ComputedEphemerides> bodiesPair) {
+    List<Conjunction<ComputedEphemerides, ComputedEphemerides>> findConjunctionsBetweenTwoBodies(Pair<ComputedEphemerides, ComputedEphemerides> bodiesPair) {
 
         return StreamUtils
                 .zip(
@@ -99,12 +99,11 @@ public class ConjunctionsCalculator {
                         Pair::new)
                 .collect(LocalMinimumsFindingCollector.of(
                         (ephemerisPair) -> Angles.separation(ephemerisPair.getFirst().coordinates, ephemerisPair.getSecond().coordinates),
-                        (findContext) -> new Conjunction<>(
-                                findContext.lastJde,
-                                findContext.lastMinValue,
+                        (ephemerisPair, separation) -> new Conjunction<>(
+                                ephemerisPair.getFirst().jde,
+                                separation,
                                 bodiesPair.getFirst(),
-                                bodiesPair.getSecond()),
-                        (ephemerisPair) -> ephemerisPair.getFirst().jde
+                                bodiesPair.getSecond())
                 ));
     }
 
@@ -114,17 +113,16 @@ public class ConjunctionsCalculator {
      * @param pairToCompare
      * @return List of conjunctions.
      */
-    protected List<Conjunction<ComputedEphemerides, CatalogueEntry>> findConjunctionsWithCatalogue(Pair<ComputedEphemerides, CatalogueEntry> pairToCompare) {
+    List<Conjunction<ComputedEphemerides, CatalogueEntry>> findConjunctionsBetweenBodyAndCatalogueEntry(Pair<ComputedEphemerides, CatalogueEntry> pairToCompare) {
 
         return pairToCompare.getFirst().getEphemerides().stream()
                 .collect(LocalMinimumsFindingCollector.of(
                         (ephemeris) -> Angles.separation(ephemeris.coordinates, pairToCompare.getSecond().coordinates),
-                        (findContext) -> new Conjunction<>(
-                                findContext.lastJde,
-                                findContext.lastMinValue,
+                        (ephemeris, separation) -> new Conjunction<>(
+                                ephemeris.jde,
+                                separation,
                                 pairToCompare.getFirst(),
-                                pairToCompare.getSecond()),
-                        (ephemeris) -> ephemeris.jde
+                                pairToCompare.getSecond())
                 ));
     }
 
