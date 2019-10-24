@@ -1,6 +1,7 @@
 package jp.albedo.mpc;
 
 import jp.albedo.common.BodyDetails;
+import jp.albedo.common.BodyType;
 import jp.albedo.common.Epoch;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.common.MagnitudeParameters;
@@ -105,7 +106,7 @@ public class MPCORBFileLoader {
                     .bodyPosition(meanAnomalyEpoch, meanAnomalyAtEpoch)
                     .build();
 
-            return Optional.of(new MPCORBRecord(new BodyDetails(bodyName), magnitudeParameters, orbitElements));
+            return Optional.of(new MPCORBRecord(new BodyDetails(bodyName, BodyType.Asteroid), magnitudeParameters, orbitElements));
         }
 
         return Optional.empty();

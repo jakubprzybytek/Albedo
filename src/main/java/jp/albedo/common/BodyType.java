@@ -2,7 +2,11 @@ package jp.albedo.common;
 
 public enum BodyType {
 
+    Star,
     Planet,
-    Asteroid;
+    NaturalSatellite,
+    Asteroid,
+
+    Barycenter;
 
 }

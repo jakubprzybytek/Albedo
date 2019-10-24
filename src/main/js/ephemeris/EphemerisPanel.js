@@ -2,13 +2,14 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import EphemerisForm from './EphemerisForm';
 import EphemerisTable from './EphemerisTable';
-import BodyCard from './BodyCard';
+import BodyCard from '../components/BodyCard';
 
 export default function EphemerisPanel() {
 
   const defaultBodyCard = {
     bodyDetails: {
-      name: "n/a"
+      name: "n/a",
+      bodyType: "?"
     },
     orbitElements: {
       epoch: 'n/a',
@@ -41,7 +42,7 @@ export default function EphemerisPanel() {
         <EphemerisTable rows={rows} />
       </Grid>
       <Grid item xs={4}>
-        <BodyCard bodyCard={bodyCard} />
+        <BodyCard bodyInfo={bodyCard} />
       </Grid>
     </Grid>
   );

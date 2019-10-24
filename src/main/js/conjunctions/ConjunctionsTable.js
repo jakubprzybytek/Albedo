@@ -20,37 +20,51 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-export default function ConjunctionsTable(props) {
+export function ConjunctionTableRow(props) {
 
-	const classes = useStyles();
+	const { row, onClick } = props;
+
+	return (
+		<TableRow key={row.index} hover onClick={() => onClick(row)}>
+			<TableCell component="th" scope="row" title={row.jde + " [JDE]"}>
+				{format(Date.parse(row.time), "yyyy-MM-dd HH:mm:ss")}
+			</TableCell>
+			<TableCell align="center">
+				{row.first.name}
+			</TableCell>
+			<TableCell align="center">
+				{row.second.name}
+			</TableCell>
+			<TableCell align="right" title={row.separation.toFixed(6)}>
+				{formatDegrees(row.separation)}
+			</TableCell>
+		</TableRow>
+  );
+}
+
+export default function ConjunctionsTable(props) {
+  const { rows, onConjunctionSelected } = props;
+
+  const classes = useStyles();
+
+	function handleClick(astroEvent) {
+		alert(astroEvent.first.name);
+ 	}
 
 	return (
 		<Paper className={classes.paper}>
 			<Table className={classes.table} size="small">
 				<TableHead>
 					<TableRow>
-						<TableCell>Time [TDE]</TableCell>
+						<TableCell>Time (TDE)</TableCell>
 						<TableCell align="center">First body</TableCell>
 						<TableCell align="center">Second body</TableCell>
 						<TableCell align="right">Separation [°]</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.rows.map(row => (
-						<TableRow key={row.index}>
-							<TableCell component="th" scope="row" title={row.jde + " [JDE]"}>
-								{format(Date.parse(row.time), "yyyy-MM-dd HH:mm:ss")}
-							</TableCell>
-							<TableCell align="center">
-								{row.first.name}
-							</TableCell>
-							<TableCell align="center">
-								{row.second.name}
-							</TableCell>
-							<TableCell align="right" title={row.separation.toFixed(6)}>
-								{formatDegrees(row.separation)}
-							</TableCell>
-						</TableRow>
+					{rows.map(astroEvent => (
+						<ConjunctionTableRow row={astroEvent} onClick={onConjunctionSelected} />
 					))}
 				</TableBody>
 			</Table>

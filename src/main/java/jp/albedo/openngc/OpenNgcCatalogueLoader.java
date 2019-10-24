@@ -25,18 +25,27 @@ public class OpenNgcCatalogueLoader {
         final List<CatalogueEntry> catalogueEntries = new ArrayList<>();
 
         int loadedEntries = 0;
+        int skippedEntries = 0;
+
         final FileReader fileReader = new FileReader(file);
         try (final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             // skip header
             String line = bufferedReader.readLine();
 
-            while (loadedEntries < 1000 && (line = bufferedReader.readLine()) != null && !line.isEmpty()) {
+            while (loadedEntries < 14000 && (line = bufferedReader.readLine()) != null && !line.isEmpty()) {
 
                 String[] values = line.split(";");
 
+                String type = values[1];
+
+                if ("NonEx".equals(type)) {
+                    skippedEntries++;
+                    continue;
+                }
+
                 catalogueEntries.add(new CatalogueEntry(
                         values[0],
-                        values[1],
+                        type,
                         new AstronomicalCoordinates(
                                 Math.toRadians(parseAngle(values[2]) * 15.0),
                                 Math.toRadians(parseAngle(values[3]))
@@ -46,7 +55,7 @@ public class OpenNgcCatalogueLoader {
             }
         }
 
-        LOG.info(String.format("Loaded %d catalogue entries in %s", catalogueEntries.size(), Duration.between(start, Instant.now())));
+        LOG.info(String.format("Loaded %d and skipped %d catalogue entries in %s", catalogueEntries.size(), skippedEntries, Duration.between(start, Instant.now())));
 
         return new Catalogue(catalogueEntries);
     }

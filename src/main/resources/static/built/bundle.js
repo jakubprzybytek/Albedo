@@ -82132,6 +82132,327 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 
 /***/ }),
 
+/***/ "./src/main/js/components/BodyCard.js":
+/*!********************************************!*\
+  !*** ./src/main/js/components/BodyCard.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BodyCard; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js");
+/* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/esm/Card/index.js");
+/* harmony import */ var _material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/CardHeader */ "./node_modules/@material-ui/core/esm/CardHeader/index.js");
+/* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/esm/CardContent/index.js");
+/* harmony import */ var _material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/CardActions */ "./node_modules/@material-ui/core/esm/CardActions/index.js");
+/* harmony import */ var _material_ui_core_List__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/List */ "./node_modules/@material-ui/core/esm/List/index.js");
+/* harmony import */ var _material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/ListItem */ "./node_modules/@material-ui/core/esm/ListItem/index.js");
+/* harmony import */ var _material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/ListItemText */ "./node_modules/@material-ui/core/esm/ListItemText/index.js");
+/* harmony import */ var _material_ui_core_Link__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/Link */ "./node_modules/@material-ui/core/esm/Link/index.js");
+/* harmony import */ var _material_ui_core_Collapse__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/Collapse */ "./node_modules/@material-ui/core/esm/Collapse/index.js");
+/* harmony import */ var _material_ui_core_Avatar__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/core/Avatar */ "./node_modules/@material-ui/core/esm/Avatar/index.js");
+/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+/* harmony import */ var _material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js");
+/* harmony import */ var _material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_16__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["makeStyles"])(function (theme) {
+  return {
+    card: {
+      maxWidth: 345
+    },
+    media: {
+      height: 0,
+      paddingTop: '56.25%' // 16:9
+
+    },
+    expand: {
+      transform: 'rotate(0deg)',
+      marginLeft: 'auto',
+      transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest
+      })
+    },
+    expandOpen: {
+      transform: 'rotate(180deg)'
+    },
+    avatar: {
+      backgroundColor: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_15__["red"][500]
+    },
+    listItem: {
+      marginTop: '0px',
+      marginBottom: '0px'
+    },
+    inline: {
+      display: 'inline',
+      fontSize: '0.8rem'
+    },
+    link: {
+      fontSize: '0.8rem'
+    }
+  };
+});
+function BodyCard(props) {
+  var bodyInfo = props.bodyInfo;
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      expanded = _React$useState2[0],
+      setExpanded = _React$useState2[1];
+
+  var classes = useStyles();
+
+  var handleExpandClick = function handleExpandClick() {
+    setExpanded(!expanded);
+  };
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    className: classes.card
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    avatar: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Avatar__WEBPACK_IMPORTED_MODULE_12__["default"], {
+      className: classes.avatar
+    }, bodyInfo.bodyDetails.bodyType.charAt(0)),
+    title: bodyInfo.bodyDetails.name,
+    subheader: bodyInfo.bodyDetails.bodyType
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+    variant: "body2",
+    color: "textSecondary",
+    component: "p"
+  }, "Lorem ipsum.")), (bodyInfo.orbitElements || bodyInfo.magnitudeParameters) && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    disableSpacing: true
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    className: Object(clsx__WEBPACK_IMPORTED_MODULE_2__["default"])(classes.expand, _defineProperty({}, classes.expandOpen, expanded)),
+    onClick: handleExpandClick,
+    "aria-expanded": expanded,
+    "aria-label": "show more"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_16___default.a, null))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Collapse__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    in: expanded,
+    timeout: "auto",
+    unmountOnExit: true
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], null, "Orbit elements:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    dense: true
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Epoch: "), bodyInfo.orbitElements.epoch)
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Eccentricity (e): "), bodyInfo.orbitElements.eccentricity)
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Semimajor axis (a): "), bodyInfo.orbitElements.semiMajorAxis + " AU")
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Mean motion (n): "), bodyInfo.orbitElements.meanMotion + '°/day')
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Argument of perihelion (\u03C9): "), bodyInfo.orbitElements.argumentOfPerihelion + '°')
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Longitude of ascending node (\u03A9): "), bodyInfo.orbitElements.longitudeOfAscendingNode + "°")
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Inclination (i): "), bodyInfo.orbitElements.inclination + '°')
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Mean anomaly epoch (T): "), bodyInfo.orbitElements.meanAnomalyEpoch + ' JDE')
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Mean anomaly at epoch (M): "), bodyInfo.orbitElements.meanAnomalyAtEpoch + '°')
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], null, "Magnitude System:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    dense: true
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Absolute Magnitude (H): "), bodyInfo.magnitudeParameters.H)
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Slope parameter (G): "), bodyInfo.magnitudeParameters.G)
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Link__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    href: "https://minorplanetcenter.net/data",
+    className: classes.link
+  }, "Source")))));
+}
+
+/***/ }),
+
+/***/ "./src/main/js/components/CatalogueEntryCard.js":
+/*!******************************************************!*\
+  !*** ./src/main/js/components/CatalogueEntryCard.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogueEntryCard; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/esm/Card/index.js");
+/* harmony import */ var _material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/CardHeader */ "./node_modules/@material-ui/core/esm/CardHeader/index.js");
+/* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/esm/CardContent/index.js");
+/* harmony import */ var _material_ui_core_List__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/List */ "./node_modules/@material-ui/core/esm/List/index.js");
+/* harmony import */ var _material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/ListItem */ "./node_modules/@material-ui/core/esm/ListItem/index.js");
+/* harmony import */ var _material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/ListItemText */ "./node_modules/@material-ui/core/esm/ListItemText/index.js");
+/* harmony import */ var _material_ui_core_Avatar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Avatar */ "./node_modules/@material-ui/core/esm/Avatar/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+/* harmony import */ var _utils_Angles__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./../utils/Angles */ "./src/main/js/utils/Angles.js");
+
+
+
+
+
+
+
+
+
+
+
+
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["makeStyles"])(function (theme) {
+  return {
+    card: {
+      maxWidth: 345
+    },
+    avatar: {
+      backgroundColor: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_10__["yellow"][500]
+    },
+    listItem: {
+      marginTop: '0px',
+      marginBottom: '0px'
+    },
+    inline: {
+      display: 'inline',
+      fontSize: '0.8rem'
+    }
+  };
+});
+function CatalogueEntryCard(props) {
+  var catalogueEntry = props.catalogueEntry;
+  var classes = useStyles();
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    className: classes.card
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    avatar: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Avatar__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      className: classes.avatar
+    }, "CE"),
+    title: catalogueEntry.name,
+    subheader: "Catalogue Entry"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_9__["default"], null, catalogueEntry.type), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    dense: true
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "RA: "), Object(_utils_Angles__WEBPACK_IMPORTED_MODULE_11__["formatHourAngle"])(catalogueEntry.coordinates.rightAscension))
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    className: classes.listItem,
+    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      component: "span",
+      variant: "body2",
+      className: classes.inline,
+      color: "textPrimary"
+    }, "Dec: "), Object(_utils_Angles__WEBPACK_IMPORTED_MODULE_11__["formatDegrees"])(catalogueEntry.coordinates.declination))
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    component: "span",
+    variant: "body2",
+    className: classes.inline,
+    color: "textPrimary"
+  }, "Coordinates for mean equatorial and equinox of J2000")));
+}
+
+/***/ }),
+
 /***/ "./src/main/js/components/SubmitBar.js":
 /*!*********************************************!*\
   !*** ./src/main/js/components/SubmitBar.js ***!
@@ -82275,6 +82596,60 @@ function SubmitBar(props) {
     size: 24,
     className: classes.buttonProgress
   })));
+}
+
+/***/ }),
+
+/***/ "./src/main/js/conjunctions/ConjunctionCard.js":
+/*!*****************************************************!*\
+  !*** ./src/main/js/conjunctions/ConjunctionCard.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ConjunctionCard; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/esm/Card/index.js");
+/* harmony import */ var _material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/CardHeader */ "./node_modules/@material-ui/core/esm/CardHeader/index.js");
+/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
+
+
+
+
+
+
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["makeStyles"])(function (theme) {
+  return {
+    card: {
+      maxWidth: 345
+    },
+    avatar: {
+      backgroundColor: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_4__["yellow"][500]
+    },
+    listItem: {
+      marginTop: '0px',
+      marginBottom: '0px'
+    },
+    inline: {
+      display: 'inline',
+      fontSize: '0.8rem'
+    }
+  };
+});
+function ConjunctionCard(props) {
+  var conjunction = props.conjunction;
+  var classes = useStyles();
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    className: classes.card
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    title: "Conjunction",
+    subheader: conjunction.time && Object(date_fns__WEBPACK_IMPORTED_MODULE_5__["format"])(Date.parse(conjunction.time), "yyyy-MM-dd HH:mm:ss") + " (TDE)"
+  }));
 }
 
 /***/ }),
@@ -82450,8 +82825,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ConjunctionsPanel; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ConjunctionsForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ConjunctionsForm */ "./src/main/js/conjunctions/ConjunctionsForm.js");
-/* harmony import */ var _ConjunctionsTable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ConjunctionsTable */ "./src/main/js/conjunctions/ConjunctionsTable.js");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
+/* harmony import */ var _ConjunctionsForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ConjunctionsForm */ "./src/main/js/conjunctions/ConjunctionsForm.js");
+/* harmony import */ var _ConjunctionsTable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ConjunctionsTable */ "./src/main/js/conjunctions/ConjunctionsTable.js");
+/* harmony import */ var _ConjunctionCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ConjunctionCard */ "./src/main/js/conjunctions/ConjunctionCard.js");
+/* harmony import */ var _components_BodyCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/BodyCard */ "./src/main/js/components/BodyCard.js");
+/* harmony import */ var _components_CatalogueEntryCard__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/CatalogueEntryCard */ "./src/main/js/components/CatalogueEntryCard.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -82463,17 +82843,63 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
+
+
+
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["makeStyles"])(function (theme) {
+  return {
+    card: {
+      marginBottom: theme.spacing(2)
+    }
+  };
+});
 function ConjunctionsPanel() {
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState([]),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       rows = _React$useState2[0],
       setRows = _React$useState2[1];
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ConjunctionsForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({}),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      conjunction = _React$useState4[0],
+      setConjunctionCard = _React$useState4[1];
+
+  var classes = useStyles();
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: true,
+    spacing: 2
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    item: true,
+    xs: 8
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ConjunctionsForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
     updateRows: setRows
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ConjunctionsTable__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    rows: rows
-  }));
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ConjunctionsTable__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    rows: rows,
+    onConjunctionSelected: setConjunctionCard
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    item: true,
+    xs: 4
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: classes.card
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ConjunctionCard__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    conjunction: conjunction
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: classes.card
+  }, conjunction.firstObjectType === "Body" && conjunction.first && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_BodyCard__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    bodyInfo: {
+      bodyDetails: conjunction.first
+    }
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: classes.card
+  }, conjunction.secondObjectType === "Body" && conjunction.second && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_BodyCard__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    bodyInfo: {
+      bodyDetails: conjunction.second
+    }
+  }), conjunction.secondObjectType === "CatalogueEntry" && conjunction.second && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_CatalogueEntryCard__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    catalogueEntry: conjunction.second
+  }))));
 }
 
 /***/ }),
@@ -82482,11 +82908,12 @@ function ConjunctionsPanel() {
 /*!*******************************************************!*\
   !*** ./src/main/js/conjunctions/ConjunctionsTable.js ***!
   \*******************************************************/
-/*! exports provided: default */
+/*! exports provided: ConjunctionTableRow, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConjunctionTableRow", function() { return ConjunctionTableRow; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ConjunctionsTable; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -82521,263 +82948,54 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["ma
     }
   };
 });
+function ConjunctionTableRow(props) {
+  var row = props.row,
+      _onClick = props.onClick;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    key: row.index,
+    hover: true,
+    onClick: function onClick() {
+      return _onClick(row);
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    component: "th",
+    scope: "row",
+    title: row.jde + " [JDE]"
+  }, Object(date_fns__WEBPACK_IMPORTED_MODULE_8__["format"])(Date.parse(row.time), "yyyy-MM-dd HH:mm:ss")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    align: "center"
+  }, row.first.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    align: "center"
+  }, row.second.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    align: "right",
+    title: row.separation.toFixed(6)
+  }, Object(_utils_Angles__WEBPACK_IMPORTED_MODULE_9__["formatDegrees"])(row.separation)));
+}
 function ConjunctionsTable(props) {
+  var rows = props.rows,
+      onConjunctionSelected = props.onConjunctionSelected;
   var classes = useStyles();
+
+  function handleClick(astroEvent) {
+    alert(astroEvent.first.name);
+  }
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: classes.paper
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Table__WEBPACK_IMPORTED_MODULE_2__["default"], {
     className: classes.table,
     size: "small"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableHead__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], null, "Time [TDE]"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableHead__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], null, "Time (TDE)"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
     align: "center"
   }, "First body"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
     align: "center"
   }, "Second body"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
     align: "right"
-  }, "Separation [\xB0]"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableBody__WEBPACK_IMPORTED_MODULE_3__["default"], null, props.rows.map(function (row) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      key: row.index
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      component: "th",
-      scope: "row",
-      title: row.jde + " [JDE]"
-    }, Object(date_fns__WEBPACK_IMPORTED_MODULE_8__["format"])(Date.parse(row.time), "yyyy-MM-dd HH:mm:ss")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      align: "center"
-    }, row.first.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      align: "center"
-    }, row.second.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      align: "right",
-      title: row.separation.toFixed(6)
-    }, Object(_utils_Angles__WEBPACK_IMPORTED_MODULE_9__["formatDegrees"])(row.separation)));
+  }, "Separation [\xB0]"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableBody__WEBPACK_IMPORTED_MODULE_3__["default"], null, rows.map(function (astroEvent) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ConjunctionTableRow, {
+      row: astroEvent,
+      onClick: onConjunctionSelected
+    });
   }))));
-}
-
-/***/ }),
-
-/***/ "./src/main/js/ephemeris/BodyCard.js":
-/*!*******************************************!*\
-  !*** ./src/main/js/ephemeris/BodyCard.js ***!
-  \*******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BodyCard; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js");
-/* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/esm/Card/index.js");
-/* harmony import */ var _material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/CardHeader */ "./node_modules/@material-ui/core/esm/CardHeader/index.js");
-/* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/esm/CardContent/index.js");
-/* harmony import */ var _material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/CardActions */ "./node_modules/@material-ui/core/esm/CardActions/index.js");
-/* harmony import */ var _material_ui_core_List__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/List */ "./node_modules/@material-ui/core/esm/List/index.js");
-/* harmony import */ var _material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/ListItem */ "./node_modules/@material-ui/core/esm/ListItem/index.js");
-/* harmony import */ var _material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/ListItemText */ "./node_modules/@material-ui/core/esm/ListItemText/index.js");
-/* harmony import */ var _material_ui_core_Link__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/Link */ "./node_modules/@material-ui/core/esm/Link/index.js");
-/* harmony import */ var _material_ui_core_Collapse__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/Collapse */ "./node_modules/@material-ui/core/esm/Collapse/index.js");
-/* harmony import */ var _material_ui_core_Avatar__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/core/Avatar */ "./node_modules/@material-ui/core/esm/Avatar/index.js");
-/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/index.js");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
-/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
-/* harmony import */ var _material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js");
-/* harmony import */ var _material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_16__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["makeStyles"])(function (theme) {
-  return {
-    card: {
-      maxWidth: 345
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%' // 16:9
-
-    },
-    expand: {
-      transform: 'rotate(0deg)',
-      marginLeft: 'auto',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest
-      })
-    },
-    expandOpen: {
-      transform: 'rotate(180deg)'
-    },
-    avatar: {
-      backgroundColor: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_15__["red"][500]
-    },
-    listItem: {
-      marginTop: '0px',
-      marginBottom: '0px'
-    },
-    inline: {
-      display: 'inline',
-      fontSize: '0.8rem'
-    },
-    link: {
-      fontSize: '0.8rem'
-    }
-  };
-});
-function BodyCard(props) {
-  var classes = useStyles();
-
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      expanded = _React$useState2[0],
-      setExpanded = _React$useState2[1];
-
-  var handleExpandClick = function handleExpandClick() {
-    setExpanded(!expanded);
-  };
-
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    className: classes.card
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    avatar: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Avatar__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      "aria-label": "recipe",
-      className: classes.avatar
-    }, "A"),
-    title: props.bodyCard.bodyDetails.name,
-    subheader: "Asteroid"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-    variant: "body2",
-    color: "textSecondary",
-    component: "p"
-  }, "Lorem ipsum.")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    disableSpacing: true
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_13__["default"], {
-    className: Object(clsx__WEBPACK_IMPORTED_MODULE_2__["default"])(classes.expand, _defineProperty({}, classes.expandOpen, expanded)),
-    onClick: handleExpandClick,
-    "aria-expanded": expanded,
-    "aria-label": "show more"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_16___default.a, null))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Collapse__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    in: expanded,
-    timeout: "auto",
-    unmountOnExit: true
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], null, "Orbit elements:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    dense: true
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Epoch: "), props.bodyCard.orbitElements.epoch)
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Eccentricity (e): "), props.bodyCard.orbitElements.eccentricity)
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Semimajor axis (a): "), props.bodyCard.orbitElements.semiMajorAxis + " AU")
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Mean motion (n): "), props.bodyCard.orbitElements.meanMotion + '°/day')
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Argument of perihelion (\u03C9): "), props.bodyCard.orbitElements.argumentOfPerihelion + '°')
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Longitude of ascending node (\u03A9): "), props.bodyCard.orbitElements.longitudeOfAscendingNode + "°")
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Inclination (i): "), props.bodyCard.orbitElements.inclination + '°')
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Mean anomaly epoch (T): "), props.bodyCard.orbitElements.meanAnomalyEpoch + ' JDE')
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Mean anomaly at epoch (M): "), props.bodyCard.orbitElements.meanAnomalyAtEpoch + '°')
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], null, "Magnitude System:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    dense: true
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Absolute Magnitude (H): "), props.bodyCard.magnitudeParameters.H)
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: classes.listItem,
-    secondary: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
-      component: "span",
-      variant: "body2",
-      className: classes.inline,
-      color: "textPrimary"
-    }, "Slope parameter (G): "), props.bodyCard.magnitudeParameters.G)
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Link__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    href: "https://minorplanetcenter.net/data",
-    className: classes.link
-  }, "Source"))));
 }
 
 /***/ }),
@@ -82946,7 +83164,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
 /* harmony import */ var _EphemerisForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EphemerisForm */ "./src/main/js/ephemeris/EphemerisForm.js");
 /* harmony import */ var _EphemerisTable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EphemerisTable */ "./src/main/js/ephemeris/EphemerisTable.js");
-/* harmony import */ var _BodyCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./BodyCard */ "./src/main/js/ephemeris/BodyCard.js");
+/* harmony import */ var _components_BodyCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/BodyCard */ "./src/main/js/components/BodyCard.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -82969,7 +83187,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 function EphemerisPanel() {
   var defaultBodyCard = _objectSpread({
     bodyDetails: {
-      name: "n/a"
+      name: "n/a",
+      bodyType: "?"
     },
     orbitElements: {
       epoch: 'n/a',
@@ -83016,8 +83235,8 @@ function EphemerisPanel() {
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__["default"], {
     item: true,
     xs: 4
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_BodyCard__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    bodyCard: bodyCard
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_BodyCard__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    bodyInfo: bodyCard
   })));
 }
 
