@@ -82540,12 +82540,12 @@ function ConjunctionsTable(props) {
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
       component: "th",
       scope: "row",
-      title: row.dateTimeTD
-    }, Object(date_fns__WEBPACK_IMPORTED_MODULE_8__["format"])(Date.parse(row.dateTimeTD), "yyyy-MM-dd HH:mm:ss")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      title: row.jde + " [JDE]"
+    }, Object(date_fns__WEBPACK_IMPORTED_MODULE_8__["format"])(Date.parse(row.time), "yyyy-MM-dd HH:mm:ss")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
       align: "center"
-    }, row.firstBody.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    }, row.first.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
       align: "center"
-    }, row.secondBody.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    }, row.second.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
       align: "right",
       title: row.separation.toFixed(6)
     }, Object(_utils_Angles__WEBPACK_IMPORTED_MODULE_9__["formatDegrees"])(row.separation)));

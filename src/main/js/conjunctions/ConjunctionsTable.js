@@ -38,14 +38,14 @@ export default function ConjunctionsTable(props) {
 				<TableBody>
 					{props.rows.map(row => (
 						<TableRow key={row.index}>
-							<TableCell component="th" scope="row" title={row.dateTimeTD}>
-								{format(Date.parse(row.dateTimeTD), "yyyy-MM-dd HH:mm:ss")}
+							<TableCell component="th" scope="row" title={row.jde + " [JDE]"}>
+								{format(Date.parse(row.time), "yyyy-MM-dd HH:mm:ss")}
 							</TableCell>
 							<TableCell align="center">
-								{row.firstBody.name}
+								{row.first.name}
 							</TableCell>
 							<TableCell align="center">
-								{row.secondBody.name}
+								{row.second.name}
 							</TableCell>
 							<TableCell align="right" title={row.separation.toFixed(6)}>
 								{formatDegrees(row.separation)}

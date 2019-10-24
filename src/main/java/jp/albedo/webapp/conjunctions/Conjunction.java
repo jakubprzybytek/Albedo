@@ -1,6 +1,6 @@
 package jp.albedo.webapp.conjunctions;
 
-public class Conjunction<A, B> {
+public class Conjunction<A, B extends Object> {
 
     final public double jde;
 
