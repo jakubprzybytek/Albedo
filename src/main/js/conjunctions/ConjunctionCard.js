@@ -2,8 +2,11 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import { yellow } from '@material-ui/core/colors';
 import { format } from 'date-fns';
+import { formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
 	card: {
@@ -31,6 +34,12 @@ export default function ConjunctionCard(props) {
       <CardHeader
         title="Conjunction"
         subheader={conjunction.time && format(Date.parse(conjunction.time), "yyyy-MM-dd HH:mm:ss") + " (TDE)"} />
+      <CardContent>
+        <Typography>Separation</Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {conjunction.separation && formatDegrees(conjunction.separation)}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }

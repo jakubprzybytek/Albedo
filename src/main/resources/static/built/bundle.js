@@ -82615,8 +82615,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 /* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/esm/Card/index.js");
 /* harmony import */ var _material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/CardHeader */ "./node_modules/@material-ui/core/esm/CardHeader/index.js");
-/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
+/* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/esm/CardContent/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
+/* harmony import */ var _utils_Angles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../utils/Angles */ "./src/main/js/utils/Angles.js");
+
+
+
 
 
 
@@ -82629,7 +82635,7 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["ma
       maxWidth: 345
     },
     avatar: {
-      backgroundColor: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_4__["yellow"][500]
+      backgroundColor: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_6__["yellow"][500]
     },
     listItem: {
       marginTop: '0px',
@@ -82648,8 +82654,12 @@ function ConjunctionCard(props) {
     className: classes.card
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardHeader__WEBPACK_IMPORTED_MODULE_3__["default"], {
     title: "Conjunction",
-    subheader: conjunction.time && Object(date_fns__WEBPACK_IMPORTED_MODULE_5__["format"])(Date.parse(conjunction.time), "yyyy-MM-dd HH:mm:ss") + " (TDE)"
-  }));
+    subheader: conjunction.time && Object(date_fns__WEBPACK_IMPORTED_MODULE_7__["format"])(Date.parse(conjunction.time), "yyyy-MM-dd HH:mm:ss") + " (TDE)"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_5__["default"], null, "Separation"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    variant: "body2",
+    color: "textSecondary",
+    component: "p"
+  }, conjunction.separation && Object(_utils_Angles__WEBPACK_IMPORTED_MODULE_8__["formatDegrees"])(conjunction.separation))));
 }
 
 /***/ }),
