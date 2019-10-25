@@ -8,6 +8,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 import { yellow } from '@material-ui/core/colors';
 import { formatHourAngle, formatDegrees } from './../utils/Angles';
 
@@ -36,7 +37,7 @@ export default function CatalogueEntryCard(props) {
 
   return (
     <Card className={classes.card}>
-      <CardHeader avatar={<Avatar className={classes.avatar}>CE</Avatar>}
+      <CardHeader avatar={<Avatar className={classes.avatar}>C</Avatar>}
         title={catalogueEntry.name}
         subheader="Catalogue Entry" />
       <CardContent>
@@ -45,17 +46,38 @@ export default function CatalogueEntryCard(props) {
           <ListItem>
             <ListItemText className={classes.listItem} secondary={<React.Fragment>
               <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">RA: </Typography>
-              {formatHourAngle(catalogueEntry.coordinates.rightAscension)}
+              <Tooltip title={catalogueEntry.coordinates.rightAscension + "° (J2000)"}>
+                <span>{formatHourAngle(catalogueEntry.coordinates.rightAscension)}</span>
+              </Tooltip>
             </React.Fragment>} />
             </ListItem>
           <ListItem>
             <ListItemText className={classes.listItem} secondary={<React.Fragment>
               <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Dec: </Typography>
-              {formatDegrees(catalogueEntry.coordinates.declination)}
-              </React.Fragment>} />
-            </ListItem>
+              <Tooltip title={catalogueEntry.coordinates.declination + "° (J2000)"}>
+                <span>{formatDegrees(catalogueEntry.coordinates.declination)}</span>
+              </Tooltip>
+            </React.Fragment>} />
+          </ListItem>
+          {(catalogueEntry.bMagnitude || catalogueEntry.vMagnitude) && <ListItem>
+            <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Magnitude: </Typography>
+              {catalogueEntry.bMagnitude && catalogueEntry.bMagnitude + " (B)"} {catalogueEntry.vMagnitude && catalogueEntry.vMagnitude + " (V)"}
+            </React.Fragment>} />
+          </ListItem>}
+          {(catalogueEntry.majorAxisSize || catalogueEntry.minorAxisSize) && <ListItem>
+            <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Size: </Typography>
+              {catalogueEntry.majorAxisSize && catalogueEntry.majorAxisSize + "'"}{catalogueEntry.minorAxisSize && " x " + catalogueEntry.minorAxisSize + "'"}
+            </React.Fragment>} />
+          </ListItem>}
+          {catalogueEntry.morphologicalType && <ListItem>
+            <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Morphological type: </Typography>
+              {catalogueEntry.morphologicalType}
+            </React.Fragment>} />
+          </ListItem>}
         </List>
-        <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Coordinates for mean equatorial and equinox of J2000</Typography>
       </CardContent>
     </Card>
   );

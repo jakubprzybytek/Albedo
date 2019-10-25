@@ -1,6 +1,7 @@
 package jp.albedo.webapp.conjunctions;
 
 import jp.albedo.catalogue.CatalogueEntry;
+import jp.albedo.catalogue.CatalogueType;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
 import jp.albedo.utils.MixListSupplier;
@@ -106,9 +107,9 @@ class ConjunctionsOrchestrator {
         return detailedConjunctions;
     }
 
-    List<Conjunction<BodyDetails, CatalogueEntry>> computeForBodyAndCatalogueEntry(Set<BodyType> primaryBodyTypes, Double fromDate, Double toDate) {
+    List<Conjunction<BodyDetails, CatalogueEntry>> computeForBodyAndCatalogueEntry(Set<BodyType> primaryBodyTypes, Set<CatalogueType> catalogueTypes, Double fromDate, Double toDate) {
 
-        LOG.info(String.format("Computing conjunctions of one moving body and catalogue, params: [primary types:%s, from=%s, to=%s]", primaryBodyTypes, fromDate, toDate));
+        LOG.info(String.format("Computing conjunctions of one moving body and catalogue, params: [primary types:%s, catalogues:%s, from=%s, to=%s]", primaryBodyTypes, catalogueTypes, fromDate, toDate));
 
         final Instant start = Instant.now();
 
@@ -125,12 +126,28 @@ class ConjunctionsOrchestrator {
                         }
                 ));
 
-        // generate pairs of ephemerides for further computations
+        // generate pairs of ephemerides and catalogue entries for further computations
+        final List<Pair<ComputedEphemerides, CatalogueEntry>> pairsToCompare = Stream.generate(new MixTwoListsSupplier<>(primaryBodyTypes, catalogueTypes))
+                .limit(primaryBodyTypes.size() * catalogueTypes.size())
+                .map(bodyAndCatalogueEntryPair -> {
+                    try {
+                        final List<ComputedEphemerides> ephemeridesList = ephemeridesByType.get(bodyAndCatalogueEntryPair.getFirst());
+                        final List<CatalogueEntry> catalogueEntries = this.catalogueService.getCatalogue(bodyAndCatalogueEntryPair.getSecond()).getAllEntries();
+                        return Stream.generate(new MixTwoListsSupplier<>(ephemeridesList, catalogueEntries))
+                                .limit(ephemeridesList.size() * catalogueEntries.size());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e); // FixMe
+                    }
+                })
+                .flatMap(Function.identity())
+                .collect(Collectors.toList());
+/*
+
         final List<Pair<ComputedEphemerides, CatalogueEntry>> pairsToCompare = primaryBodyTypes.stream()
                 .map(bodyType -> {
                     try {
                         final List<ComputedEphemerides> firstEphemeridesList = ephemeridesByType.get(bodyType);
-                        final List<CatalogueEntry> catalogueEntries = this.catalogueService.getOpenNgcCatalogue().getAllEntries();
+                        final List<CatalogueEntry> catalogueEntries = this.catalogueService.getNgcCatalogue().getAllEntries();
                         return Stream.generate(new MixTwoListsSupplier<>(firstEphemeridesList, catalogueEntries))
                                 .limit(firstEphemeridesList.size() * catalogueEntries.size());
                     } catch (IOException e) {
@@ -139,6 +156,7 @@ class ConjunctionsOrchestrator {
                 })
                 .flatMap(Function.identity())
                 .collect(Collectors.toList());
+*/
 
         final List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions = this.conjunctionsCalculator.calculateForBodyAndCatalogueEntry(pairsToCompare);
 
@@ -155,7 +173,7 @@ class ConjunctionsOrchestrator {
                 })
                 .collect(Collectors.toList());
 
-        LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
+        LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size(), closeEncounters.size()));
 
         final List<Conjunction<BodyDetails, CatalogueEntry>> detailedConjunctions = this.conjunctionsCalculator.calculateForBodyAndCatalogueEntry(closeEncounters);
 

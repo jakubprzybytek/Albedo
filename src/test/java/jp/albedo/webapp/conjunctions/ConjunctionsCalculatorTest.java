@@ -93,7 +93,7 @@ class ConjunctionsCalculatorTest {
 
         Pair<ComputedEphemerides, CatalogueEntry> pair = new Pair<>(
                 new ComputedEphemerides(null, ephemeris1),
-                new CatalogueEntry(null, null, catalogueEntryCoords));
+                new CatalogueEntry(null, null, catalogueEntryCoords, 0.0, 0.0, 0.0, 0.0, null));
 
         ConjunctionsCalculator calculator = new ConjunctionsCalculator();
         List<Conjunction<BodyDetails, CatalogueEntry>> conjunctions = calculator.findConjunctionsBetweenBodyAndCatalogueEntry(pair);

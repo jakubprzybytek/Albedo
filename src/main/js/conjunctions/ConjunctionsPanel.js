@@ -16,17 +16,17 @@ const useStyles = makeStyles(theme => ({
 export default function ConjunctionsPanel() {
 
   const [rows, setRows] = React.useState([]);
-  const [conjunction, setConjunctionCard] = React.useState({});
+  const [conjunction, setConjunction] = React.useState({});
 
   const classes = useStyles();
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={8}>
+      <Grid item xs={9}>
         <ConjunctionsForm updateRows={setRows} />
-        <ConjunctionsTable rows={rows} onConjunctionSelected={setConjunctionCard} />
+        <ConjunctionsTable rows={rows} onConjunctionSelected={setConjunction} />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <div className={classes.card}>
           <ConjunctionCard conjunction={conjunction} />
         </div>

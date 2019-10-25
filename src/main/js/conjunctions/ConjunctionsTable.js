@@ -22,34 +22,50 @@ const useStyles = makeStyles(theme => ({
 
 export function ConjunctionTableRow(props) {
 
-	const { row, onClick } = props;
+  const { conjunction, onClick } = props;
+
+  const [selected, setSelected] = React.useState(false);
+
+  function handleClick() {
+    onClick(conjunction, setSelected);
+    setSelected(true);
+  }
 
 	return (
-		<TableRow key={row.index} hover onClick={() => onClick(row)}>
-			<TableCell component="th" scope="row" title={row.jde + " [JDE]"}>
-				{format(Date.parse(row.time), "yyyy-MM-dd HH:mm:ss")}
+		<TableRow key={conjunction.index} hover role="checkbox" selected={selected} onClick={handleClick}>
+			<TableCell component="th" scope="row" title={conjunction.jde + " [JDE]"}>
+				{format(Date.parse(conjunction.time), "yyyy-MM-dd HH:mm:ss")}
 			</TableCell>
 			<TableCell align="center">
-				{row.first.name}
+				{conjunction.first.name}
 			</TableCell>
 			<TableCell align="center">
-				{row.second.name}
+				{conjunction.second.name}
 			</TableCell>
-			<TableCell align="right" title={row.separation.toFixed(6)}>
-				{formatDegrees(row.separation)}
+			<TableCell align="right" title={conjunction.separation.toFixed(6)}>
+				{formatDegrees(conjunction.separation)}
 			</TableCell>
 		</TableRow>
   );
 }
 
 export default function ConjunctionsTable(props) {
+
   const { rows, onConjunctionSelected } = props;
 
+  let setSelectedForPreviousSelection = () => null;
+  
+  function updateRowSelection(conjunction, setSelected) {
+    setSelectedForPreviousSelection(false);
+    onConjunctionSelected(conjunction);
+    setSelectedForPreviousSelection = setSelected;
+  }
+  
+  React.useEffect(() => {
+    setSelectedForPreviousSelection(false);
+  });
+  
   const classes = useStyles();
-
-	function handleClick(astroEvent) {
-		alert(astroEvent.first.name);
- 	}
 
 	return (
 		<Paper className={classes.paper}>
@@ -63,9 +79,9 @@ export default function ConjunctionsTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{rows.map(astroEvent => (
-						<ConjunctionTableRow row={astroEvent} onClick={onConjunctionSelected} />
-					))}
+					{rows.map(conjunction => 
+						<ConjunctionTableRow conjunction={conjunction} onClick={updateRowSelection} />
+					)}
 				</TableBody>
 			</Table>
 		</Paper>

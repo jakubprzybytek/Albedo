@@ -30,12 +30,15 @@ export default function ConjunctionsForm(props) {
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
   const [plantesChecked, setPlanetsChecked] = React.useState(true);
   const [asteroidsChecked, setAsteroidsChecked] = React.useState(false);
+  const [ngcChecked, setNgcChecked] = React.useState(true);
+  const [icChecked, setIcChecked] = React.useState(false);
 
   function onBuildProps() {
     return {
       from: format(fromDate, "yyyy-MM-dd"),
       to: format(toDate, "yyyy-MM-dd"),
-      secondary: (plantesChecked ? "Planet" : "") + (asteroidsChecked ? (plantesChecked ? "," : "") +  "Asteroid" : "")
+      secondary: (plantesChecked ? "Planet" : "") + (asteroidsChecked ? (plantesChecked ? "," : "") +  "Asteroid" : ""),
+      catalogues: (ngcChecked ? "NGC" : "") + (icChecked ? (ngcChecked ? "," : "") +  "IC" : "")
     }
   }
 
@@ -80,6 +83,14 @@ export default function ConjunctionsForm(props) {
             }/>
           <FormControlLabel label="Asteroids" labelPlacement="start" control={
               <Switch checked={asteroidsChecked} onChange={event => setAsteroidsChecked(event.target.checked)} color="primary" />
+            }/>
+        </FormGroup>
+        <FormGroup row>
+          <FormControlLabel label="NGC" labelPlacement="start" control={
+              <Switch checked={ngcChecked} onChange={event => setNgcChecked(event.target.checked)} color="secondary" />
+            }/>
+          <FormControlLabel label="IC" labelPlacement="start" control={
+              <Switch checked={icChecked} onChange={event => setIcChecked(event.target.checked)} color="secondary" />
             }/>
         </FormGroup>
         <SubmitBar url='/api/conjunctions' buildProps={onBuildProps} submitResponse={props.updateRows} />

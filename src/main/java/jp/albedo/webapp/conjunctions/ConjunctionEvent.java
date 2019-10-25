@@ -53,7 +53,10 @@ public class ConjunctionEvent extends AstronomicalEvent {
         return new CatalogueEntry(catalogueEntry.name, catalogueEntry.type,
                 new AstronomicalCoordinates(
                         Math.toDegrees(catalogueEntry.coordinates.rightAscension),
-                        Math.toDegrees(catalogueEntry.coordinates.declination)));
+                        Math.toDegrees(catalogueEntry.coordinates.declination)),
+                catalogueEntry.bMagnitude, catalogueEntry.vMagnitude,
+                catalogueEntry.majorAxisSize, catalogueEntry.minorAxisSize,
+                catalogueEntry.morphologicalType);
     }
 
 }
