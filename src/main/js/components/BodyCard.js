@@ -68,11 +68,6 @@ export default function BodyCard(props) {
         avatar={<Avatar className={classes.avatar}>{bodyInfo.bodyDetails.bodyType.charAt(0)}</Avatar>}
         title={bodyInfo.bodyDetails.name}
         subheader={bodyInfo.bodyDetails.bodyType} />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Lorem ipsum.
-        </Typography>
-      </CardContent>
       {(bodyInfo.orbitElements || bodyInfo.magnitudeParameters) && <React.Fragment>
         <CardActions disableSpacing>
           <IconButton

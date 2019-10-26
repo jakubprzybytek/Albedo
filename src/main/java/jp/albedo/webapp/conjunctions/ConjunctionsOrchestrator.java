@@ -141,22 +141,6 @@ class ConjunctionsOrchestrator {
                 })
                 .flatMap(Function.identity())
                 .collect(Collectors.toList());
-/*
-
-        final List<Pair<ComputedEphemerides, CatalogueEntry>> pairsToCompare = primaryBodyTypes.stream()
-                .map(bodyType -> {
-                    try {
-                        final List<ComputedEphemerides> firstEphemeridesList = ephemeridesByType.get(bodyType);
-                        final List<CatalogueEntry> catalogueEntries = this.catalogueService.getNgcCatalogue().getAllEntries();
-                        return Stream.generate(new MixTwoListsSupplier<>(firstEphemeridesList, catalogueEntries))
-                                .limit(firstEphemeridesList.size() * catalogueEntries.size());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e); // FixMe
-                    }
-                })
-                .flatMap(Function.identity())
-                .collect(Collectors.toList());
-*/
 
         final List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions = this.conjunctionsCalculator.calculateForBodyAndCatalogueEntry(pairsToCompare);
 

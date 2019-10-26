@@ -49,22 +49,19 @@ export function ConjunctionTableRow(props) {
   );
 }
 
+let setSelectedForPreviousSelection = () => null;
+
 export default function ConjunctionsTable(props) {
 
   const { rows, onConjunctionSelected } = props;
 
-  let setSelectedForPreviousSelection = () => null;
   
   function updateRowSelection(conjunction, setSelected) {
     setSelectedForPreviousSelection(false);
     onConjunctionSelected(conjunction);
     setSelectedForPreviousSelection = setSelected;
   }
-  
-  React.useEffect(() => {
-    setSelectedForPreviousSelection(false);
-  });
-  
+
   const classes = useStyles();
 
 	return (

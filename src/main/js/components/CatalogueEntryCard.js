@@ -46,7 +46,7 @@ export default function CatalogueEntryCard(props) {
           <ListItem>
             <ListItemText className={classes.listItem} secondary={<React.Fragment>
               <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">RA: </Typography>
-              <Tooltip title={catalogueEntry.coordinates.rightAscension + "° (J2000)"}>
+              <Tooltip title={catalogueEntry.coordinates.rightAscension.toFixed(6) + "° (J2000)"}>
                 <span>{formatHourAngle(catalogueEntry.coordinates.rightAscension)}</span>
               </Tooltip>
             </React.Fragment>} />
@@ -54,7 +54,7 @@ export default function CatalogueEntryCard(props) {
           <ListItem>
             <ListItemText className={classes.listItem} secondary={<React.Fragment>
               <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Dec: </Typography>
-              <Tooltip title={catalogueEntry.coordinates.declination + "° (J2000)"}>
+              <Tooltip title={catalogueEntry.coordinates.declination.toFixed(6) + "° (J2000)"}>
                 <span>{formatDegrees(catalogueEntry.coordinates.declination)}</span>
               </Tooltip>
             </React.Fragment>} />

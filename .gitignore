@@ -14,3 +14,4 @@ package-lock.json
 target
 misc
 node_modules
+src/main/resources/static/built
