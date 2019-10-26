@@ -31,8 +31,7 @@ export default function ConjunctionCard(props) {
 
   return (
     <Card className={classes.card}>
-      <CardHeader
-        title="Conjunction"
+      <CardHeader title="Conjunction"
         subheader={conjunction.time && format(Date.parse(conjunction.time), "yyyy-MM-dd HH:mm:ss") + " (TDE)"} />
       <CardContent>
         <Typography>Separation</Typography>

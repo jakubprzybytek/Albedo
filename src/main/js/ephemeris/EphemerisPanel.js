@@ -1,8 +1,43 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 import EphemerisForm from './EphemerisForm';
 import EphemerisTable from './EphemerisTable';
+import EphemerisCharts from './EphemerisCharts';
 import BodyCard from '../components/BodyCard';
+
+const useStyles = makeStyles(theme => ({
+  area: {
+    marginBottom: theme.spacing(2),
+    backgroundColor: '0',
+  },
+  tabPanel: {
+    marginTop: theme.spacing(1),
+  },
+}));
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  const classes = useStyles();
+
+  return (
+    <Typography className={classes.tabPanel} component="div" role="tabpanel" hidden={value !== index} {...other}>
+      {children}
+    </Typography>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
 
 export default function EphemerisPanel() {
 
@@ -30,16 +65,36 @@ export default function EphemerisPanel() {
 
   const [rows, setRows] = React.useState([]);
   const [bodyCard, setBodyCard] = React.useState(defaultBodyCard);
+  const [selectedTab, setSelectedTab] = React.useState(0);
+
+  const classes = useStyles();
 
   function updateBodyCard(newBodyCard) {
     setBodyCard({...defaultBodyCard, ...newBodyCard});
   }
 
+  function handleChange(event, newValue) {
+    setSelectedTab(newValue);
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={9}>
-        <EphemerisForm updateRows={setRows} updateBodyCard={updateBodyCard} />
-        <EphemerisTable rows={rows} />
+        <div className={classes.area}>
+          <EphemerisForm updateRows={setRows} updateBodyCard={updateBodyCard} />
+        </div>
+        <AppBar position="static" color="default">
+          <Tabs value={selectedTab} onChange={handleChange} variant="scrollable" scrollButtons="auto">
+            <Tab label="Table" />
+            <Tab label="Charts" />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={selectedTab} index={0}>
+          <EphemerisTable rows={rows} />
+        </TabPanel>
+        <TabPanel value={selectedTab} index={1}>
+          <EphemerisCharts ephemerides={rows} />
+        </TabPanel>
       </Grid>
       <Grid item xs={3}>
         <BodyCard bodyInfo={bodyCard} />

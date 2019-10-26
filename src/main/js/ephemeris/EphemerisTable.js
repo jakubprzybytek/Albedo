@@ -10,58 +10,56 @@ import { format } from 'date-fns';
 import { formatHourAngle, formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
-	paper: {
-		marginTop: theme.spacing(3),
-		marginBottom: theme.spacing(2),
-//		width: '800px',
-	},
-	table: {
-		width: '100%',
-	},
+  paper: {
+//    width: '800px',
+  },
+  table: {
+    width: '100%',
+  },
 }));
 
 export default function EphemerisTable(props) {
 
-	const classes = useStyles();
+  const classes = useStyles();
 
-	return (
-		<Paper className={classes.paper}>
-			<Table className={classes.table} size="small">
-				<TableHead>
-					<TableRow>
-						<TableCell>Time [TDE]</TableCell>
-						<TableCell align="center">R.A. [hms]</TableCell>
-						<TableCell align="center">Dec. [°]</TableCell>
-						<TableCell align="center">Distance from Sun [AU]</TableCell>
-						<TableCell align="center">Distance from Earth [AU]</TableCell>
-						<TableCell align="right">Magnitude</TableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{props.rows.map(row => (
-						<TableRow key={row.index}>
-							<TableCell component="th" scope="row" title={row.jde}>
-								{format(Date.parse(row.jde), "yyyy-MM-dd HH:mm:ss")}
-							</TableCell>
-							<TableCell align="center" title={row.coordinates.rightAscension + '°'}>
-								{formatHourAngle(row.coordinates.rightAscension)}
-							</TableCell>
-							<TableCell align="center" title={row.coordinates.declination + '°'}>
-								{formatDegrees(row.coordinates.declination)}
-							</TableCell>
-							<TableCell align="center">
-								{row.distanceFromSun.toFixed(6)}
-							</TableCell>
-							<TableCell align="center">
-								{row.distanceFromEarth.toFixed(6)}
-							</TableCell>
-							<TableCell align="right">
-								{row.apparentMagnitude.toFixed(2)}
-							</TableCell>
-						</TableRow>
-					))}
-				</TableBody>
-			</Table>
-		</Paper>
-	);
+  return (
+    <Paper className={classes.paper}>
+      <Table className={classes.table} size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Time [TDE]</TableCell>
+            <TableCell align="center">R.A. [hms]</TableCell>
+            <TableCell align="center">Dec. [°]</TableCell>
+            <TableCell align="center">Distance from Sun [AU]</TableCell>
+            <TableCell align="center">Distance from Earth [AU]</TableCell>
+            <TableCell align="right">Magnitude</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.rows.map(row => (
+            <TableRow key={row.index}>
+              <TableCell component="th" scope="row" title={row.jde}>
+                {format(Date.parse(row.jde), "yyyy-MM-dd HH:mm:ss")}
+              </TableCell>
+              <TableCell align="center" title={row.coordinates.rightAscension + '°'}>
+                {formatHourAngle(row.coordinates.rightAscension)}
+              </TableCell>
+              <TableCell align="center" title={row.coordinates.declination + '°'}>
+                {formatDegrees(row.coordinates.declination)}
+              </TableCell>
+              <TableCell align="center">
+                {row.distanceFromSun.toFixed(6)}
+              </TableCell>
+              <TableCell align="center">
+                {row.distanceFromEarth.toFixed(6)}
+              </TableCell>
+              <TableCell align="right">
+                {row.apparentMagnitude.toFixed(2)}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
+  );
 }

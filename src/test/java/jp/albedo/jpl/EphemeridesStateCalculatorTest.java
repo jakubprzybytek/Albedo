@@ -1,5 +1,6 @@
 package jp.albedo.jpl;
 
+import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.Ephemeris;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -33,35 +34,53 @@ class EphemeridesStateCalculatorTest {
     }
 
     @Test
-    void computeEphemersForMars() throws JPLException {
+    void computeEphemeridesForMercury() throws JPLException {
 
-        final double jde = 2433264.5;
+        double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(Body.Mars, jde);
-        System.out.printf("Mars ephemeris: %s%n", ephemeris.toStringHighPrecision());
+        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(Body.Mercury, jde);
+        System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
-        assertEquals(2433264.5, ephemeris.jde);
-        // WGC: 310.03355061
-        assertEquals(176.7577730226194, Math.toDegrees(ephemeris.coordinates.rightAscension));
-        // WGC: -20.40548613
-        assertEquals(3.809931212566189, Math.toDegrees(ephemeris.coordinates.declination));
-        assertEquals(0.88, ephemeris.apparentMagnitude);
+        assertEquals(jde, ephemeris.jde);
+        // WGC: 274.97869316
+        assertEquals(274.9786931621818, Math.toDegrees(ephemeris.coordinates.rightAscension));
+        // WGC: -25.54654902
+        assertEquals(-25.546549020057533, Math.toDegrees(ephemeris.coordinates.declination));
+        // Horisons: -0.68
+        assertEquals(-0.68, ephemeris.apparentMagnitude);
     }
-
     @Test
-    void computeEphemersForVenus() throws JPLException {
+    void computeEphemeridesForVenus() throws JPLException {
 
-        final double jde = 2433264.5;
+        double jde = JulianDay.fromDate(1949, 12, 14);
 
         Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(Body.Venus, jde);
-        System.out.printf("Venus ephemeris: %s%n", ephemeris.toStringHighPrecision());
+        System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
-        assertEquals(2433264.5, ephemeris.jde);
+        assertEquals(jde, ephemeris.jde);
         // WGC: 310.03355061
         assertEquals(310.03355060701824, Math.toDegrees(ephemeris.coordinates.rightAscension));
         // WGC: -20.40548613
         assertEquals(-20.40548612581231, Math.toDegrees(ephemeris.coordinates.declination));
+        // Horisons: -4.80 FixMe
         assertEquals(-3.04, ephemeris.apparentMagnitude);
+    }
+
+    @Test
+    void computeEphemeridesForMars() throws JPLException {
+
+        double jde = JulianDay.fromDate(1949, 12, 14);
+
+        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(Body.Mars, jde);
+        System.out.printf("Mars ephemeris: %s", ephemeris.toStringHighPrecision());
+
+        assertEquals(jde, ephemeris.jde);
+        // WGC: 176.75777302 - no correction
+        assertEquals(176.7577730226194, Math.toDegrees(ephemeris.coordinates.rightAscension));
+        // WGC: 3.80993121 - no correction
+        assertEquals(3.809931212566189, Math.toDegrees(ephemeris.coordinates.declination));
+        // Horisons: 0.88
+        assertEquals(0.88, ephemeris.apparentMagnitude);
     }
 
 }
