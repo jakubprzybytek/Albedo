@@ -33,6 +33,22 @@ class EphemeridesStateCalculatorTest {
     }
 
     @Test
+    void computeEphemersForMars() throws JPLException {
+
+        final double jde = 2433264.5;
+
+        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(Body.Mars, jde);
+        System.out.printf("Mars ephemeris: %s%n", ephemeris.toStringHighPrecision());
+
+        assertEquals(2433264.5, ephemeris.jde);
+        // WGC: 310.03355061
+        assertEquals(176.7577730226194, Math.toDegrees(ephemeris.coordinates.rightAscension));
+        // WGC: -20.40548613
+        assertEquals(3.809931212566189, Math.toDegrees(ephemeris.coordinates.declination));
+        assertEquals(0.88, ephemeris.apparentMagnitude);
+    }
+
+    @Test
     void computeEphemersForVenus() throws JPLException {
 
         final double jde = 2433264.5;
@@ -45,6 +61,7 @@ class EphemeridesStateCalculatorTest {
         assertEquals(310.03355060701824, Math.toDegrees(ephemeris.coordinates.rightAscension));
         // WGC: -20.40548613
         assertEquals(-20.40548612581231, Math.toDegrees(ephemeris.coordinates.declination));
+        assertEquals(-3.04, ephemeris.apparentMagnitude);
     }
 
 }

@@ -3,6 +3,7 @@ package jp.albedo.jpl;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.ephemeris.common.RectangularCoordinates;
+import jp.albedo.jpl.impl.PlanetsMagnitudeCalculator;
 import jp.albedo.jpl.impl.PositionCalculator;
 import jp.albedo.jpl.impl.TimeSpan;
 import jp.albedo.jpl.math.XYZCoefficients;
@@ -86,6 +87,7 @@ public class StateCalculator {
 
         for (double jde : jdes) {
             final RectangularCoordinates bodyHeliocentricCoords = bodyPositionCalculator.compute(jde);
+            final RectangularCoordinates bodyHeliocentricCoordsAu = bodyHeliocentricCoords.divideBy(this.au);
             final RectangularCoordinates earthBarycenterHeliocentricCoords = earthBarycenterPositionCalculator.compute(jde);
             final RectangularCoordinates moonGeocentricCoords = moonPositionCalculator.compute(jde);
 
@@ -94,13 +96,14 @@ public class StateCalculator {
             final RectangularCoordinates earthHeliocentricCoords = earthBarycenterHeliocentricCoords.subtract(earthFromEarthMoonBarycenterCoords);
 
             final RectangularCoordinates bodyGeocentricCoords = bodyHeliocentricCoords.subtract(earthHeliocentricCoords);
+            final RectangularCoordinates bodyGeocentricCoordsAu = bodyGeocentricCoords.divideBy(this.au);
 
             ephemerides.add(new Ephemeris(
                     jde,
                     AstronomicalCoordinates.fromRectangular(bodyGeocentricCoords),
-                    bodyHeliocentricCoords.divideBy(this.au).getDistance(),
-                    bodyGeocentricCoords.divideBy(this.au).getDistance(),
-                    0.0
+                    bodyHeliocentricCoordsAu.getDistance(),
+                    bodyGeocentricCoordsAu.getDistance(),
+                    PlanetsMagnitudeCalculator.compute(body, bodyHeliocentricCoordsAu, bodyGeocentricCoordsAu)
             ));
         }
 
