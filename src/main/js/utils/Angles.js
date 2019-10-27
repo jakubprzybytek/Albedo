@@ -19,3 +19,7 @@ export function formatHourAngle(angle) {
 export function formatDegrees(angle) {
 	return formatAngle(angle, angleUnits.d);
 }
+
+export function formatArcSeconds(angle) {
+  return "" + (angle * 3600.0).toFixed(2) +"\"";
+}

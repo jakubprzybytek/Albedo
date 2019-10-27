@@ -1,5 +1,7 @@
 package jp.albedo.catalogue;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.AstronomicalCoordinates;
 
 public class CatalogueEntry {
@@ -11,14 +13,24 @@ public class CatalogueEntry {
 
     final public AstronomicalCoordinates coordinates;
 
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     final public Double bMagnitude;
 
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     final public Double vMagnitude;
 
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     final public Double majorAxisSize;
 
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     final public Double minorAxisSize;
 
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     final public String morphologicalType;
 
     public CatalogueEntry(String name, CatalogueEntryType type, AstronomicalCoordinates coordinates, Double bMagnitude, Double vMagnitude, Double majorAxisSize, Double minorAxisSize, String morphologicalType) {

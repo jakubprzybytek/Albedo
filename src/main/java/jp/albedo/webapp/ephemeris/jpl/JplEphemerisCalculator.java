@@ -3,7 +3,7 @@ package jp.albedo.webapp.ephemeris.jpl;
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.Ephemeris;
-import jp.albedo.jpl.Body;
+import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JPLException;
 import jp.albedo.jpl.StateCalculator;
 import jp.albedo.webapp.services.JplKernelsService;
@@ -35,8 +35,8 @@ public class JplEphemerisCalculator {
      * @param bodyName
      * @return
      */
-    public Optional<Body> parseBody(String bodyName) {
-        return Optional.ofNullable(EnumUtils.getEnum(Body.class, bodyName));
+    public Optional<JplBody> parseBody(String bodyName) {
+        return Optional.ofNullable(EnumUtils.getEnum(JplBody.class, bodyName));
     }
 
     /**
@@ -45,9 +45,9 @@ public class JplEphemerisCalculator {
      * @param bodyType
      * @return
      */
-    public List<Body> getSupportedBodiesByType(BodyType bodyType) {
+    public List<JplBody> getSupportedBodiesByType(BodyType bodyType) {
         if (bodyType == BodyType.Planet) {
-            return Arrays.asList(Body.Mercury, Body.Venus, Body.Mars, Body.Jupiter, Body.Saturn, Body.Neptune, Body.Uranus);
+            return Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
         }
 
         return Collections.emptyList();
@@ -64,7 +64,7 @@ public class JplEphemerisCalculator {
      * @throws IOException
      * @throws JPLException
      */
-    public List<Ephemeris> compute(Body body, Double fromDate, Double toDate, double interval) throws IOException, JPLException {
+    public List<Ephemeris> compute(JplBody body, Double fromDate, Double toDate, double interval) throws IOException, JPLException {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Starting calculations based on JPL's SPICE Kernels, params: [body: %s, from=%s, to=%s, interval=%.2f]", body.name(), fromDate, toDate, interval));

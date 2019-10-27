@@ -38,7 +38,7 @@ class EphemeridesStateCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(Body.Mercury, jde);
+        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(JplBody.Mercury, jde);
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -54,7 +54,7 @@ class EphemeridesStateCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(Body.Venus, jde);
+        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(JplBody.Venus, jde);
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -71,7 +71,7 @@ class EphemeridesStateCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(Body.Mars, jde);
+        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(JplBody.Mars, jde);
         System.out.printf("Mars ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);

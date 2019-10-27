@@ -4,15 +4,17 @@ import jp.albedo.common.AstronomicalCoordinates;
 
 public class Ephemeris {
 
-    public double jde;
+    final public double jde;
 
-    public AstronomicalCoordinates coordinates;
+    final public AstronomicalCoordinates coordinates;
 
-    public double distanceFromSun;
+    final public double distanceFromSun;
 
-    public double distanceFromEarth;
+    final public double distanceFromEarth;
 
-    public double apparentMagnitude;
+    final public double apparentMagnitude;
+
+    public Double angularSize;
 
     public Ephemeris(double jde, AstronomicalCoordinates coordinates, double distanceFromSun, double distanceFromEarth, double apparentMagnitude) {
         this.jde = jde;
@@ -20,6 +22,15 @@ public class Ephemeris {
         this.distanceFromSun = distanceFromSun;
         this.distanceFromEarth = distanceFromEarth;
         this.apparentMagnitude = apparentMagnitude;
+    }
+
+    public Ephemeris(double jde, AstronomicalCoordinates coordinates, double distanceFromSun, double distanceFromEarth, double apparentMagnitude, double angularSize) {
+        this.jde = jde;
+        this.coordinates = coordinates;
+        this.distanceFromSun = distanceFromSun;
+        this.distanceFromEarth = distanceFromEarth;
+        this.apparentMagnitude = apparentMagnitude;
+        this.angularSize = angularSize;
     }
 
     @Override

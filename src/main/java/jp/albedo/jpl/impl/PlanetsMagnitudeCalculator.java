@@ -1,14 +1,14 @@
 package jp.albedo.jpl.impl;
 
 import jp.albedo.ephemeris.common.RectangularCoordinates;
-import jp.albedo.jpl.Body;
+import jp.albedo.jpl.JplBody;
 import jp.albedo.utils.Polynomial;
 import org.apache.commons.math3.util.MathUtils;
 import org.apache.commons.math3.util.Precision;
 
 public class PlanetsMagnitudeCalculator {
 
-    public static double compute(Body body, RectangularCoordinates heliocentricCoords, RectangularCoordinates geocentricCoords) {
+    public static double compute(JplBody body, RectangularCoordinates heliocentricCoords, RectangularCoordinates geocentricCoords) {
 
         final double distancesProduct = heliocentricCoords.getDistance() * geocentricCoords.getDistance();
         final double phaseAngle = Math.toDegrees(MathUtils.normalizeAngle(Math.acos(

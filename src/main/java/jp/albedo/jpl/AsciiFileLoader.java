@@ -36,17 +36,17 @@ public class AsciiFileLoader {
 
         spKernel.addConstants(this.asciiHeaderFileReader.getConstants());
 
-        spKernel.registerBodyCoefficients(Body.Mercury, this.asciiFileReader.getCoefficientsMapForIndex(0));
-        spKernel.registerBodyCoefficients(Body.Venus, this.asciiFileReader.getCoefficientsMapForIndex(1));
-        spKernel.registerBodyCoefficients(Body.EarthMoonBarycenter, this.asciiFileReader.getCoefficientsMapForIndex(2));
-        spKernel.registerBodyCoefficients(Body.Mars, this.asciiFileReader.getCoefficientsMapForIndex(3));
-        spKernel.registerBodyCoefficients(Body.Jupiter, this.asciiFileReader.getCoefficientsMapForIndex(4));
-        spKernel.registerBodyCoefficients(Body.Saturn, this.asciiFileReader.getCoefficientsMapForIndex(5));
-        spKernel.registerBodyCoefficients(Body.Uranus, this.asciiFileReader.getCoefficientsMapForIndex(6));
-        spKernel.registerBodyCoefficients(Body.Neptune, this.asciiFileReader.getCoefficientsMapForIndex(7));
-        spKernel.registerBodyCoefficients(Body.Pluto, this.asciiFileReader.getCoefficientsMapForIndex(8));
-        spKernel.registerBodyCoefficients(Body.Moon, this.asciiFileReader.getCoefficientsMapForIndex(9)); // a.r.f Earth
-        spKernel.registerBodyCoefficients(Body.Sun, this.asciiFileReader.getCoefficientsMapForIndex(10));
+        spKernel.registerBodyCoefficients(JplBody.Mercury, this.asciiFileReader.getCoefficientsMapForIndex(0));
+        spKernel.registerBodyCoefficients(JplBody.Venus, this.asciiFileReader.getCoefficientsMapForIndex(1));
+        spKernel.registerBodyCoefficients(JplBody.EarthMoonBarycenter, this.asciiFileReader.getCoefficientsMapForIndex(2));
+        spKernel.registerBodyCoefficients(JplBody.Mars, this.asciiFileReader.getCoefficientsMapForIndex(3));
+        spKernel.registerBodyCoefficients(JplBody.Jupiter, this.asciiFileReader.getCoefficientsMapForIndex(4));
+        spKernel.registerBodyCoefficients(JplBody.Saturn, this.asciiFileReader.getCoefficientsMapForIndex(5));
+        spKernel.registerBodyCoefficients(JplBody.Uranus, this.asciiFileReader.getCoefficientsMapForIndex(6));
+        spKernel.registerBodyCoefficients(JplBody.Neptune, this.asciiFileReader.getCoefficientsMapForIndex(7));
+        spKernel.registerBodyCoefficients(JplBody.Pluto, this.asciiFileReader.getCoefficientsMapForIndex(8));
+        spKernel.registerBodyCoefficients(JplBody.Moon, this.asciiFileReader.getCoefficientsMapForIndex(9)); // a.r.f Earth
+        spKernel.registerBodyCoefficients(JplBody.Sun, this.asciiFileReader.getCoefficientsMapForIndex(10));
 
         return spKernel;
     }

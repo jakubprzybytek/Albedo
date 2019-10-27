@@ -1,7 +1,9 @@
 package jp.albedo.jpl;
 
 import jp.albedo.common.AstronomicalCoordinates;
+import jp.albedo.common.BodyInformation;
 import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.common.AngularSize;
 import jp.albedo.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jpl.impl.PlanetsMagnitudeCalculator;
 import jp.albedo.jpl.impl.PositionCalculator;
@@ -38,7 +40,7 @@ public class StateCalculator {
      * @return
      * @throws JPLException
      */
-    public RectangularCoordinates computeForJd(Body body, double jde) throws JPLException {
+    public RectangularCoordinates computeForJd(JplBody body, double jde) throws JPLException {
         Map<TimeSpan, XYZCoefficients> coefficientsByTime = this.spKernel.getCoefficientsForBody(body)
                 .orElseThrow(() -> new JPLException(String.format("No coefficients for %s found in SPKernel", body)));
 
@@ -57,7 +59,7 @@ public class StateCalculator {
      * @return
      * @throws JPLException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    public Ephemeris computeEphemeridesForJds(Body body, double jde) throws JPLException {
+    public Ephemeris computeEphemeridesForJds(JplBody body, double jde) throws JPLException {
         return computeEphemeridesForJds(body, Arrays.asList(jde)).get(0);
     }
 
@@ -69,15 +71,15 @@ public class StateCalculator {
      * @return
      * @throws JPLException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    public List<Ephemeris> computeEphemeridesForJds(Body body, List<Double> jdes) throws JPLException {
+    public List<Ephemeris> computeEphemeridesForJds(JplBody body, List<Double> jdes) throws JPLException {
         final Map<TimeSpan, XYZCoefficients> bodyCoefficients = this.spKernel.getCoefficientsForBody(body)
                 .orElseThrow(() -> new JPLException(String.format("No coefficients for %s found in SPKernel", body)));
 
-        final Map<TimeSpan, XYZCoefficients> earthBarycenterCoefficients = this.spKernel.getCoefficientsForBody(Body.EarthMoonBarycenter)
-                .orElseThrow(() -> new JPLException(String.format("No coefficients for %s found in SPKernel", Body.EarthMoonBarycenter)));
+        final Map<TimeSpan, XYZCoefficients> earthBarycenterCoefficients = this.spKernel.getCoefficientsForBody(JplBody.EarthMoonBarycenter)
+                .orElseThrow(() -> new JPLException(String.format("No coefficients for %s found in SPKernel", JplBody.EarthMoonBarycenter)));
 
-        final Map<TimeSpan, XYZCoefficients> moonCoefficients = this.spKernel.getCoefficientsForBody(Body.Moon)
-                .orElseThrow(() -> new JPLException(String.format("No coefficients for %s found in SPKernel", Body.Moon)));
+        final Map<TimeSpan, XYZCoefficients> moonCoefficients = this.spKernel.getCoefficientsForBody(JplBody.Moon)
+                .orElseThrow(() -> new JPLException(String.format("No coefficients for %s found in SPKernel", JplBody.Moon)));
 
         final PositionCalculator bodyPositionCalculator = new PositionCalculator(bodyCoefficients);
         final PositionCalculator earthBarycenterPositionCalculator = new PositionCalculator(earthBarycenterCoefficients);
@@ -103,7 +105,8 @@ public class StateCalculator {
                     AstronomicalCoordinates.fromRectangular(bodyGeocentricCoords),
                     bodyHeliocentricCoordsAu.getDistance(),
                     bodyGeocentricCoordsAu.getDistance(),
-                    PlanetsMagnitudeCalculator.compute(body, bodyHeliocentricCoordsAu, bodyGeocentricCoordsAu)
+                    PlanetsMagnitudeCalculator.compute(body, bodyHeliocentricCoordsAu, bodyGeocentricCoordsAu),
+                    AngularSize.fromRadiusAndDistance(BodyInformation.getByName(body.name()).equatorialRadius, bodyGeocentricCoords.getDistance())
             ));
         }
 

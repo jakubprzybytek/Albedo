@@ -2,7 +2,7 @@ package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.BodyType;
 import jp.albedo.ephemeris.Ephemeris;
-import jp.albedo.jpl.Body;
+import jp.albedo.jpl.JplBody;
 import jp.albedo.vsop87.VSOPException;
 import jp.albedo.webapp.ephemeris.jpl.JplEphemerisCalculator;
 import jp.albedo.webapp.ephemeris.orbitbased.OrbitBasedEphemerisCalculator;
@@ -44,9 +44,9 @@ public class EphemeridesOrchestrator {
      */
     public ComputedEphemerides compute(String bodyName, Double fromDate, Double toDate, double interval) throws Exception {
 
-        final Optional<Body> jplSupportedBody = this.jplEphemerisCalculator.parseBody(bodyName);
+        final Optional<JplBody> jplSupportedBody = this.jplEphemerisCalculator.parseBody(bodyName);
         if (jplSupportedBody.isPresent()) {
-            final Body body = jplSupportedBody.get();
+            final JplBody body = jplSupportedBody.get();
             final List<Ephemeris> ephemerides = this.jplEphemerisCalculator.compute(body, fromDate, toDate, interval);
 
             return new ComputedEphemerides(body.toBodyDetails(), ephemerides);

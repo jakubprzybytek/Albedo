@@ -3,7 +3,7 @@ package jp.albedo.jpl;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
 
-public enum Body {
+public enum JplBody {
 
     Sun(BodyType.Star),
     Mercury(BodyType.Planet),
@@ -22,7 +22,7 @@ public enum Body {
 
     private BodyType bodyType;
 
-    Body (BodyType bodyType) {
+    JplBody(BodyType bodyType) {
         this.bodyType = bodyType;
     }
 
