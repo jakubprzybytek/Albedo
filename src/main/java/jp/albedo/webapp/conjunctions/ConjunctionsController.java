@@ -6,6 +6,7 @@ import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
 import jp.albedo.webapp.common.AstronomicalEvent;
+import jp.albedo.webapp.conjunctions.rest.ConjunctionEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

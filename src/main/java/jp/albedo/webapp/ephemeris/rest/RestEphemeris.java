@@ -40,17 +40,13 @@ public class RestEphemeris {
     }
 
     public static RestEphemeris fromEphemeris(Ephemeris ephemeris) {
-        AstronomicalCoordinates coordsInDegrees = new AstronomicalCoordinates(
-                Math.toDegrees(ephemeris.coordinates.rightAscension),
-                Math.toDegrees(ephemeris.coordinates.declination));
-
         return new RestEphemeris(
                 JulianDay.toDateTime(ephemeris.jde),
-                coordsInDegrees,
+                ephemeris.coordinates,
                 Precision.round(ephemeris.distanceFromSun, 6),
                 Precision.round(ephemeris.distanceFromEarth, 6),
                 ephemeris.apparentMagnitude,
-                ephemeris.angularSize != null ? Precision.round(Math.toDegrees(ephemeris.angularSize), 6) : null);
+                ephemeris.angularSize);
     }
 
 }

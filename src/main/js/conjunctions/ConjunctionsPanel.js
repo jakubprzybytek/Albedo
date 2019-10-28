@@ -32,10 +32,10 @@ export default function ConjunctionsPanel() {
             <ConjunctionCard conjunction={conjunction} />
           </div>
           <div className={classes.card}>
-            {conjunction.firstObjectType === "Body" && conjunction.first && <BodyCard bodyInfo={ { bodyDetails: conjunction.first } } />}
+            {conjunction.firstObjectType === "Body" && conjunction.first && <BodyCard bodyInfo={ { bodyDetails: conjunction.first.bodyDetails } } />}
           </div>
           <div className={classes.card}>
-            {conjunction.secondObjectType === "Body" && conjunction.second && <BodyCard bodyInfo={ { bodyDetails: conjunction.second } } />}
+            {conjunction.secondObjectType === "Body" && conjunction.second && <BodyCard bodyInfo={ { bodyDetails: conjunction.second.bodyDetails } } />}
             {conjunction.secondObjectType === "CatalogueEntry" && conjunction.second && <CatalogueEntryCard catalogueEntry={conjunction.second} />}
           </div>
         </div>}

@@ -1,6 +1,8 @@
 package jp.albedo.ephemeris;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.common.AstronomicalCoordinates;
+import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
 
 public class Ephemeris {
 
@@ -14,6 +16,7 @@ public class Ephemeris {
 
     final public double apparentMagnitude;
 
+    @JsonSerialize(using = RadiansToDegreesSerializer.class)
     public Double angularSize;
 
     public Ephemeris(double jde, AstronomicalCoordinates coordinates, double distanceFromSun, double distanceFromEarth, double apparentMagnitude) {
@@ -24,7 +27,7 @@ public class Ephemeris {
         this.apparentMagnitude = apparentMagnitude;
     }
 
-    public Ephemeris(double jde, AstronomicalCoordinates coordinates, double distanceFromSun, double distanceFromEarth, double apparentMagnitude, double angularSize) {
+    public Ephemeris(double jde, AstronomicalCoordinates coordinates, double distanceFromSun, double distanceFromEarth, double apparentMagnitude, Double angularSize) {
         this.jde = jde;
         this.coordinates = coordinates;
         this.distanceFromSun = distanceFromSun;

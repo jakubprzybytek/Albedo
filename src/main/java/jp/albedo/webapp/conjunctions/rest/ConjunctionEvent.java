@@ -1,12 +1,12 @@
-package jp.albedo.webapp.conjunctions;
+package jp.albedo.webapp.conjunctions.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.catalogue.CatalogueEntry;
-import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.JulianDay;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.common.AstronomicalObjectTypes;
+import jp.albedo.webapp.conjunctions.Conjunction;
 
 public class ConjunctionEvent extends AstronomicalEvent {
 
@@ -34,29 +34,19 @@ public class ConjunctionEvent extends AstronomicalEvent {
         this.separation = separation;
     }
 
-    static ConjunctionEvent fromTwoBodies(Conjunction<BodyDetails, BodyDetails> conjunction) {
+    public static ConjunctionEvent fromTwoBodies(Conjunction<BodyDetails, BodyDetails> conjunction) {
         return new ConjunctionEvent(
                 conjunction.jde,
-                AstronomicalObjectTypes.Body, conjunction.first,
-                AstronomicalObjectTypes.Body, conjunction.second,
+                AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.firstObject, conjunction.firstObjectEphemeris),
+                AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.secondObject, conjunction.secondObjectEphemeris),
                 Math.toDegrees(conjunction.separation));
     }
 
-    static ConjunctionEvent fromBodyAndCatalogueEntry(Conjunction<BodyDetails, CatalogueEntry> conjunction) {
+    public static ConjunctionEvent fromBodyAndCatalogueEntry(Conjunction<BodyDetails, CatalogueEntry> conjunction) {
         return new ConjunctionEvent(conjunction.jde,
-                AstronomicalObjectTypes.Body, conjunction.first,
-                AstronomicalObjectTypes.CatalogueEntry, translateToDegrees(conjunction.second),
+                AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.firstObject, conjunction.firstObjectEphemeris),
+                AstronomicalObjectTypes.CatalogueEntry, conjunction.secondObject,
                 Math.toDegrees(conjunction.separation));
-    }
-
-    static CatalogueEntry translateToDegrees(CatalogueEntry catalogueEntry) {
-        return new CatalogueEntry(catalogueEntry.name, catalogueEntry.type,
-                new AstronomicalCoordinates(
-                        Math.toDegrees(catalogueEntry.coordinates.rightAscension),
-                        Math.toDegrees(catalogueEntry.coordinates.declination)),
-                catalogueEntry.bMagnitude, catalogueEntry.vMagnitude,
-                catalogueEntry.majorAxisSize, catalogueEntry.minorAxisSize,
-                catalogueEntry.morphologicalType);
     }
 
 }

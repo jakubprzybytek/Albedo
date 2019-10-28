@@ -1,6 +1,8 @@
 package jp.albedo.common;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.ephemeris.common.RectangularCoordinates;
+import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
 import org.apache.commons.math3.util.MathUtils;
 
 public class AstronomicalCoordinates {
@@ -8,11 +10,13 @@ public class AstronomicalCoordinates {
     /**
      * In radians.
      */
+    @JsonSerialize(using = RadiansToDegreesSerializer.class)
     public double rightAscension;
 
     /**
      * In radians.
      */
+    @JsonSerialize(using = RadiansToDegreesSerializer.class)
     public double declination;
 
     public AstronomicalCoordinates(double rightAscension, double declination) {

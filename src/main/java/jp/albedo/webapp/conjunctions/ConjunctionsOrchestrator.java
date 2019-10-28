@@ -88,9 +88,9 @@ class ConjunctionsOrchestrator {
                 .map(conjunction -> {
                     try {
                         return new Pair<>(
-                                this.ephemeridesOrchestrator.compute(conjunction.first.name, conjunction.jde - DETAILED_SPAN / 2.0,
+                                this.ephemeridesOrchestrator.compute(conjunction.firstObject.name, conjunction.jde - DETAILED_SPAN / 2.0,
                                         conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL),
-                                this.ephemeridesOrchestrator.compute(conjunction.second.name, conjunction.jde - DETAILED_SPAN / 2.0,
+                                this.ephemeridesOrchestrator.compute(conjunction.secondObject.name, conjunction.jde - DETAILED_SPAN / 2.0,
                                         conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL));
                     } catch (Exception e) {
                         throw new RuntimeException(e); // FixMe
@@ -148,9 +148,9 @@ class ConjunctionsOrchestrator {
                 .map(conjunction -> {
                     try {
                         return new Pair<>(
-                                this.ephemeridesOrchestrator.compute(conjunction.first.name, conjunction.jde - DETAILED_SPAN / 2.0,
+                                this.ephemeridesOrchestrator.compute(conjunction.firstObject.name, conjunction.jde - DETAILED_SPAN / 2.0,
                                         conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL),
-                                conjunction.second);
+                                conjunction.secondObject);
                     } catch (Exception e) {
                         throw new RuntimeException(e); // FixMe
                     }

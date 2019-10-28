@@ -1,19 +1,27 @@
 package jp.albedo.webapp.conjunctions;
 
+import jp.albedo.ephemeris.Ephemeris;
+
 public class Conjunction<A, B extends Object> {
 
     final public double jde;
 
     final public double separation;
 
-    final public A first;
+    final public A firstObject;
 
-    final public B second;
+    final public Ephemeris firstObjectEphemeris;
 
-    public Conjunction(double jde, double separation, A first, B second) {
+    final public B secondObject;
+
+    final public Ephemeris secondObjectEphemeris;
+
+    public Conjunction(double jde, double separation, A firstObject, Ephemeris firstObjectEphemeris, B secondObject, Ephemeris secondObjectEphemeris) {
         this.jde = jde;
         this.separation = separation;
-        this.first = first;
-        this.second = second;
+        this.firstObject = firstObject;
+        this.firstObjectEphemeris = firstObjectEphemeris;
+        this.secondObject = secondObject;
+        this.secondObjectEphemeris = secondObjectEphemeris;
     }
 }
