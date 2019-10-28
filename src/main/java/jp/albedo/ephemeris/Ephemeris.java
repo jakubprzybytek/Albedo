@@ -2,16 +2,21 @@ package jp.albedo.ephemeris;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.common.AstronomicalCoordinates;
+import jp.albedo.webapp.utils.AUSerializer;
+import jp.albedo.webapp.utils.JulianDayToLocalDateTimeSerializer;
 import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
 
 public class Ephemeris {
 
+    @JsonSerialize(using = JulianDayToLocalDateTimeSerializer.class)
     final public double jde;
 
     final public AstronomicalCoordinates coordinates;
 
+    @JsonSerialize(using = AUSerializer.class)
     final public double distanceFromSun;
 
+    @JsonSerialize(using = AUSerializer.class)
     final public double distanceFromEarth;
 
     final public double apparentMagnitude;

@@ -2,7 +2,6 @@ package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.webapp.ephemeris.rest.EphemeridesResponse;
-import jp.albedo.webapp.ephemeris.rest.RestEphemeris;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class EphemeridesController {
@@ -34,12 +31,10 @@ public class EphemeridesController {
 
         ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDateTime(fromDate), JulianDay.fromDateTime(toDate), interval);
 
-        List<RestEphemeris> ephemerides = computedEphemerides.getEphemerides()
-                .stream()
-                .map(RestEphemeris::fromEphemeris)
-                .collect(Collectors.toList());
-
-        return new EphemeridesResponse(computedEphemerides.getBodyDetails(), computedEphemerides.getOrbitElements(), computedEphemerides.getMagnitudeParameters(), ephemerides);
+        return new EphemeridesResponse(computedEphemerides.getBodyDetails(),
+                computedEphemerides.getOrbitElements(),
+                computedEphemerides.getMagnitudeParameters(),
+                computedEphemerides.getEphemerides());
     }
 
 }
