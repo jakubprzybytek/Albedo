@@ -84,8 +84,6 @@ export default function ConjunctionsForm(props) {
           <FormControlLabel label="Asteroids" labelPlacement="start" control={
               <Switch checked={asteroidsChecked} onChange={event => setAsteroidsChecked(event.target.checked)} color="primary" />
             }/>
-        </FormGroup>
-        <FormGroup row>
           <FormControlLabel label="NGC" labelPlacement="start" control={
               <Switch checked={ngcChecked} onChange={event => setNgcChecked(event.target.checked)} color="secondary" />
             }/>

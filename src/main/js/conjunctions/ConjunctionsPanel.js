@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 export default function ConjunctionsPanel() {
 
   const [rows, setRows] = React.useState([]);
-  const [conjunction, setConjunction] = React.useState({});
+  const [conjunction, setConjunction] = React.useState(null);
 
   const classes = useStyles();
 
@@ -27,16 +27,18 @@ export default function ConjunctionsPanel() {
         <ConjunctionsTable rows={rows} onConjunctionSelected={setConjunction} />
       </Grid>
       <Grid item xs={3}>
-        <div className={classes.card}>
-          <ConjunctionCard conjunction={conjunction} />
-        </div>
-        <div className={classes.card}>
-          {conjunction.firstObjectType === "Body" && conjunction.first && <BodyCard bodyInfo={ { bodyDetails: conjunction.first } } />}
-        </div>
-        <div className={classes.card}>
-          {conjunction.secondObjectType === "Body" && conjunction.second && <BodyCard bodyInfo={ { bodyDetails: conjunction.second } } />}
-          {conjunction.secondObjectType === "CatalogueEntry" && conjunction.second && <CatalogueEntryCard catalogueEntry={conjunction.second} />}
-        </div>
+        {conjunction && <div>
+          <div className={classes.card}>
+            <ConjunctionCard conjunction={conjunction} />
+          </div>
+          <div className={classes.card}>
+            {conjunction.firstObjectType === "Body" && conjunction.first && <BodyCard bodyInfo={ { bodyDetails: conjunction.first } } />}
+          </div>
+          <div className={classes.card}>
+            {conjunction.secondObjectType === "Body" && conjunction.second && <BodyCard bodyInfo={ { bodyDetails: conjunction.second } } />}
+            {conjunction.secondObjectType === "CatalogueEntry" && conjunction.second && <CatalogueEntryCard catalogueEntry={conjunction.second} />}
+          </div>
+        </div>}
       </Grid>
     </Grid>
   );
