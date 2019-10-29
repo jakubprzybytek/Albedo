@@ -14,6 +14,10 @@ import { formatDegrees, formatArcSeconds } from './../utils/Angles';
 const useStyles = makeStyles(theme => ({
   objectCell: {
     display: 'flex',
+    flexDirection: 'column',
+  },
+  objectCellRow: {
+    display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
     '& > *': {
@@ -32,17 +36,17 @@ const useStyles = makeStyles(theme => ({
 
 const StyledChip = withStyles({
   root: {
-    height: '20px'
+    height: '18px'
   },
   avatar: {
-    fontSize: '0.8rem',
-    width: '20px',
-    height: '20px'
+    fontSize: '0.7rem',
+    width: '18px',
+    height: '18px'
   },
   label: {
     fontSize: '0.7rem',
     paddingLeft: '6px',
-    paddingRight: '6px'
+    paddingRight: '5px'
   },
 })(Chip);
 
@@ -54,18 +58,34 @@ function BodyInfoCell(props) {
 
   return (
     <div className={classes.objectCell}>
-      {props.bodyInfo.bodyDetails.name}
-      <StyledChip variant="outlined" avatar={<Avatar>M</Avatar>} label={bodyInfo.ephemeris.apparentMagnitude} color="primary" />
-      {bodyInfo.ephemeris.angularSize && <StyledChip variant="outlined" avatar={<Avatar>S</Avatar>} label={formatArcSeconds(bodyInfo.ephemeris.angularSize)} color="secondary" />}
+      <div className={classes.objectCellRow}>
+        {props.bodyInfo.bodyDetails.name}
+      </div>
+      <div className={classes.objectCellRow}>
+        <StyledChip variant="outlined" avatar={<Avatar>M</Avatar>} label={bodyInfo.ephemeris.apparentMagnitude} color="primary" />
+        {bodyInfo.ephemeris.angularSize && <StyledChip variant="outlined" avatar={<Avatar>S</Avatar>} label={formatArcSeconds(bodyInfo.ephemeris.angularSize)} color="secondary" />}
+      </div>
     </div>
   );
 }
 
 function CatalogueEntryCell(props) {
+
+  const { catalogueEntry } = props;
+
+  const classes = useStyles();
+
   return (
-    <React.Fragment>
-      {props.catalogueEntry.name}
-    </React.Fragment>
+    <div className={classes.objectCell}>
+      <div className={classes.objectCellRow}>
+        {catalogueEntry.name}
+      </div>
+      <div className={classes.objectCellRow}>
+        {catalogueEntry.vMagnitude && <StyledChip variant="outlined" avatar={<Avatar>Mv</Avatar>} label={catalogueEntry.vMagnitude} color="primary" />}
+        {!catalogueEntry.vMagnitude && catalogueEntry.bMagnitude  && <StyledChip variant="outlined" avatar={<Avatar>Mb</Avatar>} label={catalogueEntry.bMagnitude} color="primary" />}
+        {catalogueEntry.majorAxisSize && <StyledChip variant="outlined" avatar={<Avatar>S</Avatar>} label={catalogueEntry.majorAxisSize + "\""} color="secondary" />}
+      </div>
+    </div>
   );
 }
 

@@ -2,7 +2,10 @@ package jp.albedo.catalogue;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.common.AstronomicalCoordinates;
+import jp.albedo.webapp.utils.Precision6Serializer;
+import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
 
 public class CatalogueEntry {
 
@@ -15,18 +18,22 @@ public class CatalogueEntry {
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using = Precision6Serializer.class)
     final public Double bMagnitude;
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using = Precision6Serializer.class)
     final public Double vMagnitude;
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using = Precision6Serializer.class)
     final public Double majorAxisSize;
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using = Precision6Serializer.class)
     final public Double minorAxisSize;
 
     @JsonProperty

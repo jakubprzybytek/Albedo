@@ -1,12 +1,14 @@
 package jp.albedo.webapp.conjunctions.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.JulianDay;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.common.AstronomicalObjectTypes;
 import jp.albedo.webapp.conjunctions.Conjunction;
+import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
 
 public class ConjunctionEvent extends AstronomicalEvent {
 
@@ -23,6 +25,7 @@ public class ConjunctionEvent extends AstronomicalEvent {
     private final Object secondObject;
 
     @JsonProperty
+    @JsonSerialize(using = RadiansToDegreesSerializer.class)
     private final double separation;
 
     private ConjunctionEvent(double jde, AstronomicalObjectTypes firstObjectType, Object firstObject, AstronomicalObjectTypes secondObjectType, Object secondObject, double separation) {
@@ -39,14 +42,14 @@ public class ConjunctionEvent extends AstronomicalEvent {
                 conjunction.jde,
                 AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.firstObject, conjunction.firstObjectEphemeris),
                 AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.secondObject, conjunction.secondObjectEphemeris),
-                Math.toDegrees(conjunction.separation));
+                conjunction.separation);
     }
 
     public static ConjunctionEvent fromBodyAndCatalogueEntry(Conjunction<BodyDetails, CatalogueEntry> conjunction) {
         return new ConjunctionEvent(conjunction.jde,
                 AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.firstObject, conjunction.firstObjectEphemeris),
                 AstronomicalObjectTypes.CatalogueEntry, conjunction.secondObject,
-                Math.toDegrees(conjunction.separation));
+                conjunction.separation);
     }
 
 }

@@ -13,8 +13,10 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
 	card: {
@@ -50,6 +52,61 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
+function Ephemeris(props) {
+
+  const { ephemeris } = props;
+
+  const classes = useStyles();
+
+  return (
+    <React.Fragment>
+      <Typography>Ephemeris:</Typography>
+      <List dense={true}>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">RA: </Typography>
+            <Tooltip title={ephemeris.coordinates.rightAscension.toFixed(6) + "° (J2000)"}>
+              <span>{formatHourAngle(ephemeris.coordinates.rightAscension)}</span>
+            </Tooltip>
+          </React.Fragment>} />
+          </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Dec: </Typography>
+            <Tooltip title={ephemeris.coordinates.declination.toFixed(6) + "° (J2000)"}>
+              <span>{formatDegrees(ephemeris.coordinates.declination)}</span>
+            </Tooltip>
+          </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Distance from Sun: </Typography>
+              {ephemeris.distanceFromSun} [AU]
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Distance from Earth: </Typography>
+              {ephemeris.distanceFromEarth} [AU]
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Magnitude: </Typography>
+              {ephemeris.apparentMagnitude} [mag]
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Angular size: </Typography>
+              {formatArcSeconds(ephemeris.angularSize)}
+            </React.Fragment>} />
+        </ListItem>
+      </List>
+    </React.Fragment>
+  );
+}
+
 export default function BodyCard(props) {
 
   const { bodyInfo } = props;
@@ -68,6 +125,9 @@ export default function BodyCard(props) {
         avatar={<Avatar className={classes.avatar}>{bodyInfo.bodyDetails.bodyType.charAt(0)}</Avatar>}
         title={bodyInfo.bodyDetails.name}
         subheader={bodyInfo.bodyDetails.bodyType} />
+      {bodyInfo.ephemeris && <CardContent>
+        <Ephemeris ephemeris={bodyInfo.ephemeris} />
+      </CardContent>}
       {(bodyInfo.orbitElements || bodyInfo.magnitudeParameters) && <React.Fragment>
         <CardActions disableSpacing>
           <IconButton
