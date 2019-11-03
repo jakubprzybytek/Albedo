@@ -96,13 +96,98 @@ function Ephemeris(props) {
               {ephemeris.apparentMagnitude} [mag]
             </React.Fragment>} />
         </ListItem>
-        <ListItem>
+        {ephemeris.angularSize &&<ListItem>
           <ListItemText className={classes.listItem} secondary={<React.Fragment>
               <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Angular size: </Typography>
               {formatArcSeconds(ephemeris.angularSize)}
             </React.Fragment>} />
+        </ListItem>}
+      </List>
+    </React.Fragment>
+  );
+}
+
+function OrbitElements(props) {
+
+  const { orbitElements, magnitudeParameters } = props;
+
+  const classes = useStyles();
+
+  return (
+    <React.Fragment>
+      <Typography>Orbit elements:</Typography>
+      <List dense={true}>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Epoch: </Typography>
+              {orbitElements.epoch}
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Eccentricity (e): </Typography>
+              {orbitElements.eccentricity}
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Semimajor axis (a): </Typography>
+              {orbitElements.semiMajorAxis + " AU"}
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean motion (n): </Typography>
+              {orbitElements.meanMotion + '°/day'}
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Argument of perihelion (ω): </Typography>
+              {orbitElements.argumentOfPerihelion + '°'}
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Longitude of ascending node (Ω): </Typography>
+              {orbitElements.longitudeOfAscendingNode + "°"}
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Inclination (i): </Typography>
+              {orbitElements.inclination + '°'}
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean anomaly epoch (T): </Typography>
+              {orbitElements.meanAnomalyEpoch + ' JDE'}
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean anomaly at epoch (M): </Typography>
+              {orbitElements.meanAnomalyAtEpoch + '°'}
+            </React.Fragment>} />
         </ListItem>
       </List>
+      <Typography>Magnitude System:</Typography>
+      <List dense={true}>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Absolute Magnitude (H): </Typography>
+              {magnitudeParameters.H}
+            </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Slope parameter (G): </Typography>
+              {magnitudeParameters.G}
+            </React.Fragment>} />
+        </ListItem>
+      </List>
+      <Link href='https://minorplanetcenter.net/data' className={classes.link}>Source</Link>
     </React.Fragment>
   );
 }
@@ -110,14 +195,14 @@ function Ephemeris(props) {
 export default function BodyCard(props) {
 
   const { bodyInfo } = props;
-  
-	const [expanded, setExpanded] = React.useState(false);
 
-	const classes = useStyles();
-	
-	const handleExpandClick = () => {
-		setExpanded(!expanded);
-	};
+  const [expanded, setExpanded] = React.useState(false);
+
+  const classes = useStyles();
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   return (
     <Card className={classes.card}>
@@ -142,79 +227,7 @@ export default function BodyCard(props) {
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography>Orbit elements:</Typography>
-            <List dense={true}>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Epoch: </Typography>
-                    {bodyInfo.orbitElements.epoch}
-                  </React.Fragment>} />
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Eccentricity (e): </Typography>
-                    {bodyInfo.orbitElements.eccentricity}
-                  </React.Fragment>} />
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Semimajor axis (a): </Typography>
-                    {bodyInfo.orbitElements.semiMajorAxis + " AU"}
-                  </React.Fragment>} />
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean motion (n): </Typography>
-                    {bodyInfo.orbitElements.meanMotion + '°/day'}
-                  </React.Fragment>} />
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Argument of perihelion (ω): </Typography>
-                    {bodyInfo.orbitElements.argumentOfPerihelion + '°'}
-                  </React.Fragment>} />
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Longitude of ascending node (Ω): </Typography>
-                    {bodyInfo.orbitElements.longitudeOfAscendingNode + "°"}
-                  </React.Fragment>} />
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Inclination (i): </Typography>
-                    {bodyInfo.orbitElements.inclination + '°'}
-                  </React.Fragment>} />
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean anomaly epoch (T): </Typography>
-                    {bodyInfo.orbitElements.meanAnomalyEpoch + ' JDE'}
-                  </React.Fragment>} />
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean anomaly at epoch (M): </Typography>
-                    {bodyInfo.orbitElements.meanAnomalyAtEpoch + '°'}
-                  </React.Fragment>} />
-              </ListItem>
-            </List>
-            <Typography>Magnitude System:</Typography>
-            <List dense={true}>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Absolute Magnitude (H): </Typography>
-                    {bodyInfo.magnitudeParameters.H}
-                  </React.Fragment>} />
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.listItem} secondary={<React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Slope parameter (G): </Typography>
-                    {bodyInfo.magnitudeParameters.G}
-                  </React.Fragment>} />
-              </ListItem>
-            </List>
-            <Link href='https://minorplanetcenter.net/data' className={classes.link}>Source</Link>
+            <OrbitElements orbitElements={bodyInfo.orbitElements} magnitudeParameters={bodyInfo.magnitudeParameters} />
           </CardContent>
         </Collapse>
       </React.Fragment>}
