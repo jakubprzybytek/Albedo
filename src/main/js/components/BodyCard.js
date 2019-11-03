@@ -14,7 +14,7 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
-import { red } from '@material-ui/core/colors';
+import { red, orange } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
 
@@ -36,9 +36,12 @@ const useStyles = makeStyles(theme => ({
 	expandOpen: {
 		transform: 'rotate(180deg)',
 	},
-	avatar: {
+	avatarRed: {
 		backgroundColor: red[500],
 	},
+  avatarOrange: {
+    backgroundColor: orange[500],
+  },
 	listItem: {
 		marginTop: '0px',
 		marginBottom: '0px'
@@ -206,10 +209,8 @@ export default function BodyCard(props) {
 
   return (
     <Card className={classes.card}>
-      <CardHeader
-        avatar={<Avatar className={classes.avatar}>{bodyInfo.bodyDetails.bodyType.charAt(0)}</Avatar>}
-        title={bodyInfo.bodyDetails.name}
-        subheader={bodyInfo.bodyDetails.bodyType} />
+    {bodyInfo.bodyDetails.bodyType === "Planet" && <CardHeader avatar={<Avatar className={classes.avatarRed}>P</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+    {bodyInfo.bodyDetails.bodyType === "Asteroid" && <CardHeader avatar={<Avatar className={classes.avatarOrange}>A</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
       {bodyInfo.ephemeris && <CardContent>
         <Ephemeris ephemeris={bodyInfo.ephemeris} />
       </CardContent>}

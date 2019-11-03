@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
+import { red, orange, teal } from '@material-ui/core/colors';
 import { format } from 'date-fns';
 import { formatDegrees, formatArcSeconds } from './../utils/Angles';
 
@@ -50,6 +51,36 @@ const StyledChip = withStyles({
   },
 })(Chip);
 
+const RedChip = withStyles({
+  avatar: {
+    color: red[50],
+    backgroundColor: red[500],
+  },
+  outlined: {
+    borderColor: red[500],
+  },
+})(Chip);
+
+const OrangeChip = withStyles({
+  avatar: {
+    color: orange[50],
+    backgroundColor: orange[500],
+  },
+  outlined: {
+    borderColor: orange[500],
+  },
+})(Chip);
+
+const TealChip = withStyles({
+  avatar: {
+    color: teal[50],
+    backgroundColor: teal[500],
+  },
+  outlined: {
+    borderColor: teal[500],
+  },
+})(Chip);
+
 function BodyInfoCell(props) {
 
   const { bodyInfo } = props;
@@ -59,11 +90,11 @@ function BodyInfoCell(props) {
   return (
     <div className={classes.objectCell}>
       <div className={classes.objectCellRow}>
-        {props.bodyInfo.bodyDetails.name}
+        {bodyInfo.bodyDetails.bodyType === "Planet" && <RedChip size="small" variant="outlined" avatar={<Avatar>P</Avatar>} label={bodyInfo.bodyDetails.name} />}
+        {bodyInfo.bodyDetails.bodyType === "Asteroid" && <OrangeChip size="small" variant="outlined" avatar={<Avatar>A</Avatar>} label={bodyInfo.bodyDetails.name} />}
       </div>
       <div className={classes.objectCellRow}>
-        <StyledChip variant="outlined" avatar={<Avatar>M</Avatar>} label={bodyInfo.ephemeris.apparentMagnitude} color="primary" />
-        {bodyInfo.ephemeris.angularSize && <StyledChip variant="outlined" avatar={<Avatar>S</Avatar>} label={formatArcSeconds(bodyInfo.ephemeris.angularSize)} color="secondary" />}
+        {bodyInfo.ephemeris.apparentMagnitude} mag, {bodyInfo.ephemeris.angularSize && <React.Fragment>{formatArcSeconds(bodyInfo.ephemeris.angularSize)}</React.Fragment>}
       </div>
     </div>
   );
@@ -78,12 +109,12 @@ function CatalogueEntryCell(props) {
   return (
     <div className={classes.objectCell}>
       <div className={classes.objectCellRow}>
-        {catalogueEntry.name}
+        <TealChip size="small" variant="outlined" avatar={<Avatar>C</Avatar>} label={catalogueEntry.name} />
       </div>
       <div className={classes.objectCellRow}>
-        {catalogueEntry.vMagnitude && <StyledChip variant="outlined" avatar={<Avatar>Mv</Avatar>} label={catalogueEntry.vMagnitude} color="primary" />}
-        {!catalogueEntry.vMagnitude && catalogueEntry.bMagnitude  && <StyledChip variant="outlined" avatar={<Avatar>Mb</Avatar>} label={catalogueEntry.bMagnitude} color="primary" />}
-        {catalogueEntry.majorAxisSize && <StyledChip variant="outlined" avatar={<Avatar>S</Avatar>} label={catalogueEntry.majorAxisSize + "\""} color="secondary" />}
+        {catalogueEntry.vMagnitude && <React.Fragment>{catalogueEntry.vMagnitude} mag (V), </React.Fragment>}
+        {!catalogueEntry.vMagnitude && catalogueEntry.bMagnitude && <React.Fragment>{catalogueEntry.bMagnitude} mag (B), </React.Fragment>}
+        {catalogueEntry.majorAxisSize && <React.Fragment>{catalogueEntry.majorAxisSize + "\""}</React.Fragment>}
       </div>
     </div>
   );
@@ -100,8 +131,6 @@ export function ConjunctionTableRow(props) {
     setSelected(!selected);
   }
 
-
-  
   return (
     <TableRow key={conjunction.index} hover role="checkbox" selected={selected} onClick={handleClick}>
       <TableCell component="th" scope="row" title={conjunction.jde + " [JDE]"}>
