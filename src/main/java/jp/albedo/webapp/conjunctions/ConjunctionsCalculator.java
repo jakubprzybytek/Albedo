@@ -1,7 +1,7 @@
 package jp.albedo.webapp.conjunctions;
 
 import jp.albedo.catalogue.CatalogueEntry;
-import jp.albedo.common.Angles;
+import jp.albedo.common.Radians;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.conjunctions.impl.LocalMinimumsFindingCollector;
@@ -99,7 +99,7 @@ class ConjunctionsCalculator {
                         pairOfBodies.getSecond().getEphemerides().stream(),
                         Pair::new)
                 .collect(LocalMinimumsFindingCollector.of(
-                        (ephemerisPair) -> Angles.separation(ephemerisPair.getFirst().coordinates, ephemerisPair.getSecond().coordinates),
+                        (ephemerisPair) -> Radians.separation(ephemerisPair.getFirst().coordinates, ephemerisPair.getSecond().coordinates),
                         (ephemerisPair, separation) -> new Conjunction<>(
                                 ephemerisPair.getFirst().jde,
                                 separation,
@@ -120,7 +120,7 @@ class ConjunctionsCalculator {
 
         return pairToCompare.getFirst().getEphemerides().stream()
                 .collect(LocalMinimumsFindingCollector.of(
-                        (ephemeris) -> Angles.separation(ephemeris.coordinates, pairToCompare.getSecond().coordinates),
+                        (ephemeris) -> Radians.separation(ephemeris.coordinates, pairToCompare.getSecond().coordinates),
                         (ephemeris, separation) -> new Conjunction<>(
                                 ephemeris.jde,
                                 separation,

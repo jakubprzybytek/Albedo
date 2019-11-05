@@ -52,12 +52,12 @@ public class ConjunctionsController {
 
         List<ConjunctionEvent> conjunctionEvents = new ArrayList<>();
 
-        List<Conjunction<BodyDetails, BodyDetails>> conjunctionsBetweenBodies = this.conjunctionsOrchestrator.computeForTwoMovingBodies(primaryBodyTypes, secondaryBodyTypes, JulianDay.fromDateTime(fromDate), JulianDay.fromDateTime(toDate));
+        List<Conjunction<BodyDetails, BodyDetails>> conjunctionsBetweenBodies = this.conjunctionsOrchestrator.computeForTwoMovingBodies(primaryBodyTypes, secondaryBodyTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate));
         conjunctionsBetweenBodies.stream()
                 .map(ConjunctionEvent::fromTwoBodies)
                 .forEachOrdered(conjunctionEvents::add);
 
-        List<Conjunction<BodyDetails, CatalogueEntry>> conjunctionsWithCatalogueEntries = this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(primaryBodyTypes, catalogueTypes, JulianDay.fromDateTime(fromDate), JulianDay.fromDateTime(toDate));
+        List<Conjunction<BodyDetails, CatalogueEntry>> conjunctionsWithCatalogueEntries = this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(primaryBodyTypes, catalogueTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate));
         conjunctionsWithCatalogueEntries.stream()
                 .map(ConjunctionEvent::fromBodyAndCatalogueEntry)
                 .forEachOrdered(conjunctionEvents::add);

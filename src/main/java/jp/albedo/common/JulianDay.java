@@ -16,7 +16,7 @@ public class JulianDay {
      * @param day
      * @return
      */
-    public static double fromDate(int year, int month, double day) {
+    public static double fromDateTime(int year, int month, double day, int hours, int minutes, double seconds) {
         if (month < 3) {
             month += 12;
             year--;
@@ -25,15 +25,29 @@ public class JulianDay {
         final int A = year / 100;
         final int B = 2 - A + A / 4;
 
-        return Math.floor(365.25 * (year + 4716.0)) + Math.floor(30.6001 * (month + 1.0)) + day + (double) B - 1524.5;
+        final double dayPart = (hours + (minutes + seconds / 60.0) / 60.0) / 24.0;
+
+        return Math.floor(365.25 * (year + 4716.0)) + Math.floor(30.6001 * (month + 1.0)) + day + (double) B - 1524.5 + dayPart;
     }
 
-    public static double fromDateTime(LocalDate date) {
+    /**
+     * From: Jean Meeus' Astronomical Algorithms
+     *
+     * @param year
+     * @param month
+     * @param day
+     * @return
+     */
+    public static double fromDate(int year, int month, double day) {
+        return fromDateTime(year, month, day, 0, 0, 0.0);
+    }
+
+    public static double fromDate(LocalDate date) {
         return fromDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
     }
 
     public static double fromDateTime(LocalDateTime dateTime) {
-        return fromDate(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth());
+        return fromDate(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth()); // Fixme
     }
 
     public static List<Double> forRange(double jdFrom, double jdTo, double interval) {

@@ -29,7 +29,7 @@ public class EphemeridesController {
 
         LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f]", bodyName, fromDate, toDate, interval));
 
-        ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDateTime(fromDate), JulianDay.fromDateTime(toDate), interval);
+        ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval);
 
         return new EphemeridesResponse(computedEphemerides.getBodyDetails(),
                 computedEphemerides.getOrbitElements(),
