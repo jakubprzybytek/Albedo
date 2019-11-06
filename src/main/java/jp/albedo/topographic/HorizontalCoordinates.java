@@ -1,4 +1,4 @@
-package jp.albedo.common;
+package jp.albedo.topographic;
 
 import org.apache.commons.math3.util.MathUtils;
 

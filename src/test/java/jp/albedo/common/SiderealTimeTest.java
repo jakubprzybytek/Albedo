@@ -13,13 +13,13 @@ class SiderealTimeTest {
         assertEquals(
                 Math.toDegrees(Radians.fromHours(13, 10, 46.3668)),
                 Math.toDegrees(SiderealTime.getGreenwichMean(JulianDay.fromDate(1987, 4, 10))),
-                Degrees.ONE_TENTH_ARCSECOND);
+                Degrees.ONE_HUNDREDTH_SECOND);
 
         // Meeus
         assertEquals(
                 Math.toDegrees(Radians.fromHours(8, 34, 57.0896)),
                 Math.toDegrees(SiderealTime.getGreenwichMean(JulianDay.fromDateTime(1987, 4, 10, 19, 21, 0.0))),
-                Degrees.ONE_TENTH_ARCSECOND);
+                Degrees.ONE_HUNDREDTH_SECOND);
 
         assertEquals(
                 41.96862608990873,
