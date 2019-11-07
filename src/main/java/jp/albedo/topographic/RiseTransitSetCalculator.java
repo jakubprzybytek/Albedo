@@ -32,13 +32,13 @@ public class RiseTransitSetCalculator {
         final double eventGreenwichSiderealTime = MathUtils.normalizeAngle(greenwichSiderealTime + 6.3003881 * m, Math.PI);
         final double interpolationFactor = m + deltaT / 86400.0;
 
-        List<Double> rightAscensionList = coordsList.stream()
+        final List<Double> rightAscensionList = coordsList.stream()
                 .map(coords -> coords.rightAscension)
                 .collect(Collectors.toList());
 
         final double rightAscension = Interpolation.interpolate(rightAscensionList, interpolationFactor);
 
-        List<Double> declinationList = coordsList.stream()
+        final List<Double> declinationList = coordsList.stream()
                 .map(coords -> coords.declination)
                 .collect(Collectors.toList());
 
@@ -55,7 +55,7 @@ public class RiseTransitSetCalculator {
         final double eventGreenwichSiderealTime = MathUtils.normalizeAngle(greenwichSiderealTime + 6.3003881 * m, Math.PI);
         final double interpolationFactor = m + deltaT / 86400.0;
 
-        List<Double> rightAscensionList = coordsList.stream()
+        final List<Double> rightAscensionList = coordsList.stream()
                 .map(coords -> coords.rightAscension)
                 .collect(Collectors.toList());
 

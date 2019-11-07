@@ -55,7 +55,7 @@ public class EphemeridesOrchestrator {
         final Optional<OrbitingBodyRecord> orbitingBodyRecordOptional = this.orbitBasedEphemerisCalculator.findBody(bodyName);
 
         if (!orbitingBodyRecordOptional.isPresent()) {
-            throw new Exception("Body not found: " + bodyName);
+            throw new EphemerisException("Body not found: " + bodyName);
         }
 
         final OrbitingBodyRecord orbitingBodyRecord = orbitingBodyRecordOptional.get();
