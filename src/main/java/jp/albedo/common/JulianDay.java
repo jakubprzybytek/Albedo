@@ -66,7 +66,7 @@ public class JulianDay {
     public static LocalDateTime toDateTime(double julianDay) {
         julianDay += 0.5;
 
-        int Z = (int) julianDay;
+        final int Z = (int) julianDay;
         double F = julianDay - Z;
         double A;
 
@@ -77,22 +77,38 @@ public class JulianDay {
             A = Z + 1.0 + alpha - Math.floor(alpha / 4.0);
         }
 
-        double B = A + 1524.0;
-        double C = Math.floor((B - 122.1) / 365.25);
-        double D = Math.floor(365.25 * C);
-        double E = Math.floor((B - D) / 30.6001);
+        final double B = A + 1524.0;
+        final double C = Math.floor((B - 122.1) / 365.25);
+        final double D = Math.floor(365.25 * C);
+        final double E = Math.floor((B - D) / 30.6001);
 
         int month = (int) (E < 14.0 ? E - 1.0 : E - 13.0);
+        int year = (int) (C - (month > 2 ? 4716.0 : 4715.0));
+        int dayOfMonth = (int) (B - D - Math.floor(30.6001 * E));
+
         double hours = F * 24.0;
         F = F * 24.0 - Math.floor(hours);
         double minutes = F * 60.0;
         F = F * 60.0 - Math.floor(minutes);
+        int seconds = (int) Math.rint(F * 60.0);
+
+        // FixMe: Correct up to years
+        if (seconds == 60) {
+            seconds = 0;
+            minutes++;
+            if (minutes == 60) {
+                minutes = 0;
+                hours++;
+                if (hours == 24) {
+                    hours = 0;
+                    dayOfMonth++;
+                }
+            }
+        }
 
         return LocalDateTime.of(
-                (int) (C - (month > 2 ? 4716.0 : 4715.0)),
-                month,
-                (int) (B - D - Math.floor(30.6001 * E)),
-                (int) hours, (int) minutes, (int) Math.rint(F * 60.0));
+                year, month, dayOfMonth,
+                (int) hours, (int) minutes, seconds);
     }
 
 }

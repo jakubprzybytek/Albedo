@@ -62,4 +62,18 @@ class JulianDayTest {
     assertEquals(7, dateTime.getMinute());
     assertEquals(12, dateTime.getSecond());
   }
+
+  @Test
+  @DisplayName("Julian day to calendar date test 4")
+  void toDateTime4() {
+    LocalDateTime dateTime = JulianDay.toDateTime(2458813.740272218);
+
+    assertEquals(2019, dateTime.getYear());
+    assertEquals(11, dateTime.getMonthValue());
+    assertEquals(26, dateTime.getDayOfMonth());
+    assertEquals(5, dateTime.getHour());
+    assertEquals(46, dateTime.getMinute());
+    assertEquals(0, dateTime.getSecond());
+  }
+
 }

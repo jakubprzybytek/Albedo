@@ -26,7 +26,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ConjunctionCard(props) {
+
   const { conjunction } = props;
+
   const classes = useStyles();
 
   return (

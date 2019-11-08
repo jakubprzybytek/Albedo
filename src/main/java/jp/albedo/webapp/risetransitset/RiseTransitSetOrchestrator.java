@@ -1,7 +1,7 @@
 package jp.albedo.webapp.risetransitset;
 
 import jp.albedo.topographic.GeographicCoordinates;
-import jp.albedo.topographic.RiseTransitSet;
+import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
 import org.apache.commons.logging.Log;
@@ -11,13 +11,18 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
 public class RiseTransitSetOrchestrator {
 
-    public static final double INTERVAL = 1.0;
     private static Log LOG = LogFactory.getLog(RiseTransitSetOrchestrator.class);
+
+    public static final double INTERVAL = 1.0;
 
     @Autowired
     EphemeridesOrchestrator ephemeridesOrchestrator;
@@ -25,14 +30,23 @@ public class RiseTransitSetOrchestrator {
     @Autowired
     RiseTransitSetCalculator riseTransitSetCalculator;
 
-    List<RiseTransitSet> compute(String bodyName, Double fromDate, Double toDate, GeographicCoordinates observerCoords) throws Exception {
+    List<RiseTransitSetEvent> compute(String[] bodyNames, Double fromDate, Double toDate, GeographicCoordinates observerCoords) throws Exception {
+
+        LOG.info(String.format("Computing times of rising, transit and setting, params: [bodies:%s, from=%s, to=%s]", Arrays.toString(bodyNames), fromDate, toDate));
 
         final Instant start = Instant.now();
 
-        ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL);
-        List<RiseTransitSet> riseTransitSetList = this.riseTransitSetCalculator.compute(computedEphemerides.getEphemerides(), observerCoords);
+        List<RiseTransitSetEvent> riseTransitSetList = new ArrayList<>();
 
-        LOG.info(String.format("Calculated %d times of rising, transit and set in %s", 1, Duration.between(start, Instant.now())));
+        for (String bodyName : bodyNames) {
+            ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL);
+            List<RiseTransitSetEvent> riseTransitSetListForBody = this.riseTransitSetCalculator.compute(computedEphemerides, observerCoords);
+            riseTransitSetList.addAll(riseTransitSetListForBody);
+        }
+
+        Collections.sort(riseTransitSetList, Comparator.comparingDouble(AstronomicalEvent::getJde));
+
+        LOG.info(String.format("Calculated %d times of rising, transit and set in %s", riseTransitSetList.size(), Duration.between(start, Instant.now())));
 
         return riseTransitSetList;
     }

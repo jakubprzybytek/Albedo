@@ -1,8 +1,8 @@
 package jp.albedo.webapp.risetransitset;
 
 import jp.albedo.common.JulianDay;
+import jp.albedo.common.Radians;
 import jp.albedo.topographic.GeographicCoordinates;
-import jp.albedo.topographic.RiseTransitSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +20,15 @@ public class RiseTransitSetController {
     RiseTransitSetOrchestrator riseTransitSetOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/riseTransitSet")
-    public List<RiseTransitSet> ephemeris(@RequestParam(value = "bodies", defaultValue = "Sun") String[] bodyName,
-                                          @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                          @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) throws Exception {
+    public List<RiseTransitSetEvent> ephemeris(@RequestParam(value = "bodies", defaultValue = "Sun") String[] bodyNames,
+                                               @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                               @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) throws Exception {
 
-        GeographicCoordinates observerCoords = GeographicCoordinates.fromDegrees(71.0833, 42.3333);
+        GeographicCoordinates observerCoords = new GeographicCoordinates(
+                Radians.fromDegrees(-16, 52, 28.2),
+                Radians.fromDegrees(52, 23, 39.85));
 
-        List<RiseTransitSet> riseTransitSetList = this.riseTransitSetOrchestrator.compute("Jupiter", JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerCoords);
+        List<RiseTransitSetEvent> riseTransitSetList = this.riseTransitSetOrchestrator.compute(bodyNames, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerCoords);
 
         return riseTransitSetList;
     }

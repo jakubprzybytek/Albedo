@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import EphemerisPanel from './ephemeris/EphemerisPanel';
 import ConjunctionsPanel from './conjunctions/ConjunctionsPanel';
+import RiseTransitSetPanel from './riseTransitSet/RiseTransitSetPanel';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -54,7 +55,7 @@ function a11yProps(index) {
 
 export default function ToolTabs() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState(2);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,14 +72,17 @@ export default function ToolTabs() {
         className={classes.tabs}>
         <Tab label="Ephemeris" {...a11yProps(0)} />
         <Tab label="Conjunctions" {...a11yProps(1)} />
+        <Tab label="Rise, Transit, Set" {...a11yProps(2)} />
       </Tabs>
-
       <TabPanel className={classes.tabPanel} value={value} index={0}>
         <EphemerisPanel />
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={1}>
         <ConjunctionsPanel />
       </TabPanel>
+      <TabPanel className={classes.tabPanel} value={value} index={2}>
+        <RiseTransitSetPanel />
+    </TabPanel>
     </div>
   );
 }
