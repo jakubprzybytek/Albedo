@@ -1,4 +1,4 @@
-package jp.albedo.webapp.risetransitset;
+package jp.albedo.webapp.risetransitset.rest;
 
 public enum RiseTransitSetEventType {
 

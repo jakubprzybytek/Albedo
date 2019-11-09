@@ -4,6 +4,7 @@ import jp.albedo.topographic.GeographicCoordinates;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
+import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

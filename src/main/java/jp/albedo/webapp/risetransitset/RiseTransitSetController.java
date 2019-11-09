@@ -3,6 +3,7 @@ package jp.albedo.webapp.risetransitset;
 import jp.albedo.common.JulianDay;
 import jp.albedo.common.Radians;
 import jp.albedo.topographic.GeographicCoordinates;
+import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
