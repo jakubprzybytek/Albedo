@@ -16,6 +16,9 @@ import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Validated using: https://wgc.jpl.nasa.gov:8443/webgeocalc/#StateVector
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StateCalculatorTest {
 
@@ -34,6 +37,22 @@ class StateCalculatorTest {
 
         this.spKernel = asciiFileLoader.createSpKernel();
         this.stateCalculator = new StateCalculator(spKernel);
+    }
+
+    @Test
+    void computeForSun() throws JPLException {
+        double jde = JulianDay.fromDate(2019, 10, 9);
+        RectangularCoordinates coordsAU = this.stateCalculator.computeForJd(JplBody.Sun, jde);
+        RectangularCoordinates coordsKm = coordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
+
+        System.out.printf("T [JDE]: %f%n", jde);
+        System.out.printf("Sun coords [AU]: %s, distance=%f%n", coordsAU, coordsAU.getDistance());
+        System.out.printf("Sun coords [km]: %s, distance=%f%n", coordsKm, coordsKm.getDistance());
+
+        assertEquals(-462237.15572104, coordsKm.x, 0.00000001);
+        assertEquals(1038587.57185744, coordsKm.y, 0.00000001);
+        assertEquals(450869.39130956, coordsKm.z, 0.00000001);
+
     }
 
     @Test

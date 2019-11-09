@@ -13,6 +13,9 @@ import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Validated with: https://wgc.jpl.nasa.gov:8443/webgeocalc/#StateVector
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class EphemeridesStateCalculatorTest {
 
@@ -34,6 +37,23 @@ class EphemeridesStateCalculatorTest {
     }
 
     @Test
+    void computeEphemeridesForSun() throws JPLException {
+
+        double jde = JulianDay.fromDate(1949, 12, 14);
+
+        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(JplBody.Sun, jde);
+        System.out.printf("Sun ephemeris: %s", ephemeris.toStringHighPrecision());
+
+        assertEquals(jde, ephemeris.jde);
+        // WGC: 274.97869316
+        assertEquals(261.69588889, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
+        // WGC: -25.54654902
+        assertEquals(-23.22635324, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
+        // Horisons: -0.68
+        assertEquals(-26.78, ephemeris.apparentMagnitude);
+    }
+
+    @Test
     void computeEphemeridesForMercury() throws JPLException {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
@@ -49,6 +69,7 @@ class EphemeridesStateCalculatorTest {
         // Horisons: -0.68
         assertEquals(-0.68, ephemeris.apparentMagnitude);
     }
+
     @Test
     void computeEphemeridesForVenus() throws JPLException {
 

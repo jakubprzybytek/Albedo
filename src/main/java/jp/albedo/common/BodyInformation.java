@@ -2,6 +2,8 @@ package jp.albedo.common;
 
 public class BodyInformation {
 
+    public static BodyInformation SUN = new BodyInformation(695700.0, 695700.0, 4.83);
+
     public static BodyInformation MERCURY = new BodyInformation(2439.7, 2439.7);
 
     public static BodyInformation VENUS = new BodyInformation(6051.8, 6051.8);
@@ -22,13 +24,22 @@ public class BodyInformation {
 
     public final double polarRadius;
 
-    private BodyInformation(double equatorialRadius, double polarRadius) {
+    public final Double absoluteMagnitude;
+
+    public BodyInformation(double equatorialRadius, double polarRadius, Double absoluteMagnitude) {
         this.equatorialRadius = equatorialRadius;
         this.polarRadius = polarRadius;
+        this.absoluteMagnitude = absoluteMagnitude;
+    }
+
+    private BodyInformation(double equatorialRadius, double polarRadius) {
+        this(equatorialRadius, polarRadius, null);
     }
 
     public static BodyInformation getByName(String bodyName) {
         switch (bodyName) {
+            case "Sun":
+                return SUN;
             case "Mercury":
                 return MERCURY;
             case "Venus":
