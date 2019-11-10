@@ -10,7 +10,17 @@ Download following resources and save on local disk:
 
 Update `application.properties` accordingly.
 
-## Run
+## Quick Run
 `mvn mvn spring-boot:run`
 
 Hit http://localhost:8080/
+
+## Develop
+
+#### Backend
+
+Run `jp.albedo.webapp.AlbedoApplication` in IDE with `-Dserver.port=8090` as VM params.
+
+#### Frontend
+
+`npm run start`

@@ -10,8 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler>1.8</maven.compiler>
     </properties>
 
     <build>
@@ -27,10 +26,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <compilerVersion>1.9</compilerVersion>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
+                    <compilerVersion>${maven.compiler}</compilerVersion>
+                    <source>${maven.compiler}</source>
+                    <target>${maven.compiler}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                     <debug>true</debug>
@@ -41,7 +40,7 @@
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.6</version>
+                <version>1.8.0</version>
                 <configuration>
                     <installDirectory>target</installDirectory>
                 </configuration>

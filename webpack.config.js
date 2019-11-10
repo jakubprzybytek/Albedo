@@ -3,12 +3,20 @@ var path = require('path');
 module.exports = {
     entry: './src/main/js/app.js',
     devtool: 'sourcemaps',
+    devServer: {
+     contentBase: './src/main/resources/templates',
+     proxy: {
+       '/api': {
+         target: 'http://localhost:8090'
+       }
+     }
+    },
     cache: true,
     mode: 'development',
     output: {
-        path: __dirname,
-        publicPath: './src/main/resources/static/',
-        filename: './src/main/resources/static/built/bundle.js'
+        path: path.resolve(__dirname, '/src/main/resources/static'),
+        publicPath: '/',
+        filename: 'built/bundle.js'
     },
     module: {
         rules: [
