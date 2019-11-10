@@ -24,7 +24,7 @@ export default function RiseTransitSetForm(props) {
 
   const { updateRiseTransitSetEvents } = props;
   
-  const [bodyNames, setBodyNames] = React.useState("Jupiter");
+  const [bodyNames, setBodyNames] = React.useState("Sun,Jupiter");
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
 

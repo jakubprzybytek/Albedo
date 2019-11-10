@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { format } from 'date-fns';
+import { BodyChip, CatalogueEntryChip } from '../components/Chips';
 import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
@@ -41,7 +42,7 @@ export default function RiseTransitSetTable(props) {
                 {format(Date.parse(event.time), "yyyy-MM-dd HH:mm:ss")}
               </TableCell>
               <TableCell component="th" scope="row" align="center">
-                {event.bodyDetails.name}
+                <BodyChip bodyDetails={event.bodyDetails} />
               </TableCell>
               <TableCell component="th" scope="row" align="right">
                 {event.eventType}

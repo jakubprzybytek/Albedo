@@ -1,16 +1,15 @@
 import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
 import { red, orange, teal } from '@material-ui/core/colors';
 import { format } from 'date-fns';
 import { formatDegrees, formatArcSeconds } from './../utils/Angles';
+import { BodyChip, CatalogueEntryChip } from '../components/Chips';
 
 const useStyles = makeStyles(theme => ({
   objectCell: {
@@ -35,52 +34,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const StyledChip = withStyles({
-  root: {
-    height: '18px'
-  },
-  avatar: {
-    fontSize: '0.7rem',
-    width: '18px',
-    height: '18px'
-  },
-  label: {
-    fontSize: '0.7rem',
-    paddingLeft: '6px',
-    paddingRight: '5px'
-  },
-})(Chip);
-
-const RedChip = withStyles({
-  avatar: {
-    color: red[50],
-    backgroundColor: red[500],
-  },
-  outlined: {
-    borderColor: red[500],
-  },
-})(Chip);
-
-const OrangeChip = withStyles({
-  avatar: {
-    color: orange[50],
-    backgroundColor: orange[500],
-  },
-  outlined: {
-    borderColor: orange[500],
-  },
-})(Chip);
-
-const TealChip = withStyles({
-  avatar: {
-    color: teal[50],
-    backgroundColor: teal[500],
-  },
-  outlined: {
-    borderColor: teal[500],
-  },
-})(Chip);
-
 function BodyInfoCell(props) {
 
   const { bodyInfo } = props;
@@ -90,8 +43,7 @@ function BodyInfoCell(props) {
   return (
     <div className={classes.objectCell}>
       <div className={classes.objectCellRow}>
-        {bodyInfo.bodyDetails.bodyType === "Planet" && <RedChip size="small" variant="outlined" avatar={<Avatar>P</Avatar>} label={bodyInfo.bodyDetails.name} />}
-        {bodyInfo.bodyDetails.bodyType === "Asteroid" && <OrangeChip size="small" variant="outlined" avatar={<Avatar>A</Avatar>} label={bodyInfo.bodyDetails.name} />}
+        <BodyChip bodyDetails={bodyInfo.bodyDetails} />
       </div>
       <div className={classes.objectCellRow}>
         {bodyInfo.ephemeris.apparentMagnitude} mag, {bodyInfo.ephemeris.angularSize && <React.Fragment>{formatArcSeconds(bodyInfo.ephemeris.angularSize)}</React.Fragment>}
@@ -109,7 +61,7 @@ function CatalogueEntryCell(props) {
   return (
     <div className={classes.objectCell}>
       <div className={classes.objectCellRow}>
-        <TealChip size="small" variant="outlined" avatar={<Avatar>C</Avatar>} label={catalogueEntry.name} />
+        <CatalogueEntryChip catalogueEntry={catalogueEntry} />
       </div>
       <div className={classes.objectCellRow}>
         {catalogueEntry.vMagnitude && <React.Fragment>{catalogueEntry.vMagnitude} mag (V), </React.Fragment>}

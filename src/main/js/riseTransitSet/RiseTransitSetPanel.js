@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 export default function RiseTransitSetPanel() {
 
   const [riseTransitSetEvents, setRiseTransitSetEvents] = React.useState([]);
