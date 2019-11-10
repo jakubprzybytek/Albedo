@@ -1,4 +1,3 @@
-
 const angleUnits = {
 	ra: ['h', 'm', 's'],
 	d: ['°', '\'', '"']
@@ -21,5 +20,10 @@ export function formatDegrees(angle) {
 }
 
 export function formatArcSeconds(angle) {
-  return "" + (angle * 3600.0).toFixed(2) +"\"";
+  let arcSeconds = angle * 3600.0;
+  if (arcSeconds < 60.0) {
+    return arcSeconds.toFixed(2) + '"';
+  } else {
+    return (arcSeconds / 60.0).toFixed(2) + '\'';
+  }
 }

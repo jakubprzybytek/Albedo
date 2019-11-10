@@ -3,8 +3,8 @@ package jp.albedo.webapp.ephemeris.jpl;
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.Ephemeris;
-import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JPLException;
+import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.StateCalculator;
 import jp.albedo.webapp.services.JplKernelsService;
 import org.apache.commons.lang3.EnumUtils;
@@ -46,8 +46,11 @@ public class JplEphemerisCalculator {
      * @return
      */
     public List<JplBody> getSupportedBodiesByType(BodyType bodyType) {
-        if (bodyType == BodyType.Planet) {
-            return Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
+        switch (bodyType) {
+            case Planet:
+                return Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
+            case Sun:
+                return Arrays.asList(JplBody.Sun);
         }
 
         return Collections.emptyList();

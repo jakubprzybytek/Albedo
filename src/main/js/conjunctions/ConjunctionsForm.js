@@ -28,17 +28,25 @@ export default function ConjunctionsForm(props) {
 
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
-  const [plantesChecked, setPlanetsChecked] = React.useState(true);
+  const [sunChecked, setSetChecked] = React.useState(true);
+  const [planetsChecked, setPlanetsChecked] = React.useState(true);
   const [asteroidsChecked, setAsteroidsChecked] = React.useState(false);
   const [ngcChecked, setNgcChecked] = React.useState(true);
   const [icChecked, setIcChecked] = React.useState(false);
 
   function onBuildProps() {
+    const secondary = [];
+    if (sunChecked) { secondary.push ("Sun") }
+    if (planetsChecked) { secondary.push ("Planet") }
+    if (asteroidsChecked) { secondary.push ("Asteroid") }
+    const catalogues = [];
+    if (ngcChecked) { catalogues.push ("NGC") }
+    if (icChecked) { catalogues.push ("IC") }
     return {
       from: format(fromDate, "yyyy-MM-dd"),
       to: format(toDate, "yyyy-MM-dd"),
-      secondary: (plantesChecked ? "Planet" : "") + (asteroidsChecked ? (plantesChecked ? "," : "") +  "Asteroid" : ""),
-      catalogues: (ngcChecked ? "NGC" : "") + (icChecked ? (ngcChecked ? "," : "") +  "IC" : "")
+      secondary: secondary.join(','),
+      catalogues: catalogues.join(',')
     }
   }
 
@@ -78,8 +86,11 @@ export default function ConjunctionsForm(props) {
         </MuiPickersUtilsProvider>
         <FormLabel component="legend">Compare Planets with: </FormLabel>
         <FormGroup row>
+          <FormControlLabel label="Sun" labelPlacement="start" control={
+              <Switch checked={sunChecked} onChange={event => setSunChecked(event.target.checked)} color="primary" />
+            }/>
           <FormControlLabel label="Planets" labelPlacement="start" control={
-              <Switch checked={plantesChecked} onChange={event => setPlanetsChecked(event.target.checked)} color="primary" />
+              <Switch checked={planetsChecked} onChange={event => setPlanetsChecked(event.target.checked)} color="primary" />
             }/>
           <FormControlLabel label="Asteroids" labelPlacement="start" control={
               <Switch checked={asteroidsChecked} onChange={event => setAsteroidsChecked(event.target.checked)} color="primary" />

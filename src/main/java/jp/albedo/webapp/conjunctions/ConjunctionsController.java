@@ -30,7 +30,7 @@ public class ConjunctionsController {
     private ConjunctionsOrchestrator conjunctionsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/conjunctions")
-    public List<ConjunctionEvent> ephemeris(
+    public List<ConjunctionEvent> conjunctions(
             @RequestParam(value = "primary", required = false, defaultValue = "Planet") List<String> primaryTypeStrings,
             @RequestParam(value = "secondary", required = false, defaultValue = "Planet") List<String> secondaryTypeStrings,
             @RequestParam(value = "catalogues", required = false) List<String> catalogueTypeStrings,
