@@ -1,8 +1,8 @@
-package jp.albedo.jpl.files;
+package jp.albedo.jpl.impl.files;
 
 import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.impl.TimeSpan;
-import jp.albedo.jpl.math.XYZCoefficients;
+import jp.albedo.jpl.impl.math.XYZCoefficients;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

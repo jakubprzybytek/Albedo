@@ -1,4 +1,4 @@
-package jp.albedo.jpl.files;
+package jp.albedo.jpl.impl.files;
 
 import jp.albedo.jpl.Constant;
 import org.apache.commons.logging.Log;

@@ -1,7 +1,7 @@
 package jp.albedo.jpl;
 
-import jp.albedo.jpl.files.AsciiFileReader;
-import jp.albedo.jpl.files.AsciiHeaderFileReader;
+import jp.albedo.jpl.impl.files.AsciiFileReader;
+import jp.albedo.jpl.impl.files.AsciiHeaderFileReader;
 
 import java.io.File;
 import java.io.IOException;

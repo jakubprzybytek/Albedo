@@ -1,4 +1,4 @@
-package jp.albedo.jpl.math;
+package jp.albedo.jpl.impl.math;
 
 public class XYZCoefficients {
 

@@ -2,7 +2,7 @@ package jp.albedo.jpl;
 
 import jp.albedo.jpl.impl.PositionCalculator;
 import jp.albedo.jpl.impl.TimeSpan;
-import jp.albedo.jpl.math.XYZCoefficients;
+import jp.albedo.jpl.impl.math.XYZCoefficients;
 
 import java.util.HashMap;
 import java.util.Map;

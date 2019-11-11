@@ -1,6 +1,5 @@
-package jp.albedo.jpl.math;
+package jp.albedo.jpl.impl.math;
 
-import jp.albedo.jpl.math.ChebyshevPolynomialExpander;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

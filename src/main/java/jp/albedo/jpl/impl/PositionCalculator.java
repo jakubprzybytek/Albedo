@@ -2,8 +2,8 @@ package jp.albedo.jpl.impl;
 
 import jp.albedo.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jpl.JPLException;
-import jp.albedo.jpl.math.ChebyshevPolynomialExpander;
-import jp.albedo.jpl.math.XYZCoefficients;
+import jp.albedo.jpl.impl.math.ChebyshevPolynomialExpander;
+import jp.albedo.jpl.impl.math.XYZCoefficients;
 
 import java.util.Map;
 
