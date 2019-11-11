@@ -174,12 +174,9 @@ class StateCalculatorTest {
 
         System.out.printf("Moon coords [km]: %s, distance=%f%n", moonCoordsKm, moonCoordsKm.getDistance());
 
-        assertEquals(317255.79347753973, moonCoordsKm.x);
-        //assertEquals(317255.79347754, moonCoordsKm.x);
-        assertEquals(-220341.79908000148, moonCoordsKm.y);
-        //assertEquals(-220341.79908000, moonCoordsKm.y);
-        assertEquals(-119833.86836880309, moonCoordsKm.z);
-        //assertEquals(-119833.86836880, moonCoordsKm.z);
+        assertEquals(317255.79347754, moonCoordsKm.x, 0.00000001);
+        assertEquals(-220341.79908000, moonCoordsKm.y, 0.00000001);
+        assertEquals(-119833.86836880, moonCoordsKm.z, 0.00000001);
     }
 
     @Test

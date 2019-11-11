@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import StarIcon from '@material-ui/icons/Star';
-import { red, orange, yellow, teal } from '@material-ui/core/colors';
+import { red, orange, yellow, blue } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
   chip: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: orange[500],
   },
   CatalogueEntry: {
-    backgroundColor: teal[500],
+    backgroundColor: blue[300],
   },
 }));
 

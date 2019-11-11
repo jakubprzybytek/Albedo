@@ -39,7 +39,7 @@ export default function EphemerisTable(props) {
         <TableBody>
           {props.rows.map(ephemeris => (
             <TableRow key={ephemeris.index}>
-              <TableCell component="th" scope="row" title={ephemeris.jde}>
+              <TableCell component="th" scope="row" title={ephemeris.jde + " [JDE]"}>
                 {format(Date.parse(ephemeris.jde), "yyyy-MM-dd HH:mm:ss")}
               </TableCell>
               <TableCell align="center" title={ephemeris.coordinates.rightAscension + '°'}>

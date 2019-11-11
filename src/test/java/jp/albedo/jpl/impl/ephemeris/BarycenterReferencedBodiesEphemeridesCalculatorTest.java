@@ -1,7 +1,11 @@
-package jp.albedo.jpl;
+package jp.albedo.jpl.impl.ephemeris;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.jpl.AsciiFileLoader;
+import jp.albedo.jpl.JPLException;
+import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.SPKernel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -17,23 +21,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Validated with: https://wgc.jpl.nasa.gov:8443/webgeocalc/#StateVector
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class EphemeridesStateCalculatorTest {
+class BarycenterReferencedBodiesEphemeridesCalculatorTest {
 
     private SPKernel spKernel;
 
-    private StateCalculator stateCalculator;
+    private BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator;
 
     @BeforeAll
     void loadKernels() throws URISyntaxException, IOException, JPLException {
-        final URL headerFileULR = EphemeridesStateCalculatorTest.class.getClassLoader().getResource("JPL/DE438/header.438");
-        final URL fileULR = EphemeridesStateCalculatorTest.class.getClassLoader().getResource("JPL/DE438/ascp01950.438.sample");
+        final URL headerFileULR = BarycenterReferencedBodiesEphemeridesCalculatorTest.class.getClassLoader().getResource("JPL/DE438/header.438");
+        final URL fileULR = BarycenterReferencedBodiesEphemeridesCalculatorTest.class.getClassLoader().getResource("JPL/DE438/ascp01950.438.sample");
 
         AsciiFileLoader asciiFileLoader = new AsciiFileLoader();
         asciiFileLoader.loadHeader(new File(headerFileULR.toURI()));
         asciiFileLoader.load(new File(fileULR.toURI()));
 
         this.spKernel = asciiFileLoader.createSpKernel();
-        this.stateCalculator = new StateCalculator(spKernel);
+        this.ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(spKernel);
     }
 
     @Test
@@ -41,7 +45,7 @@ class EphemeridesStateCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(JplBody.Sun, jde);
+        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(JplBody.Sun, jde);
         System.out.printf("Sun ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -58,7 +62,7 @@ class EphemeridesStateCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(JplBody.Mercury, jde);
+        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(JplBody.Mercury, jde);
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -75,7 +79,7 @@ class EphemeridesStateCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(JplBody.Venus, jde);
+        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(JplBody.Venus, jde);
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -92,7 +96,7 @@ class EphemeridesStateCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.stateCalculator.computeEphemeridesForJds(JplBody.Mars, jde);
+        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(JplBody.Mars, jde);
         System.out.printf("Mars ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);

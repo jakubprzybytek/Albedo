@@ -3,9 +3,10 @@ package jp.albedo.webapp.ephemeris.jpl;
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.jpl.EphemeridesCalculator;
+import jp.albedo.jpl.EphemeridesCalculatorFactory;
 import jp.albedo.jpl.JPLException;
 import jp.albedo.jpl.JplBody;
-import jp.albedo.jpl.StateCalculator;
 import jp.albedo.webapp.services.JplKernelsService;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.logging.Log;
@@ -50,7 +51,7 @@ public class JplEphemerisCalculator {
             case Planet:
                 return Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
             case Sun:
-                return Arrays.asList(JplBody.Sun);
+                return Collections.singletonList(JplBody.Sun);
         }
 
         return Collections.emptyList();
@@ -75,10 +76,10 @@ public class JplEphemerisCalculator {
 
         final Instant start = Instant.now();
 
-        final StateCalculator stateCalculator = new StateCalculator(this.jplKernelsService.getSpKernel());
+        final EphemeridesCalculator ephemeridesCalculator = EphemeridesCalculatorFactory.getFor(body, this.jplKernelsService.getSpKernel());
 
         final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
-        final List<Ephemeris> ephemeris = stateCalculator.computeEphemeridesForJds(body, jdes);
+        final List<Ephemeris> ephemeris = ephemeridesCalculator.computeEphemeridesForJds(body, jdes);
 
         if (LOG.isDebugEnabled()) {
             LOG.info(String.format("Calculated %d ephemeris in %s", ephemeris.size(), Duration.between(start, Instant.now())));

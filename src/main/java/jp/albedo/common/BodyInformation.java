@@ -10,6 +10,8 @@ public class BodyInformation {
 
     public static BodyInformation EARTH = new BodyInformation(6378.1, 6356.8);
 
+    public static BodyInformation MOON = new BodyInformation(1738.1, 1736.0);
+
     public static BodyInformation MARS = new BodyInformation(3396.2, 3376.2);
 
     public static BodyInformation JUPITER = new BodyInformation(71492.0, 66854.0);
@@ -46,6 +48,8 @@ public class BodyInformation {
                 return VENUS;
             case "Earth":
                 return EARTH;
+            case "Moon":
+                return MOON;
             case "Mars":
                 return MARS;
             case "Jupiter":

@@ -38,7 +38,7 @@ export default function RiseTransitSetTable(props) {
         <TableBody>
           {riseTransitSetEvents.map(event => (
             <TableRow key={event.index}>
-              <TableCell component="th" scope="row" title={event.time}>
+              <TableCell component="th" scope="row" title={event.jde + " [JDE]"}>
                 {format(Date.parse(event.time), "yyyy-MM-dd HH:mm:ss")}
               </TableCell>
               <TableCell component="th" scope="row" align="center">
