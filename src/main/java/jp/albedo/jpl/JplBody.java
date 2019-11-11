@@ -15,7 +15,7 @@ public enum JplBody {
     Uranus(BodyType.Planet),
     Neptune(BodyType.Planet),
     Pluto(BodyType.Asteroid),
-    Moon(BodyType.NaturalSatellite),
+    Moon(BodyType.Moon),
 
     EarthMoonBarycenter(BodyType.Barycenter),
     MarsBarycenter(BodyType.Barycenter);

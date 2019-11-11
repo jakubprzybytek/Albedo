@@ -28,7 +28,8 @@ export default function ConjunctionsForm(props) {
 
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
-  const [sunChecked, setSetChecked] = React.useState(true);
+  const [sunChecked, setSunChecked] = React.useState(true);
+  const [moonChecked, setMoonChecked] = React.useState(true);
   const [planetsChecked, setPlanetsChecked] = React.useState(true);
   const [asteroidsChecked, setAsteroidsChecked] = React.useState(false);
   const [ngcChecked, setNgcChecked] = React.useState(true);
@@ -37,6 +38,7 @@ export default function ConjunctionsForm(props) {
   function onBuildProps() {
     const secondary = [];
     if (sunChecked) { secondary.push ("Sun") }
+    if (moonChecked) { secondary.push ("Moon") }
     if (planetsChecked) { secondary.push ("Planet") }
     if (asteroidsChecked) { secondary.push ("Asteroid") }
     const catalogues = [];
@@ -88,6 +90,9 @@ export default function ConjunctionsForm(props) {
         <FormGroup row>
           <FormControlLabel label="Sun" labelPlacement="start" control={
               <Switch checked={sunChecked} onChange={event => setSunChecked(event.target.checked)} color="primary" />
+            }/>
+          <FormControlLabel label="Moon" labelPlacement="start" control={
+              <Switch checked={moonChecked} onChange={event => setMoonChecked(event.target.checked)} color="primary" />
             }/>
           <FormControlLabel label="Planets" labelPlacement="start" control={
               <Switch checked={planetsChecked} onChange={event => setPlanetsChecked(event.target.checked)} color="primary" />

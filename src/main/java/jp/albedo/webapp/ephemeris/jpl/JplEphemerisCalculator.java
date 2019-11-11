@@ -52,6 +52,8 @@ public class JplEphemerisCalculator {
                 return Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
             case Sun:
                 return Collections.singletonList(JplBody.Sun);
+            case Moon:
+                return Collections.singletonList(JplBody.Moon);
         }
 
         return Collections.emptyList();
