@@ -7,6 +7,8 @@ import { red, orange, yellow, blue } from '@material-ui/core/colors';
 const useStyles = makeStyles(theme => ({
   chip: {
     display: 'flex',
+    paddingLeft: 4,
+    paddingRight: 4,
   },
 	label: {
 		paddingLeft: 4,
@@ -44,10 +46,10 @@ export function BodyChip(props) {
   const classes = useStyles();
 
   return (
-    <div className={classes.chip}>
-      <TinyAvatar className={classes[bodyDetails.bodyType]}>{bodyDetails.bodyType == 'Sun' ? <StarIcon className={classes.icon} /> : bodyDetails.bodyType.charAt(0)}</TinyAvatar>
+    <span className={classes.chip}>
+      <TinyAvatar component="span" className={classes[bodyDetails.bodyType]}>{bodyDetails.bodyType == 'Sun' ? <StarIcon className={classes.icon} /> : bodyDetails.bodyType.charAt(0)}</TinyAvatar>
       <span className={classes.label}>{bodyDetails.name}</span>
-    </div>
+    </span>
   );
 }
 
@@ -58,9 +60,9 @@ export function CatalogueEntryChip(props) {
   const classes = useStyles();
 
   return (
-    <div className={classes.chip}>
-      <TinyAvatar className={classes.CatalogueEntry}>C</TinyAvatar>
+    <span className={classes.chip}>
+      <TinyAvatar component="span" className={classes.CatalogueEntry}>C</TinyAvatar>
       <span className={classes.label}>{catalogueEntry.name}</span>
-    </div>
+    </span>
   );
 }
