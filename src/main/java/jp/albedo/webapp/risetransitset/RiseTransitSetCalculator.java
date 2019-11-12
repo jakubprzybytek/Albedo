@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 class RiseTransitSetCalculator {
 
-    List<RiseTransitSetEvent> compute(ComputedEphemerides computedEphemerides, GeographicCoordinates observerCoords) {
+    List<RiseTransitSetEvent> compute(String bodyName, ComputedEphemerides computedEphemerides, GeographicCoordinates observerCoords) {
 
         final List<RiseTransitSetEvent> riseTransitSetList = new ArrayList<>();
 

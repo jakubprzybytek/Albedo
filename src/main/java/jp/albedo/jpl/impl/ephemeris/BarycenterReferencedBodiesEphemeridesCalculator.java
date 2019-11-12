@@ -70,7 +70,7 @@ public class BarycenterReferencedBodiesEphemeridesCalculator implements Ephemeri
                     bodyHeliocentricCoordsAu.getDistance(),
                     bodyGeocentricCoordsAu.getDistance(),
                     magnitudeCalculator.compute(bodyHeliocentricCoordsAu, bodyGeocentricCoordsAu),
-                    AngularSize.fromRadiusAndDistance(BodyInformation.getByName(body.name()).equatorialRadius, bodyGeocentricCoords.getDistance())
+                    AngularSize.fromRadiusAndDistance(BodyInformation.valueOf(body.name()).equatorialRadius, bodyGeocentricCoords.getDistance())
             ));
         }
 

@@ -56,7 +56,7 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
                     0.0,
                     moonGeocentricCooddsAu.getDistance(),
                     0.0,
-                    AngularSize.fromRadiusAndDistance(BodyInformation.getByName(body.name()).equatorialRadius, moonGeocentricCoordsKm.getDistance())
+                    AngularSize.fromRadiusAndDistance(BodyInformation.valueOf(body.name()).equatorialRadius, moonGeocentricCoordsKm.getDistance())
             ));
         }
 

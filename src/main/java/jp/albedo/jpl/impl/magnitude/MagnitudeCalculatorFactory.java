@@ -7,7 +7,7 @@ public class MagnitudeCalculatorFactory {
 
     public static ApparentMagnitudeCalculator getFor(JplBody body) {
         if (body == JplBody.Sun) {
-            return new StarMagnitudeCalculator(BodyInformation.SUN.absoluteMagnitude);
+            return new StarMagnitudeCalculator(BodyInformation.Sun.absoluteMagnitude);
         } else {
             return new PlanetsMagnitudeCalculator(body);
         }

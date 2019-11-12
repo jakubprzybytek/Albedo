@@ -14,7 +14,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class RiseTransitSetOrchestrator {
 
         for (String bodyName : bodyNames) {
             ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL);
-            riseTransitSetList.addAll(this.riseTransitSetCalculator.compute(computedEphemerides, observerCoords));
+            riseTransitSetList.addAll(this.riseTransitSetCalculator.compute(bodyName, computedEphemerides, observerCoords));
         }
 
         riseTransitSetList.sort(Comparator.comparingDouble(AstronomicalEvent::getJde));
