@@ -2,8 +2,8 @@ package jp.albedo.mpc;
 
 import jp.albedo.common.Epoch;
 import jp.albedo.common.JulianDay;
-import jp.albedo.ephemeris.common.MagnitudeParameters;
-import jp.albedo.ephemeris.common.OrbitElements;
+import jp.albedo.jeanmeeus.ephemeris.common.MagnitudeParameters;
+import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

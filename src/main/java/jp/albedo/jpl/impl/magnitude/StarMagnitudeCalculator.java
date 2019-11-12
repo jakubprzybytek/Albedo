@@ -1,7 +1,7 @@
 package jp.albedo.jpl.impl.magnitude;
 
 import jp.albedo.common.Parsec;
-import jp.albedo.ephemeris.common.RectangularCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import org.apache.commons.math3.util.Precision;
 
 public class StarMagnitudeCalculator implements ApparentMagnitudeCalculator {

@@ -1,8 +1,7 @@
 package jp.albedo.jpl;
 
-import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

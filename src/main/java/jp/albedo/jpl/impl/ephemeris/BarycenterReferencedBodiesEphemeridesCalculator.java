@@ -2,9 +2,9 @@ package jp.albedo.jpl.impl.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyInformation;
-import jp.albedo.ephemeris.Ephemeris;
-import jp.albedo.ephemeris.common.AngularSize;
-import jp.albedo.ephemeris.common.RectangularCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
+import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.EphemeridesCalculator;
 import jp.albedo.jpl.JPLException;

@@ -1,7 +1,7 @@
 package jp.albedo.common;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import jp.albedo.ephemeris.common.RectangularCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
 import org.apache.commons.math3.util.MathUtils;
 

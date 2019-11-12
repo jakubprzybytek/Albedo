@@ -1,9 +1,9 @@
 package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.BodyDetails;
-import jp.albedo.ephemeris.Ephemeris;
-import jp.albedo.ephemeris.common.MagnitudeParameters;
-import jp.albedo.ephemeris.common.OrbitElements;
+import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.jeanmeeus.ephemeris.common.MagnitudeParameters;
+import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package jp.albedo.jpl;
 
-import jp.albedo.ephemeris.common.RectangularCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jpl.impl.PositionCalculator;
 
 /**

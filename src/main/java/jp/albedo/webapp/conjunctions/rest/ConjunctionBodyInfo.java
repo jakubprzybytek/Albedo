@@ -3,7 +3,7 @@ package jp.albedo.webapp.conjunctions.rest;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.BodyDetails;
-import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 
 public class ConjunctionBodyInfo {
 

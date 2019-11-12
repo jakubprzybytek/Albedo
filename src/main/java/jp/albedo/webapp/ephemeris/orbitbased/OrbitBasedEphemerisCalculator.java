@@ -2,8 +2,8 @@ package jp.albedo.webapp.ephemeris.orbitbased;
 
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
-import jp.albedo.ephemeris.EllipticMotion;
-import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.jeanmeeus.ephemeris.EllipticMotion;
+import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.vsop87.VSOPException;
 import jp.albedo.webapp.services.OrbitingBodyRecord;
 import jp.albedo.webapp.services.OrbitsService;

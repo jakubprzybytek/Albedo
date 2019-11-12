@@ -1,7 +1,7 @@
 package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.BodyType;
-import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.vsop87.VSOPException;
 import jp.albedo.webapp.ephemeris.jpl.JplEphemerisCalculator;

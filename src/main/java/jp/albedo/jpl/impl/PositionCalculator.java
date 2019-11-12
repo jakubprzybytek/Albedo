@@ -1,6 +1,6 @@
 package jp.albedo.jpl.impl;
 
-import jp.albedo.ephemeris.common.RectangularCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jpl.JPLException;
 import jp.albedo.jpl.impl.math.ChebyshevPolynomialExpander;
 import jp.albedo.jpl.impl.math.XYZCoefficients;

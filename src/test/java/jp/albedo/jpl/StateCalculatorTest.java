@@ -1,8 +1,8 @@
 package jp.albedo.jpl;
 
 import jp.albedo.common.JulianDay;
-import jp.albedo.ephemeris.common.RectangularCoordinates;
-import jp.albedo.ephemeris.common.SphericalCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
 import jp.albedo.vsop87.VSOP87Calculator;
 import jp.albedo.vsop87.VSOPException;
 import org.junit.jupiter.api.BeforeAll;

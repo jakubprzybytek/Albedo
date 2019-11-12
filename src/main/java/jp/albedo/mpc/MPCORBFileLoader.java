@@ -4,9 +4,9 @@ import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
 import jp.albedo.common.Epoch;
 import jp.albedo.common.JulianDay;
-import jp.albedo.ephemeris.common.MagnitudeParameters;
-import jp.albedo.ephemeris.common.OrbitElements;
-import jp.albedo.ephemeris.common.OrbitElementsBuilder;
+import jp.albedo.jeanmeeus.ephemeris.common.MagnitudeParameters;
+import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
+import jp.albedo.jeanmeeus.ephemeris.common.OrbitElementsBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

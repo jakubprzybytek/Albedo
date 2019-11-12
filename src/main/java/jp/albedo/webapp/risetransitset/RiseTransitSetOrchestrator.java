@@ -1,6 +1,6 @@
 package jp.albedo.webapp.risetransitset;
 
-import jp.albedo.topographic.GeographicCoordinates;
+import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;

@@ -1,6 +1,6 @@
 package jp.albedo.webapp.conjunctions;
 
-import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 
 public class Conjunction<A, B extends Object> {
 

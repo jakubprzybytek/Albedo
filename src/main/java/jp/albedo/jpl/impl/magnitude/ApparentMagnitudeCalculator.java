@@ -1,6 +1,6 @@
 package jp.albedo.jpl.impl.magnitude;
 
-import jp.albedo.ephemeris.common.RectangularCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 
 public interface ApparentMagnitudeCalculator {
 

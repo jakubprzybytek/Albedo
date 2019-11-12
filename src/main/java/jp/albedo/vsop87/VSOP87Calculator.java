@@ -1,7 +1,7 @@
 package jp.albedo.vsop87;
 
-import jp.albedo.ephemeris.common.RectangularCoordinates;
-import jp.albedo.ephemeris.common.SphericalCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
 import jp.albedo.vsop87.files.VSOP87Files;
 import jp.albedo.vsop87.files.VSOP87FilesLoader;
 import org.apache.commons.logging.Log;

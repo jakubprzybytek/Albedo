@@ -2,9 +2,9 @@ package jp.albedo.webapp.risetransitset;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.SiderealTime;
-import jp.albedo.ephemeris.Ephemeris;
-import jp.albedo.topographic.GeographicCoordinates;
-import jp.albedo.topographic.RiseTransitSet;
+import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
+import jp.albedo.jeanmeeus.topocentric.RiseTransitSet;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
 import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEventType;
@@ -31,7 +31,7 @@ public class RiseTransitSetCalculator {
             if (coordsTriple.size() >= 3) {
                 final double jde = previousEphemeris.jde;
                 final double meanGreenwichSiderealTime = SiderealTime.getGreenwichMean(jde); // FixMe: it should be UTC
-                RiseTransitSet riseTransitSet = jp.albedo.topographic.RiseTransitSetCalculator.compute(coordsTriple, observerCoords, meanGreenwichSiderealTime, 56.0);
+                RiseTransitSet riseTransitSet = jp.albedo.jeanmeeus.topocentric.RiseTransitSetCalculator.compute(coordsTriple, observerCoords, meanGreenwichSiderealTime, 56.0);
                 riseTransitSetList.add(new RiseTransitSetEvent(jde + riseTransitSet.risingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.RAISING));
                 riseTransitSetList.add(new RiseTransitSetEvent(jde + riseTransitSet.transitTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.TRANSIT));
                 riseTransitSetList.add(new RiseTransitSetEvent(jde + riseTransitSet.settingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.SETTING));
