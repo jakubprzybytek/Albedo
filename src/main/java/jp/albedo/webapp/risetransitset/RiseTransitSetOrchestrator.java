@@ -26,10 +26,10 @@ public class RiseTransitSetOrchestrator {
     public static final double INTERVAL = 1.0;
 
     @Autowired
-    EphemeridesOrchestrator ephemeridesOrchestrator;
+    private EphemeridesOrchestrator ephemeridesOrchestrator;
 
     @Autowired
-    RiseTransitSetCalculator riseTransitSetCalculator;
+    private RiseTransitSetCalculator riseTransitSetCalculator;
 
     List<RiseTransitSetEvent> compute(String[] bodyNames, Double fromDate, Double toDate, GeographicCoordinates observerCoords) throws Exception {
 
@@ -41,11 +41,10 @@ public class RiseTransitSetOrchestrator {
 
         for (String bodyName : bodyNames) {
             ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL);
-            List<RiseTransitSetEvent> riseTransitSetListForBody = this.riseTransitSetCalculator.compute(computedEphemerides, observerCoords);
-            riseTransitSetList.addAll(riseTransitSetListForBody);
+            riseTransitSetList.addAll(this.riseTransitSetCalculator.compute(computedEphemerides, observerCoords));
         }
 
-        Collections.sort(riseTransitSetList, Comparator.comparingDouble(AstronomicalEvent::getJde));
+        riseTransitSetList.sort(Comparator.comparingDouble(AstronomicalEvent::getJde));
 
         LOG.info(String.format("Calculated %d times of rising, transit and set in %s", riseTransitSetList.size(), Duration.between(start, Instant.now())));
 

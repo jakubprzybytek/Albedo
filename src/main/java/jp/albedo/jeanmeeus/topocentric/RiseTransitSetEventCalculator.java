@@ -7,7 +7,7 @@ import org.apache.commons.math3.util.MathUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RiseTransitSetCalculator {
+public class RiseTransitSetEventCalculator {
 
     public static RiseTransitSet compute(List<AstronomicalCoordinates> coordsList, GeographicCoordinates observerCoords, double greenwichSiderealTime, double deltaT) {
 

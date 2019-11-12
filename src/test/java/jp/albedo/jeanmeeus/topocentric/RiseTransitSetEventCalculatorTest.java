@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class RiseTransitSetCalculatorTest {
+class RiseTransitSetEventCalculatorTest {
 
     @Test
     void compute() {
@@ -29,7 +29,7 @@ class RiseTransitSetCalculatorTest {
                 Degrees.ONE_HUNDREDTH_SECOND
         );
 
-        RiseTransitSet riseTransitSet = RiseTransitSetCalculator.compute(coords, observerCoords, apparentGreenwichSiderealTime, 56.0);
+        RiseTransitSet riseTransitSet = RiseTransitSetEventCalculator.compute(coords, observerCoords, apparentGreenwichSiderealTime, 56.0);
         assertEquals(0.51766, riseTransitSet.risingTime, 0.00001);
         assertEquals(0.81980, riseTransitSet.transitTime, 0.00001);
         assertEquals(0.12130, riseTransitSet.settingTime, 0.00001);
@@ -37,9 +37,9 @@ class RiseTransitSetCalculatorTest {
 
     @Test
     void bringToZeroOneRange() {
-        assertEquals(0.25, RiseTransitSetCalculator.bringToZeroOneRange(-1.75));
-        assertEquals(0.25, RiseTransitSetCalculator.bringToZeroOneRange(-0.75));
-        assertEquals(0.25, RiseTransitSetCalculator.bringToZeroOneRange(0.25));
-        assertEquals(0.25, RiseTransitSetCalculator.bringToZeroOneRange(1.25));
+        assertEquals(0.25, RiseTransitSetEventCalculator.bringToZeroOneRange(-1.75));
+        assertEquals(0.25, RiseTransitSetEventCalculator.bringToZeroOneRange(-0.75));
+        assertEquals(0.25, RiseTransitSetEventCalculator.bringToZeroOneRange(0.25));
+        assertEquals(0.25, RiseTransitSetEventCalculator.bringToZeroOneRange(1.25));
     }
 }
