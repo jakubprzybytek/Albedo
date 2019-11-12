@@ -66,15 +66,15 @@ class RiseTransitSetEventCalculatorTest {
 
         final RiseTransitSetEventCalculator rtsEventCalculator = new RiseTransitSetEventCalculator(coords, observerCoords, apparentGreenwichSiderealTime, 56.0);
         final double transitTime = rtsEventCalculator.computeTransitTime();
-        final RiseSet riseSet = rtsEventCalculator.computeRiseAndSetTime(RiseTransitSetEventCalculator.RISE_AND_SET_ALTITUDE_FOR_PLANETS);
+        final RiseSet riseSet = rtsEventCalculator.computeRiseAndSetTime(RiseTransitSetEventCalculator.RISE_AND_SET_ALTITUDE_FOR_SUN);
 
         System.out.println("Sun rise: " + JulianDay.toDateTime(ut + riseSet.risingTime));
         System.out.println("Sun transit: " + JulianDay.toDateTime(ut + transitTime));
         System.out.println("Sun set: " + JulianDay.toDateTime(ut + riseSet.settingTime));
 
         assertEquals(0.44122, transitTime, 0.00001);
-        assertEquals(0.25438, riseSet.risingTime, 0.00001);
-        assertEquals(0.62761, riseSet.settingTime, 0.00001);
+        assertEquals(0.25301, riseSet.risingTime, 0.00001);
+        assertEquals(0.62899, riseSet.settingTime, 0.00001);
     }
 
     @Test
