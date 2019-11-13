@@ -55,7 +55,9 @@ public class AsciiHeaderFileReader {
         Map<Constant, Double> constants = new HashMap<>();
 
         DoublesBlockReader doublesBlockReader = new DoublesBlockReader(bufferedReader);
-        doublesBlockReader.read(9);
+        doublesBlockReader.read(6);
+        constants.put(Constant.SpeedOfLight, doublesBlockReader.read());
+        doublesBlockReader.read(2);
         constants.put(Constant.AU, doublesBlockReader.read());
         constants.put(Constant.EarthMoonMassRatio, doublesBlockReader.read());
 

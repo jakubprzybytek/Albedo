@@ -2,7 +2,8 @@ package jp.albedo.jpl;
 
 public enum Constant {
 
-    AU(),
-    EarthMoonMassRatio();
+    SpeedOfLight,
+    AU,
+    EarthMoonMassRatio;
 
 }

@@ -57,8 +57,9 @@ class AsciiFileReaderTest {
     void testConstants() {
         final Map<Constant, Double> constants = this.asciiHeaderFileReader.getConstants();
 
-        assertEquals(2, constants.size());
+        assertEquals(3, constants.size());
 
+        assertEquals(299792.457999999984, constants.get(Constant.SpeedOfLight));
         assertEquals(149597870.699999988, constants.get(Constant.AU));
         assertEquals(81.3005683381650925, constants.get(Constant.EarthMoonMassRatio));
     }
