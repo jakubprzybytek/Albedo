@@ -16,9 +16,9 @@ public interface EphemeridesCalculator {
      * @param body JPL body.
      * @param jde  Time instant.
      * @return
-     * @throws JPLException when cannot compute due to lack of coefficients or insufficient time coverage.
+     * @throws JplException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    default Ephemeris computeEphemeridesForJds(JplBody body, double jde) throws JPLException {
+    default Ephemeris computeEphemeridesForJds(JplBody body, double jde) throws JplException {
         return computeEphemeridesForJds(body, Collections.singletonList(jde)).get(0);
     }
 
@@ -28,7 +28,7 @@ public interface EphemeridesCalculator {
      * @param body JPL body.
      * @param jdes Array of JDEs.
      * @return
-     * @throws JPLException when cannot compute due to lack of coefficients or insufficient time coverage.
+     * @throws JplException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    List<Ephemeris> computeEphemeridesForJds(JplBody body, List<Double> jdes) throws JPLException;
+    List<Ephemeris> computeEphemeridesForJds(JplBody body, List<Double> jdes) throws JplException;
 }

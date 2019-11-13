@@ -1,6 +1,6 @@
 package jp.albedo.jpl.impl;
 
-import jp.albedo.jpl.JPLException;
+import jp.albedo.jpl.JplException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,7 +29,7 @@ class TimeSpanTest {
     }
 
     @Test
-    void normalizeFor() throws JPLException {
+    void normalizeFor() throws JplException {
         assertEquals(-1.0, timeSpan.normalizeFor(100.0));
         assertEquals(-0.5, timeSpan.normalizeFor(125.0));
         assertEquals(0.0, timeSpan.normalizeFor(150.0));
@@ -40,7 +40,7 @@ class TimeSpanTest {
     @ParameterizedTest
     @ValueSource(doubles = {50.0, 250.0})
     void normalizeForWithException(double value) {
-        Throwable thrown = assertThrows(JPLException.class, () -> {
+        Throwable thrown = assertThrows(JplException.class, () -> {
             this.timeSpan.normalizeFor(value);
         });
 

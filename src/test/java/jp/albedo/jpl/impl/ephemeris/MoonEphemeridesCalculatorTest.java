@@ -3,7 +3,7 @@ package jp.albedo.jpl.impl.ephemeris;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.jpl.AsciiFileLoader;
-import jp.albedo.jpl.JPLException;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.SPKernel;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,7 +28,7 @@ class MoonEphemeridesCalculatorTest {
     private MoonEphemeridesCalculator ephemeridesCalculator;
 
     @BeforeAll
-    void loadKernels() throws URISyntaxException, IOException, JPLException {
+    void loadKernels() throws URISyntaxException, IOException, JplException {
         final URL headerFileULR = MoonEphemeridesCalculatorTest.class.getClassLoader().getResource("JPL/DE438/header.438");
         final URL fileULR = MoonEphemeridesCalculatorTest.class.getClassLoader().getResource("JPL/DE438/ascp01950.438.sample");
 
@@ -41,7 +41,7 @@ class MoonEphemeridesCalculatorTest {
     }
 
     @Test
-    void computeEphemeridesForMoon() throws JPLException {
+    void computeEphemeridesForMoon() throws JplException {
 
         double jde = JulianDay.fromDate(2019, 10, 9);
 

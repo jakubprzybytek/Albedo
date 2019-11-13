@@ -3,7 +3,7 @@ package jp.albedo.jpl.impl.ephemeris;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.jpl.AsciiFileLoader;
-import jp.albedo.jpl.JPLException;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.SPKernel;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,7 +28,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
     private BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator;
 
     @BeforeAll
-    void loadKernels() throws URISyntaxException, IOException, JPLException {
+    void loadKernels() throws URISyntaxException, IOException, JplException {
         final URL headerFileULR = BarycenterReferencedBodiesEphemeridesCalculatorTest.class.getClassLoader().getResource("JPL/DE438/header.438");
         final URL fileULR = BarycenterReferencedBodiesEphemeridesCalculatorTest.class.getClassLoader().getResource("JPL/DE438/ascp01950.438.sample");
 
@@ -41,7 +41,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
     }
 
     @Test
-    void computeEphemeridesForSun() throws JPLException {
+    void computeEphemeridesForSun() throws JplException {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
@@ -58,7 +58,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
     }
 
     @Test
-    void computeEphemeridesForMercury() throws JPLException {
+    void computeEphemeridesForMercury() throws JplException {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
@@ -75,7 +75,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
     }
 
     @Test
-    void computeEphemeridesForVenus() throws JPLException {
+    void computeEphemeridesForVenus() throws JplException {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
@@ -92,7 +92,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
     }
 
     @Test
-    void computeEphemeridesForMars() throws JPLException {
+    void computeEphemeridesForMars() throws JplException {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 

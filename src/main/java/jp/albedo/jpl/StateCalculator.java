@@ -26,9 +26,9 @@ public class StateCalculator {
      * @param body
      * @param jde
      * @return
-     * @throws JPLException
+     * @throws JplException
      */
-    public RectangularCoordinates computeForJd(JplBody body, double jde) throws JPLException {
+    public RectangularCoordinates computeForJd(JplBody body, double jde) throws JplException {
         final PositionCalculator positionCalculator = this.spKernel.getPositionCalculatorFor(body);
         final Double au = this.spKernel.getConstant(Constant.AU);
 

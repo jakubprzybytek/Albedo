@@ -37,11 +37,11 @@ public class SPKernel {
      * Creates and returns a PositionCalculator for given body.
      * @param body
      * @return PositionCalculator.
-     * @throws JPLException
+     * @throws JplException
      */
-    public PositionCalculator getPositionCalculatorFor(JplBody body) throws JPLException {
+    public PositionCalculator getPositionCalculatorFor(JplBody body) throws JplException {
         final Map<TimeSpan, XYZCoefficients> coefficients = getCoefficientsForBody(body)
-                .orElseThrow(() -> new JPLException(String.format("No coefficients for %s found in SPKernel", body)));
+                .orElseThrow(() -> new JplException(String.format("No coefficients for %s found in SPKernel", body)));
 
         return new PositionCalculator(coefficients);
     }

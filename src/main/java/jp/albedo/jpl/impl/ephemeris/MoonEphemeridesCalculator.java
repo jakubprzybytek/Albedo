@@ -7,7 +7,7 @@ import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
 import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.EphemeridesCalculator;
-import jp.albedo.jpl.JPLException;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.SPKernel;
 import jp.albedo.jpl.impl.PositionCalculator;
@@ -37,9 +37,9 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
      * @param body
      * @param jdes Array of JDEs.
      * @return
-     * @throws JPLException when cannot compute due to lack of coefficients or insufficient time coverage.
+     * @throws JplException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    public List<Ephemeris> computeEphemeridesForJds(JplBody body, List<Double> jdes) throws JPLException {
+    public List<Ephemeris> computeEphemeridesForJds(JplBody body, List<Double> jdes) throws JplException {
         final PositionCalculator moonPositionCalculator = this.spKernel.getPositionCalculatorFor(JplBody.Moon);
 
         final ApparentMagnitudeCalculator magnitudeCalculator = MagnitudeCalculatorFactory.getFor(body);

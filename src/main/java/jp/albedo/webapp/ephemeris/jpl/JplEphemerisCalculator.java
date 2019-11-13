@@ -5,7 +5,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.jpl.EphemeridesCalculator;
 import jp.albedo.jpl.EphemeridesCalculatorFactory;
-import jp.albedo.jpl.JPLException;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.webapp.services.JplKernelsService;
 import org.apache.commons.lang3.EnumUtils;
@@ -68,9 +68,9 @@ public class JplEphemerisCalculator {
      * @param interval
      * @return
      * @throws IOException
-     * @throws JPLException
+     * @throws JplException
      */
-    public List<Ephemeris> compute(JplBody body, Double fromDate, Double toDate, double interval) throws IOException, JPLException {
+    public List<Ephemeris> compute(JplBody body, Double fromDate, Double toDate, double interval) throws IOException, JplException {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Starting calculations based on JPL's SPICE Kernels, params: [body: %s, from=%s, to=%s, interval=%.2f]", body.name(), fromDate, toDate, interval));

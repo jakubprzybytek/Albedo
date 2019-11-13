@@ -1,7 +1,7 @@
 package jp.albedo.jpl.impl;
 
 import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
-import jp.albedo.jpl.JPLException;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.impl.math.ChebyshevPolynomialExpander;
 import jp.albedo.jpl.impl.math.XYZCoefficients;
 
@@ -19,13 +19,13 @@ public class PositionCalculator {
         this.coefficientsByTime = coefficientsByTime;
     }
 
-    public RectangularCoordinates compute(double jde) throws JPLException {
+    public RectangularCoordinates compute(double jde) throws JplException {
 
         if (this.cachedTimeSpan == null || !this.cachedTimeSpan.inside(jde)) {
             this.cachedTimeSpan = this.coefficientsByTime.keySet().stream()
                     .filter(ts -> ts.inside(jde))
                     .reduce((a, b) -> b) // find last
-                    .orElseThrow(() -> new JPLException(String.format("Couldn't find coefficients for T=%f", jde)));
+                    .orElseThrow(() -> new JplException(String.format("Couldn't find coefficients for T=%f", jde)));
 
             this.cachedCoefficients = this.coefficientsByTime.get(this.cachedTimeSpan);
         }

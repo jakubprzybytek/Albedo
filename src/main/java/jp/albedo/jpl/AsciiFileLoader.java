@@ -12,9 +12,9 @@ public class AsciiFileLoader {
 
     private AsciiFileReader asciiFileReader;
 
-    public void loadHeader(File asciiHeaderFile) throws IOException, JPLException {
+    public void loadHeader(File asciiHeaderFile) throws IOException, JplException {
         if (this.asciiFileReader != null) {
-            throw new JPLException("Header file already loaded!");
+            throw new JplException("Header file already loaded!");
         }
 
         this.asciiHeaderFileReader = new AsciiHeaderFileReader();
@@ -23,9 +23,9 @@ public class AsciiFileLoader {
         this.asciiFileReader = new AsciiFileReader(this.asciiHeaderFileReader.getContentDescriptor());
     }
 
-    public void load(File asciiFile) throws IOException, JPLException {
+    public void load(File asciiFile) throws IOException, JplException {
         if (this.asciiFileReader == null) {
-            throw new JPLException("Load Header file first!");
+            throw new JplException("Load Header file first!");
         }
 
         this.asciiFileReader.loadFile(asciiFile);

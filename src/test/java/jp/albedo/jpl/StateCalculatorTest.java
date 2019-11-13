@@ -27,7 +27,7 @@ class StateCalculatorTest {
     private StateCalculator stateCalculator;
 
     @BeforeAll
-    void loadKernels() throws URISyntaxException, IOException, JPLException {
+    void loadKernels() throws URISyntaxException, IOException, JplException {
         final URL headerFileULR = StateCalculatorTest.class.getClassLoader().getResource("JPL/DE438/header.438");
         final URL fileULR = StateCalculatorTest.class.getClassLoader().getResource("JPL/DE438/ascp01950.438.sample");
 
@@ -40,7 +40,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForSun() throws JPLException {
+    void computeForSun() throws JplException {
         double jde = JulianDay.fromDate(2019, 10, 9);
         RectangularCoordinates coordsAU = this.stateCalculator.computeForJd(JplBody.Sun, jde);
         RectangularCoordinates coordsKm = coordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
@@ -56,7 +56,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForVenusWithVariousTimeSpanPoints() throws JPLException {
+    void computeForVenusWithVariousTimeSpanPoints() throws JplException {
 
         final double beginningJde = 2433264.5;
         final RectangularCoordinates beginningCoordsAU = this.stateCalculator.computeForJd(JplBody.Venus, beginningJde);
@@ -95,7 +95,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForVenus() throws JPLException {
+    void computeForVenus() throws JplException {
         double jde = JulianDay.fromDate(2019, 10, 9);
         RectangularCoordinates coordsAU = this.stateCalculator.computeForJd(JplBody.Venus, jde);
         RectangularCoordinates coordsKm = coordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
@@ -110,7 +110,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForMercuryToVenus() throws JPLException {
+    void computeForMercuryToVenus() throws JplException {
         final double jde = JulianDay.fromDate(2019, 10, 9);
         System.out.printf("T [JDE]: %f%n", jde);
 
@@ -137,7 +137,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForEarthAndCompareWithVSOP() throws JPLException, VSOPException {
+    void computeForEarthAndCompareWithVSOP() throws JplException, VSOPException {
 
         final double jde = 2433264.5;
         final SphericalCoordinates earthVSOPCoords = VSOP87Calculator.computeEarthEclipticSphericalCoordinatesJ2000(jde);
@@ -164,7 +164,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForMoonFromEarth() throws JPLException {
+    void computeForMoonFromEarth() throws JplException {
 
         final double jde = JulianDay.fromDate(2019, 10, 9);
         System.out.printf("T [JDE]: %.1f%n", jde);
@@ -180,7 +180,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForEarth() throws JPLException {
+    void computeForEarth() throws JplException {
 
         final double jde = JulianDay.fromDate(2019, 10, 9);
         System.out.printf("T [JDE]: %.1f%n", jde);
@@ -222,7 +222,7 @@ class StateCalculatorTest {
     }
 
     @Test
-    void computeForMars() throws JPLException {
+    void computeForMars() throws JplException {
 
         RectangularCoordinates coordsAU = this.stateCalculator.computeForJd(JplBody.Mars, 2433264.5);
         RectangularCoordinates coordsKm = coordsAU.multiplyBy(this.spKernel.getConstant(Constant.AU));
