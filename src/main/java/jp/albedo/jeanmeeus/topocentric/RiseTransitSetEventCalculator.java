@@ -16,6 +16,14 @@ public class RiseTransitSetEventCalculator {
 
     public final static double RISE_AND_SET_ALTITUDE_FOR_SUN = Math.toRadians(-0.8333);
 
+    public final static double CIVIL_DAWN_AND_DUSK_ALTITUDE_FOR_SUN = Math.toRadians(-6.0);
+
+    public final static double NAUTICAL_DAWN_AND_DUSK_ALTITUDE_FOR_SUN = Math.toRadians(-12.0);
+
+    public final static double ASTRONOMICAL_DAWN_AND_DUSK_ALTITUDE_FOR_SUN = Math.toRadians(-18.0);
+
+    public final static double RISE_AND_SET_ALTITUDE_FOR_MOON = Math.toRadians(0.125);
+
     private final List<AstronomicalCoordinates> coordsList;
 
     private final GeographicCoordinates observerCoords;

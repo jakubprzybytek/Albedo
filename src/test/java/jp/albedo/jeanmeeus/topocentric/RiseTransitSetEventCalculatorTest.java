@@ -78,6 +78,41 @@ class RiseTransitSetEventCalculatorTest {
     }
 
     @Test
+    void computeForMoon() {
+        final double ut = JulianDay.fromDate(2019, 11, 11);
+
+        final List<AstronomicalCoordinates> coords = Arrays.asList(
+                new AstronomicalCoordinates(Radians.fromHours(1, 11, 56.68), Radians.fromDegrees(1, 38, 33.6)),
+                new AstronomicalCoordinates(Radians.fromHours(1, 57, 21.76), Radians.fromDegrees(6, 21, 57.5)),
+                new AstronomicalCoordinates(Radians.fromHours(2, 44, 28.06), Radians.fromDegrees(10, 53, 45.1)));
+
+        final GeographicCoordinates observerCoords = new GeographicCoordinates(
+                Radians.fromDegrees(-16, 52, 28.2),
+                Radians.fromDegrees(52, 23, 39.85)
+        );
+
+        final double meanGreenwichSiderealTime = SiderealTime.getGreenwichMean(ut);
+        final double apparentGreenwichSiderealTime = meanGreenwichSiderealTime; // FixMe
+        assertEquals(
+                Math.toDegrees(Radians.fromHours(3, 19, 24.91)),
+                Math.toDegrees(apparentGreenwichSiderealTime),
+                Degrees.ONE_HUNDREDTH_SECOND
+        );
+
+        final RiseTransitSetEventCalculator rtsEventCalculator = new RiseTransitSetEventCalculator(coords, observerCoords, apparentGreenwichSiderealTime, 56.0);
+        final double transitTime = rtsEventCalculator.computeTransitTime();
+        final RiseSet riseSet = rtsEventCalculator.computeRiseAndSetTime(RiseTransitSetEventCalculator.RISE_AND_SET_ALTITUDE_FOR_MOON);
+
+        System.out.println("Moon rise: " + JulianDay.toDateTime(ut + riseSet.risingTime));
+        System.out.println("Moon transit: " + JulianDay.toDateTime(ut + transitTime));
+        System.out.println("Moon set: " + JulianDay.toDateTime(ut + riseSet.settingTime));
+
+        assertEquals(0.63158, riseSet.risingTime, 0.00001);
+        assertEquals(0.92297, transitTime, 0.00001);
+        assertEquals(0.17656, riseSet.settingTime, 0.00001);
+    }
+
+    @Test
     void bringToZeroOneRange() {
         assertEquals(0.25, RiseTransitSetEventCalculator.bringToZeroOneRange(-1.75));
         assertEquals(0.25, RiseTransitSetEventCalculator.bringToZeroOneRange(-0.75));
