@@ -45,7 +45,7 @@ class MoonEphemeridesCalculatorTest {
 
         double jde = JulianDay.fromDate(2019, 10, 9);
 
-        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(JplBody.Moon, jde);
+        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(jde);
         System.out.printf("Moon ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);

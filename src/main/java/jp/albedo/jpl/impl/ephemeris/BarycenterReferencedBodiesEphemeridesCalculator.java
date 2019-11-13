@@ -7,8 +7,8 @@ import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
 import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.EphemeridesCalculator;
-import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.SPKernel;
 import jp.albedo.jpl.impl.PositionCalculator;
 import jp.albedo.jpl.impl.magnitude.ApparentMagnitudeCalculator;
@@ -22,59 +22,88 @@ import java.util.List;
  */
 public class BarycenterReferencedBodiesEphemeridesCalculator implements EphemeridesCalculator {
 
-    final private SPKernel spKernel;
+    private final double speedOfLight;
 
     private final double au;
 
     private final double earthMoonMassRatio;
 
-    public BarycenterReferencedBodiesEphemeridesCalculator(SPKernel spKernel) {
-        this.spKernel = spKernel;
-        this.au = this.spKernel.getConstant(Constant.AU);
-        this.earthMoonMassRatio = this.spKernel.getConstant(Constant.EarthMoonMassRatio);
+    private final double bodyEquatorialRadius;
+
+    private final PositionCalculator bodyPositionCalculator;
+
+    private final PositionCalculator earthBarycenterPositionCalculator;
+
+    private final PositionCalculator moonPositionCalculator;
+
+    private final ApparentMagnitudeCalculator magnitudeCalculator;
+
+    public BarycenterReferencedBodiesEphemeridesCalculator(JplBody body, SPKernel spKernel) throws JplException {
+        this.speedOfLight = spKernel.getConstant(Constant.SpeedOfLight);
+        this.au = spKernel.getConstant(Constant.AU);
+        this.earthMoonMassRatio = spKernel.getConstant(Constant.EarthMoonMassRatio);
+
+        this.bodyEquatorialRadius = BodyInformation.valueOf(body.name()).equatorialRadius;
+
+        this.bodyPositionCalculator = spKernel.getPositionCalculatorFor(body);
+        this.earthBarycenterPositionCalculator = spKernel.getPositionCalculatorFor(JplBody.EarthMoonBarycenter);
+        this.moonPositionCalculator = spKernel.getPositionCalculatorFor(JplBody.Moon);
+
+        this.magnitudeCalculator = MagnitudeCalculatorFactory.getFor(body);
     }
 
     /**
      * Computes Earth based ephemeris for given body and for multiple time instants.
      *
-     * @param body JPL body.
      * @param jdes Array of JDEs.
      * @return Ephemerides for provided parameters.
      * @throws JplException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    public List<Ephemeris> computeEphemeridesForJds(JplBody body, List<Double> jdes) throws JplException {
-        final PositionCalculator bodyPositionCalculator = this.spKernel.getPositionCalculatorFor(body);
-        final PositionCalculator earthBarycenterPositionCalculator = this.spKernel.getPositionCalculatorFor(JplBody.EarthMoonBarycenter);
-        final PositionCalculator moonPositionCalculator = this.spKernel.getPositionCalculatorFor(JplBody.Moon);
-
-        final ApparentMagnitudeCalculator magnitudeCalculator = MagnitudeCalculatorFactory.getFor(body);
+    public List<Ephemeris> computeEphemeridesForJds(List<Double> jdes) throws JplException {
 
         final List<Ephemeris> ephemerides = new ArrayList<>(jdes.size());
 
         for (double jde : jdes) {
-            final RectangularCoordinates bodyHeliocentricCoords = bodyPositionCalculator.compute(jde);
-            final RectangularCoordinates bodyHeliocentricCoordsAu = bodyHeliocentricCoords.divideBy(this.au);
-            final RectangularCoordinates earthBarycenterHeliocentricCoords = earthBarycenterPositionCalculator.compute(jde);
-            final RectangularCoordinates moonGeocentricCoords = moonPositionCalculator.compute(jde);
+            final RectangularCoordinates bodyHeliocentricCoordsKm = this.bodyPositionCalculator.compute(jde);
+            final RectangularCoordinates bodyHeliocentricCoordsAu = bodyHeliocentricCoordsKm.divideBy(this.au);
+            final RectangularCoordinates earthBarycenterHeliocentricCoordsKm = this.earthBarycenterPositionCalculator.compute(jde);
+            final RectangularCoordinates moonGeocentricCoordsKm = this.moonPositionCalculator.compute(jde);
 
-            final double earthToEarthMoonBarycenterDistance = moonGeocentricCoords.getDistance() / (1.0 + this.earthMoonMassRatio);
-            final RectangularCoordinates earthFromEarthMoonBarycenterCoords = moonGeocentricCoords.multiplyBy(earthToEarthMoonBarycenterDistance / moonGeocentricCoords.getDistance());
-            final RectangularCoordinates earthHeliocentricCoords = earthBarycenterHeliocentricCoords.subtract(earthFromEarthMoonBarycenterCoords);
+            final double earthToEarthMoonBarycenterDistance = moonGeocentricCoordsKm.getDistance() / (1.0 + this.earthMoonMassRatio);
+            final RectangularCoordinates earthFromEarthMoonBarycenterCoords = moonGeocentricCoordsKm.multiplyBy(earthToEarthMoonBarycenterDistance / moonGeocentricCoordsKm.getDistance());
+            final RectangularCoordinates earthHeliocentricCoords = earthBarycenterHeliocentricCoordsKm.subtract(earthFromEarthMoonBarycenterCoords);
 
-            final RectangularCoordinates bodyGeocentricCoords = bodyHeliocentricCoords.subtract(earthHeliocentricCoords);
-            final RectangularCoordinates bodyGeocentricCoordsAu = bodyGeocentricCoords.divideBy(this.au);
+            final RectangularCoordinates bodyGeocentricCoordsKm = bodyHeliocentricCoordsKm.subtract(earthHeliocentricCoords);
+            final RectangularCoordinates bodyGeocentricCoordsAu = bodyGeocentricCoordsKm.divideBy(this.au);
+
+            final double lightTime = bodyGeocentricCoordsKm.getDistance() / this.speedOfLight;
+            final double correctedJde = jde - lightTime;
 
             ephemerides.add(new Ephemeris(
                     jde,
-                    AstronomicalCoordinates.fromRectangular(bodyGeocentricCoords),
+                    AstronomicalCoordinates.fromRectangular(bodyGeocentricCoordsKm),
                     bodyHeliocentricCoordsAu.getDistance(),
                     bodyGeocentricCoordsAu.getDistance(),
                     magnitudeCalculator.compute(bodyHeliocentricCoordsAu, bodyGeocentricCoordsAu),
-                    AngularSize.fromRadiusAndDistance(BodyInformation.valueOf(body.name()).equatorialRadius, bodyGeocentricCoords.getDistance())
+                    AngularSize.fromRadiusAndDistance(this.bodyEquatorialRadius, bodyGeocentricCoordsKm.getDistance())
             ));
         }
 
         return ephemerides;
+    }
+
+    private void computeBodyState(double jde) throws JplException {
+        final RectangularCoordinates bodyHeliocentricCoordsKm = this.bodyPositionCalculator.compute(jde);
+        final RectangularCoordinates bodyHeliocentricCoordsAu = bodyHeliocentricCoordsKm.divideBy(this.au);
+        final RectangularCoordinates earthBarycenterHeliocentricCoordsKm = this.earthBarycenterPositionCalculator.compute(jde);
+        final RectangularCoordinates moonGeocentricCoordsKm = this.moonPositionCalculator.compute(jde);
+
+        final double earthToEarthMoonBarycenterDistance = moonGeocentricCoordsKm.getDistance() / (1.0 + this.earthMoonMassRatio);
+        final RectangularCoordinates earthFromEarthMoonBarycenterCoords = moonGeocentricCoordsKm.multiplyBy(earthToEarthMoonBarycenterDistance / moonGeocentricCoordsKm.getDistance());
+        final RectangularCoordinates earthHeliocentricCoords = earthBarycenterHeliocentricCoordsKm.subtract(earthFromEarthMoonBarycenterCoords);
+
+        final RectangularCoordinates bodyGeocentricCoordsKm = bodyHeliocentricCoordsKm.subtract(earthHeliocentricCoords);
+        final RectangularCoordinates bodyGeocentricCoordsAu = bodyGeocentricCoordsKm.divideBy(this.au);
     }
 
 }

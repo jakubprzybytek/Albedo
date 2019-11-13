@@ -5,8 +5,8 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.jpl.EphemeridesCalculator;
 import jp.albedo.jpl.EphemeridesCalculatorFactory;
-import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.JplException;
 import jp.albedo.webapp.services.JplKernelsService;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.logging.Log;
@@ -81,7 +81,7 @@ public class JplEphemerisCalculator {
         final EphemeridesCalculator ephemeridesCalculator = EphemeridesCalculatorFactory.getFor(body, this.jplKernelsService.getSpKernel());
 
         final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
-        final List<Ephemeris> ephemeris = ephemeridesCalculator.computeEphemeridesForJds(body, jdes);
+        final List<Ephemeris> ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jdes);
 
         if (LOG.isDebugEnabled()) {
             LOG.info(String.format("Calculated %d ephemeris in %s", ephemeris.size(), Duration.between(start, Instant.now())));

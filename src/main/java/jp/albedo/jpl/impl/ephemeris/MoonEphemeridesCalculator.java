@@ -7,12 +7,10 @@ import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
 import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.EphemeridesCalculator;
-import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.SPKernel;
 import jp.albedo.jpl.impl.PositionCalculator;
-import jp.albedo.jpl.impl.magnitude.ApparentMagnitudeCalculator;
-import jp.albedo.jpl.impl.magnitude.MagnitudeCalculatorFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,27 +20,28 @@ import java.util.List;
  */
 public class MoonEphemeridesCalculator implements EphemeridesCalculator {
 
-    final private SPKernel spKernel;
-
     final double au;
 
-    public MoonEphemeridesCalculator(SPKernel spKernel) {
-        this.spKernel = spKernel;
-        this.au = this.spKernel.getConstant(Constant.AU);
+    private final double moonEquatorialRadius;
+
+    private final PositionCalculator moonPositionCalculator;
+
+    public MoonEphemeridesCalculator(SPKernel spKernel) throws JplException {
+        this.au = spKernel.getConstant(Constant.AU);
+
+        this.moonEquatorialRadius = BodyInformation.Moon.equatorialRadius;
+
+        this.moonPositionCalculator = spKernel.getPositionCalculatorFor(JplBody.Moon);
     }
 
     /**
      * Computes Earth based ephemeris for given body and for multiple time instants.
      *
-     * @param body
      * @param jdes Array of JDEs.
      * @return
      * @throws JplException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    public List<Ephemeris> computeEphemeridesForJds(JplBody body, List<Double> jdes) throws JplException {
-        final PositionCalculator moonPositionCalculator = this.spKernel.getPositionCalculatorFor(JplBody.Moon);
-
-        final ApparentMagnitudeCalculator magnitudeCalculator = MagnitudeCalculatorFactory.getFor(body);
+    public List<Ephemeris> computeEphemeridesForJds(List<Double> jdes) throws JplException {
 
         final List<Ephemeris> ephemerides = new ArrayList<>(jdes.size());
 
@@ -56,7 +55,7 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
                     0.0,
                     moonGeocentricCooddsAu.getDistance(),
                     0.0,
-                    AngularSize.fromRadiusAndDistance(BodyInformation.valueOf(body.name()).equatorialRadius, moonGeocentricCoordsKm.getDistance())
+                    AngularSize.fromRadiusAndDistance(this.moonEquatorialRadius, moonGeocentricCoordsKm.getDistance())
             ));
         }
 

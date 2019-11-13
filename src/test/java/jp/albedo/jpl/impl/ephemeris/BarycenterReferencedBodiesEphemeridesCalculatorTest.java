@@ -3,8 +3,8 @@ package jp.albedo.jpl.impl.ephemeris;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.jpl.AsciiFileLoader;
-import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.SPKernel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,8 +25,6 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
 
     private SPKernel spKernel;
 
-    private BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator;
-
     @BeforeAll
     void loadKernels() throws URISyntaxException, IOException, JplException {
         final URL headerFileULR = BarycenterReferencedBodiesEphemeridesCalculatorTest.class.getClassLoader().getResource("JPL/DE438/header.438");
@@ -37,7 +35,6 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         asciiFileLoader.load(new File(fileULR.toURI()));
 
         this.spKernel = asciiFileLoader.createSpKernel();
-        this.ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(spKernel);
     }
 
     @Test
@@ -45,7 +42,8 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(JplBody.Sun, jde);
+        BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Sun, this.spKernel);
+        Ephemeris ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jde);
         System.out.printf("Sun ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -62,7 +60,8 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(JplBody.Mercury, jde);
+        BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Mercury, this.spKernel);
+        Ephemeris ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jde);
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -79,7 +78,8 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(JplBody.Venus, jde);
+        BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Venus, this.spKernel);
+        Ephemeris ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jde);
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -96,7 +96,8 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
 
         double jde = JulianDay.fromDate(1949, 12, 14);
 
-        Ephemeris ephemeris = this.ephemeridesCalculator.computeEphemeridesForJds(JplBody.Mars, jde);
+        BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Mars, this.spKernel);
+        Ephemeris ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jde);
         System.out.printf("Mars ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
