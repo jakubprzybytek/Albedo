@@ -3,11 +3,11 @@ package jp.albedo.jpl.state;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
-import jp.albedo.jpl.files.AsciiFileLoader;
 import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.SPKernel;
+import jp.albedo.jpl.files.AsciiFileLoader;
 import jp.albedo.vsop87.VSOP87Calculator;
 import jp.albedo.vsop87.VSOPException;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,8 +29,6 @@ class StateCalculatorTest {
 
     private SPKernel spKernel;
 
-    private StateCalculator stateCalculator;
-
     @BeforeAll
     void loadKernels() throws URISyntaxException, IOException, JplException {
         final URL headerFileULR = StateCalculatorTest.class.getClassLoader().getResource("JPL/DE438/header.438");
@@ -41,13 +39,14 @@ class StateCalculatorTest {
         asciiFileLoader.load(new File(fileULR.toURI()));
 
         this.spKernel = asciiFileLoader.createSpKernel();
-        this.stateCalculator = new StateCalculator(spKernel);
     }
 
     @Test
     void computeForSun() throws JplException {
         double jde = JulianDay.fromDate(2019, 10, 9);
-        RectangularCoordinates coordsKm = this.stateCalculator.compute(JplBody.Sun, jde);
+
+        StateCalculator stateCalculator = new StateCalculator(JplBody.Sun, this.spKernel);
+        RectangularCoordinates coordsKm = stateCalculator.compute(jde);
 
         System.out.printf("T [JDE]: %f%n", jde);
         System.out.printf("Sun coords [km]: %s, distance=%f%n", coordsKm, coordsKm.getDistance());
@@ -60,9 +59,11 @@ class StateCalculatorTest {
 
     @Test
     void computeForVenusWithVariousTimeSpanPoints() throws JplException {
-
         final double beginningJde = 2433264.5;
-        final RectangularCoordinates beginningCoordsKm = this.stateCalculator.compute(JplBody.Venus, beginningJde);
+
+        StateCalculator stateCalculator = new StateCalculator(JplBody.Venus, this.spKernel);
+
+        final RectangularCoordinates beginningCoordsKm = stateCalculator.compute(beginningJde);
         System.out.printf("Venus coords [km] for %.1f [JDE]: %s, distance=%f%n", beginningJde, beginningCoordsKm, beginningCoordsKm.getDistance());
 
         assertEquals(64381880.39107707, beginningCoordsKm.x, 0.00000001);
@@ -70,15 +71,15 @@ class StateCalculatorTest {
         assertEquals(32359613.66602598, beginningCoordsKm.z, 0.00000001);
 
         final double middleJde = 2433280.5;
-        final RectangularCoordinates middleCoordsKm = this.stateCalculator.compute(JplBody.Venus, middleJde);
+        final RectangularCoordinates middleCoordsKm = stateCalculator.compute(middleJde);
         System.out.printf("Venus coords [km] for %.1f [JDE]: %s, distance=%f%n", middleJde, middleCoordsKm, middleCoordsKm.getDistance());
 
-        assertEquals(20230700.80839136, middleCoordsKm.x);
-        assertEquals(97367801.62804152, middleCoordsKm.y);
-        assertEquals(42496398.48356129, middleCoordsKm.z);
+        assertEquals(20230700.80839136, middleCoordsKm.x, 0.00000002);
+        assertEquals(97367801.62804152, middleCoordsKm.y, 0.00000002);
+        assertEquals(42496398.48356129, middleCoordsKm.z, 0.00000001);
 
         final double endingJde = 2433296.5;
-        final RectangularCoordinates endingCoordsKm = this.stateCalculator.compute(JplBody.Venus, endingJde);
+        final RectangularCoordinates endingCoordsKm = stateCalculator.compute(endingJde);
         System.out.printf("Venus coords [km] for %.1f [JDE]: %s, distance=%f%n", endingJde, endingCoordsKm, endingCoordsKm.getDistance());
 
         assertEquals(-27913817.75063300, endingCoordsKm.x, 0.00000001);
@@ -89,7 +90,9 @@ class StateCalculatorTest {
     @Test
     void computeForVenus() throws JplException {
         double jde = JulianDay.fromDate(2019, 10, 9);
-        RectangularCoordinates coordsKm = this.stateCalculator.compute(JplBody.Venus, jde);
+
+        StateCalculator stateCalculator = new StateCalculator(JplBody.Venus, this.spKernel);
+        RectangularCoordinates coordsKm = stateCalculator.compute(jde);
 
         System.out.printf("T [JDE]: %f%n", jde);
         System.out.printf("Venus coords [km]: %s, distance=%f%n", coordsKm, coordsKm.getDistance());
@@ -104,10 +107,12 @@ class StateCalculatorTest {
         final double jde = JulianDay.fromDate(2019, 10, 9);
         System.out.printf("T [JDE]: %f%n", jde);
 
-        final RectangularCoordinates mercuryCoordsKm = this.stateCalculator.compute(JplBody.Mercury, jde);
+        StateCalculator mercuryStateCalculator = new StateCalculator(JplBody.Mercury, this.spKernel);
+        final RectangularCoordinates mercuryCoordsKm = mercuryStateCalculator.compute(jde);
         System.out.printf("Mercury coords [km]: %s, distance=%f%n", mercuryCoordsKm, mercuryCoordsKm.getDistance());
 
-        final RectangularCoordinates venusCoordsKm = this.stateCalculator.compute(JplBody.Venus, jde);
+        StateCalculator venusStateCalculator = new StateCalculator(JplBody.Venus, this.spKernel);
+        final RectangularCoordinates venusCoordsKm = venusStateCalculator.compute(jde);
         System.out.printf("Venus coords [km]: %s, distance=%f%n", venusCoordsKm, venusCoordsKm.getDistance());
 
         final RectangularCoordinates venusMercurycentricCoords = venusCoordsKm.subtract(mercuryCoordsKm);
@@ -131,7 +136,8 @@ class StateCalculatorTest {
         System.out.printf("Earth VSOP87 coords: %s%n", earthVSOPCoords);
         System.out.printf("Earth VSOP87 coords: %s, distance=%f%n", earthVSOPRectCoords, earthVSOPRectCoords.getDistance());
 
-        final RectangularCoordinates earthJPLCoordsKm = this.stateCalculator.compute(JplBody.EarthMoonBarycenter, jde);
+        StateCalculator earthMoonBarycenterStateCalculator = new StateCalculator(JplBody.EarthMoonBarycenter, this.spKernel);
+        final RectangularCoordinates earthJPLCoordsKm = earthMoonBarycenterStateCalculator.compute(jde);
         final RectangularCoordinates earthJPLCoordsAu = earthJPLCoordsKm.divideBy(this.spKernel.getConstant(Constant.AU));
         System.out.printf("Earth JLP coords: %s, distance=%f%n", earthJPLCoordsKm, earthJPLCoordsKm.getDistance());
 
@@ -139,7 +145,8 @@ class StateCalculatorTest {
         assertEquals(0.8973838323183663, earthJPLCoordsAu.y);
         assertEquals(0.3891009866482363, earthJPLCoordsAu.z);
 
-        final RectangularCoordinates moonGeocentricJplCoordsKm = this.stateCalculator.compute(JplBody.Moon, jde);
+        StateCalculator moonStateCalculator = new StateCalculator(JplBody.Moon, this.spKernel);
+        final RectangularCoordinates moonGeocentricJplCoordsKm = moonStateCalculator.compute(jde);
         final RectangularCoordinates moonGeocentricJplCoordsAu = moonGeocentricJplCoordsKm.divideBy(this.spKernel.getConstant(Constant.AU));
 
         System.out.printf("Moon JLP coords [AU]: %s, distance=%f%n", moonGeocentricJplCoordsAu, moonGeocentricJplCoordsAu.getDistance());
@@ -155,7 +162,8 @@ class StateCalculatorTest {
         final double jde = JulianDay.fromDate(2019, 10, 9);
         System.out.printf("T [JDE]: %.1f%n", jde);
 
-        final RectangularCoordinates moonCoordsKm = this.stateCalculator.compute(JplBody.Moon, jde);
+        StateCalculator stateCalculator = new StateCalculator(JplBody.Moon, this.spKernel);
+        final RectangularCoordinates moonCoordsKm = stateCalculator.compute(jde);
         System.out.printf("Moon coords [km]: %s, distance=%f%n", moonCoordsKm, moonCoordsKm.getDistance());
 
         assertEquals(317255.79347754, moonCoordsKm.x, 0.00000001);
@@ -166,7 +174,8 @@ class StateCalculatorTest {
     @Test
     void computeForMars() throws JplException {
 
-        RectangularCoordinates coordsKm = this.stateCalculator.compute(JplBody.Mars, 2433264.5);
+        StateCalculator stateCalculator = new StateCalculator(JplBody.Mars, this.spKernel);
+        RectangularCoordinates coordsKm = stateCalculator.compute(2433264.5);
         System.out.printf("Mars coords [AU]: %s, distance=%f%n", coordsKm, coordsKm.getDistance());
 
         assertEquals(-187457046.10650298, coordsKm.x, 0.00000001);

@@ -10,6 +10,7 @@ import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.SPKernel;
+import jp.albedo.jpl.state.StateCalculator;
 import jp.albedo.jpl.state.impl.PositionCalculator;
 import jp.albedo.jpl.state.EarthStateCalculator;
 
@@ -29,7 +30,7 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
 
     private final double moonEquatorialRadius;
 
-    private final PositionCalculator moonPositionCalculator;
+    private final StateCalculator moonStateCalculator;
 
     private final EarthStateCalculator earthStateCalculator;
 
@@ -40,7 +41,7 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
 
         this.moonEquatorialRadius = BodyInformation.Moon.equatorialRadius;
 
-        this.moonPositionCalculator = spKernel.getPositionCalculatorFor(JplBody.Moon);
+        this.moonStateCalculator = new StateCalculator(JplBody.Moon, spKernel);
         this.earthStateCalculator = new EarthStateCalculator(spKernel);
     }
 
@@ -56,14 +57,14 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
         final List<Ephemeris> ephemerides = new ArrayList<>(jdes.size());
 
         for (double jde : jdes) {
-            final RectangularCoordinates moonGeocentricCoordsKm = this.moonPositionCalculator.compute(jde);
+            final RectangularCoordinates moonGeocentricCoordsKm = this.moonStateCalculator.compute(jde);
             final RectangularCoordinates earthHeliocentricCoords = this.earthStateCalculator.compute(jde);
 
             // light time correction
             final double lightTime = moonGeocentricCoordsKm.getDistance() / this.speedOfLight;
             final double correctedJde = jde - lightTime / (24.0 * 60.0 * 60.0);
 
-            final RectangularCoordinates pastMoonGeocentricCoordsKm = this.moonPositionCalculator.compute(correctedJde);
+            final RectangularCoordinates pastMoonGeocentricCoordsKm = this.moonStateCalculator.compute(correctedJde);
             final RectangularCoordinates correctedEarthHeliocentricCoords = this.earthStateCalculator.compute(correctedJde);
 
             final RectangularCoordinates earthCorrectionKm = correctedEarthHeliocentricCoords.subtract(earthHeliocentricCoords);

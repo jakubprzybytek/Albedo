@@ -11,22 +11,20 @@ import jp.albedo.jpl.state.impl.PositionCalculator;
  */
 public class StateCalculator {
 
-    final private SPKernel spKernel;
+    final PositionCalculator positionCalculator;
 
-    StateCalculator(SPKernel spKernel) {
-        this.spKernel = spKernel;
+    public StateCalculator(JplBody body, SPKernel spKernel) throws JplException {
+        this.positionCalculator = spKernel.getPositionCalculatorFor(body);
     }
 
     /**
      * Computes state for single time instant.
      *
-     * @param body
      * @param jde
      * @return
      * @throws JplException
      */
-    public RectangularCoordinates compute(JplBody body, double jde) throws JplException {
-        final PositionCalculator positionCalculator = this.spKernel.getPositionCalculatorFor(body);
+    public RectangularCoordinates compute(double jde) throws JplException {
         return positionCalculator.compute(jde);
     }
 
