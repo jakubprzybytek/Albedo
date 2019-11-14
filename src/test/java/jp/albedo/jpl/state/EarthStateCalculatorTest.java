@@ -2,7 +2,7 @@ package jp.albedo.jpl.state;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
-import jp.albedo.jpl.AsciiFileLoader;
+import jp.albedo.jpl.files.AsciiFileLoader;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.SPKernel;
 import org.junit.jupiter.api.BeforeAll;

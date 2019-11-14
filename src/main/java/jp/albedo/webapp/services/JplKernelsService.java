@@ -1,6 +1,6 @@
 package jp.albedo.webapp.services;
 
-import jp.albedo.jpl.AsciiFileLoader;
+import jp.albedo.jpl.files.AsciiFileLoader;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.SPKernel;
 import org.springframework.beans.factory.annotation.Value;

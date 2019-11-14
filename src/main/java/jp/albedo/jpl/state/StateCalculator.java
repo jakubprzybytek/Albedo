@@ -4,7 +4,7 @@ import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.SPKernel;
-import jp.albedo.jpl.impl.PositionCalculator;
+import jp.albedo.jpl.state.impl.PositionCalculator;
 
 /**
  * JPL's Kernel based states calculator for main Solar System objects.

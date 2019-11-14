@@ -1,8 +1,8 @@
 package jp.albedo.jpl;
 
-import jp.albedo.jpl.impl.PositionCalculator;
-import jp.albedo.jpl.impl.TimeSpan;
-import jp.albedo.jpl.impl.math.XYZCoefficients;
+import jp.albedo.jpl.kernel.TimeSpan;
+import jp.albedo.jpl.state.impl.PositionCalculator;
+import jp.albedo.jpl.kernel.XYZCoefficients;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class SPKernel {
         return this.constants.get(constant);
     }
 
-    void registerBodyCoefficients(JplBody body, Map<TimeSpan, XYZCoefficients> coefficientsByTime) {
+    public void registerBodyCoefficients(JplBody body, Map<TimeSpan, XYZCoefficients> coefficientsByTime) {
         if (!coefficientsMap.containsKey(body)) {
             this.coefficientsMap.put(body, new HashMap<>());
         }
