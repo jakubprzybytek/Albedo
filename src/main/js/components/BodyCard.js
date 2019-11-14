@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { red, orange, yellow, grey } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PlanetIcon from './PlanetIcons';
+import { SunIcon, MoonIcon, PlanetIcon } from './AstronomicalIcons';
 import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
@@ -216,8 +216,8 @@ export default function BodyCard(props) {
 
   return (
     <Card className={classes.card}>
-    {bodyInfo.bodyDetails.bodyType === 'Sun' && <CardHeader avatar={<Avatar className={classes.avatarYellow}>S</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-    {bodyInfo.bodyDetails.bodyType === 'Moon' && <CardHeader avatar={<Avatar className={classes.avatarGrey}>M</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+    {bodyInfo.bodyDetails.bodyType === 'Sun' && <CardHeader avatar={<Avatar className={classes.avatarYellow}><SunIcon width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+    {bodyInfo.bodyDetails.bodyType === 'Moon' && <CardHeader avatar={<Avatar className={classes.avatarGrey}><MoonIcon width={32} height={32} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
     {bodyInfo.bodyDetails.bodyType === 'Planet' && <CardHeader avatar={<Avatar className={classes.avatarRed}><PlanetIcon planetName={bodyInfo.bodyDetails.name} width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
     {bodyInfo.bodyDetails.bodyType === 'Asteroid' && <CardHeader avatar={<Avatar className={classes.avatarOrange}>A</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
       {bodyInfo.ephemeris && <CardContent>

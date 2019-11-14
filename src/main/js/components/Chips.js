@@ -1,9 +1,8 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import StarIcon from '@material-ui/icons/Star';
 import { red, orange, yellow, blue } from '@material-ui/core/colors';
-import PlanetIcon from './PlanetIcons';
+import { SunIcon, MoonIcon, PlanetIcon } from './AstronomicalIcons';
 
 const useStyles = makeStyles(theme => ({
   chip: {
@@ -49,7 +48,8 @@ export function BodyChip(props) {
   return (
     <span className={classes.chip}>
       <TinyAvatar component="span" className={classes[bodyDetails.bodyType]}>
-        {bodyDetails.name === 'Sun' && <StarIcon className={classes.icon} />}
+        {bodyDetails.name === 'Sun' && <SunIcon width={14} height={14} />}
+        {bodyDetails.name === 'Moon' && <MoonIcon width={12} height={12} />}
         {bodyDetails.bodyType === 'Planet' && <PlanetIcon planetName={bodyDetails.name} width={14} height={14} />}
         {bodyDetails.bodyType === 'Asteroid' && 'A'}
       </TinyAvatar>
