@@ -49,9 +49,11 @@ class MoonEphemeridesCalculatorTest {
         System.out.printf("Moon ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
-        assertEquals(325.21908914, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
-        assertEquals(-17.23578781, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
-        assertEquals(0.0027034333390632257, ephemeris.distanceFromEarth);
+        // WBC no correction: 325.21908914
+        assertEquals(325.21553089, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000003);
+        // WBC no correction: -17.23578781
+        assertEquals(-17.23668107, Math.toDegrees(ephemeris.coordinates.declination), 0.00000002);
+        assertEquals(0.0027036512818619713, ephemeris.distanceFromEarth);
         //assertEquals(-12.0, ephemeris.apparentMagnitude);
     }
 

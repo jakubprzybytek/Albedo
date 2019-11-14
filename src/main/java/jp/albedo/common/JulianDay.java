@@ -9,7 +9,7 @@ import java.util.stream.DoubleStream;
 public class JulianDay {
 
     /**
-     * From: Jean Meeus' Astronomical Algorithms
+     * Based on Jean Meeus' 'Astronomical Algorithms', chapter 7 'Julian Day'
      *
      * @param year
      * @param month

@@ -39,7 +39,6 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
 
     @Test
     void computeEphemeridesForSun() throws JplException {
-
         double jde = JulianDay.fromDate(1949, 12, 14);
 
         BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Sun, this.spKernel);
@@ -47,17 +46,15 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         System.out.printf("Sun ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
-        // WGC: 274.97869316
-        assertEquals(261.69588889, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
-        // WGC: -25.54654902
-        assertEquals(-23.22635324, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
-        // Horisons: -0.68
+        // WGC no correction: 261.69588889
+        assertEquals(261.69589038, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
+        // WGC no correction: -23.22635324
+        assertEquals(-23.22635334, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
         assertEquals(-26.78, ephemeris.apparentMagnitude);
     }
 
     @Test
     void computeEphemeridesForMercury() throws JplException {
-
         double jde = JulianDay.fromDate(1949, 12, 14);
 
         BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Mercury, this.spKernel);
@@ -65,10 +62,10 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
-        // WGC: 274.97869316
-        assertEquals(274.9786931621818, Math.toDegrees(ephemeris.coordinates.rightAscension));
-        // WGC: -25.54654902
-        assertEquals(-25.546549020057533, Math.toDegrees(ephemeris.coordinates.declination));
+        // WGC no correction: 274.97869316
+        assertEquals(274.97165424, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
+        // WGC no correction: -25.54654902
+        assertEquals(-25.54648377, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
         // Horisons: -0.68
         assertEquals(-0.68, ephemeris.apparentMagnitude);
     }
@@ -83,10 +80,10 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
-        // WGC: 310.03355061
-        assertEquals(310.03355060701824, Math.toDegrees(ephemeris.coordinates.rightAscension));
-        // WGC: -20.40548613
-        assertEquals(-20.40548612581231, Math.toDegrees(ephemeris.coordinates.declination));
+        // WGC no correction: 310.03355061
+        assertEquals(310.03557722, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
+        // WGC no correction: -20.40548613
+        assertEquals(-20.40513256, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
         // Horisons: -4.80 FixMe
         assertEquals(-3.04, ephemeris.apparentMagnitude);
     }
@@ -101,10 +98,10 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         System.out.printf("Mars ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
-        // WGC: 176.75777302 - no correction
-        assertEquals(176.7577730226194, Math.toDegrees(ephemeris.coordinates.rightAscension));
-        // WGC: 3.80993121 - no correction
-        assertEquals(3.809931212566189, Math.toDegrees(ephemeris.coordinates.declination));
+        // WGC no correction: 176.75777302
+        assertEquals(176.75475337, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
+        // WGC no correction: 3.80993121
+        assertEquals(3.81133954, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
         // Horisons: 0.88
         assertEquals(0.88, ephemeris.apparentMagnitude);
     }

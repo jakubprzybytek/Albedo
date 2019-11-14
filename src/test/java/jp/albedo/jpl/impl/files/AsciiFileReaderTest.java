@@ -70,7 +70,7 @@ class AsciiFileReaderTest {
 
         Map<TimeSpan, XYZCoefficients> firstBodyCoefficientsMap = asciiReader.getCoefficientsMapForIndex(0);
 
-        assertEquals(12, firstBodyCoefficientsMap.size());
+        assertEquals(16, firstBodyCoefficientsMap.size());
 
         final TimeSpan firstTimeSpan = new TimeSpan(2433264.5, 2433272.5);
         final TimeSpan secondTimeSpan = new TimeSpan(2433272.5, 2433280.5);
