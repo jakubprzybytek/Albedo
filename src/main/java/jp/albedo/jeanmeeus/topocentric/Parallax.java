@@ -16,15 +16,21 @@ public class Parallax {
     private static final double EARTH_POLAR_RADIUS = 6356.755;
 
     /**
+     * Applies parallax correction to provided astronomical coordinates.
+     *
+     * @param observer Observer's location.
+     * @param ut       UT time instant in Julian Days.
+     * @param object   Object's astronomical coordinates to correct.
      * @param distance Object's distance to Earth in AU.
+     * @return Parallax corrected astronomical coordinates of an object.
      */
-    public static AstronomicalCoordinates correct(GeographicCoordinates observer, double height, double ut, AstronomicalCoordinates object, double distance) {
+    public static AstronomicalCoordinates correct(ObserverLocation observer, double ut, AstronomicalCoordinates object, double distance) {
         final double sinPi = Math.sin(Math.toRadians(8.794 / 3600.0)) / distance;
 
-        final double phoSinPhiPrim = computeRhoSinPhiPrim(observer.latitude, height);
-        final double phoCosPhiPrim = computeRhoCosPhiPrim(observer.latitude, height);
+        final double phoSinPhiPrim = computeRhoSinPhiPrim(observer);
+        final double phoCosPhiPrim = computeRhoCosPhiPrim(observer);
 
-        final double objectLocalHourAngle = HourAngle.getLocal(SiderealTime.getGreenwichMean(ut), observer.longitude, object.rightAscension);
+        final double objectLocalHourAngle = HourAngle.getLocal(SiderealTime.getGreenwichMean(ut), observer.coords.longitude, object.rightAscension);
 
         final double deltaRightAscension = Math.atan2(
                 -phoCosPhiPrim * sinPi * Math.sin(objectLocalHourAngle),
@@ -37,23 +43,21 @@ public class Parallax {
     }
 
     /**
-     * @param geographicalLatitude Observer's geographical latitude in radians.
-     * @param height               Observer's height above sea level in meters.
-     * @return
+     * @param observer Observer's location.
+     * @return ρ*sin(φ')
      */
-    static double computeRhoSinPhiPrim(double geographicalLatitude, double height) {
-        final double u = Math.atan(EARTH_POLAR_RADIUS / EARTH_EQUATORIAL_RADIUS * Math.tan(geographicalLatitude));
-        return EARTH_POLAR_RADIUS / EARTH_EQUATORIAL_RADIUS * Math.sin(u) + height / (EARTH_EQUATORIAL_RADIUS * 1000.0) * Math.sin(geographicalLatitude);
+    static double computeRhoSinPhiPrim(ObserverLocation observer) {
+        final double u = Math.atan(EARTH_POLAR_RADIUS / EARTH_EQUATORIAL_RADIUS * Math.tan(observer.coords.latitude));
+        return EARTH_POLAR_RADIUS / EARTH_EQUATORIAL_RADIUS * Math.sin(u) + observer.height / (EARTH_EQUATORIAL_RADIUS * 1000.0) * Math.sin(observer.coords.latitude);
     }
 
     /**
-     * @param geographicalLatitude Observer's geographical latitude in radians.
-     * @param height               Observer's height above sea level in meters.
-     * @return
+     * @param observer Observer's location.
+     * @return ρ*cos(φ')
      */
-    static double computeRhoCosPhiPrim(double geographicalLatitude, double height) {
-        final double u = Math.atan(EARTH_POLAR_RADIUS / EARTH_EQUATORIAL_RADIUS * Math.tan(geographicalLatitude));
-        return Math.cos(u) + height / (EARTH_EQUATORIAL_RADIUS * 1000.0) * Math.cos(geographicalLatitude);
+    static double computeRhoCosPhiPrim(ObserverLocation observer) {
+        final double u = Math.atan(EARTH_POLAR_RADIUS / EARTH_EQUATORIAL_RADIUS * Math.tan(observer.coords.latitude));
+        return Math.cos(u) + observer.height / (EARTH_EQUATORIAL_RADIUS * 1000.0) * Math.cos(observer.coords.latitude);
     }
 
 }
