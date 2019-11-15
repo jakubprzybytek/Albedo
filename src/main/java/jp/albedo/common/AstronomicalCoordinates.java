@@ -2,6 +2,7 @@ package jp.albedo.common;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.utils.Formatter;
 import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
 import org.apache.commons.math3.util.MathUtils;
 
@@ -19,6 +20,10 @@ public class AstronomicalCoordinates {
     @JsonSerialize(using = RadiansToDegreesSerializer.class)
     public double declination;
 
+    /**
+     * @param rightAscension Right Ascension in radians.
+     * @param declination    Declination in radians.
+     */
     public AstronomicalCoordinates(double rightAscension, double declination) {
         this.rightAscension = rightAscension;
         this.declination = declination;
@@ -35,29 +40,30 @@ public class AstronomicalCoordinates {
         );
     }
 
+    /**
+     * Returns delta between this coordinates and those provided as parameter. It is not an angular separation.
+     *
+     * @param other Subtract.
+     * @return Delta coordinates.
+     */
+    public AstronomicalCoordinates subtract(AstronomicalCoordinates other) {
+        return new AstronomicalCoordinates(
+                this.rightAscension - other.rightAscension,
+                this.declination - other.declination
+        );
+    }
+
     @Override
     public String toString() {
-        return format("[α=%dh%02dm%05.2fs (%f°), δ=%d°%02d'%04.1f\" (%f°)]");
+        return String.format("[α=%s (%f°), δ=%s (%f°)]",
+                Formatter.HOUR_ANGLE.apply(this.rightAscension), Math.toDegrees(this.rightAscension),
+                Formatter.DEGREES.apply(this.declination), Math.toDegrees(this.declination));
     }
 
-    public String toStringHighPrecision() {
-        return format("[α=%dh%02dm%09.6fs (%.10f°), δ=%d°%02d'%08.5f\" (%.10f°)]");
+    public String toStringHighResolution() {
+        return String.format("[α=%s (%.10f°), δ=%s (%.10f°)]",
+                Formatter.HOUR_ANGLE_HIGH_RESOLUTION.apply(this.rightAscension), Math.toDegrees(this.rightAscension),
+                Formatter.DEGREES_HIGH_RESOLUTION.apply(this.declination), Math.toDegrees(this.declination));
     }
 
-    private String format(String pattern) {
-        final double rightAscensionInHours = Math.toDegrees(this.rightAscension) / 15.0;
-        final double rightAscensionFractionInMinutes = (rightAscensionInHours - Math.floor(rightAscensionInHours)) * 60.0;
-        final double declinationInDegrees = Math.toDegrees(this.declination);
-        final double declinationAbs = Math.abs(declinationInDegrees);
-        final double declinationFractionInMinutes = (declinationAbs - Math.floor(declinationAbs)) * 60.0;
-        return String.format(pattern,
-                (int) rightAscensionInHours,
-                (int) (rightAscensionFractionInMinutes),
-                (rightAscensionFractionInMinutes - Math.floor(rightAscensionFractionInMinutes)) * 60,
-                Math.toDegrees(this.rightAscension),
-                (int) declinationInDegrees,
-                (int) (declinationFractionInMinutes),
-                (declinationFractionInMinutes - Math.floor(declinationFractionInMinutes)) * 60,
-                declinationInDegrees);
-    }
 }

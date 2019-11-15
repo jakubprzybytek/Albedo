@@ -37,9 +37,9 @@ class ParallaxTest {
 
         final AstronomicalCoordinates corrected = Parallax.correct(observer, height, ut, object, 0.37276);
 
-        System.out.printf("Δα=%s, Δδ=%s",
-                Formatter.SECONDS.apply(corrected.rightAscension - object.rightAscension),
-                Formatter.ARCSECONDS.apply(corrected.declination - object.declination));
+        System.out.println("Original: " + object);
+        System.out.println("Corrected: " + corrected);
+        System.out.println("Δ: " + corrected.subtract(object));
 
         assertEquals(Math.toDegrees(Radians.fromHours(22, 38, 8.54)), Math.toDegrees(corrected.rightAscension), Degrees.ONE_HUNDREDTH_SECOND);
         assertEquals(Math.toDegrees(Radians.fromDegrees(-15, 46, 30.0)), Math.toDegrees(corrected.declination), Degrees.ONE_TENTH_ARCSECOND);
@@ -62,11 +62,9 @@ class ParallaxTest {
 
         final AstronomicalCoordinates corrected = Parallax.correct(observer, height, ut, object, 0.002543);
 
-        System.out.println("Original: " + object.toString());
-        System.out.println("Corrected: " + corrected.toString());
-        System.out.printf("Δα=%s Δδ=%s",
-                Formatter.SECONDS.apply(corrected.rightAscension - object.rightAscension),
-                Formatter.ARCSECONDS.apply(corrected.declination - object.declination));
+        System.out.println("Original: " + object);
+        System.out.println("Corrected: " + corrected);
+        System.out.println("Δ: " + corrected.subtract(object));
 
         assertEquals(Math.toDegrees(Radians.fromHours(5, 20, 56.71)), Math.toDegrees(corrected.rightAscension), Degrees.ONE_HUNDREDTH_SECOND);
         assertEquals(Math.toDegrees(Radians.fromDegrees(21, 1, 32.2)), Math.toDegrees(corrected.declination), Degrees.ONE_TENTH_ARCSECOND);
