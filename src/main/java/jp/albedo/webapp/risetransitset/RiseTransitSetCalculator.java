@@ -2,7 +2,7 @@ package jp.albedo.webapp.risetransitset;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyInformation;
-import jp.albedo.common.SiderealTime;
+import jp.albedo.jeanmeeus.sidereal.SiderealTime;
 import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.RiseSet;

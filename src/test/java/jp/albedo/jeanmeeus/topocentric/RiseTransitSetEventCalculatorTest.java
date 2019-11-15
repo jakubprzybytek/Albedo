@@ -3,9 +3,8 @@ package jp.albedo.jeanmeeus.topocentric;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.JulianDay;
 import jp.albedo.common.Radians;
-import jp.albedo.common.SiderealTime;
+import jp.albedo.jeanmeeus.sidereal.SiderealTime;
 import jp.albedo.testutils.Degrees;
-import jp.albedo.utils.Formatter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

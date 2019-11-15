@@ -15,10 +15,22 @@ class FormatterTest {
     }
 
     @Test
+    void testSeconds() {
+        assertEquals("0.00s", Formatter.SECONDS.apply(0.0));
+        assertEquals("1.29s", Formatter.SECONDS.apply(Radians.fromHours(0, 0, 1.29)));
+    }
+
+    @Test
     void testDegreesFormatter() {
-        assertEquals("0°00'00.0", Formatter.DEGREES.apply(0.0));
-        assertEquals("89°03'45.9", Formatter.DEGREES.apply(Radians.fromDegrees(89, 3, 45.9)));
-        assertEquals("301°59'59.5", Formatter.DEGREES.apply(Radians.fromDegrees(301, 59, 59.5)));
+        assertEquals("0°00'00.0\"", Formatter.DEGREES.apply(0.0));
+        assertEquals("89°03'45.9\"", Formatter.DEGREES.apply(Radians.fromDegrees(89, 3, 45.9)));
+        assertEquals("301°59'59.5\"", Formatter.DEGREES.apply(Radians.fromDegrees(301, 59, 59.5)));
+    }
+
+    @Test
+    void testArcSeconds() {
+        assertEquals("0.0\"", Formatter.ARCSECONDS.apply(0.0));
+        assertEquals("1.3\"", Formatter.ARCSECONDS.apply(Radians.fromDegrees(0, 0, 1.29)));
     }
 
 }

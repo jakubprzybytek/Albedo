@@ -18,13 +18,13 @@ public class Radians {
      * Returns radians from degrees, arc minutes and arc seconds.
      *
      * @param degrees
-     * @param minutes
-     * @param seconds
+     * @param arcMinutes
+     * @param arcSeconds
      * @return
      */
-    public static double fromDegrees(int degrees, int minutes, double seconds) {
-        return degrees >= 0.0 ? Math.toRadians(degrees + minutes / 60.0 + seconds / 3600.0)
-                : Math.toRadians(degrees - minutes / 60.0 - seconds / 3600.0);
+    public static double fromDegrees(int degrees, int arcMinutes, double arcSeconds) {
+        return degrees >= 0.0 ? Math.toRadians(degrees + arcMinutes / 60.0 + arcSeconds / 3600.0)
+                : Math.toRadians(degrees - arcMinutes / 60.0 - arcSeconds / 3600.0);
     }
 
     /**

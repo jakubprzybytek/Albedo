@@ -13,13 +13,17 @@ public class Formatter {
                 (angleFractionInMinutes - Math.floor(angleFractionInMinutes)) * 60);
     };
 
+    public static Function<Double, String> SECONDS = (angle) -> String.format("%.2fs", Math.toDegrees(angle / 15.0) * 3600.0);
+
     public static Function<Double, String> DEGREES = (angle) -> {
         final double degrees = Math.toDegrees(angle);
         final double angleFractionInMinutes = (degrees - Math.floor(degrees)) * 60.0;
-        return String.format("%d°%02d'%04.1f",
+        return String.format("%d°%02d'%04.1f\"",
                 (int) degrees,
                 (int) (angleFractionInMinutes),
                 (angleFractionInMinutes - Math.floor(angleFractionInMinutes)) * 60);
     };
+
+    public static Function<Double, String> ARCSECONDS = (angle) -> String.format("%.1f\"", Math.toDegrees(angle) * 3600.0);
 
 }

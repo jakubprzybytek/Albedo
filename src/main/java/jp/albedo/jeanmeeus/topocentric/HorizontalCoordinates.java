@@ -5,12 +5,12 @@ import org.apache.commons.math3.util.MathUtils;
 public class HorizontalCoordinates {
 
     /**
-     * Azimuth Eastward from North.
+     * Azimuth Eastward from North in radians.
      */
     public final double azimuth;
 
     /**
-     * Altitude.
+     * Altitude in radians.
      */
     public final double altitude;
 

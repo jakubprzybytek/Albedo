@@ -1,14 +1,17 @@
-package jp.albedo.common;
+package jp.albedo.jeanmeeus.sidereal;
 
 import org.apache.commons.math3.util.MathUtils;
 
+/**
+ * Based on Jean Meeus' 'Astronomical Algorithms', Chapter 12 'Sidereal Time at Greenwich'
+ */
 public class SiderealTime {
 
     /**
-     * Return Mean Greenwitch Sidereal time for given UT.
+     * Return Mean Greenwich Sidereal time for given UT.
      *
-     * @param ut UT instant.
-     * @return Siderial time in radians. Normalized to <0,2*Pi).
+     * @param ut UT instant in Julian Days.
+     * @return Sidereal time in radians. Normalized to <0,2*Pi).
      */
     public static double getGreenwichMean(double ut) {
         return MathUtils.normalizeAngle(Math.toRadians(computeGreenwichMeanInDegrees(ut)), Math.PI);
@@ -17,9 +20,9 @@ public class SiderealTime {
     /**
      * Return mean local Sidereal time for given UT and longitude on Earth.
      *
-     * @param ut
+     * @param ut UT instant in Julian Days.
      * @param longitude Longitude of the observer in radians. Positive westwards.
-     * @return Siderial time in radians. Normalized to <0,2*Pi).
+     * @return Sidereal time in radians. Normalized to <0,2*Pi).
      */
     public static double getLocalMean(double ut, double longitude) {
         return MathUtils.normalizeAngle(Math.toRadians(computeGreenwichMeanInDegrees(ut)) - longitude, Math.PI);

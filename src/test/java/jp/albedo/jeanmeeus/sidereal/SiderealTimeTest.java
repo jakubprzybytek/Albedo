@@ -1,5 +1,7 @@
-package jp.albedo.common;
+package jp.albedo.jeanmeeus.sidereal;
 
+import jp.albedo.common.JulianDay;
+import jp.albedo.common.Radians;
 import jp.albedo.testutils.Degrees;
 import org.junit.jupiter.api.Test;
 
