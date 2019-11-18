@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -33,7 +34,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SubmitBar(props) {
+const mapStateToProps = state => {
+  return {
+    observerLocation: state.observerLocation
+  };
+};
+
+function SubmitBar(props) {
+
+  const { url, buildProps, submitResponse, observerLocation } = props;
 
   const classes = useStyles();
 
@@ -49,8 +58,8 @@ export default function SubmitBar(props) {
     setLoading(true);
     var startTime = new Date();
 
-    axios.get(props.url, {
-        params: props.buildProps()
+    axios.get(url, {
+        params: {...observerLocation, ...buildProps()}
       })
       .then(res => {
         setDuration(new Date() - startTime);
@@ -58,7 +67,7 @@ export default function SubmitBar(props) {
         setLinkUrl(res.request.responseURL);
         setErrorMessage('');
 
-        props.submitResponse(res.data);
+        submitResponse(res.data);
 
         setLoading(false);
       },
@@ -88,3 +97,9 @@ export default function SubmitBar(props) {
     </Grid>
   );
 }
+
+const LocationAwareSubmitBar = connect(
+  mapStateToProps
+)(SubmitBar);
+
+export default LocationAwareSubmitBar;

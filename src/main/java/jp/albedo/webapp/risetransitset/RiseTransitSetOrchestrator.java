@@ -1,6 +1,6 @@
 package jp.albedo.webapp.risetransitset;
 
-import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
+import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
@@ -30,17 +30,17 @@ public class RiseTransitSetOrchestrator {
     @Autowired
     private RiseTransitSetCalculator riseTransitSetCalculator;
 
-    List<RiseTransitSetEvent> compute(String[] bodyNames, Double fromDate, Double toDate, GeographicCoordinates observerCoords) throws Exception {
+    List<RiseTransitSetEvent> compute(String[] bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
 
-        LOG.info(String.format("Computing times of rising, transit and setting, params: [bodies:%s, from=%s, to=%s]", Arrays.toString(bodyNames), fromDate, toDate));
+        LOG.info(String.format("Computing times of rising, transit and setting, params: [bodies:%s, from=%s, to=%s], observer location: %s", Arrays.toString(bodyNames), fromDate, toDate, observerLocation));
 
         final Instant start = Instant.now();
 
-        List<RiseTransitSetEvent> riseTransitSetList = new ArrayList<>();
+        final List<RiseTransitSetEvent> riseTransitSetList = new ArrayList<>();
 
         for (String bodyName : bodyNames) {
-            ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL);
-            riseTransitSetList.addAll(this.riseTransitSetCalculator.compute(bodyName, computedEphemerides, observerCoords));
+            ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation);
+            riseTransitSetList.addAll(this.riseTransitSetCalculator.compute(bodyName, computedEphemerides, observerLocation.coords));
         }
 
         riseTransitSetList.sort(Comparator.comparingDouble(AstronomicalEvent::getJde));

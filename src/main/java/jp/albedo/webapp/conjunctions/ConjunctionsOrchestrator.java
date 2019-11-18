@@ -4,8 +4,10 @@ import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.catalogue.CatalogueType;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
+import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.utils.MixListSupplier;
 import jp.albedo.utils.MixTwoListsSupplier;
+import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
 import jp.albedo.webapp.services.CatalogueService;
@@ -45,7 +47,11 @@ class ConjunctionsOrchestrator {
     @Autowired
     private CatalogueService catalogueService;
 
-    List<Conjunction<BodyDetails, BodyDetails>> computeForTwoMovingBodies(Set<BodyType> primaryBodyTypes, Set<BodyType> secondaryBodyTypes, Double fromDate, Double toDate) {
+    List<Conjunction<BodyDetails, BodyDetails>> computeForTwoMovingBodies(
+            Set<BodyType> primaryBodyTypes, Set<BodyType> secondaryBodyTypes,
+            Double fromDate, Double toDate,
+            ObserverLocation observerLocation) {
+
         LOG.info(String.format("Computing conjunctions for two moving bodies, params: [primary types:%s, secondary types:%s, from=%s, to=%s]", primaryBodyTypes, secondaryBodyTypes, fromDate, toDate));
 
         final Instant start = Instant.now();
@@ -55,13 +61,7 @@ class ConjunctionsOrchestrator {
                 .distinct()
                 .collect(Collectors.toMap(
                         bodyType -> bodyType,
-                        bodyType -> {
-                            try {
-                                return this.ephemeridesOrchestrator.computeAll(bodyType, fromDate, toDate, PRELIMINARY_INTERVAL);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e); // FixMe
-                            }
-                        }
+                        StreamUtils.wrap(bodyType -> this.ephemeridesOrchestrator.computeAll(bodyType, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation))
                 ));
 
         // generate pairs of ephemerides for further computations
@@ -85,17 +85,13 @@ class ConjunctionsOrchestrator {
         final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = this.conjunctionsCalculator.calculateForTwoBodies(bodyPairs);
 
         final List<Pair<ComputedEphemerides, ComputedEphemerides>> closeEncounters = preliminaryConjunctions.parallelStream()
-                .map(conjunction -> {
-                    try {
-                        return new Pair<>(
-                                this.ephemeridesOrchestrator.compute(conjunction.firstObject.name, conjunction.jde - DETAILED_SPAN / 2.0,
-                                        conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL),
-                                this.ephemeridesOrchestrator.compute(conjunction.secondObject.name, conjunction.jde - DETAILED_SPAN / 2.0,
-                                        conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL));
-                    } catch (Exception e) {
-                        throw new RuntimeException(e); // FixMe
-                    }
-                })
+                .map(StreamUtils.wrap(conjunction -> new Pair<>(
+                        this.ephemeridesOrchestrator.compute(conjunction.firstObject.name,
+                                conjunction.jde - DETAILED_SPAN / 2.0, conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL,
+                                observerLocation),
+                        this.ephemeridesOrchestrator.compute(conjunction.secondObject.name,
+                                conjunction.jde - DETAILED_SPAN / 2.0, conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL,
+                                observerLocation))))
                 .collect(Collectors.toList());
 
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
@@ -107,9 +103,12 @@ class ConjunctionsOrchestrator {
         return detailedConjunctions;
     }
 
-    List<Conjunction<BodyDetails, CatalogueEntry>> computeForBodyAndCatalogueEntry(Set<BodyType> primaryBodyTypes, Set<CatalogueType> catalogueTypes, Double fromDate, Double toDate) {
+    List<Conjunction<BodyDetails, CatalogueEntry>> computeForBodyAndCatalogueEntry(
+            Set<BodyType> primaryBodyTypes, Set<CatalogueType> catalogueTypes,
+            Double fromDate, Double toDate,
+            ObserverLocation observerLocation) {
 
-        LOG.info(String.format("Computing conjunctions of one moving body and catalogue, params: [primary types:%s, catalogues:%s, from=%s, to=%s]", primaryBodyTypes, catalogueTypes, fromDate, toDate));
+        LOG.info(String.format("Computing conjunctions of one moving body and catalogue, params: [primary types:%s, catalogues:%s, from=%s, to=%s], observer location: %s", primaryBodyTypes, catalogueTypes, fromDate, toDate, observerLocation));
 
         final Instant start = Instant.now();
 
@@ -117,13 +116,7 @@ class ConjunctionsOrchestrator {
         final Map<BodyType, List<ComputedEphemerides>> ephemeridesByType = primaryBodyTypes.stream()
                 .collect(Collectors.toMap(
                         bodyType -> bodyType,
-                        bodyType -> {
-                            try {
-                                return this.ephemeridesOrchestrator.computeAll(bodyType, fromDate, toDate, PRELIMINARY_INTERVAL);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e); // FixMe
-                            }
-                        }
+                        StreamUtils.wrap(bodyType -> this.ephemeridesOrchestrator.computeAll(bodyType, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation))
                 ));
 
         // generate pairs of ephemerides and catalogue entries for further computations
@@ -145,16 +138,11 @@ class ConjunctionsOrchestrator {
         final List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions = this.conjunctionsCalculator.calculateForBodyAndCatalogueEntry(pairsToCompare);
 
         final List<Pair<ComputedEphemerides, CatalogueEntry>> closeEncounters = preliminaryConjunctions.parallelStream()
-                .map(conjunction -> {
-                    try {
-                        return new Pair<>(
-                                this.ephemeridesOrchestrator.compute(conjunction.firstObject.name, conjunction.jde - DETAILED_SPAN / 2.0,
-                                        conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL),
-                                conjunction.secondObject);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e); // FixMe
-                    }
-                })
+                .map(StreamUtils.wrap(conjunction -> new Pair<>(
+                        this.ephemeridesOrchestrator.compute(conjunction.firstObject.name,
+                                conjunction.jde - DETAILED_SPAN / 2.0, conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL,
+                                observerLocation),
+                        conjunction.secondObject)))
                 .collect(Collectors.toList());
 
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size(), closeEncounters.size()));

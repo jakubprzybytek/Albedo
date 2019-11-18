@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Forms(props) {
+export default function EphemerisForm(props) {
 
   const [bodyName, setBodyName] = React.useState("Venus");
   const [fromDate, setFromDate] = React.useState(new Date());
@@ -50,44 +50,18 @@ export default function Forms(props) {
       </Typography>
       <form className={classes.container} noValidate autoComplete="off">
         <div>
-          <TextField
-            label="Name"
-            value={bodyName}
-            className={classes.field}
-            onChange={event => setBodyName(event.target.value)}
-            margin="normal" />
+          <TextField label="Name" value={bodyName} className={classes.field} onChange={event => setBodyName(event.target.value)} margin="normal" />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="yyyy-MM-dd"
-              className={classes.field}
-              margin="normal"
-              label="From"
-              value={fromDate}
-              onChange={date => setFromDate(date)}
+            <KeyboardDatePicker disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal" label="From" value={fromDate} onChange={date => setFromDate(date)}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }} />
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="yyyy-MM-dd"
-              className={classes.field}
-              margin="normal"
-              label="To"
-              value={toDate}
-              onChange={date => setToDate(date)}
+            <KeyboardDatePicker disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal" label="To" value={toDate} onChange={date => setToDate(date)}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }} />
           </MuiPickersUtilsProvider>
-          <TextField
-            label="Interval"
-            value={interval}
-            className={classes.field}
-            onChange={event => setInterval(event.target.value)}
-            margin="normal" />
+          <TextField label="Interval" value={interval} className={classes.field} onChange={event => setInterval(event.target.value)} margin="normal" />
         </div>
         <SubmitBar url='/api/ephemerides' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
       </form>

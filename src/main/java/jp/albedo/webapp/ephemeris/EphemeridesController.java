@@ -1,6 +1,8 @@
 package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.JulianDay;
+import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
+import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.ephemeris.rest.EphemeridesResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,13 +25,18 @@ public class EphemeridesController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/ephemerides")
     public EphemeridesResponse ephemeris(@RequestParam(value = "body", defaultValue = "Ceres") String bodyName,
-                                         @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                         @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
-                                         @RequestParam(value = "interval") double interval) throws Exception {
+                                         @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                         @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+                                         @RequestParam("interval") double interval,
+                                         @RequestParam("longitude") double observerLongitude,
+                                         @RequestParam("latitude") double observerLatitude,
+                                         @RequestParam("height") double observerHeight) throws Exception {
 
-        LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f]", bodyName, fromDate, toDate, interval));
+        final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
 
-        ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval);
+        LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s", bodyName, fromDate, toDate, interval, observerLocation));
+
+        final ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval, observerLocation);
 
         return new EphemeridesResponse(computedEphemerides.getBodyDetails(),
                 computedEphemerides.getOrbitElements(),

@@ -13,4 +13,10 @@ public class ObserverLocation {
         this.coords = coords;
         this.height = height;
     }
+
+    @Override
+    public String toString() {
+        return String.format("[%s, H=%.2f]", this.coords, this.height);
+    }
+
 }

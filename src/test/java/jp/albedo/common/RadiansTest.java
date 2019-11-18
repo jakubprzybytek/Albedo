@@ -1,5 +1,6 @@
 package jp.albedo.common;
 
+import jp.albedo.testutils.Degrees;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -11,18 +12,20 @@ class RadiansTest {
 
     @Test
     void fromHours() {
-        assertEquals(15.0, Math.toDegrees(Radians.fromHours(1, 0, 0)), 0.000001);
-        assertEquals(15.254167, Math.toDegrees(Radians.fromHours(1, 1, 1)), 0.000001);
-        assertEquals(213.9154, Math.toDegrees(Radians.fromHours(14, 15, 39.7)), 0.0001);
-        assertEquals(201.2983, Math.toDegrees(Radians.fromHours(13, 25, 11.6)), 0.0001);
+        assertEquals(15.0, Math.toDegrees(Radians.fromHours(1, 0, 0)), Degrees.ONE_HUNDREDTH_SECOND);
+        assertEquals(15.254167, Math.toDegrees(Radians.fromHours(1, 1, 1)), Degrees.ONE_HUNDREDTH_SECOND);
+        assertEquals(213.9154, Math.toDegrees(Radians.fromHours(14, 15, 39.7)), Degrees.ONE_HUNDREDTH_SECOND);
+        assertEquals(201.2983, Math.toDegrees(Radians.fromHours(13, 25, 11.6)), Degrees.ONE_HUNDREDTH_SECOND);
     }
 
     @Test
     void fromDegrees() {
-        assertEquals(1.0, Math.toDegrees(Radians.fromDegrees(1, 0, 0)), 0.000001);
-        assertEquals(1.016944, Math.toDegrees(Radians.fromDegrees(1, 1, 1)), 0.000001);
-        assertEquals(19.1825, Math.toDegrees(Radians.fromDegrees(19, 10, 57.0)), 0.0001);
-        assertEquals(-11.1614, Math.toDegrees(Radians.fromDegrees(-11, 9, 41.0)), 0.0001);
+        assertEquals(1.0, Math.toDegrees(Radians.fromDegrees(1, 0, 0)), Degrees.ONE_TENTH_ARCSECOND);
+        assertEquals(1.016944, Math.toDegrees(Radians.fromDegrees(1, 1, 1)), Degrees.ONE_TENTH_ARCSECOND);
+        assertEquals(19.1825, Math.toDegrees(Radians.fromDegrees(19, 10, 57.0)), Degrees.ONE_TENTH_ARCSECOND);
+        assertEquals(-11.1614, Math.toDegrees(Radians.fromDegrees(-11, 9, 41.0)), Degrees.ONE_TENTH_ARCSECOND);
+        assertEquals(52.3944028, Math.toDegrees(Radians.fromDegrees(52, 23, 39.85)), Degrees.ONE_TENTH_ARCSECOND);
+        assertEquals(-16.8745, Math.toDegrees(Radians.fromDegrees(-16, 52, 28.2)), Degrees.ONE_TENTH_ARCSECOND);
     }
 
     @Test

@@ -5,6 +5,8 @@ import jp.albedo.catalogue.CatalogueType;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
+import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
+import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.conjunctions.rest.ConjunctionEvent;
 import org.apache.commons.lang3.StringUtils;
@@ -34,30 +36,39 @@ public class ConjunctionsController {
             @RequestParam(value = "primary", required = false, defaultValue = "Planet") List<String> primaryTypeStrings,
             @RequestParam(value = "secondary", required = false, defaultValue = "Planet") List<String> secondaryTypeStrings,
             @RequestParam(value = "catalogues", required = false) List<String> catalogueTypeStrings,
-            @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-            @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+            @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+            @RequestParam("longitude") double observerLongitude,
+            @RequestParam("latitude") double observerLatitude,
+            @RequestParam("height") double observerHeight) {
 
-        Set<BodyType> primaryBodyTypes = primaryTypeStrings.stream()
+        final Set<BodyType> primaryBodyTypes = primaryTypeStrings.stream()
                 .map(BodyType::valueOf)
                 .collect(Collectors.toSet());
 
-        Set<BodyType> secondaryBodyTypes = secondaryTypeStrings.stream()
+        final Set<BodyType> secondaryBodyTypes = secondaryTypeStrings.stream()
                 .map(BodyType::valueOf)
                 .collect(Collectors.toSet());
 
-        Set<CatalogueType> catalogueTypes = catalogueTypeStrings.stream()
+        final Set<CatalogueType> catalogueTypes = catalogueTypeStrings.stream()
                 .filter(StringUtils::isNotBlank)
                 .map(CatalogueType::valueOf)
                 .collect(Collectors.toSet());
 
-        List<ConjunctionEvent> conjunctionEvents = new ArrayList<>();
+        final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
 
-        List<Conjunction<BodyDetails, BodyDetails>> conjunctionsBetweenBodies = this.conjunctionsOrchestrator.computeForTwoMovingBodies(primaryBodyTypes, secondaryBodyTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate));
+        final List<ConjunctionEvent> conjunctionEvents = new ArrayList<>();
+
+        final List<Conjunction<BodyDetails, BodyDetails>> conjunctionsBetweenBodies =
+                this.conjunctionsOrchestrator.computeForTwoMovingBodies(primaryBodyTypes, secondaryBodyTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation);
+
         conjunctionsBetweenBodies.stream()
                 .map(ConjunctionEvent::fromTwoBodies)
                 .forEachOrdered(conjunctionEvents::add);
 
-        List<Conjunction<BodyDetails, CatalogueEntry>> conjunctionsWithCatalogueEntries = this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(primaryBodyTypes, catalogueTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate));
+        final List<Conjunction<BodyDetails, CatalogueEntry>> conjunctionsWithCatalogueEntries =
+                this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(primaryBodyTypes, catalogueTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation);
+
         conjunctionsWithCatalogueEntries.stream()
                 .map(ConjunctionEvent::fromBodyAndCatalogueEntry)
                 .forEachOrdered(conjunctionEvents::add);
