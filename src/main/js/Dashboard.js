@@ -7,12 +7,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
+import EventsList from './eventslist/EventsList';
 import ToolTabs from './ToolTabs';
 import LocationForm from './components/observerlocation/LocationForm';
 
@@ -20,14 +20,8 @@ function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}>
-      <Box p={3}>{children}</Box>
+    <Typography component="div" role="tabpanel" hidden={value !== index} id={`scrollable-auto-tabpanel-${index}`} {...other}>
+      {children}
     </Typography>
   );
 }
@@ -72,27 +66,22 @@ export default function Dashboard() {
 
   const classes = useStyles();
 
-  const [value, setValue] = React.useState(0);
+  const [tabValue, setTabValue] = React.useState(0);
   const [drawerOpened, setDrawerOpened] = React.useState(false);
-
-  function handleChange(event, newValue) {
-    setValue(newValue);
-  }
 
   const toggleDrawer = (open) => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setDrawerOpened(open);
   };
 
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default" className={classes.appBar}>
-        <Tabs className={classes.tabs} value={value} onChange={handleChange} indicatorColor="primary" textColor="primary" variant="scrollable" scrollButtons="auto">
+        <Tabs className={classes.tabs} value={tabValue} onChange={ (event, newTabValue) => setTabValue(newTabValue) } indicatorColor="primary" textColor="primary" variant="scrollable" scrollButtons="auto">
+          <Tab label="Dashboard" />
           <Tab label="Tools" />
-          <Tab label="Tab 2" />
         </Tabs>
         <Toolbar className={classes.toolBar}>
           <IconButton color="inherit" onClick={toggleDrawer(true)} edge="end" className={clsx(classes.menuButton, drawerOpened && classes.hide)}>
@@ -100,11 +89,11 @@ export default function Dashboard() {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        <ToolTabs />
+      <TabPanel value={tabValue} index={0}>
+        <EventsList />
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Six
+      <TabPanel value={tabValue} index={1}>
+        <ToolTabs />
       </TabPanel>
       <Drawer className={classes.drawer} anchor="right" variant="persistent" open={drawerOpened} onClose={toggleDrawer(false)} classes={{paper: classes.drawerPaper}}>
         <div className={classes.drawerHeader}>

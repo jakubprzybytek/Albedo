@@ -43,7 +43,7 @@ public class OrbitsService {
             return this.bodyRecordByName;
         }
 
-        return MPCORBFileLoader.load(new File(this.mpcorbFileName), 1000).stream()
+        return MPCORBFileLoader.load(new File(this.mpcorbFileName), 2000).stream()
                 .collect(Collectors.toMap(
                         mpcorbRecord -> mpcorbRecord.bodyDetails.name,
                         mpcorbRecord -> new OrbitingBodyRecord(mpcorbRecord.bodyDetails, mpcorbRecord.magnitudeParameters, mpcorbRecord.orbitElements)
