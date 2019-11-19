@@ -30,7 +30,7 @@ public class RiseTransitSetOrchestrator {
     @Autowired
     private RiseTransitSetCalculator riseTransitSetCalculator;
 
-    List<RiseTransitSetEvent> compute(String[] bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
+    public List<RiseTransitSetEvent> compute(String[] bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
 
         LOG.info(String.format("Computing times of rising, transit and setting, params: [bodies:%s, from=%s, to=%s], observer location: %s", Arrays.toString(bodyNames), fromDate, toDate, observerLocation));
 

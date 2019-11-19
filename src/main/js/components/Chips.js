@@ -39,6 +39,9 @@ const TinyAvatar = withStyles({
   },
 })(Avatar);
 
+/**
+ * Usage: <BodyChip bodyDetails={xxx.bodyDetails} />
+**/
 export function BodyChip(props) {
 
   const { bodyDetails } = props;
