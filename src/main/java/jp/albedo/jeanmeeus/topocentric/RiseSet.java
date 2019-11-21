@@ -2,13 +2,19 @@ package jp.albedo.jeanmeeus.topocentric;
 
 public class RiseSet {
 
-    public double risingTime;
+    public final double risingTime;
 
-    public double settingTime;
+    public final double risingAzimuth;
 
-    public RiseSet(double risingTime, double settingTime) {
+    public final double settingTime;
+
+    public final double settingAzimuth;
+
+    public RiseSet(double risingTime, double risingAzimuth, double settingTime, double settingAzimuth) {
         this.risingTime = risingTime;
+        this.risingAzimuth = risingAzimuth;
         this.settingTime = settingTime;
+        this.settingAzimuth = settingAzimuth;
     }
 
 }

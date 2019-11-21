@@ -32,7 +32,9 @@ export default function RiseTransitSetTable(props) {
           <TableRow>
             <TableCell>Time [UTC]</TableCell>
             <TableCell align="center">Body</TableCell>
-            <TableCell align="right">Type</TableCell>
+            <TableCell align="center">Type</TableCell>
+            <TableCell align="center">Azimuth</TableCell>
+            <TableCell align="right">Altitude</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -44,8 +46,14 @@ export default function RiseTransitSetTable(props) {
               <TableCell component="th" scope="row" align="center">
                 <BodyChip bodyDetails={event.bodyDetails} />
               </TableCell>
-              <TableCell component="th" scope="row" align="right">
+              <TableCell component="th" scope="row" align="center">
                 {event.eventType}
+              </TableCell>
+              <TableCell component="th" scope="row" align="center">
+                {event.azimuth && formatDegrees(event.azimuth)}
+              </TableCell>
+              <TableCell component="th" scope="row" align="right">
+                {event.altitude && formatDegrees(event.altitude)}
               </TableCell>
             </TableRow>
           ))}

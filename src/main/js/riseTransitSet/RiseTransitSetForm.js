@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
-import { addMonths, format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import SubmitBar from './../components/SubmitBar';
 
 const useStyles = makeStyles(theme => ({
@@ -26,7 +26,7 @@ export default function RiseTransitSetForm(props) {
   
   const [bodyNames, setBodyNames] = React.useState("Sun,Jupiter");
   const [fromDate, setFromDate] = React.useState(new Date());
-  const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
+  const [toDate, setToDate] = React.useState(addDays(new Date(), 5));
 
   function onBuildProps() {
     return {

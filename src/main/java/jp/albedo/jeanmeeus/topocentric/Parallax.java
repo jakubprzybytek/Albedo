@@ -30,7 +30,7 @@ public class Parallax {
         final double phoSinPhiPrim = computeRhoSinPhiPrim(observer);
         final double phoCosPhiPrim = computeRhoCosPhiPrim(observer);
 
-        final double objectLocalHourAngle = HourAngle.getLocal(SiderealTime.getGreenwichMean(ut), observer.coords.longitude, object.rightAscension);
+        final double objectLocalHourAngle = HourAngle.getLocalNormalized(SiderealTime.getGreenwichMean(ut), observer.coords.longitude, object.rightAscension);
 
         final double deltaRightAscension = Math.atan2(
                 -phoCosPhiPrim * sinPi * Math.sin(objectLocalHourAngle),

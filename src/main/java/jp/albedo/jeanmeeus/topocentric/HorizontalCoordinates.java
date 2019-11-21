@@ -19,12 +19,20 @@ public class HorizontalCoordinates {
         this.altitude = altitude;
     }
 
+    public static double getAzimuth(double declination, double localHourAngle, double latitude) {
+        final double azimuth = Math.atan2(Math.sin(localHourAngle),
+                Math.cos(localHourAngle) * Math.sin(latitude) - Math.tan(declination) * Math.cos(latitude));
+        return MathUtils.normalizeAngle(azimuth + Math.PI, Math.PI);
+    }
+
+    public static double getAltitude(double declination, double localHourAngle, double latitude) {
+        return Math.asin(Math.sin(latitude) * Math.sin(declination) + Math.cos(latitude) * Math.cos(declination) * Math.cos(localHourAngle));
+    }
+
     public static HorizontalCoordinates forObserver(double declination, double localHourAngle, double latitude) {
-        final double azimuth = Math.atan2(Math.sin(localHourAngle), Math.cos(localHourAngle) * Math.sin(latitude) - Math.tan(declination) * Math.cos(latitude));
         return new HorizontalCoordinates(
-                MathUtils.normalizeAngle(azimuth + Math.PI, Math.PI),
-                Math.asin(Math.sin(latitude) * Math.sin(declination) + Math.cos(latitude) * Math.cos(declination) * Math.cos(localHourAngle))
-        );
+                getAzimuth(declination, localHourAngle, latitude),
+                getAltitude(declination, localHourAngle, latitude));
     }
 
 }
