@@ -3,8 +3,10 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 import { format } from 'date-fns';
-import { BodyChip, CatalogueEntryChip } from '../components/Chips';
+import { BodyChip, CatalogueEntryChip, LowResAngleChip } from '../components/Chips';
+import { formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
   top: {
@@ -21,26 +23,29 @@ const useStyles = makeStyles(theme => ({
    }
 }));
 
-function FormatEventTypeCopy(props) {
-  switch (props.event.eventType) {
+function FormatEventCopy(props) {
+
+  const { event } = props;
+
+  switch (event.eventType) {
     case 'ASTRONOMICAL_DAWN' :
-      return "Astronomical dawn";
+      return (<React.Fragment>Astronomical dawn of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
     case 'NAUTICAL_DAWN' :
-      return "Nautical dawn";
+      return (<React.Fragment>Nautical dawn of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
     case 'CIVIL_DAWN' :
-      return "Civil dawn";
+      return (<React.Fragment>Civil dawn of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
     case 'RAISING' :
-      return "Raising";
+      return (<React.Fragment>Raising of <BodyChip bodyDetails={event.bodyDetails} /> on azimuth of: <LowResAngleChip angle={event.azimuth} /></React.Fragment>);
     case 'TRANSIT' :
-      return "Transit";
+      return (<React.Fragment>Transit of <BodyChip bodyDetails={event.bodyDetails} /> at altitude of: <LowResAngleChip angle={event.altitude} /></React.Fragment>);
     case 'SETTING' :
-      return "Setting";
+      return (<React.Fragment>Setting of <BodyChip bodyDetails={event.bodyDetails} /> on azimuth of: <LowResAngleChip angle={event.azimuth} /></React.Fragment>);
     case 'CIVIL_DUSK' :
-      return "Civil dusk";
+      return (<React.Fragment>Civil dusk of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
     case 'NAUTICAL_DUSK' :
-      return "Nautical dusk";
+      return (<React.Fragment>Nautical dusk of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
     case 'ASTRONOMICAL_DUSK' :
-      return "Astronomical dusk";
+      return (<React.Fragment>Astronomical dusk of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
   }
   return props.event.eventType;
 }
@@ -54,11 +59,11 @@ export default function RiseTransitSetEventListItem(props) {
   return (
     <ListItem>
       <div className={classes.top}>
-        <Typography component="span" variant="body2" className={classes.timeField} color="textPrimary">
+        <Typography component="span" variant="body2" className={classes.timeField}>
           {format(Date.parse(event.time), "HH:mm:ss")}
         </Typography>
-        <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
-          <FormatEventTypeCopy event={event} /> of <BodyChip bodyDetails={event.bodyDetails} />
+        <Typography component="span" variant="body2" className={classes.inline}>
+          <FormatEventCopy event={event} />
         </Typography>
       </div>
     </ListItem>

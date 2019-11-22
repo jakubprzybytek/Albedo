@@ -1,8 +1,10 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 import { red, orange, yellow, blue } from '@material-ui/core/colors';
 import { SunIcon, MoonIcon, PlanetIcon } from './AstronomicalIcons';
+import { formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
   chip: {
@@ -12,6 +14,7 @@ const useStyles = makeStyles(theme => ({
   },
 	label: {
 		paddingLeft: 4,
+		fontWeight: 500,
 	},
 	icon: {
 	  width: 14,
@@ -72,5 +75,18 @@ export function CatalogueEntryChip(props) {
       <TinyAvatar component="span" className={classes.CatalogueEntry}>C</TinyAvatar>
       <span className={classes.label}>{catalogueEntry.name}</span>
     </span>
+  );
+}
+
+export function LowResAngleChip(props) {
+
+  const { angle } = props;
+
+  const classes = useStyles();
+
+  return (
+    <Tooltip title={formatDegrees(angle)} className={classes.chip}>
+      <span className={classes.label}>{angle.toFixed(1)}°</span>
+    </Tooltip>
   );
 }
