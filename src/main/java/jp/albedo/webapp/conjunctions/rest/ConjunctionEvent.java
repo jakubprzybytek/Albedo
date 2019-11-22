@@ -12,6 +12,8 @@ import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
 
 public class ConjunctionEvent extends AstronomicalEvent {
 
+    private static final String EVENT_TYPE = "Conjunction";
+
     @JsonProperty
     private final AstronomicalObjectTypes firstObjectType;
 
@@ -29,7 +31,7 @@ public class ConjunctionEvent extends AstronomicalEvent {
     private final double separation;
 
     private ConjunctionEvent(double jde, AstronomicalObjectTypes firstObjectType, Object firstObject, AstronomicalObjectTypes secondObjectType, Object secondObject, double separation) {
-        super(jde, JulianDay.toDateTime(jde));
+        super(jde, JulianDay.toDateTime(jde), EVENT_TYPE);
         this.firstObjectType = firstObjectType;
         this.firstObject = firstObject;
         this.secondObjectType = secondObjectType;

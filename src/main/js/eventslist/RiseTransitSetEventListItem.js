@@ -28,23 +28,23 @@ function FormatEventCopy(props) {
   const { event } = props;
 
   switch (event.eventType) {
-    case 'ASTRONOMICAL_DAWN' :
+    case 'AstronomicalDawn' :
       return (<React.Fragment>Astronomical dawn of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
-    case 'NAUTICAL_DAWN' :
+    case 'NauticalDawn' :
       return (<React.Fragment>Nautical dawn of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
-    case 'CIVIL_DAWN' :
+    case 'CivilDawn' :
       return (<React.Fragment>Civil dawn of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
-    case 'RAISING' :
+    case 'Raising' :
       return (<React.Fragment>Raising of <BodyChip bodyDetails={event.bodyDetails} /> on azimuth of: <LowResAngleChip angle={event.azimuth} /></React.Fragment>);
-    case 'TRANSIT' :
+    case 'Transit' :
       return (<React.Fragment>Transit of <BodyChip bodyDetails={event.bodyDetails} /> at altitude of: <LowResAngleChip angle={event.altitude} /></React.Fragment>);
-    case 'SETTING' :
+    case 'Setting' :
       return (<React.Fragment>Setting of <BodyChip bodyDetails={event.bodyDetails} /> on azimuth of: <LowResAngleChip angle={event.azimuth} /></React.Fragment>);
-    case 'CIVIL_DUSK' :
+    case 'CivilDusk' :
       return (<React.Fragment>Civil dusk of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
-    case 'NAUTICAL_DUSK' :
+    case 'NauticalDusk' :
       return (<React.Fragment>Nautical dusk of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
-    case 'ASTRONOMICAL_DUSK' :
+    case 'AstronomicalDusk' :
       return (<React.Fragment>Astronomical dusk of <BodyChip bodyDetails={event.bodyDetails} /></React.Fragment>);
   }
   return props.event.eventType;
@@ -59,9 +59,11 @@ export default function RiseTransitSetEventListItem(props) {
   return (
     <ListItem>
       <div className={classes.top}>
-        <Typography component="span" variant="body2" className={classes.timeField}>
-          {format(Date.parse(event.time), "HH:mm:ss")}
-        </Typography>
+        <Tooltip title={event.jde + " JD"}>
+          <Typography component="span" variant="body2" className={classes.timeField}>
+           {format(Date.parse(event.time), "HH:mm:ss")}
+         </Typography>
+        </Tooltip>
         <Typography component="span" variant="body2" className={classes.inline}>
           <FormatEventCopy event={event} />
         </Typography>

@@ -7,18 +7,21 @@ import java.time.LocalDateTime;
 public class AstronomicalEvent {
 
     @JsonProperty
-    final double jde;
+    private final double jde;
 
     @JsonProperty
-    final LocalDateTime time;
+    private final LocalDateTime time;
 
-    public AstronomicalEvent(double jde, LocalDateTime time) {
+    @JsonProperty
+    private final String type;
+
+    public AstronomicalEvent(double jde, LocalDateTime time, String type) {
         this.jde = jde;
         this.time = time;
+        this.type = type;
     }
 
     public double getJde() {
         return jde;
     }
-
 }

@@ -47,21 +47,21 @@ class RiseTransitSetCalculator {
                 } else {
                     mainRiseSet = rtsEventCalculator.computeRiseAndSetTime(RiseTransitSetEventCalculator.RISE_AND_SET_ALTITUDE_FOR_SMALL_BODIES);
                 }
-                riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + mainRiseSet.risingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.RAISING, mainRiseSet.risingAzimuth));
-                riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + mainRiseSet.settingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.SETTING, mainRiseSet.settingAzimuth));
+                riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + mainRiseSet.risingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.Raising, mainRiseSet.risingAzimuth));
+                riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + mainRiseSet.settingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.Setting, mainRiseSet.settingAzimuth));
 
                 if (BodyInformation.Sun.name().equals(bodyName)) {
                     final RiseSet civilRiseSet = rtsEventCalculator.computeRiseAndSetTime(RiseTransitSetEventCalculator.CIVIL_DAWN_AND_DUSK_ALTITUDE_FOR_SUN);
-                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + civilRiseSet.risingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.CIVIL_DAWN));
-                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + civilRiseSet.settingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.CIVIL_DUSK));
+                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + civilRiseSet.risingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.CivilDawn));
+                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + civilRiseSet.settingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.CivilDusk));
 
                     final RiseSet nauticalRiseSet = rtsEventCalculator.computeRiseAndSetTime(RiseTransitSetEventCalculator.NAUTICAL_DAWN_AND_DUSK_ALTITUDE_FOR_SUN);
-                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + nauticalRiseSet.risingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.NAUTICAL_DAWN));
-                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + nauticalRiseSet.settingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.NAUTICAL_DUSK));
+                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + nauticalRiseSet.risingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.NauticalDawn));
+                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + nauticalRiseSet.settingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.NauticalDusk));
 
                     final RiseSet astronomicalRiseSet = rtsEventCalculator.computeRiseAndSetTime(RiseTransitSetEventCalculator.ASTRONOMICAL_DAWN_AND_DUSK_ALTITUDE_FOR_SUN);
-                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + astronomicalRiseSet.risingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.ASTRONOMICAL_DAWN));
-                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + astronomicalRiseSet.settingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.ASTRONOMICAL_DUSK));
+                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + astronomicalRiseSet.risingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.AstronomicalDawn));
+                    riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + astronomicalRiseSet.settingTime, computedEphemerides.getBodyDetails(), RiseTransitSetEventType.AstronomicalDusk));
                 }
 
                 coordsTriple.remove();

@@ -8,6 +8,8 @@ import jp.albedo.webapp.common.AstronomicalEvent;
 
 public class RiseTransitSetEvent extends AstronomicalEvent {
 
+    private static final String EVENT_TYPE = "RiseTransitSet";
+
     @JsonProperty
     private final BodyDetails bodyDetails;
 
@@ -23,7 +25,7 @@ public class RiseTransitSetEvent extends AstronomicalEvent {
     private final Double altitude;
 
     private RiseTransitSetEvent(double jde, BodyDetails bodyDetails, RiseTransitSetEventType eventType, Double azimuth, Double altitude) {
-        super(jde, JulianDay.toDateTime(jde));
+        super(jde, JulianDay.toDateTime(jde), EVENT_TYPE);
         this.bodyDetails = bodyDetails;
         this.eventType = eventType;
         this.azimuth = azimuth;
@@ -31,7 +33,7 @@ public class RiseTransitSetEvent extends AstronomicalEvent {
     }
 
     public static RiseTransitSetEvent forTransit(double jde, BodyDetails bodyDetails, double altitude) {
-        return new RiseTransitSetEvent(jde, bodyDetails, RiseTransitSetEventType.TRANSIT, null, altitude);
+        return new RiseTransitSetEvent(jde, bodyDetails, RiseTransitSetEventType.Transit, null, altitude);
     }
 
     public static RiseTransitSetEvent forRiseAndSet(double jde, BodyDetails bodyDetails, RiseTransitSetEventType eventType) {

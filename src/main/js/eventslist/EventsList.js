@@ -90,11 +90,11 @@ function EventsList(props) {
       <Button variant="contained" color="primary" className={classes.button} onClick={handleRefresh}>Refresh</Button>
       <List dense={true} className={classes.list} subheader={<li />}>
         {Object.keys(events).map(daySection => (
-          <li className={classes.listSection}>
+          <li key={daySection} className={classes.listSection}>
             <ul className={classes.ul}>
               <ListSubheader className={classes.subheader}>{daySection}</ListSubheader>
               {events[daySection].map(event => (
-                <RiseTransitSetEventListItem event={event} />
+                <RiseTransitSetEventListItem key={event.id} event={event} />
               ))}
             </ul>
           </li>
