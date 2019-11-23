@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import { red, orange, teal } from '@material-ui/core/colors';
 import { format } from 'date-fns';
 import { formatDegrees, formatArcSeconds } from './../utils/Angles';
-import { BodyChip, CatalogueEntryChip } from '../components/Chips';
+import { BodyChip, CatalogueEntryChip, LocalDateTimeChip } from '../components/Chips';
 
 const useStyles = makeStyles(theme => ({
   objectCell: {
@@ -86,7 +86,7 @@ export function ConjunctionTableRow(props) {
   return (
     <TableRow key={conjunction.index} hover role="checkbox" selected={selected} onClick={handleClick}>
       <TableCell component="th" scope="row" title={conjunction.jde + " [JDE]"}>
-        {format(Date.parse(conjunction.time), "yyyy-MM-dd HH:mm:ss")}
+        <LocalDateTimeChip time={conjunction.localTime} jd={conjunction.jde} />
       </TableCell>
       <TableCell align="center">
         {conjunction.firstObjectType == 'Body' && <BodyInfoCell bodyInfo={conjunction.first} />}
@@ -121,7 +121,7 @@ export default function ConjunctionsTable(props) {
       <Table className={classes.table} size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Time (TDE)</TableCell>
+            <TableCell>Local Time</TableCell>
             <TableCell align="center">First body</TableCell>
             <TableCell align="center">Second body</TableCell>
             <TableCell align="right">Separation [°]</TableCell>
@@ -129,7 +129,7 @@ export default function ConjunctionsTable(props) {
         </TableHead>
         <TableBody>
           {rows.map(conjunction => 
-            <ConjunctionTableRow conjunction={conjunction} onClick={updateRowSelection} />
+            <ConjunctionTableRow key={conjunction.id} conjunction={conjunction} onClick={updateRowSelection} />
           )}
         </TableBody>
       </Table>

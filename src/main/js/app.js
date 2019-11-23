@@ -1,11 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux'
+import { combineReducers, createStore  } from 'redux'
 import { Provider } from 'react-redux'
 import Dashboard from './Dashboard';
 import locationReducer from './components/observerlocation/LocationReducer';
+import timeZoneReducer from './components/timezone/TimeZoneReducer';
 
-const store = createStore(locationReducer);
+const albedoApp = combineReducers({
+  observerLocation: locationReducer,
+  timeZone: timeZoneReducer
+})
+
+const store = createStore(albedoApp);
 
 store.subscribe(() => console.log(store.getState()))
 

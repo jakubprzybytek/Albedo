@@ -36,13 +36,14 @@ const useStyles = makeStyles(theme => ({
 
 const mapStateToProps = state => {
   return {
-    observerLocation: state.observerLocation
+    observerLocation: state.observerLocation,
+    timeZone: state.timeZone
   };
 };
 
 function SubmitBar(props) {
 
-  const { url, buildProps, submitResponse, observerLocation } = props;
+  const { url, buildProps, submitResponse, observerLocation, timeZone } = props;
 
   const classes = useStyles();
 
@@ -59,7 +60,7 @@ function SubmitBar(props) {
     var startTime = new Date();
 
     axios.get(url, {
-        params: {...observerLocation, ...buildProps()}
+        params: {...buildProps(), ...observerLocation, timeZone: timeZone }
       })
       .then(res => {
         setDuration(new Date() - startTime);

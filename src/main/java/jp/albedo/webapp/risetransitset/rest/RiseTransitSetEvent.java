@@ -25,7 +25,7 @@ public class RiseTransitSetEvent extends AstronomicalEvent {
     private final Double altitude;
 
     private RiseTransitSetEvent(double jde, BodyDetails bodyDetails, RiseTransitSetEventType eventType, Double azimuth, Double altitude) {
-        super(jde, JulianDay.toDateTime(jde), EVENT_TYPE);
+        super(jde, EVENT_TYPE);
         this.bodyDetails = bodyDetails;
         this.eventType = eventType;
         this.azimuth = azimuth;

@@ -8,6 +8,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
+import jp.albedo.webapp.common.EventWrapper;
 import jp.albedo.webapp.conjunctions.rest.ConjunctionEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,15 +35,15 @@ public class ConjunctionsController {
     private ConjunctionsOrchestrator conjunctionsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/conjunctions")
-    public List<ConjunctionEvent> conjunctions(
-            @RequestParam(value = "primary", required = false, defaultValue = "Planet") List<String> primaryTypeStrings,
-            @RequestParam(value = "secondary", required = false, defaultValue = "Planet") List<String> secondaryTypeStrings,
-            @RequestParam(value = "catalogues", required = false) List<String> catalogueTypeStrings,
-            @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
-            @RequestParam("longitude") double observerLongitude,
-            @RequestParam("latitude") double observerLatitude,
-            @RequestParam("height") double observerHeight) {
+    public List<EventWrapper> conjunctions(@RequestParam(value = "primary", required = false, defaultValue = "Planet") List<String> primaryTypeStrings,
+                                           @RequestParam(value = "secondary", required = false, defaultValue = "Planet") List<String> secondaryTypeStrings,
+                                           @RequestParam(value = "catalogues", required = false) List<String> catalogueTypeStrings,
+                                           @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                           @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+                                           @RequestParam("longitude") double observerLongitude,
+                                           @RequestParam("latitude") double observerLatitude,
+                                           @RequestParam("height") double observerHeight,
+                                           @RequestParam("timeZone") String timeZone) {
 
         final Set<BodyType> primaryBodyTypes = primaryTypeStrings.stream()
                 .map(BodyType::valueOf)
@@ -56,6 +59,7 @@ public class ConjunctionsController {
                 .collect(Collectors.toSet());
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
+        final ZoneId zoneId = ZoneId.of(timeZone);
 
         final List<ConjunctionEvent> conjunctionEvents = new ArrayList<>();
 
@@ -75,7 +79,14 @@ public class ConjunctionsController {
 
         Collections.sort(conjunctionEvents, Comparator.comparingDouble(AstronomicalEvent::getJde));
 
-        return conjunctionEvents;
+        final AtomicInteger id = new AtomicInteger();
+
+        return conjunctionEvents.stream()
+                .map(event -> new EventWrapper(
+                        id.getAndIncrement(),
+                        JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
+                        event))
+                .collect(Collectors.toList());
     }
 
 }

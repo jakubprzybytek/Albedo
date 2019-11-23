@@ -7,7 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { format } from 'date-fns';
-import { BodyChip, CatalogueEntryChip } from '../components/Chips';
+import { BodyChip, CatalogueEntryChip, LocalDateTimeChip } from '../components/Chips';
 import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
@@ -30,7 +30,7 @@ export default function RiseTransitSetTable(props) {
       <Table className={classes.table} size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Time [UTC]</TableCell>
+            <TableCell>Local Time</TableCell>
             <TableCell align="center">Body</TableCell>
             <TableCell align="center">Type</TableCell>
             <TableCell align="center">Azimuth</TableCell>
@@ -39,9 +39,9 @@ export default function RiseTransitSetTable(props) {
         </TableHead>
         <TableBody>
           {riseTransitSetEvents.map(event => (
-            <TableRow key={event.index}>
-              <TableCell component="th" scope="row" title={event.jde + " [JDE]"}>
-                {format(Date.parse(event.time), "yyyy-MM-dd HH:mm:ss")}
+            <TableRow key={event.id}>
+              <TableCell component="th" scope="row">
+                <LocalDateTimeChip time={event.localTime} jd={event.jde} />
               </TableCell>
               <TableCell component="th" scope="row" align="center">
                 <BodyChip bodyDetails={event.bodyDetails} />

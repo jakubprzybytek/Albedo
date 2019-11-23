@@ -72,7 +72,7 @@ export default function ToolTabs() {
         className={classes.tabs}>
         <Tab label="Ephemeris" {...a11yProps(0)} />
         <Tab label="Conjunctions" {...a11yProps(1)} />
-        <Tab label="Rise, Transit, Set" {...a11yProps(2)} />
+        <Tab label="Rise Transit Set" {...a11yProps(2)} />
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
         <EphemerisPanel />

@@ -4,6 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import { red, orange, yellow, blue } from '@material-ui/core/colors';
 import { SunIcon, MoonIcon, PlanetIcon } from './AstronomicalIcons';
+import { format } from 'date-fns';
 import { formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
@@ -78,6 +79,50 @@ export function CatalogueEntryChip(props) {
   );
 }
 
+/**
+ * Usage: <LocalTimeChip time={xxx} jd={yyy} />
+**/
+export function LocalTimeChip(props) {
+
+  const { time, jd } = props;
+
+  const classes = useStyles();
+
+  return (
+    <Tooltip title={"JD " + jd} className={classes.chip}>
+      <span>{time.substr(time.indexOf('T') + 1, 8)}</span>
+    </Tooltip>
+  );
+}
+
+/**
+ * Usage: <LocalDateTimeChip time={xxx} jd={yyy} />
+**/
+export function LocalDateTimeChip(props) {
+
+  const { time, jd } = props;
+
+  const classes = useStyles();
+
+  function stripZoneInfo(zonedTime) {
+    const plusIndex = zonedTime.indexOf('+');
+    if (plusIndex > 0) {
+      zonedTime = zonedTime.substring(0, plusIndex);
+    }
+    return zonedTime.replace('T', ' ').replace('Z', ' ');
+  }
+
+  return (
+    <Tooltip title={"JD " + jd} className={classes.chip}>
+      {/* <span className={classes.label}>{format(Date.parse(time), "yyyy-MM-dd HH:mm:ss")}</span> */}
+      <span>{stripZoneInfo(time)}</span>
+    </Tooltip>
+  );
+}
+
+/**
+ * Usage: <LowResAngleChip angle={xxx} />
+**/
 export function LowResAngleChip(props) {
 
   const { angle } = props;

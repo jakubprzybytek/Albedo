@@ -36,13 +36,14 @@ const useStyles = makeStyles(theme => ({
 
 const mapStateToProps = state => {
   return {
-    observerLocation: state.observerLocation
+    observerLocation: state.observerLocation,
+    timeZone: state.timeZone
   };
 };
 
 function EventsList(props) {
 
-  const { observerLocation } = props;
+  const { observerLocation, timeZone } = props;
 
   const [events, setEvents] = React.useState([]);
 
@@ -55,9 +56,10 @@ function EventsList(props) {
 
     axios.get("/api/events", {
         params: {
-          ...observerLocation,
           from: format(new Date(), "yyyy-MM-dd"),
           to: format(addDays(new Date(), 1), "yyyy-MM-dd"),
+          ...observerLocation,
+          timeZone: timeZone
         }
       })
       .then(res => {
@@ -79,7 +81,7 @@ function EventsList(props) {
 
   function groupByDay(flatEventsList) {
     return flatEventsList.reduce(function(eventsByDay, event) {
-      let key = format(Date.parse(event.time), "yyyy.MM.dd");
+      let key = event.localTime.substr(0, 10);
       (eventsByDay[key] = eventsByDay[key] || []).push(event);
       return eventsByDay;
     }, {});

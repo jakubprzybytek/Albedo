@@ -5,7 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { format } from 'date-fns';
-import { BodyChip, CatalogueEntryChip, LowResAngleChip } from '../components/Chips';
+import { BodyChip, CatalogueEntryChip, LocalTimeChip, LowResAngleChip } from '../components/Chips';
 import { formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
@@ -59,11 +59,9 @@ export default function RiseTransitSetEventListItem(props) {
   return (
     <ListItem>
       <div className={classes.top}>
-        <Tooltip title={event.jde + " JD"}>
-          <Typography component="span" variant="body2" className={classes.timeField}>
-           {format(Date.parse(event.time), "HH:mm:ss")}
-         </Typography>
-        </Tooltip>
+        <Typography component="span" variant="body2" className={classes.inline}>
+          <LocalTimeChip time={event.localTime} jd={event.jde} />
+        </Typography>
         <Typography component="span" variant="body2" className={classes.inline}>
           <FormatEventCopy event={event} />
         </Typography>

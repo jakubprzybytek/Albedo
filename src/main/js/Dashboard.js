@@ -15,6 +15,7 @@ import Divider from '@material-ui/core/Divider';
 import EventsList from './eventslist/EventsList';
 import ToolTabs from './ToolTabs';
 import LocationForm from './components/observerlocation/LocationForm';
+import TimeZoneForm from './components/timezone/TimeZoneForm';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -103,6 +104,8 @@ export default function Dashboard() {
         </div>
         <Divider />
         <LocationForm />
+        <Divider />
+        <TimeZoneForm />
       </Drawer>
     </div>
   );

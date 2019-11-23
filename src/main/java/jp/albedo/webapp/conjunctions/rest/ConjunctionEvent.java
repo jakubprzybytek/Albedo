@@ -31,7 +31,7 @@ public class ConjunctionEvent extends AstronomicalEvent {
     private final double separation;
 
     private ConjunctionEvent(double jde, AstronomicalObjectTypes firstObjectType, Object firstObject, AstronomicalObjectTypes secondObjectType, Object secondObject, double separation) {
-        super(jde, JulianDay.toDateTime(jde), EVENT_TYPE);
+        super(jde, EVENT_TYPE);
         this.firstObjectType = firstObjectType;
         this.firstObject = firstObject;
         this.secondObjectType = secondObjectType;

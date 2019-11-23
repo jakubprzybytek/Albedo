@@ -6,15 +6,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+/**
+ * Based on Jean Meeus' "Astronomical Algorithms", chapter 7 "Julian Day"
+ */
 public class JulianDay {
 
     /**
-     * Based on Jean Meeus' 'Astronomical Algorithms', chapter 7 'Julian Day'
+     * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
      *
-     * @param year
-     * @param month
-     * @param day
-     * @return
+     * @param year Gregorian year.
+     * @param month Gregorian month.
+     * @param day Gregorian day of the month.
+     * @param hours Hours.
+     * @param minutes Minutes.
+     * @param seconds Seconds.
+     * @return Date in Julian Days.
      */
     public static double fromDateTime(int year, int month, double day, int hours, int minutes, double seconds) {
         if (month < 3) {
@@ -31,23 +37,25 @@ public class JulianDay {
     }
 
     /**
-     * From: Jean Meeus' Astronomical Algorithms
+     * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
      *
-     * @param year
-     * @param month
-     * @param day
-     * @return
+     * @param year Gregorian year.
+     * @param month Gregorian month.
+     * @param day Gregorian day of the month.
+     * @return Date in Julian Days.
      */
     public static double fromDate(int year, int month, double day) {
         return fromDateTime(year, month, day, 0, 0, 0.0);
     }
 
+    /**
+     * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
+     *
+     * @param date Gregorian date.
+     * @return Date in Julian Days.
+     */
     public static double fromDate(LocalDate date) {
         return fromDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-    }
-
-    public static double fromDateTime(LocalDateTime dateTime) {
-        return fromDate(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth()); // Fixme
     }
 
     public static List<Double> forRange(double jdFrom, double jdTo, double interval) {
@@ -60,8 +68,8 @@ public class JulianDay {
     /**
      * From: Jean Meeus' Astronomical Algorithms
      *
-     * @param julianDay
-     * @return
+     * @param julianDay Date in Julian Days.
+     * @return Gregorian date.
      */
     public static LocalDateTime toDateTime(double julianDay) {
         julianDay += 0.5;
