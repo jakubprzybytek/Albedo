@@ -3,10 +3,10 @@ package jp.albedo.webapp.ephemeris.jpl;
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
-import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
-import jp.albedo.jpl.ephemeris.EphemeridesCalculatorFactory;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
+import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
+import jp.albedo.jpl.ephemeris.EphemeridesCalculatorFactory;
 import jp.albedo.webapp.services.JplKernelsService;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.logging.Log;
@@ -33,8 +33,8 @@ public class JplEphemerisCalculator {
     /**
      * Tries to parse body name. Works only for bodies that this calculator can support.
      *
-     * @param bodyName
-     * @return
+     * @param bodyName Body Name.
+     * @return JplBody if parsed successfully.
      */
     public Optional<JplBody> parseBody(String bodyName) {
         return Optional.ofNullable(EnumUtils.getEnum(JplBody.class, bodyName));
@@ -43,17 +43,12 @@ public class JplEphemerisCalculator {
     /**
      * Returns list of bodies of given type that this calculator supports.
      *
-     * @param bodyType
-     * @return
+     * @param bodyType BodyType.
+     * @return List of JplBody objects of given type supported by this calculator.
      */
     public List<JplBody> getSupportedBodiesByType(BodyType bodyType) {
-        switch (bodyType) {
-            case Planet:
-                return Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
-            case Sun:
-                return Collections.singletonList(JplBody.Sun);
-            case Moon:
-                return Collections.singletonList(JplBody.Moon);
+        if (bodyType == BodyType.Planet) {
+            return Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
         }
 
         return Collections.emptyList();

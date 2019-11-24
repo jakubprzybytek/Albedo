@@ -38,9 +38,10 @@ public class EphemeridesOrchestrator {
      * Different backend ephemerides calculators can be chosen depending on which can handle given body.
      *
      * @param bodyName Name of body for which the ephemerides should be computed.
-     * @param fromDate
-     * @param toDate
-     * @param interval
+     * @param fromDate Start of the time period for which ephemerides should be computed in Julian days.
+     * @param toDate End of the time period for which ephemerides should be computed in Julian days.
+     * @param interval Interval for computations in Julian days.
+     * @param observerLocation Location of observer for parallax correction.
      * @return
      * @throws Exception
      */
@@ -80,7 +81,7 @@ public class EphemeridesOrchestrator {
      * @param observerLocation Location of observer for parallax correction.
      * @return List of computed ephemerides.
      */
-    public List<ComputedEphemerides> computeAll(BodyType bodyType, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws IOException {
+    public List<ComputedEphemerides> computeAllByType(BodyType bodyType, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws IOException {
 
         LOG.info(String.format("Computing ephemerides for multiple bodies, params: [bodyType=%s, from=%s, to=%s, interval=%f]", bodyType, fromDate, toDate, interval));
 

@@ -21,7 +21,17 @@ public class StreamUtils {
         }, leftStream.isParallel() || rightStream.isParallel());
     }
 
-    public static <T,R> Function<T,R> wrap(CheckedFunction<T,R> checkedFunction) {
+    public static <T> Consumer<T> wrapConsumer(CheckedConsumer<T> checkedConsumer) {
+        return t -> {
+            try {
+                checkedConsumer.accept(t);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+    public static <T, R> Function<T, R> wrap(CheckedFunction<T, R> checkedFunction) {
         return t -> {
             try {
                 return checkedFunction.apply(t);

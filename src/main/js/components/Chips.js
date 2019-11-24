@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 	icon: {
 	  width: 14,
 	},
-	Sun: {
+	Star: {
 		backgroundColor: yellow[500],
 	},
 	Planet: {

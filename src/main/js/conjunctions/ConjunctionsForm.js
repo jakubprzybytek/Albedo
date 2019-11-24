@@ -1,6 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -26,29 +27,40 @@ const useStyles = makeStyles(theme => ({
 
 export default function ConjunctionsForm(props) {
 
-  const [fromDate, setFromDate] = React.useState(new Date());
-  const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
   const [sunChecked, setSunChecked] = React.useState(true);
   const [moonChecked, setMoonChecked] = React.useState(true);
-  const [planetsChecked, setPlanetsChecked] = React.useState(true);
-  const [asteroidsChecked, setAsteroidsChecked] = React.useState(false);
+  const [primaryPlanetsChecked, setPrimaryPlanetsChecked] = React.useState(true);
+  const [primaryAsteroidsChecked, setPrimaryAsteroidsChecked] = React.useState(false);
+  const [secondaryPlanetsChecked, setSecondaryPlanetsChecked] = React.useState(false);
+  const [secondaryAsteroidsChecked, setSecondaryAsteroidsChecked] = React.useState(true);
   const [ngcChecked, setNgcChecked] = React.useState(true);
   const [icChecked, setIcChecked] = React.useState(false);
 
+  const [fromDate, setFromDate] = React.useState(new Date());
+  const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
+
   function onBuildProps() {
-    const secondary = [];
-    if (sunChecked) { secondary.push ("Sun") }
-    if (moonChecked) { secondary.push ("Moon") }
-    if (planetsChecked) { secondary.push ("Planet") }
-    if (asteroidsChecked) { secondary.push ("Asteroid") }
+    const primaryBodyNames = [];
+    if (sunChecked) { primaryBodyNames.push ("Sun") }
+    if (moonChecked) { primaryBodyNames.push ("Moon") }
+    const primaryBodyTypes = [];
+    if (primaryPlanetsChecked) { primaryBodyTypes.push ("Planet") }
+    if (primaryAsteroidsChecked) { primaryBodyTypes.push ("Asteroid") }
+
+    const secondaryBodyTypes = [];
+    if (secondaryPlanetsChecked) { secondaryBodyTypes.push ("Planet") }
+    if (secondaryAsteroidsChecked) { secondaryBodyTypes.push ("Asteroid") }
     const catalogues = [];
     if (ngcChecked) { catalogues.push ("NGC") }
     if (icChecked) { catalogues.push ("IC") }
+
     return {
+      primaryBodies: primaryBodyNames.join(','),
+      primary: primaryBodyTypes.join(','),
+      secondary: secondaryBodyTypes.join(','),
+      catalogues: catalogues.join(','),
       from: format(fromDate, "yyyy-MM-dd"),
-      to: format(toDate, "yyyy-MM-dd"),
-      secondary: secondary.join(','),
-      catalogues: catalogues.join(',')
+      to: format(toDate, "yyyy-MM-dd")
     }
   }
 
@@ -60,33 +72,15 @@ export default function ConjunctionsForm(props) {
         Provide conjunctions computation parameters:
       </Typography>
       <form className={classes.container} noValidate autoComplete="off">
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="yyyy-MM-dd"
-            className={classes.field}
-            margin="normal"
-            label="From"
-            value={fromDate}
-            onChange={date => setFromDate(date)}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }} />
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="yyyy-MM-dd"
-            className={classes.field}
-            margin="normal"
-            label="To"
-            value={toDate}
-            onChange={date => setToDate(date)}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }} />
-        </MuiPickersUtilsProvider>
-        <FormLabel component="legend">Compare Planets with: </FormLabel>
+        <FormGroup row>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal"
+              label="From" value={fromDate} onChange={date => setFromDate(date)} />
+            <KeyboardDatePicker disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal"
+              label="To"  value={toDate} onChange={date => setToDate(date)} />
+          </MuiPickersUtilsProvider>
+        </FormGroup>
+        <FormLabel component="legend">Primary objects</FormLabel>
         <FormGroup row>
           <FormControlLabel label="Sun" labelPlacement="start" control={
               <Switch checked={sunChecked} onChange={event => setSunChecked(event.target.checked)} color="primary" />
@@ -95,10 +89,19 @@ export default function ConjunctionsForm(props) {
               <Switch checked={moonChecked} onChange={event => setMoonChecked(event.target.checked)} color="primary" />
             }/>
           <FormControlLabel label="Planets" labelPlacement="start" control={
-              <Switch checked={planetsChecked} onChange={event => setPlanetsChecked(event.target.checked)} color="primary" />
+              <Switch checked={primaryPlanetsChecked} onChange={event => setPrimaryPlanetsChecked(event.target.checked)} color="primary" />
             }/>
           <FormControlLabel label="Asteroids" labelPlacement="start" control={
-              <Switch checked={asteroidsChecked} onChange={event => setAsteroidsChecked(event.target.checked)} color="primary" />
+              <Switch checked={primaryAsteroidsChecked} onChange={event => setPrimaryAsteroidsChecked(event.target.checked)} color="primary" />
+            }/>
+        </FormGroup>
+        <FormLabel component="legend">Secondary objects</FormLabel>
+        <FormGroup row>
+          <FormControlLabel label="Planets" labelPlacement="start" control={
+              <Switch checked={secondaryPlanetsChecked} onChange={event => setSecondaryPlanetsCheckedPlanetsChecked(event.target.checked)} color="primary" />
+            }/>
+          <FormControlLabel label="Asteroids" labelPlacement="start" control={
+              <Switch checked={secondaryAsteroidsChecked} onChange={event => setSecondaryAsteroidsChecked(event.target.checked)} color="primary" />
             }/>
           <FormControlLabel label="NGC" labelPlacement="start" control={
               <Switch checked={ngcChecked} onChange={event => setNgcChecked(event.target.checked)} color="secondary" />

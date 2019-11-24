@@ -1,10 +1,9 @@
 package jp.albedo.common;
 
-public enum BodyType {
+import java.util.Set;
+import java.util.stream.Collectors;
 
-    // Entires for bodies deserving their own Body Types
-    Sun,
-    Moon,
+public enum BodyType {
 
     // Regular body types
     Star,
@@ -14,5 +13,11 @@ public enum BodyType {
 
     // Special body types
     Barycenter;
+
+    public static Set<BodyType> parse(Set<String> strings) {
+        return strings.stream()
+                .map(BodyType::valueOf)
+                .collect(Collectors.toSet());
+    }
 
 }

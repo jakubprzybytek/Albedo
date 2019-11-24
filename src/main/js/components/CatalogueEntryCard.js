@@ -9,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
-import { teal } from '@material-ui/core/colors';
+import { blue } from '@material-ui/core/colors';
 import { formatHourAngle, formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 		maxWidth: 345,
 	},
 	avatar: {
-		backgroundColor: teal[500],
+		backgroundColor: blue[300],
 	},
   listItem: {
     marginTop: '0px',

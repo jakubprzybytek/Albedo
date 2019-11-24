@@ -6,6 +6,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Supplier;
 
+/**
+ * Takes two collections as input and then it produces pairs of elements on each-on-each basis.
+ * <p>
+ * As a infinite Supplier, it needs to be limited to n * m elements.
+ *
+ * @param <A>
+ * @param <B>
+ */
 public class MixTwoListsSupplier<A, B> implements Supplier<Pair<A, B>> {
 
     final private Iterator<A> fistIterator;
@@ -35,7 +43,8 @@ public class MixTwoListsSupplier<A, B> implements Supplier<Pair<A, B>> {
                 return get();
             }
         }
-        return null;
+
+        throw new RuntimeException("Supplier exhausted!");
     }
 }
 

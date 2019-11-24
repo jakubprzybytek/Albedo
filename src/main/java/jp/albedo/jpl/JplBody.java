@@ -5,7 +5,7 @@ import jp.albedo.common.BodyType;
 
 public enum JplBody {
 
-    Sun(BodyType.Sun),
+    Sun(BodyType.Star),
     Mercury(BodyType.Planet),
     Venus(BodyType.Planet),
     Earth(BodyType.Planet),
@@ -15,7 +15,7 @@ public enum JplBody {
     Uranus(BodyType.Planet),
     Neptune(BodyType.Planet),
     Pluto(BodyType.Asteroid),
-    Moon(BodyType.Moon),
+    Moon(BodyType.NaturalSatellite),
 
     EarthMoonBarycenter(BodyType.Barycenter),
     MarsBarycenter(BodyType.Barycenter);
