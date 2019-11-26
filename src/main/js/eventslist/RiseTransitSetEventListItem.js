@@ -57,15 +57,13 @@ export default function RiseTransitSetEventListItem(props) {
   const classes = useStyles();
 
   return (
-    <ListItem>
-      <div className={classes.top}>
-        <Typography component="span" variant="body2" className={classes.inline}>
-          <LocalTimeChip time={event.localTime} jd={event.jde} />
-        </Typography>
-        <Typography component="span" variant="body2" className={classes.inline}>
-          <FormatEventCopy event={event} />
-        </Typography>
-      </div>
-    </ListItem>
+    <div className={classes.top}>
+      <Typography component="span" variant="body2" className={classes.timeField}>
+        <LocalTimeChip time={event.localTime} jd={event.jde} />
+      </Typography>
+      <Typography component="span" variant="body2" className={classes.inline}>
+        <FormatEventCopy event={event} />
+      </Typography>
+    </div>
   );
 }

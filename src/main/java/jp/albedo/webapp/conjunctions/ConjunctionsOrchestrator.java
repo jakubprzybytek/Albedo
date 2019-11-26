@@ -20,13 +20,14 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-class ConjunctionsOrchestrator {
+public class ConjunctionsOrchestrator {
 
     private static Log LOG = LogFactory.getLog(ConjunctionsOrchestrator.class);
 
@@ -62,10 +63,10 @@ class ConjunctionsOrchestrator {
      * @param observerLocation   Location (of the Earth) of the observer for which parallax correction should be made to the ephemerides.
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, BodyDetails>> computeForTwoMovingBodies(
-            Set<String> primaryBodyNames,
-            Set<BodyType> primaryBodyTypes,
-            Set<BodyType> secondaryBodyTypes,
+    public List<Conjunction<BodyDetails, BodyDetails>> computeForTwoMovingBodies(
+            Collection<String> primaryBodyNames,
+            Collection<BodyType> primaryBodyTypes,
+            Collection<BodyType> secondaryBodyTypes,
             Double fromDate, Double toDate,
             ObserverLocation observerLocation) {
 
@@ -108,10 +109,10 @@ class ConjunctionsOrchestrator {
      * @param observerLocation Location (of the Earth) of the observer for which parallax correction should be made to the ephemerides.
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, CatalogueEntry>> computeForBodyAndCatalogueEntry(
-            Set<String> primaryBodyNames,
-            Set<BodyType> primaryBodyTypes,
-            Set<CatalogueType> catalogueTypes,
+    public List<Conjunction<BodyDetails, CatalogueEntry>> computeForBodyAndCatalogueEntry(
+            Collection<String> primaryBodyNames,
+            Collection<BodyType> primaryBodyTypes,
+            Collection<CatalogueType> catalogueTypes,
             Double fromDate, Double toDate,
             ObserverLocation observerLocation) {
 
@@ -139,20 +140,20 @@ class ConjunctionsOrchestrator {
         return detailedConjunctions;
     }
 
-    private List<ComputedEphemerides> getEphemeridesByBodyNames(Set<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) {
+    private List<ComputedEphemerides> getEphemeridesByBodyNames(Collection<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) {
         return bodyNames.stream()
                 .map(StreamUtils.wrap(bodyName -> this.ephemeridesOrchestrator.compute(bodyName, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation)))
                 .collect(Collectors.toList());
     }
 
-    private List<ComputedEphemerides> getEphemeridesByBodyType(Set<BodyType> bodyTypes, Double fromDate, Double toDate, ObserverLocation observerLocation) {
+    private List<ComputedEphemerides> getEphemeridesByBodyType(Collection<BodyType> bodyTypes, Double fromDate, Double toDate, ObserverLocation observerLocation) {
         return bodyTypes.stream()
                 .map(StreamUtils.wrap(bodyType -> this.ephemeridesOrchestrator.computeAllByType(bodyType, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation)))
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
 
-    private List<CatalogueEntry> getCatalogueEntries(Set<CatalogueType> catalogueTypes) {
+    private List<CatalogueEntry> getCatalogueEntries(Collection<CatalogueType> catalogueTypes) {
         return catalogueTypes.stream()
                 .map(StreamUtils.wrap(catalogueType -> this.catalogueService.getCatalogue(catalogueType)))
                 .flatMap(catalogue -> catalogue.getAllEntries().stream())

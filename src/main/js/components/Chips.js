@@ -65,6 +65,9 @@ export function BodyChip(props) {
   );
 }
 
+/**
+ * Usage: <CatalogueEntryChip catalogueEntry={xxx} />
+**/
 export function CatalogueEntryChip(props) {
 
   const { catalogueEntry } = props;

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -11,6 +12,7 @@ import { red, orange, yellow, grey } from '@material-ui/core/colors';
 import axios from 'axios';
 import { addDays, format } from 'date-fns';
 import RiseTransitSetEventListItem from './RiseTransitSetEventListItem';
+import ConjunctionEventListItem from './ConjunctionEventListItem';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -20,18 +22,26 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     overflow: 'auto',
-    maxHeight: 800,
+    maxHeight: 1000,
   },
-   listSection: {
-     backgroundColor: 'inherit',
-   },
-   ul: {
-     backgroundColor: 'inherit',
-     padding: 0,
-   },
-   subheader: {
-     backgroundColor: grey[200],
-   },
+  listRow: {
+    borderBottom: '1px solid',
+    borderBottomColor: theme.palette.background.default,
+  },
+  listSection: {
+   backgroundColor: 'inherit',
+  },
+  listRowCard: {
+   margin: 4,
+   boxShadow: `0px 2px 1px -1px rgba(0.0, 0.0, 0.0, 0.01), 0px 1px 1px 0px rgba(0,0,0,0.05), 0px 1px 3px 0px rgba(0,0,0,0.01)`,
+  },
+  ul: {
+   backgroundColor: 'inherit',
+   padding: 0,
+  },
+  subheader: {
+   backgroundColor: grey[200],
+  },
 }));
 
 const mapStateToProps = state => {
@@ -87,6 +97,18 @@ function EventsList(props) {
     }, {});
   }
 
+  function EventDispatcher (props) {
+
+    const { event } = props;
+
+    return (
+      <React.Fragment>
+        {event.type === "RiseTransitSet" && <RiseTransitSetEventListItem event={event} />}
+        {event.type === "Conjunction" && <ConjunctionEventListItem event={event} />}
+      </React.Fragment>
+    );
+  }
+
   return (
     <Paper className={classes.paper}>
       <Button variant="contained" color="primary" className={classes.button} onClick={handleRefresh}>Refresh</Button>
@@ -96,7 +118,9 @@ function EventsList(props) {
             <ul className={classes.ul}>
               <ListSubheader className={classes.subheader}>{daySection}</ListSubheader>
               {events[daySection].map(event => (
-                <RiseTransitSetEventListItem key={event.id} event={event} />
+                <ListItem className={classes.listRow}>
+                  <EventDispatcher event={event} />
+                </ListItem>
               ))}
             </ul>
           </li>
