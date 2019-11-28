@@ -118,7 +118,7 @@ function EventsList(props) {
             <ul className={classes.ul}>
               <ListSubheader className={classes.subheader}>{daySection}</ListSubheader>
               {events[daySection].map(event => (
-                <ListItem className={classes.listRow}>
+                <ListItem key={event.id} className={classes.listRow}>
                   <EventDispatcher event={event} />
                 </ListItem>
               ))}
