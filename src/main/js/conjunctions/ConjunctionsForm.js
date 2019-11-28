@@ -8,7 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
-import { addMonths } from 'date-fns';
+import { addWeeks } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import format from 'date-fns/format';
 import SubmitBar from './../components/SubmitBar';
@@ -37,7 +37,7 @@ export default function ConjunctionsForm(props) {
   const [icChecked, setIcChecked] = React.useState(false);
 
   const [fromDate, setFromDate] = React.useState(new Date());
-  const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
+  const [toDate, setToDate] = React.useState(addWeeks(new Date(), 1));
 
   function onBuildProps() {
     const primaryBodyNames = [];
