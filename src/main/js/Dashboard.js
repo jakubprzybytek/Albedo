@@ -1,36 +1,19 @@
 import React from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import SettingsIcon from '@material-ui/icons/Settings';
 import PersonIcon from '@material-ui/icons/Person';
+import TabPanel from './common/TabPanel';
 import EventsList from './eventslist/EventsList';
 import ToolTabs from './ToolTabs';
 import UserDrawer from './UserDrawer';
 import SettingsDrawer from './SettingsDrawer';
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Typography component="div" role="tabpanel" hidden={value !== index} id={`scrollable-auto-tabpanel-${index}`} {...other}>
-      {children}
-    </Typography>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
 
 const drawerWidth = 240;
 
@@ -94,13 +77,6 @@ export default function PersistentDrawerLeft() {
   const [settingsDrawerOpened, setSettingsDrawerOpened] = React.useState(true);
   const [userDrawerOpened, setUserDrawerOpened] = React.useState(false);
 
-  const toggleDrawer = (open) => event => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setUserDrawerOpened(open);
-  };
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -111,11 +87,11 @@ export default function PersistentDrawerLeft() {
           </IconButton>
         </Toolbar>
         <Tabs className={classes.tabs} value={tabValue} onChange={(event, newTabValue) => setTabValue(newTabValue)} indicatorColor="primary" textColor="primary" variant="scrollable" scrollButtons="auto">
-            <Tab label="Dashboard" />
-            <Tab label="Tools" />
-          </Tabs>
+          <Tab label="Dashboard" />
+          <Tab label="Tools" />
+        </Tabs>
         <Toolbar className={classes.toolBar}>
-          <IconButton color="inherit" onClick={toggleDrawer(true)} edge="end">
+          <IconButton color="inherit" onClick={() => setUserDrawerOpened(true)} edge="end">
             <PersonIcon />
           </IconButton>
         </Toolbar>
