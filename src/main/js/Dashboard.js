@@ -13,7 +13,7 @@ import TabPanel from './common/TabPanel';
 import EventsList from './eventslist/EventsList';
 import ToolTabs from './ToolTabs';
 import UserDrawer from './UserDrawer';
-import SettingsDrawer from './SettingsDrawer';
+import SettingsDrawer from './settings/SettingsDrawer';
 
 const drawerWidth = 240;
 

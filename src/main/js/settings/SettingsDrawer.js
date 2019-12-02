@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
@@ -9,8 +10,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { red, orange, yellow, blue } from '@material-ui/core/colors';
-import { SettingsExpansionPanel, SettingsExpansionSummary, SettingsExpansionPanelDetails, InternalCheckbox } from './settings/SettingsExpansionPanel';
+import { red, blue } from '@material-ui/core/colors';
+import { updateRtsSettings } from './RtsSettingsActions';
+import { SettingsExpansionPanel, SettingsExpansionSummary, SettingsExpansionPanelDetails, InternalCheckbox } from './SettingsExpansionPanel';
 
 const drawerWidth = 240;
 
@@ -40,17 +42,35 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SettingsDrawer(props) {
+const mapStateToProps = state => {
+  return {
+    rtsSettings: state.rtsSettings
+  };
+};
 
-  const { opened, setOpened } = props;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitUpdateRtsSettings: (rtsSettings) => {
+      dispatch(updateRtsSettings(rtsSettings))
+    }
+  };
+};
 
-  const [rtsEnabled, setRtsEnabled] = React.useState(true);
-  const [rtsSunEnabled, setRtsSunEnabled] = React.useState(true);
-  const [rtsMoonEnabled, setRtsMoonEnabled] = React.useState(true);
+export function SettingsDrawer(props) {
+
+  const { opened, setOpened, rtsSettings, submitUpdateRtsSettings } = props;
+
+  const [localRtsSettings, setLocalRtsSettings] = React.useState(rtsSettings);
 
   const [conjuntionsWithPlanetsSeparation, setCnjuntionsWithPlanetsSeparation] = React.useState(1);
 
   const classes = useStyles();
+
+  function updateRtsSettings(fieldName, value) {
+    let newRtsSettings = { ...localRtsSettings, [fieldName]: value };
+    setLocalRtsSettings(newRtsSettings);
+    submitUpdateRtsSettings(newRtsSettings);
+  }
 
   return (
     <Drawer className={classes.drawer} variant="persistent" anchor="left" open={opened} classes={{ paper: classes.drawerPaper, }} >
@@ -61,15 +81,17 @@ export default function SettingsDrawer(props) {
       </div>
       <Divider />
       <SettingsExpansionPanel color={blue[50]}>
-        <SettingsExpansionSummary checked={rtsEnabled} setChecked={setRtsEnabled}>
+        <SettingsExpansionSummary checked={localRtsSettings.rtsEnabled} setChecked={value => updateRtsSettings('rtsEnabled', value)}>
           <Typography>Rise, Transit &amp; Set</Typography>
         </SettingsExpansionSummary>
-        <SettingsExpansionPanelDetails disabled={!rtsEnabled}>
+        <SettingsExpansionPanelDetails disabled={!localRtsSettings.rtsEnabled}>
           <Typography variant="subtitle2" component="span">
             Show times of rise, transit and set for:
             <FormGroup className={classes.singlePaddingLeft}>
-              <InternalCheckbox label="Sun (incl. civil, nautical, astr.)" disabled={!rtsEnabled} checked={rtsSunEnabled} setChecked={setRtsSunEnabled} />
-              <InternalCheckbox label="Moon" disabled={!rtsEnabled} checked={rtsMoonEnabled} setChecked={setRtsMoonEnabled} />
+              <InternalCheckbox label="Sun (incl. civil, nautical, astr.)"
+                disabled={!localRtsSettings.rtsEnabled} checked={localRtsSettings.rtsSunEnabled} setChecked={value => updateRtsSettings('rtsSunEnabled', value)} />
+              <InternalCheckbox label="Moon"
+                disabled={!localRtsSettings.rtsEnabled} checked={localRtsSettings.rtsMoonEnabled} setChecked={value => updateRtsSettings('rtsMoonEnabled', value)} />
             </FormGroup>
           </Typography>
         </SettingsExpansionPanelDetails>
@@ -94,3 +116,10 @@ export default function SettingsDrawer(props) {
     </Drawer>
   );
 }
+
+const GlobalStateAwareSettingsDrawer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsDrawer);
+
+export default GlobalStateAwareSettingsDrawer;

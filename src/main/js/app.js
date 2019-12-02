@@ -5,10 +5,12 @@ import { Provider } from 'react-redux'
 import Dashboard from './Dashboard';
 import locationReducer from './components/observerlocation/LocationReducer';
 import timeZoneReducer from './components/timezone/TimeZoneReducer';
+import rtsSettingsReducer from './settings/RtsSettingsReducer';
 
 const albedoApp = combineReducers({
   observerLocation: locationReducer,
-  timeZone: timeZoneReducer
+  timeZone: timeZoneReducer,
+  rtsSettings: rtsSettingsReducer,
 })
 
 const store = createStore(albedoApp);
