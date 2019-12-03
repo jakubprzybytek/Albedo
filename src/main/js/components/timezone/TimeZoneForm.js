@@ -29,7 +29,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onChange: (timeZone) => {
+    submitUpdateTimeZone: (timeZone) => {
       dispatch(updateTimeZone(timeZone))
     }
   };
@@ -37,16 +37,9 @@ const mapDispatchToProps = (dispatch) => {
 
 export function TimeZoneForm(props) {
 
-  const { timeZone, onChange } = props;
-
-  const [localTimeZone, setLocalTimeZone] = React.useState(timeZone);
+  const { timeZone, submitUpdateTimeZone } = props;
 
   const classes = useStyles();
-
-  function updateTimeZone(event) {
-    setLocalTimeZone(event.target.value);
-    onChange(event.target.value);
-  }
 
   return (
     <Paper className={classes.root}>
@@ -55,7 +48,7 @@ export function TimeZoneForm(props) {
       </Typography>
       <FormControl className={classes.margin}>
         <InputLabel id="time-zone-field-label">Time Zone</InputLabel>
-        <Select className={classes.field} value={localTimeZone} onChange={updateTimeZone} labelId="time-zone-field-label">
+        <Select className={classes.field} value={timeZone} onChange={(event) => submitUpdateTimeZone(event.target.value)} labelId="time-zone-field-label">
           <MenuItem value={"UTC"}>UTC</MenuItem>
           <MenuItem value={"UTC+01:00"}>UTC+01:00</MenuItem>
           <MenuItem value={"UTC+02:00"}>UTC+02:00</MenuItem>

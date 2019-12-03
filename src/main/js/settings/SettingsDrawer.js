@@ -60,16 +60,12 @@ export function SettingsDrawer(props) {
 
   const { opened, setOpened, rtsSettings, submitUpdateRtsSettings } = props;
 
-  const [localRtsSettings, setLocalRtsSettings] = React.useState(rtsSettings);
-
   const [conjuntionsWithPlanetsSeparation, setCnjuntionsWithPlanetsSeparation] = React.useState(1);
 
   const classes = useStyles();
 
   function updateRtsSettings(fieldName, value) {
-    let newRtsSettings = { ...localRtsSettings, [fieldName]: value };
-    setLocalRtsSettings(newRtsSettings);
-    submitUpdateRtsSettings(newRtsSettings);
+    submitUpdateRtsSettings({ ...rtsSettings, [fieldName]: value });
   }
 
   return (
@@ -81,17 +77,17 @@ export function SettingsDrawer(props) {
       </div>
       <Divider />
       <SettingsExpansionPanel color={blue[50]}>
-        <SettingsExpansionSummary checked={localRtsSettings.rtsEnabled} setChecked={value => updateRtsSettings('rtsEnabled', value)}>
+        <SettingsExpansionSummary checked={rtsSettings.rtsEnabled} setChecked={value => updateRtsSettings('rtsEnabled', value)}>
           <Typography>Rise, Transit &amp; Set</Typography>
         </SettingsExpansionSummary>
-        <SettingsExpansionPanelDetails disabled={!localRtsSettings.rtsEnabled}>
+        <SettingsExpansionPanelDetails disabled={!rtsSettings.rtsEnabled}>
           <Typography variant="subtitle2" component="span">
             Show times of rise, transit and set for:
             <FormGroup className={classes.singlePaddingLeft}>
               <InternalCheckbox label="Sun (incl. civil, nautical, astr.)"
-                disabled={!localRtsSettings.rtsEnabled} checked={localRtsSettings.rtsSunEnabled} setChecked={value => updateRtsSettings('rtsSunEnabled', value)} />
+                disabled={!rtsSettings.rtsEnabled} checked={rtsSettings.rtsSunEnabled} setChecked={value => updateRtsSettings('rtsSunEnabled', value)} />
               <InternalCheckbox label="Moon"
-                disabled={!localRtsSettings.rtsEnabled} checked={localRtsSettings.rtsMoonEnabled} setChecked={value => updateRtsSettings('rtsMoonEnabled', value)} />
+                disabled={!rtsSettings.rtsEnabled} checked={rtsSettings.rtsMoonEnabled} setChecked={value => updateRtsSettings('rtsMoonEnabled', value)} />
             </FormGroup>
           </Typography>
         </SettingsExpansionPanelDetails>

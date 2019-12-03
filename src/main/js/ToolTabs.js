@@ -17,14 +17,17 @@ const useStyles = makeStyles(theme => ({
     borderRight: `1px solid ${theme.palette.divider}`,
   },
   tabPanel: {
+    padding: theme.spacing(1, 1, 1, 1),
     width: '100%',
     backgroundColor: theme.palette.background.default,
   }
 }));
 
 export default function ToolTabs() {
-  const classes = useStyles();
+
   const [value, setValue] = React.useState(2);
+
+  const classes = useStyles();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -45,7 +48,7 @@ export default function ToolTabs() {
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={2}>
         <RiseTransitSetPanel />
-    </TabPanel>
+      </TabPanel>
     </div>
   );
 }
