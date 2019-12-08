@@ -6,6 +6,7 @@ import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.conjunctions.ConjunctionsOrchestrator;
 import jp.albedo.webapp.conjunctions.rest.ConjunctionEvent;
+import jp.albedo.webapp.events.parameters.RtsParameters;
 import jp.albedo.webapp.risetransitset.RiseTransitSetOrchestrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,13 +32,24 @@ public class EventsOrchestrator {
     @Autowired
     private ConjunctionsOrchestrator conjunctionsOrchestrator;
 
-    List<AstronomicalEvent> compute(String[] bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
+    List<AstronomicalEvent> compute(String[] bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation, RtsParameters rtsParameters) throws Exception {
 
         LOG.info(String.format("Computing events, params: [bodies:%s, from=%s, to=%s], observer location: %s", Arrays.toString(bodyNames), fromDate, toDate, observerLocation));
         final Instant start = Instant.now();
 
         final List<AstronomicalEvent> astronomicalEvents = new ArrayList<>();
-        astronomicalEvents.addAll(this.riseTransitSetOrchestrator.compute(new String[]{"Sun", "Moon"}, fromDate, toDate, observerLocation));
+
+        if (rtsParameters.isSunEnabled() || rtsParameters.isMoonEnabled()) {
+            ArrayList bodies = new ArrayList();
+            if (rtsParameters.isSunEnabled()) {
+                bodies.add("Sun");
+            }
+            if (rtsParameters.isMoonEnabled()) {
+                bodies.add("Moon");
+            }
+            astronomicalEvents.addAll(this.riseTransitSetOrchestrator.compute(bodies, fromDate, toDate, observerLocation));
+        }
+
         astronomicalEvents.addAll(this.conjunctionsOrchestrator.computeForTwoMovingBodies(
                 Arrays.asList("Sun", "Moon"),
                 Arrays.asList(BodyType.Planet),

@@ -5,8 +5,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { format } from 'date-fns';
-import { BodyChip, CatalogueEntryChip, LocalTimeChip, LowResAngleChip } from '../components/Chips';
-import { formatDegrees, formatArcSeconds } from './../utils/Angles';
+import { BodyChip, CatalogueEntryChip, LocalTimeChip, LowResAngleChip } from '../../components/Chips';
+import { formatDegrees, formatArcSeconds } from '../../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
   top: {

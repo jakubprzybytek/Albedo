@@ -4,6 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.EventWrapper;
+import jp.albedo.webapp.events.parameters.RtsParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,14 +31,18 @@ public class EventsController {
                                      @RequestParam("longitude") double observerLongitude,
                                      @RequestParam("latitude") double observerLatitude,
                                      @RequestParam("height") double observerHeight,
-                                     @RequestParam("timeZone") String timeZone) throws Exception {
+                                     @RequestParam("timeZone") String timeZone,
+                                     @RequestParam(value = "rtsSunEnabled", defaultValue = "true") boolean rtsSunEnabled,
+                                     @RequestParam(value = "rtsMoonEnabled", defaultValue = "true") boolean rtsMoonEnabled) throws Exception {
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
 
+        final RtsParameters rtsParameters = new RtsParameters(rtsSunEnabled, rtsMoonEnabled);
+
         final AtomicInteger id = new AtomicInteger();
 
-        return this.eventsOrchestrator.compute(bodyNames, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
+        return this.eventsOrchestrator.compute(bodyNames, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, rtsParameters).stream()
                 .map(event -> new EventWrapper(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),

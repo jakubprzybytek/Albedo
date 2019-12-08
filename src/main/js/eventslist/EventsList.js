@@ -1,18 +1,14 @@
 import React from 'react';
+import clsx from 'clsx';
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Card from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import { red, orange, yellow, grey } from '@material-ui/core/colors';
-import axios from 'axios';
-import { addDays, format } from 'date-fns';
-import RiseTransitSetEventListItem from './RiseTransitSetEventListItem';
-import ConjunctionEventListItem from './ConjunctionEventListItem';
+import { grey, blue, red } from '@material-ui/core/colors';
+import RiseTransitSetEventListItem from './events/RiseTransitSetEventListItem';
+import ConjunctionEventListItem from './events/ConjunctionEventListItem';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -29,98 +25,70 @@ const useStyles = makeStyles(theme => ({
     borderBottomColor: theme.palette.background.default,
   },
   listSection: {
-   backgroundColor: 'inherit',
+    backgroundColor: 'inherit',
   },
   listRowCard: {
-   margin: 4,
-   boxShadow: `0px 2px 1px -1px rgba(0.0, 0.0, 0.0, 0.01), 0px 1px 1px 0px rgba(0,0,0,0.05), 0px 1px 3px 0px rgba(0,0,0,0.01)`,
+    margin: 4,
+    boxShadow: `0px 2px 1px -1px rgba(0.0, 0.0, 0.0, 0.01), 0px 1px 1px 0px rgba(0,0,0,0.05), 0px 1px 3px 0px rgba(0,0,0,0.01)`,
   },
   ul: {
-   backgroundColor: 'inherit',
-   padding: 0,
+    backgroundColor: 'inherit',
+    padding: 0,
   },
   subheader: {
-   backgroundColor: grey[200],
+    backgroundColor: grey[200],
+  },
+  RiseTransitSet: {
+    backgroundColor: blue[50],
+  },
+  Conjunction: {
+    backgroundColor: red[50],
   },
 }));
 
 const mapStateToProps = state => {
   return {
-    observerLocation: state.observerLocation,
-    timeZone: state.timeZone
+    events: state.eventsList,
   };
 };
 
 function EventsList(props) {
 
-  const { observerLocation, timeZone } = props;
-
-  const [events, setEvents] = React.useState([]);
+  const { events } = props;
 
   const classes = useStyles();
 
-  function handleRefresh() {
-
-    //setLoading(true);
-    var startTime = new Date();
-
-    axios.get("/api/events", {
-        params: {
-          from: format(new Date(), "yyyy-MM-dd"),
-          to: format(addDays(new Date(), 1), "yyyy-MM-dd"),
-          ...observerLocation,
-          timeZone: timeZone
-        }
-      })
-      .then(res => {
-        //setDuration(new Date() - startTime);
-        //setLastCall(format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        //setLinkUrl(res.request.responseURL);
-        //setErrorMessage('');
-
-        setEvents(groupByDay(res.data));
-
-        //setLoading(false);
-      },
-      error => {
-        //setLinkUrl(error.request.responseURL);
-        //setErrorMessage(error.message);
-        //setLoading(false);
-      });
-  }
+  const eventsByDay = groupByDay(events);
 
   function groupByDay(flatEventsList) {
-    return flatEventsList.reduce(function(eventsByDay, event) {
+    return flatEventsList.reduce(function (eventsByDay, event) {
       let key = event.localTime.substr(0, 10);
       (eventsByDay[key] = eventsByDay[key] || []).push(event);
       return eventsByDay;
     }, {});
   }
 
-  function EventDispatcher (props) {
+  function EventSelect(props) {
 
     const { event } = props;
 
     return (
-      <React.Fragment>
+      <ListItem className={clsx(classes.listRow, classes[event.type])}>
         {event.type === "RiseTransitSet" && <RiseTransitSetEventListItem event={event} />}
         {event.type === "Conjunction" && <ConjunctionEventListItem event={event} />}
-      </React.Fragment>
+      </ListItem>
     );
   }
 
   return (
     <Paper className={classes.paper}>
-      <Button variant="contained" color="primary" className={classes.button} onClick={handleRefresh}>Refresh</Button>
       <List dense={true} className={classes.list} subheader={<li />}>
-        {Object.keys(events).map(daySection => (
+        {Object.keys(eventsByDay).map(daySection => (
           <li key={daySection} className={classes.listSection}>
             <ul className={classes.ul}>
               <ListSubheader className={classes.subheader}>{daySection}</ListSubheader>
-              {events[daySection].map(event => (
-                <ListItem key={event.id} className={classes.listRow}>
-                  <EventDispatcher event={event} />
-                </ListItem>
+              {eventsByDay[daySection].map(event => (
+                <EventSelect key={event.id} event={event} />
               ))}
             </ul>
           </li>

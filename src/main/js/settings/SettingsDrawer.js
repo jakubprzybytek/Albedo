@@ -11,7 +11,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { red, blue } from '@material-ui/core/colors';
-import { updateRtsSettings } from './RtsSettingsActions';
+import { buildUpdateRtsSettingsSaga } from './actions/RtsSettingsSagas';
 import { SettingsExpansionPanel, SettingsExpansionSummary, SettingsExpansionPanelDetails, InternalCheckbox } from './SettingsExpansionPanel';
 
 const drawerWidth = 240;
@@ -51,7 +51,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => {
   return {
     submitUpdateRtsSettings: (rtsSettings) => {
-      dispatch(updateRtsSettings(rtsSettings))
+      dispatch(buildUpdateRtsSettingsSaga(rtsSettings))
     }
   };
 };

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -30,9 +29,9 @@ public class RiseTransitSetOrchestrator {
     @Autowired
     private RiseTransitSetCalculator riseTransitSetCalculator;
 
-    public List<RiseTransitSetEvent> compute(String[] bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
+    public List<RiseTransitSetEvent> compute(List<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
 
-        LOG.info(String.format("Computing times of rising, transit and setting, params: [bodies:%s, from=%s, to=%s], observer location: %s", Arrays.toString(bodyNames), fromDate, toDate, observerLocation));
+        LOG.info(String.format("Computing times of rising, transit and setting, params: [bodies:%s, from=%s, to=%s], observer location: %s", bodyNames, fromDate, toDate, observerLocation));
 
         final Instant start = Instant.now();
 

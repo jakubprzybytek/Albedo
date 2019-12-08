@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class RiseTransitSetController {
 
         final AtomicInteger id = new AtomicInteger();
 
-        return this.riseTransitSetOrchestrator.compute(bodyNames, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
+        return this.riseTransitSetOrchestrator.compute(Arrays.asList(bodyNames), JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
                 .map(event -> new EventWrapper(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),

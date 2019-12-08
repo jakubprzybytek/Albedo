@@ -1,12 +1,7 @@
 import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import { format } from 'date-fns';
-import { BodyChip, CatalogueEntryChip, LocalTimeChip, LowResAngleChip } from '../components/Chips';
-import { formatDegrees } from './../utils/Angles';
+import { BodyChip, CatalogueEntryChip, LocalTimeChip, LowResAngleChip } from '../../components/Chips';
 
 const useStyles = makeStyles(theme => ({
   top: {
