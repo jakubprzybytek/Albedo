@@ -24,7 +24,7 @@ class EllipticMotionTest {
         MagnitudeParameters magnitudeParameters = new MagnitudeParameters(14.3, 0.15);
 
         OrbitElements enckeOrbitElements = new OrbitElementsBuilder()
-                .orbitShape(0.8502196, 2.2091404)
+                .orbitShapeUsingSemiMajorAxis(0.8502196, 2.2091404)
                 .orbitPosition(Epoch.J2000, 186.23352, 334.75006, 11.94524)
                 .bodyPosition(JulianDay.fromDate(1990, 10, 28.54502), 0.0)
                 .build();
@@ -52,7 +52,7 @@ class EllipticMotionTest {
         MagnitudeParameters magnitudeParameters = new MagnitudeParameters(5.33, 0.32);
 
         OrbitElements junoOrbitElements = new OrbitElementsBuilder()
-                .orbitShape(0.2569423, 2.6691496, 0.22601887)
+                .orbitShapeUsingSemiMajorAxis(0.2569423, 2.6691496, 0.22601887)
                 .orbitPosition(Epoch.J2000, 248.13861, 169.85274, 12.98892)
                 .bodyPosition(JulianDay.fromDate(2019, 4, 27.0), 34.92503)
                 .build();
@@ -77,14 +77,14 @@ class EllipticMotionTest {
 
         // https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=ceres&full-prec=true
         OrbitElements ceresOrbitElementsJPL = new OrbitElementsBuilder()
-                .orbitShape(0.07600902910070946, 2.76916515450648)
+                .orbitShapeUsingSemiMajorAxis(0.07600902910070946, 2.76916515450648)
                 .orbitPosition(Epoch.J2000, 73.597694115971, 80.30553156826473, 10.59406704424526)
                 .bodyPosition(JulianDay.fromDate(2018, 4, 30.25413581), 0.0)
                 .build();
 
         // https://www.minorplanetcenter.net/data
         OrbitElements ceresOrbitElementsMPC = new OrbitElementsBuilder()
-                .orbitShape(0.0760091, 2.7691652, 0.21388522)
+                .orbitShapeUsingSemiMajorAxis(0.0760091, 2.7691652, 0.21388522)
                 .orbitPosition(Epoch.J2000, 73.59764, 80.30553, 10.59407)
                 .bodyPosition(JulianDay.fromDate(2019, 4, 27.0), 77.37215)
                 .build();
@@ -124,7 +124,7 @@ class EllipticMotionTest {
 
         // https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=ceres&full-prec=true
         OrbitElements ceresOrbitElements = new OrbitElementsBuilder()
-                .orbitShape(0.07600902910070946, 2.76916515450648)
+                .orbitShapeUsingSemiMajorAxis(0.07600902910070946, 2.76916515450648)
                 .orbitPosition(Epoch.J2000, 73.597694115971, 80.30553156826473, 10.59406704424526)
                 .bodyPosition(JulianDay.fromDate(2018, 4, 30.25413581), 0.0)
                 .build();

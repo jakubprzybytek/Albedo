@@ -92,7 +92,7 @@ public class OrbitElements {
 
     @Override
     public String toString() {
-        return String.format("[Epoch=%s, e=%.3f, a=%.4fAU, n=%.4f, ω=%.3f°, Ω=%.3f°, i=%.4f°, T=%.4fTD, M=%.3f°]",
+        return String.format("[Epoch=%s, e=%.3f, a=%.4fAU, n=%.4f°, ω=%.3f°, Ω=%.3f°, i=%.4f°, T=%.4fTD, M=%.3f°]",
                 this.epoch,
                 this.eccentricity,
                 this.semiMajorAxis,
@@ -105,7 +105,7 @@ public class OrbitElements {
     }
 
     public String toStringHighPrecision() {
-        return String.format("[Epoch=%s, e=%.10f, a=%.10fAU, n=%.10f, ω=%.10f°, Ω=%.10f°, i=%.10f°, T=%.8fTD, M=%.6f°]",
+        return String.format("[Epoch=%s, e=%.10f, a=%.10fAU, n=%.10f°, ω=%.10f°, Ω=%.10f°, i=%.10f°, T=%.8fTD, M=%.6f°]",
                 this.epoch,
                 this.eccentricity,
                 this.semiMajorAxis,

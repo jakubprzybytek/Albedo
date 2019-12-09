@@ -22,17 +22,22 @@ public class OrbitElementsBuilder {
 
     private double meanAnomalyAtEpoch;
 
-    public OrbitElementsBuilder orbitShape(double eccentricity, double semiMajorAxis) {
+    public OrbitElementsBuilder orbitShapeUsingSemiMajorAxis(double eccentricity, double semiMajorAxis) {
         this.eccentricity = eccentricity;
         this.semiMajorAxis = semiMajorAxis;
         this.meanDailyMotion = MeanMotion.fromSemiMajorAxis(semiMajorAxis);
         return this;
     }
 
-    public OrbitElementsBuilder orbitShape(double eccentricity, double semiMajorAxis, double meanDailyMotion) {
+    public OrbitElementsBuilder orbitShapeUsingSemiMajorAxis(double eccentricity, double semiMajorAxis, double meanDailyMotion) {
         this.eccentricity = eccentricity;
         this.semiMajorAxis = semiMajorAxis;
         this.meanDailyMotion = meanDailyMotion;
+        return this;
+    }
+
+    public OrbitElementsBuilder orbitShapeUsingPerihelionDistance(double eccentricity, double perihelionDistance) {
+        orbitShapeUsingSemiMajorAxis(eccentricity, perihelionDistance / (1 + eccentricity));
         return this;
     }
 

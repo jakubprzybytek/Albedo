@@ -101,7 +101,7 @@ public class MPCORBFileLoader {
             final MagnitudeParameters magnitudeParameters = new MagnitudeParameters(H, G);
 
             final OrbitElements orbitElements = new OrbitElementsBuilder()
-                    .orbitShape(eccentricity, semiMajorAxis, meanMotion)
+                    .orbitShapeUsingSemiMajorAxis(eccentricity, semiMajorAxis, meanMotion)
                     .orbitPosition(Epoch.J2000, argumentOfPerihelion, longitudeOfAscendingNode, inclination)
                     .bodyPosition(meanAnomalyEpoch, meanAnomalyAtEpoch)
                     .build();

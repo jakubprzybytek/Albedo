@@ -10,6 +10,7 @@ public enum BodyType {
     Planet,
     NaturalSatellite,
     Asteroid,
+    Comet,
 
     // Special body types
     Barycenter;
