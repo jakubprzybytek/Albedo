@@ -27,7 +27,7 @@ class CometElsFileLoaderTest {
 
         System.out.println("Reading Comets file: " + cometElsFileULR);
 
-        List<MPCORBRecord> cometRecords = CometElsFileLoader.load(new File(cometElsFileULR.toURI()), 5);
+        List<MPCORBRecord> cometRecords = CometElsFileLoader.load(new File(cometElsFileULR.toURI()));
         for (MPCORBRecord record : cometRecords) {
             System.out.printf("%s: %s%n", record.bodyDetails.name, record.orbitElements);
         }

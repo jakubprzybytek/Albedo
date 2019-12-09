@@ -42,7 +42,7 @@ public class CometElsFileLoader {
         }
     }
 
-    protected static Optional<MPCORBRecord> parseCometLine(String line) {
+    static Optional<MPCORBRecord> parseCometLine(String line) {
 
         final int anomalyEpochYear = Integer.parseInt(line.substring(14, 18));
         final int anomalyEpochMonth = Integer.parseInt(line.substring(19, 21));
