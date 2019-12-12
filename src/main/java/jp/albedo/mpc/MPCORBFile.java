@@ -22,20 +22,20 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MPCORBFileLoader {
+public class MPCORBFile {
 
-    private static Log LOG = LogFactory.getLog(MPCORBFileLoader.class);
+    private static Log LOG = LogFactory.getLog(MPCORBFile.class);
 
     final private static Pattern orbitPattern = Pattern.compile("^(\\w+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)(\\s+[\\w.\\-()]+){11}\\s+(.{18})");
 
-    public static List<MPCORBRecord> load(File sourceFile, int orbitsToLoad) throws IOException {
+    public static List<MPCRecord> load(File sourceFile, int orbitsToLoad) throws IOException {
 
         final Instant start = Instant.now();
 
         final FileReader fileReader = new FileReader(sourceFile);
 
         int orbitRead = 0;
-        List<MPCORBRecord> records = new ArrayList<>(orbitsToLoad);
+        List<MPCRecord> records = new ArrayList<>(orbitsToLoad);
 
         try (final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String line;
@@ -44,7 +44,7 @@ public class MPCORBFileLoader {
 
             while (orbitRead < orbitsToLoad && (line = bufferedReader.readLine()) != null) {
 
-                Optional<MPCORBRecord> recordOptional = parseOrbitLine(line);
+                Optional<MPCRecord> recordOptional = parseOrbitLine(line);
                 if (recordOptional.isPresent()) {
                     records.add(recordOptional.get());
                     orbitRead++;
@@ -52,12 +52,12 @@ public class MPCORBFileLoader {
             }
         }
 
-        LOG.info(String.format("Loaded %d orbit details from %s in %s", records.size(), sourceFile.getPath(), Duration.between(start, Instant.now())));
+        LOG.info(String.format("Loaded %d asteroid orbit details from %s in %s", records.size(), sourceFile.getPath(), Duration.between(start, Instant.now())));
 
         return records;
     }
 
-    public static Optional<MPCORBRecord> find(File sourceFile, String bodyName) throws IOException {
+    public static Optional<MPCRecord> find(File sourceFile, String bodyName) throws IOException {
 
         final FileReader fileReader = new FileReader(sourceFile);
 
@@ -67,7 +67,7 @@ public class MPCORBFileLoader {
             while ((line = bufferedReader.readLine()) != null && !line.contains("-----")) ;
 
             while ((line = bufferedReader.readLine()) != null) {
-                Optional<MPCORBRecord> record = parseOrbitLine(line);
+                Optional<MPCRecord> record = parseOrbitLine(line);
                 if (record.isPresent() && bodyName.equals(record.get().bodyDetails.name)) {
                     return record;
                 }
@@ -77,7 +77,7 @@ public class MPCORBFileLoader {
         return Optional.empty();
     }
 
-    protected static Optional<MPCORBRecord> parseOrbitLine(String line) {
+    protected static Optional<MPCRecord> parseOrbitLine(String line) {
         Matcher matcher = orbitPattern.matcher(line);
 
         if (matcher.find()) {
@@ -106,7 +106,7 @@ public class MPCORBFileLoader {
                     .bodyPosition(meanAnomalyEpoch, meanAnomalyAtEpoch)
                     .build();
 
-            return Optional.of(new MPCORBRecord(new BodyDetails(bodyName, BodyType.Asteroid), magnitudeParameters, orbitElements));
+            return Optional.of(new MPCRecord(new BodyDetails(bodyName, BodyType.Asteroid), magnitudeParameters, orbitElements));
         }
 
         return Optional.empty();

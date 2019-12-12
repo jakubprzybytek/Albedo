@@ -37,7 +37,7 @@ public class OrbitElementsBuilder {
     }
 
     public OrbitElementsBuilder orbitShapeUsingPerihelionDistance(double eccentricity, double perihelionDistance) {
-        orbitShapeUsingSemiMajorAxis(eccentricity, perihelionDistance / (1 + eccentricity));
+        orbitShapeUsingSemiMajorAxis(eccentricity, perihelionDistance / (1 - eccentricity));
         return this;
     }
 

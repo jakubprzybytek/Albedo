@@ -5,6 +5,7 @@ import jp.albedo.catalogue.CatalogueType;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
+import jp.albedo.utils.FunctionUtils;
 import jp.albedo.utils.MixListSupplier;
 import jp.albedo.utils.MixTwoListsSupplier;
 import jp.albedo.utils.StreamUtils;
@@ -142,20 +143,20 @@ public class ConjunctionsOrchestrator {
 
     private List<ComputedEphemerides> getEphemeridesByBodyNames(Collection<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) {
         return bodyNames.stream()
-                .map(StreamUtils.wrap(bodyName -> this.ephemeridesOrchestrator.compute(bodyName, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation)))
+                .map(FunctionUtils.wrap(bodyName -> this.ephemeridesOrchestrator.compute(bodyName, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation)))
                 .collect(Collectors.toList());
     }
 
     private List<ComputedEphemerides> getEphemeridesByBodyType(Collection<BodyType> bodyTypes, Double fromDate, Double toDate, ObserverLocation observerLocation) {
         return bodyTypes.stream()
-                .map(StreamUtils.wrap(bodyType -> this.ephemeridesOrchestrator.computeAllByType(bodyType, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation)))
+                .map(FunctionUtils.wrap(bodyType -> this.ephemeridesOrchestrator.computeAllByType(bodyType, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation)))
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
 
     private List<CatalogueEntry> getCatalogueEntries(Collection<CatalogueType> catalogueTypes) {
         return catalogueTypes.stream()
-                .map(StreamUtils.wrap(catalogueType -> this.catalogueService.getCatalogue(catalogueType)))
+                .map(FunctionUtils.wrap(catalogueType -> this.catalogueService.getCatalogue(catalogueType)))
                 .flatMap(catalogue -> catalogue.getAllEntries().stream())
                 .collect(Collectors.toList());
     }
@@ -177,7 +178,7 @@ public class ConjunctionsOrchestrator {
 
     private List<Pair<ComputedEphemerides, ComputedEphemerides>> getDetailedBodiesEphemerides(List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions, ObserverLocation observerLocation) {
         return preliminaryConjunctions.parallelStream()
-                .map(StreamUtils.wrap(conjunction -> new Pair<>(
+                .map(FunctionUtils.wrap(conjunction -> new Pair<>(
                         this.ephemeridesOrchestrator.compute(conjunction.firstObject.name,
                                 conjunction.jde - DETAILED_SPAN / 2.0, conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL,
                                 observerLocation),
@@ -189,7 +190,7 @@ public class ConjunctionsOrchestrator {
 
     private List<Pair<ComputedEphemerides, CatalogueEntry>> getDetailedEphemerides(List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions, ObserverLocation observerLocation) {
         return preliminaryConjunctions.parallelStream()
-                .map(StreamUtils.wrap(conjunction -> new Pair<>(
+                .map(FunctionUtils.wrap(conjunction -> new Pair<>(
                         this.ephemeridesOrchestrator.compute(conjunction.firstObject.name,
                                 conjunction.jde - DETAILED_SPAN / 2.0, conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL,
                                 observerLocation),

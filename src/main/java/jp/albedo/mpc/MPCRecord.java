@@ -4,7 +4,7 @@ import jp.albedo.common.BodyDetails;
 import jp.albedo.jeanmeeus.ephemeris.common.MagnitudeParameters;
 import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
 
-public class MPCORBRecord {
+public class MPCRecord {
 
     public BodyDetails bodyDetails;
 
@@ -12,7 +12,7 @@ public class MPCORBRecord {
 
     public OrbitElements orbitElements;
 
-    public MPCORBRecord(BodyDetails bodyDetails, MagnitudeParameters magnitudeParameters, OrbitElements orbitElements) {
+    public MPCRecord(BodyDetails bodyDetails, MagnitudeParameters magnitudeParameters, OrbitElements orbitElements) {
         this.bodyDetails = bodyDetails;
         this.magnitudeParameters = magnitudeParameters;
         this.orbitElements = orbitElements;

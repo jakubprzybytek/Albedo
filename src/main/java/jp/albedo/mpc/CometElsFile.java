@@ -17,33 +17,29 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CometElsFileLoader {
+public class CometElsFile {
 
+    private static Log LOG = LogFactory.getLog(CometElsFile.class);
 
-    private static Log LOG = LogFactory.getLog(CometElsFileLoader.class);
-
-    public static List<MPCORBRecord> load(File sourceFile) throws IOException {
+    public static List<MPCRecord> load(File sourceFile) throws IOException {
 
         final Instant start = Instant.now();
 
         try (final Stream<String> stream = Files.lines(Paths.get(sourceFile.toURI()))) {
-            final List<MPCORBRecord> cometRecords = stream.map(CometElsFileLoader::parseCometLine)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
+            final List<MPCRecord> cometRecords = stream
+                    .map(CometElsFile::parseCometLine)
                     .collect(Collectors.toList());
 
-            LOG.info(String.format("Loaded %d orbit details from %s in %s", cometRecords.size(), sourceFile.getPath(), Duration.between(start, Instant.now())));
+            LOG.info(String.format("Loaded %d comet orbit details from %s in %s", cometRecords.size(), sourceFile.getPath(), Duration.between(start, Instant.now())));
 
             return cometRecords;
         }
     }
 
-    static Optional<MPCORBRecord> parseCometLine(String line) {
-
+    static MPCRecord parseCometLine(String line) {
         final int anomalyEpochYear = Integer.parseInt(line.substring(14, 18));
         final int anomalyEpochMonth = Integer.parseInt(line.substring(19, 21));
         final double anomalyEpochDay = Double.parseDouble(line.substring(22, 29));
@@ -68,6 +64,6 @@ public class CometElsFileLoader {
 
         final MagnitudeParameters magnitudeParameters = new MagnitudeParameters(absoluteMagnitude, slopeParameter);
 
-        return Optional.of(new MPCORBRecord(new BodyDetails(name, BodyType.Comet), magnitudeParameters, orbitElements));
+        return new MPCRecord(new BodyDetails(name, BodyType.Comet), magnitudeParameters, orbitElements);
     }
 }

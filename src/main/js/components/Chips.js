@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
-import { red, orange, yellow, blue } from '@material-ui/core/colors';
+import { red, orange, yellow, blue, purple } from '@material-ui/core/colors';
 import { SunIcon, MoonIcon, PlanetIcon } from './AstronomicalIcons';
 import { format } from 'date-fns';
 import { formatDegrees } from './../utils/Angles';
@@ -25,6 +25,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	Planet: {
 		backgroundColor: red[500],
+	},
+	Comet: {
+		backgroundColor: purple[500],
 	},
   Asteroid: {
     backgroundColor: orange[500],
@@ -58,6 +61,7 @@ export function BodyChip(props) {
         {bodyDetails.name === 'Sun' && <SunIcon width={14} height={14} />}
         {bodyDetails.name === 'Moon' && <MoonIcon width={12} height={12} />}
         {bodyDetails.bodyType === 'Planet' && <PlanetIcon planetName={bodyDetails.name} width={14} height={14} />}
+        {bodyDetails.bodyType === 'Comet' && 'C'}
         {bodyDetails.bodyType === 'Asteroid' && 'A'}
       </TinyAvatar>
       <span className={classes.label}>{bodyDetails.name}</span>

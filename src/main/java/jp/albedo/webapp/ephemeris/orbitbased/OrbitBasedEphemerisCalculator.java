@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -27,21 +26,23 @@ public class OrbitBasedEphemerisCalculator {
     @Autowired
     private OrbitsService orbitsService;
 
-    public Optional<OrbitingBodyRecord> findBody(String bodyName) throws IOException {
+    public Optional<OrbitingBodyRecord> findBody(String bodyName) {
         return this.orbitsService.getByName(bodyName);
     }
 
     /**
      * Returns list of bodies of given type that this calculator supports.
      *
-     * @param bodyType
-     * @return
+     * @param bodyType Body type.
+     * @return Names of all bodies of given body type.
      */
-    public List<OrbitingBodyRecord> getSupportedBodiesByType(BodyType bodyType) throws IOException {
-        if (bodyType == BodyType.Asteroid) {
-            return this.orbitsService.getAll();
+    public List<OrbitingBodyRecord> getSupportedBodiesByType(BodyType bodyType) {
+        switch (bodyType) {
+            case Asteroid:
+                return this.orbitsService.getAll(BodyType.Asteroid);
+            case Comet:
+                return this.orbitsService.getAll(BodyType.Comet);
         }
-
         return Collections.emptyList();
     }
 

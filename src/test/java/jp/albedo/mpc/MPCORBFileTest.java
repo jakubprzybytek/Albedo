@@ -16,33 +16,33 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MPCORBFileLoaderTest {
+class MPCORBFileTest {
 
     @Test
     @DisplayName("Reading 5 orbits from sample file")
     void load() throws IOException, URISyntaxException {
 
-        final URL mpcorbFileULR = MPCORBFileLoaderTest.class.getClassLoader().getResource("MPC/MPCORB.DAT.testSample");
+        final URL mpcorbFileULR = MPCORBFileTest.class.getClassLoader().getResource("MPC/MPCORB.DAT.testSample");
 
         System.out.println("Reading MPCORB file");
 
-        List<MPCORBRecord> mpcorbRecords = MPCORBFileLoader.load(new File(mpcorbFileULR.toURI()), 5);
-        for (MPCORBRecord record : mpcorbRecords) {
+        List<MPCRecord> MPCRecords = MPCORBFile.load(new File(mpcorbFileULR.toURI()), 5);
+        for (MPCRecord record : MPCRecords) {
             System.out.printf("%s: %s%n", record.bodyDetails.name, record.orbitElements);
         }
 
-        assertEquals(5, mpcorbRecords.size());
+        assertEquals(5, MPCRecords.size());
     }
 
     @Test
     @DisplayName("Finding asteroid by name")
     void find() throws IOException, URISyntaxException {
 
-        final URL mpcorbFileULR = MPCORBFileLoaderTest.class.getClassLoader().getResource("MPC/MPCORB.DAT.testSample");
+        final URL mpcorbFileULR = MPCORBFileTest.class.getClassLoader().getResource("MPC/MPCORB.DAT.testSample");
 
         System.out.println("Reading MPCORB file");
 
-        Optional<MPCORBRecord> mpcorbRecord = MPCORBFileLoader.find(new File(mpcorbFileULR.toURI()), "Astraea");
+        Optional<MPCRecord> mpcorbRecord = MPCORBFile.find(new File(mpcorbFileULR.toURI()), "Astraea");
 
         assertTrue(mpcorbRecord.isPresent());
         assertEquals("Astraea", mpcorbRecord.get().bodyDetails.name);
@@ -52,7 +52,7 @@ class MPCORBFileLoaderTest {
     @Test
     @DisplayName("Parsing incorrect format line")
     void parseOrbitLineIncorrectFormat() {
-        assertFalse(MPCORBFileLoader.parseOrbitLine("wrong line").isPresent());
+        assertFalse(MPCORBFile.parseOrbitLine("wrong line").isPresent());
     }
 
     @Test
@@ -60,7 +60,7 @@ class MPCORBFileLoaderTest {
     void parseOrbitLineCorrectFormat() {
         String lineToParse = "00006    5.71  0.24 K194R  86.19795  239.80747  138.64020   14.73791  0.2030070  0.26097173   2.4251600  0 MPO467603  5727  89 1848-2019 0.53 M-v 38h MPCLINUX   0007      (6) Hebe               20190501";
 
-        Optional<MPCORBRecord> recordOptional = MPCORBFileLoader.parseOrbitLine(lineToParse);
+        Optional<MPCRecord> recordOptional = MPCORBFile.parseOrbitLine(lineToParse);
         assertTrue(recordOptional.isPresent());
 
         assertEquals("Hebe", recordOptional.get().bodyDetails.name);
@@ -90,7 +90,7 @@ class MPCORBFileLoaderTest {
     void parseOrbitLineNameWithSpace() {
         String lineToParse = "01008   10.6   0.15 K194R 179.87298   14.71605   20.55261    8.93362  0.0775509  0.18123176   3.0925247  0 MPO467621  2309  34 1923-2019 0.40 M-v 38h MPCLINUX   0000   (1008) La Paz             20190511";
 
-        Optional<MPCORBRecord> recordOptional = MPCORBFileLoader.parseOrbitLine(lineToParse);
+        Optional<MPCRecord> recordOptional = MPCORBFile.parseOrbitLine(lineToParse);
         assertTrue(recordOptional.isPresent());
 
         assertEquals("La Paz", recordOptional.get().bodyDetails.name);
@@ -99,10 +99,10 @@ class MPCORBFileLoaderTest {
     @Test
     @DisplayName("Unpacking date string")
     void unpackDate() {
-        assertEquals(JulianDay.fromDate(1996, 1, 1), MPCORBFileLoader.unpackDate("J9611"), 0.000001);
-        assertEquals(JulianDay.fromDate(1996, 1, 10), MPCORBFileLoader.unpackDate("J961A"), 0.000001);
-        assertEquals(JulianDay.fromDate(1996, 9, 30), MPCORBFileLoader.unpackDate("J969U"), 0.000001);
-        assertEquals(JulianDay.fromDate(1996, 10, 1), MPCORBFileLoader.unpackDate("J96A1"), 0.000001);
-        assertEquals(JulianDay.fromDate(2001, 10, 22), MPCORBFileLoader.unpackDate("K01AM"), 0.000001);
+        assertEquals(JulianDay.fromDate(1996, 1, 1), MPCORBFile.unpackDate("J9611"), 0.000001);
+        assertEquals(JulianDay.fromDate(1996, 1, 10), MPCORBFile.unpackDate("J961A"), 0.000001);
+        assertEquals(JulianDay.fromDate(1996, 9, 30), MPCORBFile.unpackDate("J969U"), 0.000001);
+        assertEquals(JulianDay.fromDate(1996, 10, 1), MPCORBFile.unpackDate("J96A1"), 0.000001);
+        assertEquals(JulianDay.fromDate(2001, 10, 22), MPCORBFile.unpackDate("K01AM"), 0.000001);
     }
 }

@@ -12,23 +12,21 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class CometElsFileLoaderTest {
+class CometElsFileTest {
 
     @Test
     @DisplayName("Reading 6 orbits from sample file")
     void load() throws IOException, URISyntaxException {
 
-        final URL cometElsFileULR = CometElsFileLoaderTest.class.getClassLoader().getResource("MPC/CometEls.txt.testSample");
+        final URL cometElsFileULR = CometElsFileTest.class.getClassLoader().getResource("MPC/CometEls.txt.testSample");
 
         System.out.println("Reading Comets file: " + cometElsFileULR);
 
-        List<MPCORBRecord> cometRecords = CometElsFileLoader.load(new File(cometElsFileULR.toURI()));
-        for (MPCORBRecord record : cometRecords) {
+        List<MPCRecord> cometRecords = CometElsFile.load(new File(cometElsFileULR.toURI()));
+        for (MPCRecord record : cometRecords) {
             System.out.printf("%s: %s%n", record.bodyDetails.name, record.orbitElements);
         }
 
@@ -40,13 +38,12 @@ class CometElsFileLoaderTest {
     void parseOrbitLineCorrectFormat() {
         String lineToParse = "0391P         2018 03 17.4927  4.109579  0.120770  186.4949  124.7349   21.2761  20191209   8.0  4.0  391P/Kowalski                                            MPEC 2019-VB6";
 
-        Optional<MPCORBRecord> recordOptional = CometElsFileLoader.parseCometLine(lineToParse);
-        assertTrue(recordOptional.isPresent());
+        MPCRecord recordOptional = CometElsFile.parseCometLine(lineToParse);
 
-        assertEquals("391P/Kowalski", recordOptional.get().bodyDetails.name);
+        assertEquals("391P/Kowalski", recordOptional.bodyDetails.name);
 
-        MagnitudeParameters magnitudeParameters = recordOptional.get().magnitudeParameters;
-        OrbitElements orbitElements = recordOptional.get().orbitElements;
+        MagnitudeParameters magnitudeParameters = recordOptional.magnitudeParameters;
+        OrbitElements orbitElements = recordOptional.orbitElements;
 
         assertEquals(Epoch.J2000, orbitElements.getEpoch());
 
@@ -58,8 +55,8 @@ class CometElsFileLoaderTest {
         assertEquals(21.2761, orbitElements.getInclination(), 0.0001);
 
         assertEquals(0.120770, orbitElements.getEccentricity(), 0.000001);
-        assertEquals(3.666746076, orbitElements.getSemiMajorAxis(), 0.0000001);
-        assertEquals(0.140372754, orbitElements.getMeanMotion(), 0.000000001);
+        assertEquals(4.674065944, orbitElements.getSemiMajorAxis(), 0.0000001);
+        assertEquals(0.097535299, orbitElements.getMeanMotion(), 0.000000001);
 
         assertEquals(JulianDay.fromDate(2018, 3, 17.4927), orbitElements.getMeanAnomalyEpoch(), 0.000001);
         assertEquals(0.0, orbitElements.getMeanAnomalyAtEpoch(), 0.00001);

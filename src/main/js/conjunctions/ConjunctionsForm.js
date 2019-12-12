@@ -30,8 +30,10 @@ export default function ConjunctionsForm(props) {
   const [sunChecked, setSunChecked] = React.useState(true);
   const [moonChecked, setMoonChecked] = React.useState(true);
   const [primaryPlanetsChecked, setPrimaryPlanetsChecked] = React.useState(true);
+  const [primaryCometsChecked, setPrimaryCometsChecked] = React.useState(false);
   const [primaryAsteroidsChecked, setPrimaryAsteroidsChecked] = React.useState(false);
   const [secondaryPlanetsChecked, setSecondaryPlanetsChecked] = React.useState(false);
+  const [secondaryCometsChecked, setSecondaryCometsChecked] = React.useState(true);
   const [secondaryAsteroidsChecked, setSecondaryAsteroidsChecked] = React.useState(true);
   const [ngcChecked, setNgcChecked] = React.useState(true);
   const [icChecked, setIcChecked] = React.useState(false);
@@ -45,10 +47,12 @@ export default function ConjunctionsForm(props) {
     if (moonChecked) { primaryBodyNames.push ("Moon") }
     const primaryBodyTypes = [];
     if (primaryPlanetsChecked) { primaryBodyTypes.push ("Planet") }
+    if (primaryCometsChecked) { primaryBodyTypes.push ("Comet") }
     if (primaryAsteroidsChecked) { primaryBodyTypes.push ("Asteroid") }
 
     const secondaryBodyTypes = [];
     if (secondaryPlanetsChecked) { secondaryBodyTypes.push ("Planet") }
+    if (secondaryCometsChecked) { secondaryBodyTypes.push ("Comet") }
     if (secondaryAsteroidsChecked) { secondaryBodyTypes.push ("Asteroid") }
     const catalogues = [];
     if (ngcChecked) { catalogues.push ("NGC") }
@@ -91,6 +95,9 @@ export default function ConjunctionsForm(props) {
           <FormControlLabel label="Planets" labelPlacement="start" control={
               <Switch checked={primaryPlanetsChecked} onChange={event => setPrimaryPlanetsChecked(event.target.checked)} color="primary" />
             }/>
+          <FormControlLabel label="Comets" labelPlacement="start" control={
+              <Switch checked={primaryCometsChecked} onChange={event => setPrimaryCometsChecked(event.target.checked)} color="primary" />
+            }/>
           <FormControlLabel label="Asteroids" labelPlacement="start" control={
               <Switch checked={primaryAsteroidsChecked} onChange={event => setPrimaryAsteroidsChecked(event.target.checked)} color="primary" />
             }/>
@@ -98,7 +105,10 @@ export default function ConjunctionsForm(props) {
         <FormLabel component="legend">Secondary objects</FormLabel>
         <FormGroup row>
           <FormControlLabel label="Planets" labelPlacement="start" control={
-              <Switch checked={secondaryPlanetsChecked} onChange={event => setSecondaryPlanetsCheckedPlanetsChecked(event.target.checked)} color="primary" />
+              <Switch checked={secondaryPlanetsChecked} onChange={event => setSecondaryPlanetsChecked(event.target.checked)} color="primary" />
+            }/>
+          <FormControlLabel label="Comets" labelPlacement="start" control={
+              <Switch checked={secondaryCometsChecked} onChange={event => setSecondaryCometsChecked(event.target.checked)} color="primary" />
             }/>
           <FormControlLabel label="Asteroids" labelPlacement="start" control={
               <Switch checked={secondaryAsteroidsChecked} onChange={event => setSecondaryAsteroidsChecked(event.target.checked)} color="primary" />

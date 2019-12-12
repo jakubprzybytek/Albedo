@@ -55,7 +55,7 @@ export default function EphemerisTable(props) {
                 {ephemeris.distanceFromEarth.toFixed(6)}
               </TableCell>
               <TableCell align="center">
-                {ephemeris.apparentMagnitude.toFixed(2)}
+                {ephemeris.apparentMagnitude}
               </TableCell>
               <TableCell align="right">
                 {formatArcSeconds(ephemeris.angularSize)}

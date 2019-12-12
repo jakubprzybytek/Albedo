@@ -4,6 +4,7 @@ import jp.albedo.common.BodyType;
 import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.jpl.JplBody;
+import jp.albedo.utils.FunctionUtils;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.ephemeris.jpl.JplEphemerisCalculator;
 import jp.albedo.webapp.ephemeris.orbitbased.OrbitBasedEphemerisCalculator;
@@ -59,7 +60,7 @@ public class EphemeridesOrchestrator {
 
         final Optional<OrbitingBodyRecord> orbitingBodyRecordOptional = this.orbitBasedEphemerisCalculator.findBody(bodyName);
 
-        if (!orbitingBodyRecordOptional.isPresent()) {
+        if (orbitingBodyRecordOptional.isEmpty()) {
             throw new EphemerisException("Body not found: " + bodyName);
         }
 
@@ -90,7 +91,7 @@ public class EphemeridesOrchestrator {
         final List<ComputedEphemerides> ephemeridesList = new ArrayList<>();
 
         this.jplEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
-                .map(StreamUtils.wrap(body -> {
+                .map(FunctionUtils.wrap(body -> {
                     final List<Ephemeris> ephemerides = this.jplEphemerisCalculator.compute(body, fromDate, toDate, interval).parallelStream()
                             .map(ParallaxCorrection.correctFor(observerLocation))
                             .collect(Collectors.toList());
@@ -99,7 +100,7 @@ public class EphemeridesOrchestrator {
                 .forEachOrdered(ephemeridesList::add);
 
         this.orbitBasedEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
-                .map(StreamUtils.wrap(orbitingBodyRecord -> {
+                .map(FunctionUtils.wrap(orbitingBodyRecord -> {
                     final List<Ephemeris> ephemerides = this.orbitBasedEphemerisCalculator.compute(orbitingBodyRecord, fromDate, toDate, interval).parallelStream()
                             .map(ParallaxCorrection.correctFor(observerLocation))
                             .collect(Collectors.toList());
