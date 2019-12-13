@@ -2,7 +2,7 @@ import { UPDATE_RTS_SETTINGD } from './RtsSettingsActions';
 
 const initialState = {
   rtsEnabled: true,
-  rtsSunEnabled: true,
+  rtsSunEnabled: false,
   rtsMoonEnabled: true
 }
 

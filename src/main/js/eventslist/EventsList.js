@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     overflow: 'auto',
-    maxHeight: 1000,
+    maxHeight: 1200,
   },
   listRow: {
     borderBottom: '1px solid',

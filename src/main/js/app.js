@@ -10,7 +10,7 @@ import locationReducer from './components/observerlocation/LocationReducer';
 import timeZoneReducer from './components/timezone/TimeZoneReducer';
 import rtsSettingsReducer from './settings/actions/RtsSettingsReducer';
 import storeEventsListReducer from './eventslist/actions/EventsListReducers';
-import { watchFetchEvents } from './eventslist/actions/EventsListSagas';
+import { watchFetchEvents, fetchEvents } from './eventslist/actions/EventsListSagas';
 import { watchUpdateRtsSettingsSaga } from './settings/actions/RtsSettingsSagas';
 
 const albedoReducer = combineReducers({
@@ -20,10 +20,6 @@ const albedoReducer = combineReducers({
   eventsList: storeEventsListReducer,
 });
 
-export function* helloSaga() {
-  console.log('Hello Sagas!')
-}
-
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(albedoReducer, applyMiddleware(sagaMiddleware));
 
@@ -31,9 +27,9 @@ store.subscribe(() => console.log(store.getState()))
 
 export default function* rootSaga() {
   yield all([
-    helloSaga(),
     watchFetchEvents(),
-    watchUpdateRtsSettingsSaga()
+    watchUpdateRtsSettingsSaga(),
+    fetchEvents()
   ])
 }
 

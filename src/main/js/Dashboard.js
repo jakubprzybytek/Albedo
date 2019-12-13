@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import IconButton from '@material-ui/core/IconButton';
-import SettingsIcon from '@material-ui/icons/Settings';
+import TuneIcon from '@material-ui/icons/Tune';
 import PersonIcon from '@material-ui/icons/Person';
 import TabPanel from './common/TabPanel';
 import EventsList from './eventslist/EventsList';
@@ -83,7 +83,7 @@ export default function PersistentDrawerLeft() {
       <AppBar position="fixed" className={clsx(classes.appBar, { [classes.appBarShift]: settingsDrawerOpened, })} color="default" >
         <Toolbar className={classes.toolBar}>
           <IconButton color="inherit" onClick={() => setSettingsDrawerOpened(true)} edge="start" className={clsx(classes.menuButton, settingsDrawerOpened && classes.hide)} >
-            <SettingsIcon />
+            <TuneIcon />
           </IconButton>
         </Toolbar>
         <Tabs className={classes.tabs} value={tabValue} onChange={(event, newTabValue) => setTabValue(newTabValue)} indicatorColor="primary" textColor="primary" variant="scrollable" scrollButtons="auto">
