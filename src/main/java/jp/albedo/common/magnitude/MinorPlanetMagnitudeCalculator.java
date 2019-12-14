@@ -1,15 +1,18 @@
-package jp.albedo.jeanmeeus.ephemeris.impl;
+package jp.albedo.common.magnitude;
 
-import jp.albedo.jeanmeeus.ephemeris.common.MagnitudeParameters;
 import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import org.apache.commons.math3.util.MathUtils;
 import org.apache.commons.math3.util.Precision;
 
-public class MagnitudeCalculator {
+/**
+ * Magnitude calculator based on absolute magnitude and slope parameter.
+ * Suitable for bodies like asteroids for which H and G parameters are published.
+ */
+public class MinorPlanetMagnitudeCalculator implements ApparentMagnitudeCalculator {
 
     final private MagnitudeParameters magnitudeParameters;
 
-    public MagnitudeCalculator(MagnitudeParameters magnitudeParameters) {
+    public MinorPlanetMagnitudeCalculator(MagnitudeParameters magnitudeParameters) {
         this.magnitudeParameters = magnitudeParameters;
     }
 

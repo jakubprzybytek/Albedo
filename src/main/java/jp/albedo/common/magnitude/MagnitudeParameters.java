@@ -1,4 +1,4 @@
-package jp.albedo.jeanmeeus.ephemeris.common;
+package jp.albedo.common.magnitude;
 
 public class MagnitudeParameters {
 

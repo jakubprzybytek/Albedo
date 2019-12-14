@@ -1,9 +1,10 @@
 package jp.albedo.jpl.ephemeris;
 
 import jp.albedo.common.BodyInformation;
+import jp.albedo.common.magnitude.ApparentMagnitudeCalculator;
 import jp.albedo.jpl.JplBody;
-import jp.albedo.jpl.ephemeris.impl.PlanetsMagnitudeCalculator;
-import jp.albedo.jpl.ephemeris.impl.StarMagnitudeCalculator;
+import jp.albedo.common.magnitude.PlanetsMagnitudeCalculator;
+import jp.albedo.common.magnitude.StarMagnitudeCalculator;
 
 public class MagnitudeCalculatorFactory {
 

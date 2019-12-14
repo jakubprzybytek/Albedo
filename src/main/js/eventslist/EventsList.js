@@ -36,7 +36,10 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
   },
   subheader: {
-    backgroundColor: grey[200],
+    fontSize: '1.2rem',
+    color: blue[800],
+    backgroundColor: grey[50],
+    paddingLeft: 32
   },
   RiseTransitSet: {
     backgroundColor: blue[50],

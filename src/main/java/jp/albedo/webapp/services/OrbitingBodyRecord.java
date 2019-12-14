@@ -1,7 +1,7 @@
 package jp.albedo.webapp.services;
 
 import jp.albedo.common.BodyDetails;
-import jp.albedo.jeanmeeus.ephemeris.common.MagnitudeParameters;
+import jp.albedo.common.magnitude.MagnitudeParameters;
 import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
 
 public class OrbitingBodyRecord {

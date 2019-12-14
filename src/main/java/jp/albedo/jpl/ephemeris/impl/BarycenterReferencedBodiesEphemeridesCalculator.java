@@ -9,7 +9,7 @@ import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.SPKernel;
-import jp.albedo.jpl.ephemeris.ApparentMagnitudeCalculator;
+import jp.albedo.common.magnitude.ApparentMagnitudeCalculator;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.ephemeris.MagnitudeCalculatorFactory;
 import jp.albedo.jpl.state.EarthStateCalculator;

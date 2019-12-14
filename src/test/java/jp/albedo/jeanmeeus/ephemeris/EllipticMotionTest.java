@@ -2,7 +2,7 @@ package jp.albedo.jeanmeeus.ephemeris;
 
 import jp.albedo.common.Epoch;
 import jp.albedo.common.JulianDay;
-import jp.albedo.jeanmeeus.ephemeris.common.MagnitudeParameters;
+import jp.albedo.common.magnitude.MagnitudeParameters;
 import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
 import jp.albedo.jeanmeeus.ephemeris.common.OrbitElementsBuilder;
 import jp.albedo.vsop87.VSOPException;

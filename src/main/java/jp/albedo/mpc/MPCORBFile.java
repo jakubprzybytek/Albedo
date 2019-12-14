@@ -4,7 +4,7 @@ import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
 import jp.albedo.common.Epoch;
 import jp.albedo.common.JulianDay;
-import jp.albedo.jeanmeeus.ephemeris.common.MagnitudeParameters;
+import jp.albedo.common.magnitude.MagnitudeParameters;
 import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
 import jp.albedo.jeanmeeus.ephemeris.common.OrbitElementsBuilder;
 import org.apache.commons.logging.Log;

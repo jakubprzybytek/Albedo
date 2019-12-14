@@ -1,5 +1,6 @@
-package jp.albedo.jpl.ephemeris.impl;
+package jp.albedo.common.magnitude;
 
+import jp.albedo.common.magnitude.StarMagnitudeCalculator;
 import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,9 @@
 package jp.albedo.jeanmeeus.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
+import jp.albedo.common.magnitude.MagnitudeParameters;
 import jp.albedo.jeanmeeus.ephemeris.common.*;
-import jp.albedo.jeanmeeus.ephemeris.impl.MagnitudeCalculator;
+import jp.albedo.common.magnitude.MinorPlanetMagnitudeCalculator;
 import jp.albedo.jeanmeeus.ephemeris.impl.OrbitCalculator;
 import jp.albedo.vsop87.VSOP87Calculator;
 import jp.albedo.vsop87.VSOPException;
@@ -38,7 +39,7 @@ public class EllipticMotion {
      */
     static public List<Ephemeris> compute(List<Double> jdes, MagnitudeParameters magnitudeParameters, OrbitElements orbitParams) throws VSOPException {
         OrbitCalculator orbitCalculator = new OrbitCalculator(orbitParams);
-        MagnitudeCalculator magnitudeCalculator = new MagnitudeCalculator(magnitudeParameters);
+        MinorPlanetMagnitudeCalculator magnitudeCalculator = new MinorPlanetMagnitudeCalculator(magnitudeParameters);
 
         List<Ephemeris> ephemerisList = new LinkedList<>();
 

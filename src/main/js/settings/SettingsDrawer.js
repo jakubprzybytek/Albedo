@@ -12,7 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { red, blue } from '@material-ui/core/colors';
 import { buildUpdateRtsSettingsSaga } from './actions/RtsSettingsSagas';
-import { SettingsExpansionPanel, SettingsExpansionSummary, SettingsExpansionPanelDetails, InternalCheckbox } from './SettingsExpansionPanel';
+import { SettingsExpansionPanel, SettingsExpansionSummary, SettingsExpansionPanelDetails, InternalCheckbox } from './components/SettingsExpansionPanel';
 
 const drawerWidth = 240;
 
@@ -97,6 +97,13 @@ export function SettingsDrawer(props) {
           <Typography>Conjunctions</Typography>
         </SettingsExpansionSummary>
         <SettingsExpansionPanelDetails>
+          <Typography variant="subtitle2" component="span">
+            Filter and show only events:
+            <FormGroup className={classes.singlePaddingLeft}>
+              <InternalCheckbox label="Above horison"
+                disabled={!rtsSettings.rtsEnabled} checked={rtsSettings.rtsSunEnabled} setChecked={value => updateRtsSettings('rtsSunEnabled', value)} />
+            </FormGroup>
+          </Typography>
           <Typography className={classes.fieldsAligned} color="textSecondary">
             The
           </Typography>
