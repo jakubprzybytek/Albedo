@@ -148,11 +148,13 @@ export function LowResAngleChip(props) {
 **/
 export function ElongationChip(props) {
 
-  const { elongation } = props;
+  const { elongation, showDayTime = false } = props;
 
   return (
     <React.Fragment>
-      {elongation >= 0 ? elongation.toFixed(1) + " E" : -elongation.toFixed(1) + " W"}°
+      {elongation >= 0 ? 
+        elongation.toFixed(1) + "° E" + (showDayTime == true ? " (evening)" : "") : 
+        -elongation.toFixed(1) + "° W" + (showDayTime == true ? " (morning)" : "")}
     </React.Fragment>
   );
 }

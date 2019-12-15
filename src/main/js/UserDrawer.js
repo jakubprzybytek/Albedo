@@ -10,7 +10,6 @@ import TimeZoneForm from './components/timezone/TimeZoneForm';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
-    width: 240,
     flexShrink: 0,
   },
   drawerPaper: {

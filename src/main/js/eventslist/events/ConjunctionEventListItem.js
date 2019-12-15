@@ -1,11 +1,7 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import { format } from 'date-fns';
-import { BodyChip, CatalogueEntryChip, LocalTimeChip, LowResAngleChip } from '../../components/Chips';
+import { BodyChip, CatalogueEntryChip, LocalTimeChip, ElongationChip } from '../../components/Chips';
 import { formatDegrees, formatArcSeconds } from '../../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
@@ -18,9 +14,9 @@ const useStyles = makeStyles(theme => ({
     width: 80,
     display: 'flex',
   },
-   inline: {
-     display: 'flex',
-   }
+  inline: {
+    display: 'flex',
+  }
 }));
 
 
@@ -47,7 +43,10 @@ function FormatEventCopy(props) {
       Conjunction between <BodyInfo bodyInfo={conjunction.first} /> and
       {conjunction.secondObjectType === 'Body' && <BodyInfo bodyInfo={conjunction.second} />}
       {conjunction.secondObjectType === 'CatalogueEntry' && <CatalogueEntryChip catalogueEntry={conjunction.second} />
-      } with separation of {formatDegrees(conjunction.separation)}
+      } with separation of {formatDegrees(conjunction.separation)}.
+      Elongation {conjunction.secondObjectType !== 'Body' || conjunction.first.ephemeris.elongation < conjunction.second.ephemeris.elongation ?
+        <ElongationChip elongation={conjunction.first.ephemeris.elongation} showDayTime={true} /> :
+        <ElongationChip elongation={conjunction.second.ephemeris.elongation} showDayTime={true} />}.
     </React.Fragment>
   );
 }

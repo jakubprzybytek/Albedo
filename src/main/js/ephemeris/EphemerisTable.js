@@ -7,8 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
-import { ElongationChip } from '../components/Chips';
-import { LocalDateTimeChip } from '../components/Chips';
+import { ElongationChip, LocalDateTimeChip } from '../components/Chips';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -28,7 +27,7 @@ export default function EphemerisTable(props) {
       <Table className={classes.table} size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Time [TDE]</TableCell>
+            <TableCell>Local Time</TableCell>
             <TableCell align="center">R.A. [hms]</TableCell>
             <TableCell align="center">Dec. [°]</TableCell>
             <TableCell align="center">Distance f/Sun [AU]</TableCell>
