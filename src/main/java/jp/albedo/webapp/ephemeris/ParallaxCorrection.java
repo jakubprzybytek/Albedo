@@ -23,6 +23,6 @@ public class ParallaxCorrection implements Function<Ephemeris, Ephemeris> {
     public Ephemeris apply(Ephemeris ephemeris) {
         AstronomicalCoordinates correctedCoords = Parallax.correct(this.observerLocation, ephemeris.jde, ephemeris.coordinates, ephemeris.distanceFromEarth);
         // FixMe: TDE != UT
-        return new Ephemeris(ephemeris.jde, correctedCoords, ephemeris.distanceFromSun, ephemeris.distanceFromEarth, ephemeris.apparentMagnitude, ephemeris.angularSize);
+        return new Ephemeris(ephemeris.jde, correctedCoords, ephemeris.distanceFromSun, ephemeris.distanceFromEarth, ephemeris.elongation, ephemeris.apparentMagnitude, ephemeris.angularSize);
     }
 }

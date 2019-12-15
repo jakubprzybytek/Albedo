@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.webapp.utils.Precision6Serializer;
-import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
 
 public class CatalogueEntry {
 

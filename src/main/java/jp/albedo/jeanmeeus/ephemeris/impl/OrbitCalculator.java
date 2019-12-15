@@ -2,7 +2,7 @@ package jp.albedo.jeanmeeus.ephemeris.impl;
 
 import jp.albedo.jeanmeeus.ephemeris.common.Obliquity;
 import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
-import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jeanmeeus.ephemeris.common.TrueAnomaly;
 
 public class OrbitCalculator {

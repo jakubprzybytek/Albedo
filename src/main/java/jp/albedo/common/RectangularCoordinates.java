@@ -1,4 +1,6 @@
-package jp.albedo.jeanmeeus.ephemeris.common;
+package jp.albedo.common;
+
+import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
 
 public class RectangularCoordinates {
 
@@ -20,6 +22,10 @@ public class RectangularCoordinates {
         double z = sphericalCoordinates.distance * Math.sin(sphericalCoordinates.latitude);
 
         return new RectangularCoordinates(x, y, z);
+    }
+
+    public RectangularCoordinates negate() {
+        return new RectangularCoordinates(-this.x, -this.y, -this.z);
     }
 
     public RectangularCoordinates add(RectangularCoordinates second) {

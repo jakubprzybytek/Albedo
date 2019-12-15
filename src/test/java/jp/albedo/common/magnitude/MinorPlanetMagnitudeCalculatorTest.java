@@ -1,6 +1,6 @@
 package jp.albedo.common.magnitude;
 
-import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.common.RectangularCoordinates;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -39,6 +39,7 @@ class EllipticMotionTest {
         assertEquals(158.558966, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.000001);
         assertEquals(19.158495, Math.toDegrees(ephemeris.coordinates.declination), 0.000001);
         assertEquals(0.824, ephemeris.distanceFromEarth, 0.001);
+        assertEquals(-40.507, Math.toDegrees(ephemeris.elongation), 0.001);
         assertEquals(15.91, ephemeris.apparentMagnitude, 0.0001);
     }
 
@@ -64,8 +65,10 @@ class EllipticMotionTest {
         System.out.println("Ephemeris: " + ephemeris.toString());
 
         assertEquals(jde, ephemeris.jde, 0.000001);
+        assertEquals(-19.408, Math.toDegrees(ephemeris.elongation), 0.001);
         assertEquals(10.57, ephemeris.apparentMagnitude, 0.0001);
     }
+
     @Test
     void ephemerisForCeresTest() throws VSOPException {
 
@@ -101,13 +104,15 @@ class EllipticMotionTest {
         assertEquals(jde, ephemerisJPL.jde, 0.000001);
         assertEquals(244.76501519, Math.toDegrees(ephemerisJPL.coordinates.rightAscension), 0.00000001);
         assertEquals(-22.82033339, Math.toDegrees(ephemerisJPL.coordinates.declination), 0.00000001);
-        assertEquals(2.7627, ephemerisMPC.distanceFromEarth, 0.0001);
+        assertEquals(2.7627, ephemerisJPL.distanceFromEarth, 0.0001);
+        assertEquals(83.992, Math.toDegrees(ephemerisMPC.elongation), 0.001);
         assertEquals(8.87, ephemerisJPL.apparentMagnitude, 0.0001);
 
         assertEquals(jde, ephemerisMPC.jde, 0.000001);
         assertEquals(244.76501953, Math.toDegrees(ephemerisMPC.coordinates.rightAscension), 0.00000001);
         assertEquals(-22.82033521, Math.toDegrees(ephemerisMPC.coordinates.declination), 0.00000001);
         assertEquals(2.7627, ephemerisMPC.distanceFromEarth, 0.0001);
+        assertEquals(83.992, Math.toDegrees(ephemerisMPC.elongation), 0.001);
         assertEquals(8.87, ephemerisMPC.apparentMagnitude, 0.0001);
     }
 

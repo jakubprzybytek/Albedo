@@ -1,6 +1,6 @@
 package jp.albedo.jpl.state.impl;
 
-import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.kernel.XYZCoefficients;

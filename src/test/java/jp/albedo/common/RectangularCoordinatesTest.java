@@ -1,6 +1,5 @@
 package jp.albedo.common;
 
-import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
 import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +19,16 @@ class RectangularCoordinatesTest {
         assertEquals(-0.9373969180760959, rectangularCoordinates.x, 0.0000000000000001);
         assertEquals(-0.34133529037285215, rectangularCoordinates.y, 0.00000000000000001);
         assertEquals(-3.3670066287269203E-6, rectangularCoordinates.z, 0.0000000000000001E-6);
+    }
+
+    @Test
+    public void negating() {
+        RectangularCoordinates first = new RectangularCoordinates(1.0, 2.0, 3.0);
+        RectangularCoordinates negative = first.negate();
+
+        assertEquals(-1.0, negative.x);
+        assertEquals(-2.0, negative.y);
+        assertEquals(-3.0, negative.z);
     }
 
     @Test

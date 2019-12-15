@@ -1,12 +1,13 @@
 package jp.albedo.webapp.ephemeris.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jp.albedo.common.BodyDetails;
-import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
-import jp.albedo.common.magnitude.MagnitudeParameters;
-import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
+import jp.albedo.common.JulianDay;
+import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 
+import java.time.ZoneId;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class EphemeridesResponse {
 
@@ -14,11 +15,20 @@ public class EphemeridesResponse {
     final private BodyInfo bodyInfo;
 
     @JsonProperty
-    final private List<Ephemeris> ephemerisList;
+    final private List<EphemerisWrapper> ephemerisList;
 
-    public EphemeridesResponse(BodyDetails bodyDetails, OrbitElements orbitElements, MagnitudeParameters magnitudeParameters, List<Ephemeris> ephemerisList) {
-        this.bodyInfo = new BodyInfo(bodyDetails, orbitElements, magnitudeParameters);
-        this.ephemerisList = ephemerisList;
+    public EphemeridesResponse(ComputedEphemerides computedEphemerides, ZoneId zoneId) {
+        this.bodyInfo = new BodyInfo(computedEphemerides.getBodyDetails(), computedEphemerides.getOrbitElements(), computedEphemerides.getMagnitudeParameters());
+
+        final AtomicInteger id = new AtomicInteger();
+
+        this.ephemerisList = computedEphemerides.getEphemerides().stream()
+                .map(ephemeris -> new EphemerisWrapper(
+                        id.getAndIncrement(),
+                        JulianDay.toDateTime(ephemeris.jde).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
+                        ephemeris))
+                .collect(Collectors.toList());
+        ;
     }
 
 }

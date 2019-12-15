@@ -1,5 +1,7 @@
 package jp.albedo.common;
 
+import org.apache.commons.math3.util.MathUtils;
+
 public class Radians {
 
     /**
@@ -30,8 +32,8 @@ public class Radians {
     /**
      * Angular separation over great circle.
      *
-     * @param first
-     * @param second
+     * @param first First coords.
+     * @param second Second coords.
      * @return Separation in radians.
      */
     public static double separation(AstronomicalCoordinates first, AstronomicalCoordinates second) {
@@ -41,6 +43,17 @@ public class Radians {
         final double z = Math.sin(first.declination) * Math.sin(second.declination)
                 + Math.cos(first.declination) * Math.cos(second.declination) * Math.cos(second.rightAscension - first.rightAscension);
         return Math.atan2(Math.sqrt(x * x + y * y), z);
+    }
+
+    /**
+     * Computes angle between two vectors defined as RectangularCoordinates.
+     *
+     * @param first  First vector.
+     * @param second Second vector.
+     * @return Angle between two vectors in radians.
+     */
+    public static double between(RectangularCoordinates first, RectangularCoordinates second) {
+        return Math.acos((first.x * second.x + first.y * second.y + first.z * second.z) / (first.getDistance() * second.getDistance()));
     }
 
 }

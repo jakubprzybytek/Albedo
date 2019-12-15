@@ -1,6 +1,6 @@
 package jp.albedo.vsop87;
 
-import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
 import org.junit.jupiter.api.Test;
 

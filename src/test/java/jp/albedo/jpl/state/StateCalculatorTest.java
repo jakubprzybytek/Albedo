@@ -1,7 +1,7 @@
 package jp.albedo.jpl.state;
 
 import jp.albedo.common.JulianDay;
-import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
 import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.JplBody;

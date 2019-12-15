@@ -85,7 +85,7 @@ export function ConjunctionTableRow(props) {
 
   return (
     <TableRow key={conjunction.index} hover role="checkbox" selected={selected} onClick={handleClick}>
-      <TableCell component="th" scope="row" title={conjunction.jde + " [JDE]"}>
+      <TableCell component="th" scope="row">
         <LocalDateTimeChip time={conjunction.localTime} jd={conjunction.jde} />
       </TableCell>
       <TableCell align="center">

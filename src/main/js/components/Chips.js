@@ -13,22 +13,22 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 4,
     paddingRight: 4,
   },
-	label: {
-		paddingLeft: 4,
-		fontWeight: 500,
-	},
-	icon: {
-	  width: 14,
-	},
-	Star: {
-		backgroundColor: yellow[500],
-	},
-	Planet: {
-		backgroundColor: red[500],
-	},
-	Comet: {
-		backgroundColor: purple[500],
-	},
+  label: {
+    paddingLeft: 4,
+    fontWeight: 500,
+  },
+  icon: {
+    width: 14,
+  },
+  Star: {
+    backgroundColor: yellow[500],
+  },
+  Planet: {
+    backgroundColor: red[500],
+  },
+  Comet: {
+    backgroundColor: purple[500],
+  },
   Asteroid: {
     backgroundColor: orange[500],
   },
@@ -140,5 +140,19 @@ export function LowResAngleChip(props) {
     <Tooltip title={formatDegrees(angle)} className={classes.chip}>
       <span className={classes.label}>{angle.toFixed(1)}°</span>
     </Tooltip>
+  );
+}
+
+/**
+ * Usage: <ElongationChip elongation={xxx} />
+**/
+export function ElongationChip(props) {
+
+  const { elongation } = props;
+
+  return (
+    <React.Fragment>
+      {elongation >= 0 ? elongation.toFixed(1) + " E" : -elongation.toFixed(1) + " W"}°
+    </React.Fragment>
   );
 }

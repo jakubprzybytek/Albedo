@@ -1,9 +1,13 @@
 package jp.albedo.jeanmeeus.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
+import jp.albedo.common.RectangularCoordinates;
+import jp.albedo.common.ephemeris.Elongation;
 import jp.albedo.common.magnitude.MagnitudeParameters;
-import jp.albedo.jeanmeeus.ephemeris.common.*;
 import jp.albedo.common.magnitude.MinorPlanetMagnitudeCalculator;
+import jp.albedo.jeanmeeus.ephemeris.common.LightTime;
+import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
+import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
 import jp.albedo.jeanmeeus.ephemeris.impl.OrbitCalculator;
 import jp.albedo.vsop87.VSOP87Calculator;
 import jp.albedo.vsop87.VSOPException;
@@ -38,10 +42,10 @@ public class EllipticMotion {
      * @throws VSOPException
      */
     static public List<Ephemeris> compute(List<Double> jdes, MagnitudeParameters magnitudeParameters, OrbitElements orbitParams) throws VSOPException {
-        OrbitCalculator orbitCalculator = new OrbitCalculator(orbitParams);
-        MinorPlanetMagnitudeCalculator magnitudeCalculator = new MinorPlanetMagnitudeCalculator(magnitudeParameters);
+        final OrbitCalculator orbitCalculator = new OrbitCalculator(orbitParams);
+        final MinorPlanetMagnitudeCalculator magnitudeCalculator = new MinorPlanetMagnitudeCalculator(magnitudeParameters);
 
-        List<Ephemeris> ephemerisList = new LinkedList<>();
+        final List<Ephemeris> ephemerisList = new LinkedList<>();
 
         for (Double day : jdes) {
             final RectangularCoordinates bodyHeliocentricEquatorialCoords = orbitCalculator.computeForDay(day);
@@ -56,16 +60,20 @@ public class EllipticMotion {
 
             // correction for light travel
             final double distanceFromEarth = bodyGeocentricEquatorialCoords.getDistance();
-            final RectangularCoordinates bodyHeliocentricEquatorialTCCoords = orbitCalculator.computeForDay(day - LightTime.fromDistance(distanceFromEarth));
+            final RectangularCoordinates correctedBodyHeliocentricEquatorialCoords = orbitCalculator.computeForDay(day - LightTime.fromDistance(distanceFromEarth));
 
-            final RectangularCoordinates bodyGeocentricEquatorialTCCoords = sunGeocentricEquatorialCoords.add(bodyHeliocentricEquatorialTCCoords);
+            final RectangularCoordinates correctedBodyGeocentricEquatorialCoords = sunGeocentricEquatorialCoords.add(correctedBodyHeliocentricEquatorialCoords);
+            final AstronomicalCoordinates correctedBodyGeocentricEquatorialAstroCoords = AstronomicalCoordinates.fromRectangular(correctedBodyGeocentricEquatorialCoords);
 
             ephemerisList.add(new Ephemeris(
                     day,
-                    AstronomicalCoordinates.fromRectangular(bodyGeocentricEquatorialTCCoords),
-                    bodyHeliocentricEquatorialTCCoords.getDistance(),
+                    correctedBodyGeocentricEquatorialAstroCoords,
+                    correctedBodyHeliocentricEquatorialCoords.getDistance(),
                     distanceFromEarth,
-                    magnitudeCalculator.compute(bodyHeliocentricEquatorialTCCoords, bodyGeocentricEquatorialTCCoords)));
+                    Elongation.between(
+                            AstronomicalCoordinates.fromRectangular(sunGeocentricEquatorialCoords),
+                            correctedBodyGeocentricEquatorialAstroCoords),
+                    magnitudeCalculator.compute(correctedBodyHeliocentricEquatorialCoords, correctedBodyGeocentricEquatorialCoords)));
         }
 
         return ephemerisList;

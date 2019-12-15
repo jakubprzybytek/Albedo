@@ -18,6 +18,7 @@ import { red, orange, yellow, grey, purple } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { SunIcon, MoonIcon, PlanetIcon } from './AstronomicalIcons';
 import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
+import { ElongationChip } from '../components/Chips';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -102,6 +103,12 @@ function Ephemeris(props) {
             <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Distance from Earth: </Typography>
             {ephemeris.distanceFromEarth} [AU]
             </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Elongation: </Typography>
+            <span><ElongationChip elongation={ephemeris.elongation} /></span>
+          </React.Fragment>} />
         </ListItem>
         <ListItem>
           <ListItemText className={classes.listItem} secondary={<React.Fragment>

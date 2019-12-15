@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 @RestController
 public class EphemeridesController {
@@ -30,18 +31,17 @@ public class EphemeridesController {
                                          @RequestParam("interval") double interval,
                                          @RequestParam("longitude") double observerLongitude,
                                          @RequestParam("latitude") double observerLatitude,
-                                         @RequestParam("height") double observerHeight) throws Exception {
+                                         @RequestParam("height") double observerHeight,
+                                         @RequestParam("timeZone") String timeZone) throws Exception {
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
+        final ZoneId zoneId = ZoneId.of(timeZone);
 
         LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s", bodyName, fromDate, toDate, interval, observerLocation));
 
         final ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval, observerLocation);
 
-        return new EphemeridesResponse(computedEphemerides.getBodyDetails(),
-                computedEphemerides.getOrbitElements(),
-                computedEphemerides.getMagnitudeParameters(),
-                computedEphemerides.getEphemerides());
+        return new EphemeridesResponse(computedEphemerides, zoneId);
     }
 
 }

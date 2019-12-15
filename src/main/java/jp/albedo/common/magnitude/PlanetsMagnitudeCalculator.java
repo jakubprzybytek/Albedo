@@ -1,6 +1,6 @@
 package jp.albedo.common.magnitude;
 
-import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.utils.Polynomial;
 import org.apache.commons.math3.util.MathUtils;

@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.common.BodyDetails;
-import jp.albedo.common.JulianDay;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.common.AstronomicalObjectTypes;
 import jp.albedo.webapp.conjunctions.Conjunction;
-import jp.albedo.webapp.utils.RadiansToDegreesSerializer;
+import jp.albedo.webapp.utils.RadiansToPrecision6DegreesSerializer;
 
 public class ConjunctionEvent extends AstronomicalEvent {
 
@@ -27,7 +26,7 @@ public class ConjunctionEvent extends AstronomicalEvent {
     private final Object secondObject;
 
     @JsonProperty
-    @JsonSerialize(using = RadiansToDegreesSerializer.class)
+    @JsonSerialize(using = RadiansToPrecision6DegreesSerializer.class)
     private final double separation;
 
     private ConjunctionEvent(double jde, AstronomicalObjectTypes firstObjectType, Object firstObject, AstronomicalObjectTypes secondObjectType, Object secondObject, double separation) {

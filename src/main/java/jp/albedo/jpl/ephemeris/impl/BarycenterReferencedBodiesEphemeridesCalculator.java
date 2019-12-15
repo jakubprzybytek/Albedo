@@ -2,9 +2,11 @@ package jp.albedo.jpl.ephemeris.impl;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyInformation;
+import jp.albedo.common.Radians;
+import jp.albedo.common.ephemeris.Elongation;
 import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
-import jp.albedo.jeanmeeus.ephemeris.common.RectangularCoordinates;
+import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.Constant;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
@@ -59,25 +61,30 @@ public class BarycenterReferencedBodiesEphemeridesCalculator implements Ephemeri
         final List<Ephemeris> ephemerides = new ArrayList<>(jdes.size());
 
         for (double jde : jdes) {
-            final RectangularCoordinates earthHeliocentricCoords = this.earthStateCalculator.compute(jde);
+            final RectangularCoordinates earthHeliocentricCoordsKm = this.earthStateCalculator.compute(jde);
             final RectangularCoordinates bodyHeliocentricCoordsKm = this.bodyStateCalculator.compute(jde);
-            final RectangularCoordinates bodyGeocentricCoordsKm = bodyHeliocentricCoordsKm.subtract(earthHeliocentricCoords);
+            final RectangularCoordinates bodyGeocentricCoordsKm = bodyHeliocentricCoordsKm.subtract(earthHeliocentricCoordsKm);
 
             // light time correction
             final double lightTime = bodyGeocentricCoordsKm.getDistance() / this.speedOfLight;
             final double correctedJde = jde - lightTime / (24.0 * 60.0 * 60.0);
 
             final RectangularCoordinates correctedBodyHeliocentricCoordsKm = this.bodyStateCalculator.compute(correctedJde);
-            final RectangularCoordinates correctedBodyGeocentricCoordsKm = correctedBodyHeliocentricCoordsKm.subtract(earthHeliocentricCoords);
+            final RectangularCoordinates correctedBodyGeocentricCoordsKm = correctedBodyHeliocentricCoordsKm.subtract(earthHeliocentricCoordsKm);
 
             final RectangularCoordinates correctedBodyHeliocentricCoordsAu = correctedBodyHeliocentricCoordsKm.divideBy(this.au);
             final RectangularCoordinates correctedBodyGeocentricCoordsAu = correctedBodyGeocentricCoordsKm.divideBy(this.au);
 
+            final AstronomicalCoordinates correctedBodyGeocentricAstroCoords = AstronomicalCoordinates.fromRectangular(correctedBodyGeocentricCoordsKm);
+
             ephemerides.add(new Ephemeris(
                     jde,
-                    AstronomicalCoordinates.fromRectangular(correctedBodyGeocentricCoordsKm),
+                    correctedBodyGeocentricAstroCoords,
                     correctedBodyHeliocentricCoordsAu.getDistance(),
                     correctedBodyGeocentricCoordsAu.getDistance(),
+                    Elongation.between(
+                            AstronomicalCoordinates.fromRectangular(earthHeliocentricCoordsKm.negate()),
+                            correctedBodyGeocentricAstroCoords),
                     this.magnitudeCalculator.compute(correctedBodyHeliocentricCoordsAu, correctedBodyGeocentricCoordsAu),
                     AngularSize.fromRadiusAndDistance(this.bodyEquatorialRadius, correctedBodyGeocentricCoordsKm.getDistance())
             ));

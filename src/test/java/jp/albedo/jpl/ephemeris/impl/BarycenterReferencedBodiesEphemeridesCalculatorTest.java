@@ -50,6 +50,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         assertEquals(261.69589038, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
         // WGC no correction: -23.22635324
         assertEquals(-23.22635334, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
+        assertEquals(0.036, Math.toDegrees(ephemeris.elongation), 0.001);
         assertEquals(-26.78, ephemeris.apparentMagnitude);
     }
 
@@ -66,6 +67,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         assertEquals(274.97165424, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
         // WGC no correction: -25.54654902
         assertEquals(-25.54648377, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
+        assertEquals(12.342, Math.toDegrees(ephemeris.elongation), 0.001);
         // Horisons: -0.68
         assertEquals(-0.68, ephemeris.apparentMagnitude);
     }
@@ -84,6 +86,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         assertEquals(310.03557722, Math.toDegrees(ephemeris.coordinates.rightAscension), 0.00000001);
         // WGC no correction: -20.40548613
         assertEquals(-20.40513256, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
+        assertEquals(44.8, Math.toDegrees(ephemeris.elongation), 0.001);
         // Horisons: -4.80 FixMe
         assertEquals(-3.04, ephemeris.apparentMagnitude);
     }
@@ -103,6 +106,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         // WGC no correction: 3.80993121
         assertEquals(3.81133954, Math.toDegrees(ephemeris.coordinates.declination), 0.00000001);
         // Horisons: 0.88
+        assertEquals(-86.832, Math.toDegrees(ephemeris.elongation), 0.001);
         assertEquals(0.88, ephemeris.apparentMagnitude);
     }
 

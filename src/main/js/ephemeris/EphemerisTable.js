@@ -6,12 +6,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { format } from 'date-fns';
 import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
+import { ElongationChip } from '../components/Chips';
+import { LocalDateTimeChip } from '../components/Chips';
 
 const useStyles = makeStyles(theme => ({
   paper: {
-//    width: '800px',
+    //    width: '800px',
   },
   table: {
     width: '100%',
@@ -32,15 +33,16 @@ export default function EphemerisTable(props) {
             <TableCell align="center">Dec. [°]</TableCell>
             <TableCell align="center">Distance f/Sun [AU]</TableCell>
             <TableCell align="center">Distance f/Earth [AU]</TableCell>
+            <TableCell align="center">Elongation [°]</TableCell>
             <TableCell align="center">Magnitude</TableCell>
             <TableCell align="right">Size ["]</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {props.rows.map(ephemeris => (
-            <TableRow key={ephemeris.index}>
-              <TableCell component="th" scope="row" title={ephemeris.jde + " [JDE]"}>
-                {format(Date.parse(ephemeris.jde), "yyyy-MM-dd HH:mm:ss")}
+            <TableRow key={ephemeris.id}>
+              <TableCell component="th" scope="row">
+                <LocalDateTimeChip time={ephemeris.localTime} jd={ephemeris.jde} />
               </TableCell>
               <TableCell align="center" title={ephemeris.coordinates.rightAscension + '°'}>
                 {formatHourAngle(ephemeris.coordinates.rightAscension)}
@@ -53,6 +55,9 @@ export default function EphemerisTable(props) {
               </TableCell>
               <TableCell align="center">
                 {ephemeris.distanceFromEarth.toFixed(6)}
+              </TableCell>
+              <TableCell align="center">
+                <ElongationChip elongation={ephemeris.elongation} />
               </TableCell>
               <TableCell align="center">
                 {ephemeris.apparentMagnitude}

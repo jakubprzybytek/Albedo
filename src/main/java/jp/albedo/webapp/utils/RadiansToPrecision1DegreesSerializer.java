@@ -9,11 +9,11 @@ import org.springframework.boot.jackson.JsonComponent;
 import java.io.IOException;
 
 @JsonComponent
-public class RadiansToDegreesSerializer extends JsonSerializer<Double> {
+public class RadiansToPrecision1DegreesSerializer extends JsonSerializer<Double> {
 
     @Override
     public void serialize(Double aDouble, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeNumber(Precision.round(Math.toDegrees(aDouble), 6));
+        jsonGenerator.writeNumber(Precision.round(Math.toDegrees(aDouble), 1));
     }
 
 }

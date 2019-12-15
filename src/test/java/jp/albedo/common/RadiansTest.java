@@ -61,4 +61,16 @@ class RadiansTest {
             assertEquals(expected.get(i), Math.toDegrees(Radians.separation(first.get(i), second.get(i))), 0.0001);
         }
     }
+
+    @Test
+    void between() {
+        final RectangularCoordinates second = new RectangularCoordinates(1.0, 0.0, 0.0);
+        assertEquals(45.0, Math.toDegrees(Radians.between(new RectangularCoordinates(1.0, 1.0, 0.0), second)), 0.00000000000001);
+        assertEquals(90.0, Math.toDegrees(Radians.between(new RectangularCoordinates(0.0, 1.0, 0.0), second)));
+        assertEquals(135.0, Math.toDegrees(Radians.between(new RectangularCoordinates(-1.0, 1.0, 0.0), second)));
+        assertEquals(180.0, Math.toDegrees(Radians.between(new RectangularCoordinates(-1.0, 0.0, 0.0), second)));
+        assertEquals(135.0, Math.toDegrees(Radians.between(new RectangularCoordinates(-1.0, -1.0, 0.0), second)));
+        assertEquals(90.0, Math.toDegrees(Radians.between(new RectangularCoordinates(0.0, -1.0, 0.0), second)));
+        assertEquals(45.0, Math.toDegrees(Radians.between(new RectangularCoordinates(1.0, -1.0, 0.0), second)), 0.00000000000001);
+    }
 }

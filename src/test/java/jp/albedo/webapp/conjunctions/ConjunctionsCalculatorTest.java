@@ -21,15 +21,15 @@ class ConjunctionsCalculatorTest {
     void findEdgeConjunctions() {
 
         List<Ephemeris> ephemeris1 = Arrays.asList(
-                new Ephemeris(1.0, coords(1.0, 2.0), 2.0, 1.0, 0.0),
-                new Ephemeris(2.0, coords(2.0, 4.0), 2.0, 1.0, 0.0),
-                new Ephemeris(3.0, coords(3.0, 3.0), 2.0, 1.0, 0.0)
+                new Ephemeris(1.0, coords(1.0, 2.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(2.0, coords(2.0, 4.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(3.0, coords(3.0, 3.0), 2.0, 1.0, 0.0, 0.0)
         );
 
         List<Ephemeris> ephemeris2 = Arrays.asList(
-                new Ephemeris(1.0, coords(1.0, 1.0), 2.0, 1.0, 0.0),
-                new Ephemeris(2.0, coords(2.0, 1.0), 2.0, 1.0, 0.0),
-                new Ephemeris(3.0, coords(3.0, 1.0), 2.0, 1.0, 0.0)
+                new Ephemeris(1.0, coords(1.0, 1.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(2.0, coords(2.0, 1.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(3.0, coords(3.0, 1.0), 2.0, 1.0, 0.0, 0.0)
         );
 
         Pair<ComputedEphemerides, ComputedEphemerides> pair = new Pair<>(
@@ -49,19 +49,19 @@ class ConjunctionsCalculatorTest {
     void findTwoConjunctions() {
 
         List<Ephemeris> ephemeris1 = Arrays.asList(
-                new Ephemeris(1.0, coords(1.0, 3.0), 2.0, 1.0, 0.0),
-                new Ephemeris(2.0, coords(2.0, 2.0), 2.0, 1.0, 0.0),
-                new Ephemeris(3.0, coords(3.0, 4.0), 2.0, 1.0, 0.0),
-                new Ephemeris(4.0, coords(4.0, 3.0), 2.0, 1.0, 0.0),
-                new Ephemeris(5.0, coords(5.0, 5.0), 2.0, 1.0, 0.0)
+                new Ephemeris(1.0, coords(1.0, 3.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(2.0, coords(2.0, 2.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(3.0, coords(3.0, 4.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(4.0, coords(4.0, 3.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(5.0, coords(5.0, 5.0), 2.0, 1.0, 0.0, 0.0)
         );
 
         List<Ephemeris> ephemeris2 = Arrays.asList(
-                new Ephemeris(1.0, coords(1.0, 1.0), 2.0, 1.0, 0.0),
-                new Ephemeris(2.0, coords(2.0, 1.0), 2.0, 1.0, 0.0),
-                new Ephemeris(3.0, coords(3.0, 1.0), 2.0, 1.0, 0.0),
-                new Ephemeris(4.0, coords(4.0, 1.0), 2.0, 1.0, 0.0),
-                new Ephemeris(5.0, coords(5.0, 1.0), 2.0, 1.0, 0.0)
+                new Ephemeris(1.0, coords(1.0, 1.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(2.0, coords(2.0, 1.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(3.0, coords(3.0, 1.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(4.0, coords(4.0, 1.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(5.0, coords(5.0, 1.0), 2.0, 1.0, 0.0, 0.0)
         );
 
         Pair<ComputedEphemerides, ComputedEphemerides> pair = new Pair<>(
@@ -84,9 +84,9 @@ class ConjunctionsCalculatorTest {
     void findConjunctionsForBodyAndCatalogue() {
 
         List<Ephemeris> ephemeris1 = Arrays.asList(
-                new Ephemeris(1.0, coords(1.0, 1.0), 2.0, 1.0, 0.0),
-                new Ephemeris(2.0, coords(2.0, 1.0), 2.0, 1.0, 0.0),
-                new Ephemeris(3.0, coords(3.0, 1.0), 2.0, 1.0, 0.0)
+                new Ephemeris(1.0, coords(1.0, 1.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(2.0, coords(2.0, 1.0), 2.0, 1.0, 0.0, 0.0),
+                new Ephemeris(3.0, coords(3.0, 1.0), 2.0, 1.0, 0.0, 0.0)
         );
 
         final AstronomicalCoordinates catalogueEntryCoords = coords(2.0, 2.0);
