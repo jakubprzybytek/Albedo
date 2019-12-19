@@ -108,19 +108,30 @@ export function PlanetIcon(props) {
 
   switch (planetName) {
     case 'Mercury':
-      return (<MercuryIcon  width={width} height={height} />);
+      return (<MercuryIcon width={width} height={height} />);
     case 'Venus':
-      return (<VenusIcon  width={width} height={height} />);
+      return (<VenusIcon width={width} height={height} />);
     case 'Mars':
-      return (<MarsIcon  width={width} height={height} />);
+      return (<MarsIcon width={width} height={height} />);
     case 'Jupiter':
-      return (<JupiterIcon  width={width} height={height} />);
+      return (<JupiterIcon width={width} height={height} />);
     case 'Saturn':
-      return (<SaturnIcon  width={width} height={height} />);
+      return (<SaturnIcon width={width} height={height} />);
     case 'Neptune':
-      return (<NeptuneIcon  width={width} height={height} />);
+      return (<NeptuneIcon width={width} height={height} />);
     case 'Uranus':
-      return (<UranusIcon  width={width} height={height} />);
+      return (<UranusIcon width={width} height={height} />);
   }
   return '?';
+}
+
+export function CometIcon(props) {
+
+  const { width, height } = props;
+
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width={width} height={height}>
+      <path d="M35,79 A15,15 0 1,0 35,81 M20,65 50,5 M30,70 80,20 M95,50 35,80h-2.5" fill="none" strokeWidth="8" stroke="#fff" />
+    </svg>
+  )
 }

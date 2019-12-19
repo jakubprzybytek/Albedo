@@ -3,8 +3,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import { red, orange, yellow, blue, purple } from '@material-ui/core/colors';
-import { SunIcon, MoonIcon, PlanetIcon } from './AstronomicalIcons';
-import { format } from 'date-fns';
+import { SunIcon, MoonIcon, PlanetIcon, CometIcon } from './AstronomicalIcons';
 import { formatDegrees } from './../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
@@ -61,7 +60,7 @@ export function BodyChip(props) {
         {bodyDetails.name === 'Sun' && <SunIcon width={14} height={14} />}
         {bodyDetails.name === 'Moon' && <MoonIcon width={12} height={12} />}
         {bodyDetails.bodyType === 'Planet' && <PlanetIcon planetName={bodyDetails.name} width={14} height={14} />}
-        {bodyDetails.bodyType === 'Comet' && 'C'}
+        {bodyDetails.bodyType === 'Comet' && <CometIcon width={12} height={12} />}
         {bodyDetails.bodyType === 'Asteroid' && 'A'}
       </TinyAvatar>
       <span className={classes.label}>{bodyDetails.name}</span>

@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { red, orange, yellow, grey, purple } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { SunIcon, MoonIcon, PlanetIcon } from './AstronomicalIcons';
+import { SunIcon, MoonIcon, PlanetIcon, CometIcon } from './AstronomicalIcons';
 import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
 import { ElongationChip } from '../components/Chips';
 
@@ -229,7 +229,7 @@ export default function BodyCard(props) {
       {bodyInfo.bodyDetails.name === 'Sun' && <CardHeader avatar={<Avatar className={classes.avatarYellow}><SunIcon width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
       {bodyInfo.bodyDetails.name === 'Moon' && <CardHeader avatar={<Avatar className={classes.avatarGrey}><MoonIcon width={32} height={32} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
       {bodyInfo.bodyDetails.bodyType === 'Planet' && <CardHeader avatar={<Avatar className={classes.avatarRed}><PlanetIcon planetName={bodyInfo.bodyDetails.name} width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.bodyDetails.bodyType === 'Comet' && <CardHeader avatar={<Avatar className={classes.avatarPurple}>C</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+      {bodyInfo.bodyDetails.bodyType === 'Comet' && <CardHeader avatar={<Avatar className={classes.avatarPurple}><CometIcon width={28} height={28} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
       {bodyInfo.bodyDetails.bodyType === 'Asteroid' && <CardHeader avatar={<Avatar className={classes.avatarOrange}>A</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
       {bodyInfo.ephemeris && <CardContent>
         <Ephemeris ephemeris={bodyInfo.ephemeris} />
