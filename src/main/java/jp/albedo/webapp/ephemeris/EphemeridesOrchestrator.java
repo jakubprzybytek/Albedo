@@ -1,11 +1,10 @@
 package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.BodyType;
-import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.utils.FunctionUtils;
-import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.ephemeris.jpl.JplEphemerisCalculator;
 import jp.albedo.webapp.ephemeris.orbitbased.OrbitBasedEphemerisCalculator;
 import jp.albedo.webapp.services.OrbitingBodyRecord;

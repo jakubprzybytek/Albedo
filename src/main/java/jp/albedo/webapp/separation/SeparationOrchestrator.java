@@ -1,7 +1,7 @@
 package jp.albedo.webapp.separation;
 
 import jp.albedo.common.Radians;
-import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;

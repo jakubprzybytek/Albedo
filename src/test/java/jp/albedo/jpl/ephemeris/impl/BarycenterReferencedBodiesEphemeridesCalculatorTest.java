@@ -1,7 +1,7 @@
 package jp.albedo.jpl.ephemeris.impl;
 
 import jp.albedo.common.JulianDay;
-import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jpl.files.AsciiFileLoader;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;

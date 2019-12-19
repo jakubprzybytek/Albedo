@@ -3,7 +3,7 @@ package jp.albedo.webapp.conjunctions;
 import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyDetails;
-import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import org.apache.commons.math3.util.Pair;
 import org.junit.jupiter.api.DisplayName;

@@ -1,7 +1,7 @@
 package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.BodyDetails;
-import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.common.magnitude.MagnitudeParameters;
 import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
 

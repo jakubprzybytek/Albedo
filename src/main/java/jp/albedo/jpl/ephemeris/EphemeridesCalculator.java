@@ -1,6 +1,6 @@
 package jp.albedo.jpl.ephemeris;
 
-import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jpl.JplException;
 
 import java.util.Collections;

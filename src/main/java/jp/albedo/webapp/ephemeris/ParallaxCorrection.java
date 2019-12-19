@@ -1,7 +1,7 @@
 package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
-import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.jeanmeeus.topocentric.Parallax;
 

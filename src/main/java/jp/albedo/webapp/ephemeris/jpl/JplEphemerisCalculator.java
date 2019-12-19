@@ -2,7 +2,7 @@ package jp.albedo.webapp.ephemeris.jpl;
 
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
-import jp.albedo.jeanmeeus.ephemeris.Ephemeris;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;

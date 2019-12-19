@@ -1,11 +1,10 @@
-package jp.albedo.jeanmeeus.ephemeris;
+package jp.albedo.common.ephemeris;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.common.AstronomicalCoordinates;
-import jp.albedo.webapp.utils.JulianDayToLocalDateTimeSerializer;
 import jp.albedo.webapp.utils.Precision6Serializer;
-import jp.albedo.webapp.utils.RadiansToPrecision6DegreesSerializer;
 import jp.albedo.webapp.utils.RadiansToPrecision1DegreesSerializer;
+import jp.albedo.webapp.utils.RadiansToPrecision6DegreesSerializer;
 
 public class Ephemeris {
 

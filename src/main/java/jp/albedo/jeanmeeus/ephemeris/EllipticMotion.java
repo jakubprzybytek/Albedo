@@ -3,6 +3,7 @@ package jp.albedo.jeanmeeus.ephemeris;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.common.ephemeris.Elongation;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.common.magnitude.MagnitudeParameters;
 import jp.albedo.common.magnitude.MinorPlanetMagnitudeCalculator;
 import jp.albedo.jeanmeeus.ephemeris.common.LightTime;
