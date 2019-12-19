@@ -24,8 +24,8 @@ public class SeparationController {
     private SeparationOrchestrator separationOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/separation")
-    public List<ResponseWrapper> separation(@RequestParam(value = "first", defaultValue = "Sun") String firstBody,
-                                            @RequestParam(value = "second", defaultValue = "Moon") String secondBody,
+    public List<ResponseWrapper> separation(@RequestParam(value = "firstBody", defaultValue = "Sun") String firstBody,
+                                            @RequestParam(value = "secondBody", defaultValue = "Moon") String secondBody,
                                             @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                             @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                             @RequestParam("interval") double interval,
