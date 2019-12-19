@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import TabPanel from './common/TabPanel';
 import EphemerisPanel from './ephemeris/EphemerisPanel';
 import ConjunctionsPanel from './conjunctions/ConjunctionsPanel';
+import SeparationPanel from './separation/SeparationPanel';
 import RiseTransitSetPanel from './riseTransitSet/RiseTransitSetPanel';
 
 const useStyles = makeStyles(theme => ({
@@ -38,6 +39,7 @@ export default function ToolTabs() {
       <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} aria-label="Vertical tabs example" className={classes.tabs}>
         <Tab label="Ephemeris" />
         <Tab label="Conjunctions" />
+        <Tab label="Separation" />
         <Tab label="Rise Transit Set" />
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
@@ -47,6 +49,9 @@ export default function ToolTabs() {
         <ConjunctionsPanel />
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={2}>
+        <SeparationPanel />
+      </TabPanel>
+      <TabPanel className={classes.tabPanel} value={value} index={3}>
         <RiseTransitSetPanel />
       </TabPanel>
     </div>
