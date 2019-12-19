@@ -6,7 +6,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
-import jp.albedo.webapp.common.EventWrapper;
+import jp.albedo.webapp.common.ResponseWrapper;
 import jp.albedo.webapp.conjunctions.rest.ConjunctionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,16 +31,16 @@ public class ConjunctionsController {
     private ConjunctionsOrchestrator conjunctionsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/conjunctions")
-    public List<EventWrapper> conjunctions(@RequestParam(value = "primaryBodies", defaultValue = "") Set<String> primaryBodyNames,
-                                           @RequestParam(value = "primary", defaultValue = "") Set<String> primaryTypeStrings,
-                                           @RequestParam(value = "secondary", defaultValue = "") Set<String> secondaryTypeStrings,
-                                           @RequestParam(value = "catalogues", defaultValue = "") Set<String> catalogueTypeStrings,
-                                           @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                           @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
-                                           @RequestParam("longitude") double observerLongitude,
-                                           @RequestParam("latitude") double observerLatitude,
-                                           @RequestParam("height") double observerHeight,
-                                           @RequestParam("timeZone") String timeZone) {
+    public List<ResponseWrapper> conjunctions(@RequestParam(value = "primaryBodies", defaultValue = "") Set<String> primaryBodyNames,
+                                              @RequestParam(value = "primary", defaultValue = "") Set<String> primaryTypeStrings,
+                                              @RequestParam(value = "secondary", defaultValue = "") Set<String> secondaryTypeStrings,
+                                              @RequestParam(value = "catalogues", defaultValue = "") Set<String> catalogueTypeStrings,
+                                              @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                              @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+                                              @RequestParam("longitude") double observerLongitude,
+                                              @RequestParam("latitude") double observerLatitude,
+                                              @RequestParam("height") double observerHeight,
+                                              @RequestParam("timeZone") String timeZone) {
 
         final Set<BodyType> primaryBodyTypes = BodyType.parse(primaryTypeStrings);
         final Set<BodyType> secondaryBodyTypes = BodyType.parse(secondaryTypeStrings);
@@ -57,7 +57,7 @@ public class ConjunctionsController {
                 this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(primaryBodyNames, primaryBodyTypes, catalogueTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
                         .map(ConjunctionEvent::fromBodyAndCatalogueEntry))
                 .sorted(Comparator.comparingDouble(AstronomicalEvent::getJde))
-                .map(event -> new EventWrapper(
+                .map(event -> new ResponseWrapper(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
                         event))
