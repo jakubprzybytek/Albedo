@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   inline: {
     display: 'inline-flex',
+    flexWrap: 'wrap',
   },
 }));
 
