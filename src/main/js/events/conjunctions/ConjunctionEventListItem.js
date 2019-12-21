@@ -24,8 +24,6 @@ function BodyInfo(props) {
 
   const { bodyInfo } = props;
 
-  const classes = useStyles();
-
   return (
     <React.Fragment>
       <BodyChip bodyDetails={bodyInfo.bodyDetails} />
@@ -34,9 +32,25 @@ function BodyInfo(props) {
   );
 }
 
-function FormatEventCopy(props) {
+function Elongation(props) {
 
   const { conjunction } = props;
+
+  return (
+    <React.Fragment>
+      Elongation {conjunction.secondObjectType !== 'Body' || conjunction.first.ephemeris.elongation < conjunction.second.ephemeris.elongation ?
+        <ElongationChip elongation={conjunction.first.ephemeris.elongation} showDayTime={true} /> :
+        <ElongationChip elongation={conjunction.second.ephemeris.elongation} showDayTime={true} />}.
+    </React.Fragment>
+  );
+}
+
+function RtsEventCopy(props) {
+
+  const { conjunction } = props;
+
+  const sunInvolved = (conjunction.firstObjectType === 'Body' && conjunction.first.bodyDetails.name === 'Sun') ||
+    (conjunction.secondObjectType === 'Body' && conjunction.second.bodyDetails.name === 'Sun');
 
   return (
     <React.Fragment>
@@ -44,9 +58,7 @@ function FormatEventCopy(props) {
       {conjunction.secondObjectType === 'Body' && <BodyInfo bodyInfo={conjunction.second} />}
       {conjunction.secondObjectType === 'CatalogueEntry' && <CatalogueEntryChip catalogueEntry={conjunction.second} />
       } with separation of {formatDegrees(conjunction.separation)}.
-      Elongation {conjunction.secondObjectType !== 'Body' || conjunction.first.ephemeris.elongation < conjunction.second.ephemeris.elongation ?
-        <ElongationChip elongation={conjunction.first.ephemeris.elongation} showDayTime={true} /> :
-        <ElongationChip elongation={conjunction.second.ephemeris.elongation} showDayTime={true} />}.
+      {!sunInvolved && <Elongation conjunction={conjunction} />}
     </React.Fragment>
   );
 }
@@ -63,7 +75,7 @@ export default function ConjunctionEventListItem(props) {
         <LocalTimeChip time={event.localTime} jd={event.jde} />
       </Typography>
       <Typography component="span" variant="body2" className={classes.inline}>
-        <FormatEventCopy conjunction={event} />
+        <RtsEventCopy conjunction={event} />
       </Typography>
     </div>
   );
