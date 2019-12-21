@@ -7,8 +7,8 @@ import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
 import { grey, blue, red } from '@material-ui/core/colors';
-import RiseTransitSetEventListItem from './events/RiseTransitSetEventListItem';
-import ConjunctionEventListItem from './events/ConjunctionEventListItem';
+import RiseTransitSetEventListItem from './RiseTransitSet/RiseTransitSetEventListItem';
+import ConjunctionEventListItem from './conjunctions/ConjunctionEventListItem';
 
 const useStyles = makeStyles(theme => ({
   paper: {

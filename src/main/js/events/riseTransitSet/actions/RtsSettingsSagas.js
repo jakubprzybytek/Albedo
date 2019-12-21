@@ -1,6 +1,6 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { buildUpdateRtsSettingsAction } from './RtsSettingsActions';
-import { buildFetchEventsSaga } from '../../eventslist/actions/EventsListSagas';
+import { buildFetchEventsSaga } from '../../actions/EventsListSagas';
 
 export const UPDATE_RTS_SETTINGS_SAGA = 'UPDATE_RTS_SETTINGS_SAGA';
 

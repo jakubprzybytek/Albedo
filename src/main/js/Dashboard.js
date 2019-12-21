@@ -10,10 +10,10 @@ import IconButton from '@material-ui/core/IconButton';
 import TuneIcon from '@material-ui/icons/Tune';
 import PersonIcon from '@material-ui/icons/Person';
 import TabPanel from './common/TabPanel';
-import EventsList from './eventslist/EventsList';
+import EventsList from './events/EventsList';
 import ToolTabs from './tools/ToolTabs';
 import UserDrawer from './UserDrawer';
-import SettingsDrawer from './settings/SettingsDrawer';
+import SettingsDrawer from './events/SettingsDrawer';
 
 const drawerWidth = 240;
 

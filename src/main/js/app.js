@@ -8,10 +8,10 @@ import { all } from 'redux-saga/effects';
 import Dashboard from './Dashboard';
 import locationReducer from './components/observerlocation/LocationReducer';
 import timeZoneReducer from './components/timezone/TimeZoneReducer';
-import rtsSettingsReducer from './settings/actions/RtsSettingsReducer';
-import storeEventsListReducer from './eventslist/actions/EventsListReducers';
-import { watchFetchEvents, fetchEvents } from './eventslist/actions/EventsListSagas';
-import { watchUpdateRtsSettingsSaga } from './settings/actions/RtsSettingsSagas';
+import rtsSettingsReducer from './events/riseTransitSet/actions/RtsSettingsReducer';
+import storeEventsListReducer from './events/actions/EventsListReducers';
+import { watchFetchEvents, fetchEvents } from './events/actions/EventsListSagas';
+import { watchUpdateRtsSettingsSaga } from './events/riseTransitSet/actions/RtsSettingsSagas';
 
 const albedoReducer = combineReducers({
   observerLocation: locationReducer,
