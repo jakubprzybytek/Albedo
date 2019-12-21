@@ -11,7 +11,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import PersonIcon from '@material-ui/icons/Person';
 import TabPanel from './common/TabPanel';
 import EventsList from './eventslist/EventsList';
-import ToolTabs from './ToolTabs';
+import ToolTabs from './tools/ToolTabs';
 import UserDrawer from './UserDrawer';
 import SettingsDrawer from './settings/SettingsDrawer';
 

@@ -6,7 +6,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import { addDays, format } from 'date-fns';
-import SubmitBar from './../components/SubmitBar';
+import SubmitBar from '../../components/SubmitBar';
 
 const useStyles = makeStyles(theme => ({
   root: {

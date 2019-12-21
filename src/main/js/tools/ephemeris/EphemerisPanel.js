@@ -4,11 +4,11 @@ import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import TabPanel from '../common/TabPanel';
+import TabPanel from '../../common/TabPanel';
 import EphemerisForm from './EphemerisForm';
 import EphemerisTable from './EphemerisTable';
 import EphemerisCharts from './EphemerisCharts';
-import BodyCard from '../components/BodyCard';
+import BodyCard from '../../components/BodyCard';
 
 const useStyles = makeStyles(theme => ({
   area: {

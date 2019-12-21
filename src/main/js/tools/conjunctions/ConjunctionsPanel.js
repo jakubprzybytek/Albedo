@@ -4,8 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import ConjunctionsForm from './ConjunctionsForm';
 import ConjunctionsTable from './ConjunctionsTable';
 import ConjunctionCard from './ConjunctionCard';
-import BodyCard from '../components/BodyCard';
-import CatalogueEntryCard from '../components/CatalogueEntryCard';
+import BodyCard from '../../components/BodyCard';
+import CatalogueEntryCard from '../../components/CatalogueEntryCard';
 
 const useStyles = makeStyles(theme => ({
   card: {

@@ -6,9 +6,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { format } from 'date-fns';
-import { BodyChip, CatalogueEntryChip, LocalDateTimeChip } from '../components/Chips';
-import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
+import { BodyChip, LocalDateTimeChip } from '../../components/Chips';
+import { formatDegrees } from '../../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
   paper: {

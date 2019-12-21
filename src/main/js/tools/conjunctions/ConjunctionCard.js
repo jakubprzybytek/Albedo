@@ -6,8 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { yellow } from '@material-ui/core/colors';
 import { format } from 'date-fns';
-import { formatDegrees } from './../utils/Angles';
-import { BodyChip, CatalogueEntryChip } from '../components/Chips';
+import { formatDegrees } from '../../utils/Angles';
+import { BodyChip, CatalogueEntryChip } from '../../components/Chips';
 
 const useStyles = makeStyles(theme => ({
 	card: {

@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { addWeeks } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import format from 'date-fns/format';
-import SubmitBar from './../components/SubmitBar';
+import SubmitBar from '../../components/SubmitBar';
 
 const useStyles = makeStyles(theme => ({
   root: {

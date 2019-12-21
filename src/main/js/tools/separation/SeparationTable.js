@@ -6,8 +6,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { LocalDateTimeChip } from '../components/Chips';
-import { formatDegrees } from '../utils/Angles';
+import { LocalDateTimeChip } from '../../components/Chips';
+import { formatDegrees } from '../../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
   table: {

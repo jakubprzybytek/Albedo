@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import TabPanel from '../common/TabPanel';
+import TabPanel from '../../common/TabPanel';
 import SeparationForm from './SeparationForm';
 import SeparationTable from './SeparationTable';
 import SeparationCharts from './SeparationCharts';
