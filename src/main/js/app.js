@@ -9,14 +9,13 @@ import Dashboard from './Dashboard';
 
 import locationReducer from './components/observerlocation/LocationReducer';
 import timeZoneReducer from './components/timezone/TimeZoneReducer';
-import { eventsListSettingsReducer, storeEventsListReducer } from './events/actions/EventsListReducers';
+import { eventsListReducer } from './events/actions/EventsListReducers';
 import { watchUpdateEventsListSettingsSectionsSaga, watchFetchEvents, fetchEvents } from './events/actions/EventsListSagas';
 
 const albedoReducer = combineReducers({
   observerLocation: locationReducer,
   timeZone: timeZoneReducer,
-  settings: eventsListSettingsReducer,
-  eventsList: storeEventsListReducer,
+  eventsList: eventsListReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

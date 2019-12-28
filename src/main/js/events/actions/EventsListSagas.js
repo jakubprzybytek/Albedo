@@ -35,7 +35,7 @@ const fetch = (payload) => {
 export function* fetchEvents() {
   console.log('Fetch events');
 
-  const params = yield select(store => buildEventsListRequestParams(store));
+  const params = yield select(store => buildEventsListRequestParams(store.eventsList.settings, store.observerLocation, store.timeZone));
 
   try {
     const response = yield call(fetch, {

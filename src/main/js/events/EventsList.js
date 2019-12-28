@@ -52,11 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const mapStateToProps = state => {
-  return {
-    events: state.eventsList,
-  };
-};
+const mapStateToProps = state => ({ events: state.eventsList.events, });
 
 function EventsList(props) {
 

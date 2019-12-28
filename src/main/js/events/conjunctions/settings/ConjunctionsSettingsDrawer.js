@@ -1,10 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
 import { red } from '@material-ui/core/colors';
-import { buildUpdateEventsListSettingsSectionsSaga } from '../../actions/EventsListSagas';
+import connectSettings from '../../actions/EventsListSettingsConnect';
 import { SettingsExpansionPanel, SettingsExpansionSummary, SettingsExpansionPanelDetails, InternalCheckbox } from '../../settings/SettingsExpansionPanel';
 
 const useStyles = makeStyles(theme => ({
@@ -13,43 +12,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const mapStateToProps = state => {
-  return {
-    conjunctionsSettings: state.settings.conjunctions
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    submitUpdateConjunctionsSettings: (conjunctionsSettings) => {
-      dispatch(buildUpdateEventsListSettingsSectionsSaga('conjunctions', conjunctionsSettings));
-    }
-  };
-};
-
 export function ConjunctionsSettingsDrawer(props) {
 
-  const { conjunctionsSettings, submitUpdateConjunctionsSettings } = props;
+  const { settingsSection, submitSettingsSectionUpdate } = props;
 
   const classes = useStyles();
 
   function updateConjunctionsSettings(fieldName, value) {
-    submitUpdateConjunctionsSettings({ ...conjunctionsSettings, [fieldName]: value });
+    submitSettingsSectionUpdate({ ...settingsSection, [fieldName]: value });
   }
 
   return (
     <SettingsExpansionPanel color={red[50]}>
-      <SettingsExpansionSummary checked={conjunctionsSettings.enabled} setChecked={value => updateConjunctionsSettings('enabled', value)}>
+      <SettingsExpansionSummary checked={settingsSection.enabled} setChecked={value => updateConjunctionsSettings('enabled', value)}>
         <Typography>Conjunctions</Typography>
       </SettingsExpansionSummary>
-      <SettingsExpansionPanelDetails disabled={!conjunctionsSettings.enabled}>
+      <SettingsExpansionPanelDetails disabled={!settingsSection.enabled}>
         <Typography variant="subtitle2" component="span">
           Show conjunctions between following object types:
             <FormGroup className={classes.singlePaddingLeft}>
             <InternalCheckbox label="Sun"
-              disabled={!conjunctionsSettings.enabled} checked={conjunctionsSettings.sunEnabled} setChecked={value => updateConjunctionsSettings('sunEnabled', value)} />
+              disabled={!settingsSection.enabled} checked={settingsSection.sunEnabled} setChecked={value => updateConjunctionsSettings('sunEnabled', value)} />
             <InternalCheckbox label="Moon"
-              disabled={!conjunctionsSettings.enabled} checked={conjunctionsSettings.moonEnabled} setChecked={value => updateConjunctionsSettings('moonEnabled', value)} />
+              disabled={!settingsSection.enabled} checked={settingsSection.moonEnabled} setChecked={value => updateConjunctionsSettings('moonEnabled', value)} />
           </FormGroup>
         </Typography>
       </SettingsExpansionPanelDetails>
@@ -57,9 +42,4 @@ export function ConjunctionsSettingsDrawer(props) {
   );
 }
 
-const GlobalStateAwareConjunctionsSettingsDrawer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConjunctionsSettingsDrawer);
-
-export default GlobalStateAwareConjunctionsSettingsDrawer;
+export default connectSettings('conjunctions')(ConjunctionsSettingsDrawer);

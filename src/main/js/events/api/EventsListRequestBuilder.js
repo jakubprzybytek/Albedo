@@ -1,12 +1,12 @@
 import { addDays, format } from 'date-fns';
 
-export function buildEventsListRequestParams(store) {
+export function buildEventsListRequestParams(settings, observerLocation, timeZone) {
     return {
         from: format(new Date(), "yyyy-MM-dd"),
         to: format(addDays(new Date(), 3), "yyyy-MM-dd"),
-        ...store.observerLocation,
-        timeZone: store.timeZone,
-        rtsSunEnabled: store.settings.rts.rtsEnabled && store.settings.rts.rtsSunEnabled,
-        rtsMoonEnabled: store.settings.rts.rtsEnabled && store.settings.rts.rtsMoonEnabled,
+        ...observerLocation,
+        timeZone: timeZone,
+        rtsSunEnabled: settings.rts.enabled && settings.rts.sunEnabled,
+        rtsMoonEnabled: settings.rts.enabled && settings.rts.moonEnabled,
     };
 }
