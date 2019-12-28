@@ -22,7 +22,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => {
   return {
     submitUpdateConjunctionsSettings: (conjunctionsSettings) => {
-      dispatch(buildUpdateEventsListSettingsSectionsSaga("conjunctions", conjunctionsSettings));
+      dispatch(buildUpdateEventsListSettingsSectionsSaga('conjunctions', conjunctionsSettings));
     }
   };
 };

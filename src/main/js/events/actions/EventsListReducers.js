@@ -1,6 +1,11 @@
 import { UPDATE_EVENTS_LIST_SETTINGS_SECTION, STORE_EVENTS_LIST } from './EventsListActions';
 
 const settingsInitialState = {
+  rts: {
+    rtsEnabled: true,
+    rtsSunEnabled: false,
+    rtsMoonEnabled: true
+  },
   conjunctions: {
     enabled: true,
     sunEnabled: false,

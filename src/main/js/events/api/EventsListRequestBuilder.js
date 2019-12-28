@@ -6,7 +6,7 @@ export function buildEventsListRequestParams(store) {
         to: format(addDays(new Date(), 3), "yyyy-MM-dd"),
         ...store.observerLocation,
         timeZone: store.timeZone,
-        rtsSunEnabled: store.rtsSettings.rtsEnabled && store.rtsSettings.rtsSunEnabled,
-        rtsMoonEnabled: store.rtsSettings.rtsEnabled && store.rtsSettings.rtsMoonEnabled,
+        rtsSunEnabled: store.settings.rts.rtsEnabled && store.settings.rts.rtsSunEnabled,
+        rtsMoonEnabled: store.settings.rts.rtsEnabled && store.settings.rts.rtsMoonEnabled,
     };
 }

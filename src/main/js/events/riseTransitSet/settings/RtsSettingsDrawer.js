@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
 import { blue } from '@material-ui/core/colors';
-import { buildUpdateRtsSettingsSaga } from '../actions/RtsSettingsSagas';
+import { buildUpdateEventsListSettingsSectionsSaga } from '../../actions/EventsListSagas';
 import { SettingsExpansionPanel, SettingsExpansionSummary, SettingsExpansionPanelDetails, InternalCheckbox } from '../../settings/SettingsExpansionPanel';
 
 const useStyles = makeStyles(theme => ({
@@ -15,14 +15,14 @@ const useStyles = makeStyles(theme => ({
 
 const mapStateToProps = state => {
   return {
-    rtsSettings: state.rtsSettings
+    rtsSettings: state.settings.rts
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     submitUpdateRtsSettings: (rtsSettings) => {
-      dispatch(buildUpdateRtsSettingsSaga(rtsSettings))
+      dispatch(buildUpdateEventsListSettingsSectionsSaga('rts', rtsSettings));
     }
   };
 };

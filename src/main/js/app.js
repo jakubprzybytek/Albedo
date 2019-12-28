@@ -6,17 +6,15 @@ import 'regenerator-runtime/runtime';
 import createSagaMiddleware from 'redux-saga'
 import { all } from 'redux-saga/effects';
 import Dashboard from './Dashboard';
+
 import locationReducer from './components/observerlocation/LocationReducer';
 import timeZoneReducer from './components/timezone/TimeZoneReducer';
-import rtsSettingsReducer from './events/riseTransitSet/actions/RtsSettingsReducer';
 import { eventsListSettingsReducer, storeEventsListReducer } from './events/actions/EventsListReducers';
-import { watchEventsListSettingsSectionsSaga, watchFetchEvents, fetchEvents } from './events/actions/EventsListSagas';
-import { watchUpdateRtsSettingsSaga } from './events/riseTransitSet/actions/RtsSettingsSagas';
+import { watchUpdateEventsListSettingsSectionsSaga, watchFetchEvents, fetchEvents } from './events/actions/EventsListSagas';
 
 const albedoReducer = combineReducers({
   observerLocation: locationReducer,
   timeZone: timeZoneReducer,
-  rtsSettings: rtsSettingsReducer,
   settings: eventsListSettingsReducer,
   eventsList: storeEventsListReducer,
 });
@@ -28,9 +26,8 @@ store.subscribe(() => console.log(store.getState()))
 
 export default function* rootSaga() {
   yield all([
-    watchEventsListSettingsSectionsSaga(),
+    watchUpdateEventsListSettingsSectionsSaga(),
     watchFetchEvents(),
-    watchUpdateRtsSettingsSaga(),
     fetchEvents()
   ])
 }

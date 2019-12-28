@@ -50,7 +50,7 @@ export function* fetchEvents() {
   }
 };
 
-export function* watchEventsListSettingsSectionsSaga() {
+export function* watchUpdateEventsListSettingsSectionsSaga() {
   yield takeLatest(UPDATE_EVENTS_LIST_SETTINGS_SECTION_SAGA, updateEventsListSettingsSectionsSaga)
 };
 
