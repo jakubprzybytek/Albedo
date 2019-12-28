@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: grey[50],
     paddingLeft: 32
   },
+  hidden: {
+    display: 'none'
+  },
   RiseTransitSet: {
     backgroundColor: blue[50],
   },

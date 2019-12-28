@@ -1,8 +1,29 @@
-import { STORE_EVENTS_LIST } from './EventsListActions';
+import { UPDATE_EVENTS_LIST_SETTINGS_SECTION, STORE_EVENTS_LIST } from './EventsListActions';
 
-const initialState = [];
+const settingsInitialState = {
+  conjunctions: {
+    enabled: true,
+    sunEnabled: false,
+    moonEnabled: true,
+    planetsEnabled: true,
+    cometsEnabled: true,
+    asteroidsEnabled: true,
+    cataloguesEnabled: true,
+  }
+}
 
-export default function storeEventsListReducer(state = initialState, action) {
+const eventsListInitialState = [];
+
+export function eventsListSettingsReducer(state = settingsInitialState, action) {
+  switch (action.type) {
+    case UPDATE_EVENTS_LIST_SETTINGS_SECTION:
+      return { ...state, [action.sectionName]: action.settingsSection };
+  }
+
+  return state;
+}
+
+export function storeEventsListReducer(state = eventsListInitialState, action) {
   switch (action.type) {
     case STORE_EVENTS_LIST:
       return action.eventsList;

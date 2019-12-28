@@ -9,14 +9,15 @@ import Dashboard from './Dashboard';
 import locationReducer from './components/observerlocation/LocationReducer';
 import timeZoneReducer from './components/timezone/TimeZoneReducer';
 import rtsSettingsReducer from './events/riseTransitSet/actions/RtsSettingsReducer';
-import storeEventsListReducer from './events/actions/EventsListReducers';
-import { watchFetchEvents, fetchEvents } from './events/actions/EventsListSagas';
+import { eventsListSettingsReducer, storeEventsListReducer } from './events/actions/EventsListReducers';
+import { watchEventsListSettingsSectionsSaga, watchFetchEvents, fetchEvents } from './events/actions/EventsListSagas';
 import { watchUpdateRtsSettingsSaga } from './events/riseTransitSet/actions/RtsSettingsSagas';
 
 const albedoReducer = combineReducers({
   observerLocation: locationReducer,
   timeZone: timeZoneReducer,
   rtsSettings: rtsSettingsReducer,
+  settings: eventsListSettingsReducer,
   eventsList: storeEventsListReducer,
 });
 
@@ -27,6 +28,7 @@ store.subscribe(() => console.log(store.getState()))
 
 export default function* rootSaga() {
   yield all([
+    watchEventsListSettingsSectionsSaga(),
     watchFetchEvents(),
     watchUpdateRtsSettingsSaga(),
     fetchEvents()
