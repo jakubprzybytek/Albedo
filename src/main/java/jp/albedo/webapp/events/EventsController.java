@@ -5,6 +5,7 @@ import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.common.ResponseWrapper;
+import jp.albedo.webapp.events.parameters.ConjunctionsParameters;
 import jp.albedo.webapp.events.parameters.RtsParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,24 +27,30 @@ public class EventsController {
     EventsOrchestrator eventsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/events")
-    public List<ResponseWrapper<AstronomicalEvent>> events(@RequestParam(value = "bodies", defaultValue = "Sun") String[] bodyNames,
-                                                           @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+    public List<ResponseWrapper<AstronomicalEvent>> events(@RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                            @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                                            @RequestParam("longitude") double observerLongitude,
                                                            @RequestParam("latitude") double observerLatitude,
                                                            @RequestParam("height") double observerHeight,
                                                            @RequestParam("timeZone") String timeZone,
                                                            @RequestParam(value = "rtsSunEnabled", defaultValue = "true") boolean rtsSunEnabled,
-                                                           @RequestParam(value = "rtsMoonEnabled", defaultValue = "true") boolean rtsMoonEnabled) throws Exception {
+                                                           @RequestParam(value = "rtsMoonEnabled", defaultValue = "true") boolean rtsMoonEnabled,
+                                                           @RequestParam(value = "conjunctionsSunEnabled", defaultValue = "true") boolean conjunctionsSunEnabled,
+                                                           @RequestParam(value = "conjunctionsMoonEnabled", defaultValue = "true") boolean conjunctionsMoonEnabled,
+                                                           @RequestParam(value = "conjunctionsPlanetsEnabled", defaultValue = "true") boolean conjunctionsPlanetsEnabled,
+                                                           @RequestParam(value = "conjunctionsCometsEnabled", defaultValue = "true") boolean conjunctionsCometsEnabled,
+                                                           @RequestParam(value = "conjunctionsAsteroidsEnabled", defaultValue = "false") boolean conjunctionsAsteroidsEnabled,
+                                                           @RequestParam(value = "conjunctionsCataloguesDSEnabled", defaultValue = "false") boolean conjunctionsCataloguesDSEnabled) throws Exception {
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         final RtsParameters rtsParameters = new RtsParameters(rtsSunEnabled, rtsMoonEnabled);
+        final ConjunctionsParameters conjunctionsParameters = new ConjunctionsParameters(conjunctionsSunEnabled, conjunctionsMoonEnabled, conjunctionsPlanetsEnabled, conjunctionsCometsEnabled, conjunctionsAsteroidsEnabled, conjunctionsCataloguesDSEnabled);
 
         final AtomicInteger id = new AtomicInteger();
 
-        return this.eventsOrchestrator.compute(bodyNames, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, rtsParameters).stream()
+        return this.eventsOrchestrator.compute(JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, rtsParameters, conjunctionsParameters).stream()
                 .map(event -> new ResponseWrapper<>(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),

@@ -93,15 +93,15 @@ public class ConjunctionsOrchestrator {
     }
 
     /**
-     * Finds conjunctions between bodies and objects fom catalogues. Example of bodies: planets, asteroids, Sun.
+     * Finds conjunctions between specific bodies and objects fom catalogues. Example of bodies: planets, asteroids, Sun.
      * <p>
      * Bodies could be provided either by their names or by type. Providing body type means that all bodies of that type should be used for computations.
      * Providing catalogue type means that all entries from that catalogue should be used for finding conjunctions.
      * <p>
      * All bodies are being compared with all catalogue entries.
      *
-     * @param primaryBodyNames Set of primary by names.
-     * @param primaryBodyTypes Set of primary body types.
+     * @param bodyNames        Set of primary by names.
+     * @param bodyTypes        Set of primary body types.
      * @param catalogueTypes   Set of catalogues types.
      * @param fromDate         Start instant of the period over which conjunctions should be looked for.
      * @param toDate           End of that period.
@@ -109,21 +109,21 @@ public class ConjunctionsOrchestrator {
      * @return List of conjunctions.
      */
     public List<Conjunction<BodyDetails, CatalogueEntry>> computeForBodyAndCatalogueEntry(
-            Collection<String> primaryBodyNames,
-            Collection<BodyType> primaryBodyTypes,
+            Collection<String> bodyNames,
+            Collection<BodyType> bodyTypes,
             Collection<CatalogueType> catalogueTypes,
             Double fromDate, Double toDate,
             ObserverLocation observerLocation) {
 
         LOG.info(String.format("Computing conjunctions of one moving body and catalogue, params: [primary bodies:%s, primary types:%s, catalogues:%s, from=%s, to=%s], observer location: %s",
-                primaryBodyNames, primaryBodyTypes, catalogueTypes, fromDate, toDate, observerLocation));
+                bodyNames, bodyTypes, catalogueTypes, fromDate, toDate, observerLocation));
 
         final Instant start = Instant.now();
 
         // FixMe: those ephemerides are most likely computed twice per request
         final List<ComputedEphemerides> primaryObjectsEphemerides = new ArrayList<>();
-        primaryObjectsEphemerides.addAll(getEphemeridesByBodyType(primaryBodyTypes, fromDate, toDate, observerLocation));
-        primaryObjectsEphemerides.addAll(getEphemeridesByBodyNames(primaryBodyNames, fromDate, toDate, observerLocation));
+        primaryObjectsEphemerides.addAll(getEphemeridesByBodyNames(bodyNames, fromDate, toDate, observerLocation));
+        primaryObjectsEphemerides.addAll(getEphemeridesByBodyType(bodyTypes, fromDate, toDate, observerLocation));
 
         final List<CatalogueEntry> catalogueEntries = getCatalogueEntries(catalogueTypes);
 

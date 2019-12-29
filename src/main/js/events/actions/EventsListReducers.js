@@ -9,12 +9,12 @@ const initialState = {
     },
     conjunctions: {
       enabled: true,
-      sunEnabled: false,
+      sunEnabled: true,
       moonEnabled: true,
       planetsEnabled: true,
       cometsEnabled: true,
       asteroidsEnabled: true,
-      cataloguesEnabled: true,
+      cataloguesDSEnabled: true,
     }
   },
   events: []

@@ -1,9 +1,13 @@
 package jp.albedo.utils;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -20,4 +24,11 @@ public class StreamUtils {
         }, leftStream.isParallel() || rightStream.isParallel());
     }
 
+    @SafeVarargs
+    public static <T> List<T> collectPresent(Optional<T>... optionals) {
+        return Arrays.stream(optionals)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
 }
