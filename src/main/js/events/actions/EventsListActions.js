@@ -1,5 +1,6 @@
 export const UPDATE_EVENTS_LIST_SETTINGS_SECTION = 'UPDATE_EVENTS_LIST_SETTINGS_SECTION';
 export const STORE_EVENTS_LIST = 'STORE_EVENTS_LIST';
+export const EVENTS_LIST_TOGGLE_DAY_SECTION = 'EVENTS_LIST_TOGGLE_DAY_SECTION';
 
 export function buildUpdateEventsListSettingsSectionAction(sectionName, settingsSection) {
   return {
@@ -11,4 +12,11 @@ export function buildUpdateEventsListSettingsSectionAction(sectionName, settings
 
 export function buildStoreEventsListAction(eventsList) {
   return { type: STORE_EVENTS_LIST, eventsList };
+};
+
+export function buildEventsListToggleDaySectionAction(daySection) {
+  return {
+    type: EVENTS_LIST_TOGGLE_DAY_SECTION,
+    daySection: daySection
+  };
 };
