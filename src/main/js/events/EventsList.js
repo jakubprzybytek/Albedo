@@ -15,7 +15,7 @@ import { buildEventsListToggleDaySectionAction, buildFutureEventsListToggleDaySe
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(1),
+    margin: theme.spacing(1),
   },
   list: {
     backgroundColor: theme.palette.background.paper,
