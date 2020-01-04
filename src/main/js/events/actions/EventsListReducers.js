@@ -1,5 +1,11 @@
 import update from 'immutability-helper';
-import { UPDATE_EVENTS_LIST_SETTINGS_SECTION, STORE_EVENTS_LIST, EVENTS_LIST_TOGGLE_DAY_SECTION } from './EventsListActions';
+import {
+  UPDATE_EVENTS_LIST_SETTINGS_SECTION,
+  STORE_EVENTS_LIST,
+  STORE_FUTURE_EVENTS_LIST,
+  EVENTS_LIST_TOGGLE_DAY_SECTION,
+  FUTURE_EVENTS_LIST_TOGGLE_DAY_SECTION
+} from './EventsListActions';
 
 const initialState = {
   settings: {
@@ -35,11 +41,21 @@ export function eventsListReducer(state = initialState, action) {
       return { ...state, settings: { ...state.settings, [action.sectionName]: action.settingsSection } };
     case STORE_EVENTS_LIST:
       return { ...state, events: groupByDay(action.eventsList) };
+    case STORE_FUTURE_EVENTS_LIST:
+      return { ...state, futureEvents: groupByDay(action.eventsList) };
     case EVENTS_LIST_TOGGLE_DAY_SECTION:
       return update(state, {
         events: {
           [action.daySection]: {
             expanded: { $set: !state.events[action.daySection].expanded }
+          }
+        }
+      });
+    case FUTURE_EVENTS_LIST_TOGGLE_DAY_SECTION:
+      return update(state, {
+        futureEvents: {
+          [action.daySection]: {
+            expanded: { $set: !state.futureEvents[action.daySection].expanded }
           }
         }
       });

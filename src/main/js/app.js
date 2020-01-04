@@ -10,7 +10,7 @@ import Dashboard from './Dashboard';
 import locationReducer from './components/observerlocation/LocationReducer';
 import timeZoneReducer from './components/timezone/TimeZoneReducer';
 import { eventsListReducer } from './events/actions/EventsListReducers';
-import { watchUpdateEventsListSettingsSectionsSaga, watchFetchEvents, fetchEvents } from './events/actions/EventsListSagas';
+import { watchEventsListSagas, fetchEvents, fetchFutureEvents } from './events/actions/EventsListSagas';
 
 const albedoReducer = combineReducers({
   observerLocation: locationReducer,
@@ -25,9 +25,9 @@ store.subscribe(() => console.log(store.getState()))
 
 export default function* rootSaga() {
   yield all([
-    watchUpdateEventsListSettingsSectionsSaga(),
-    watchFetchEvents(),
-    fetchEvents()
+    watchEventsListSagas(),
+    fetchEvents(),
+    fetchFutureEvents()
   ])
 }
 

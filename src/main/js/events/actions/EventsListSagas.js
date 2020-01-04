@@ -1,12 +1,14 @@
 import { select, takeLatest, call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { buildEventsListRequestParams } from '../api/EventsListRequestBuilder';
-import { buildStoreEventsListAction } from './EventsListActions';
+import { addDays, addMonths, format } from 'date-fns';
+
+import { buildEventsListRequestParams } from './api/EventsListRequestBuilder';
+import { buildStoreEventsListAction, buildStoreFutureEventsListAction } from './EventsListActions';
 import { buildUpdateEventsListSettingsSectionAction } from './EventsListActions';
 
 export const UPDATE_EVENTS_LIST_SETTINGS_SECTION_SAGA = 'UPDATE_EVENTS_LIST_SETTINGS_SECTION_SAGA';
-
 export const FETCH_EVENTS = 'FETCH_EVENTS';
+export const FETCH_FUTURE_EVENTS = 'FETCH_FUTURE_EVENTS';
 
 export function buildUpdateEventsListSettingsSectionsSaga(sectionName, settingsSection) {
   return {
@@ -18,6 +20,10 @@ export function buildUpdateEventsListSettingsSectionsSaga(sectionName, settingsS
 
 export function buildFetchEventsSaga() {
   return { type: FETCH_EVENTS };
+};
+
+export function buildFetchFutureEventsSaga() {
+  return { type: FETCH_FUTURE_EVENTS };
 };
 
 export function* updateEventsListSettingsSectionsSaga(action) {
@@ -35,7 +41,14 @@ const fetch = (payload) => {
 export function* fetchEvents() {
   console.log('Fetch events');
 
-  const params = yield select(store => buildEventsListRequestParams(store.eventsList.settings, store.observerLocation, store.timeZone));
+  const params = yield select(store => buildEventsListRequestParams(
+    format(new Date(), "yyyy-MM-dd"),
+    format(addDays(new Date(), 2), "yyyy-MM-dd"),
+    store.eventsList.settings.rts,
+    store.eventsList.settings.conjunctions,
+    store.observerLocation,
+    store.timeZone)
+  );
 
   try {
     const response = yield call(fetch, {
@@ -50,10 +63,37 @@ export function* fetchEvents() {
   }
 };
 
-export function* watchUpdateEventsListSettingsSectionsSaga() {
-  yield takeLatest(UPDATE_EVENTS_LIST_SETTINGS_SECTION_SAGA, updateEventsListSettingsSectionsSaga)
+export function* fetchFutureEvents() {
+  console.log('Fetch future events');
+
+  const switchDay = addDays(new Date(), 2);
+  const params = yield select(store => buildEventsListRequestParams(
+    format(switchDay, "yyyy-MM-dd"),
+    format(addMonths(switchDay, 6), "yyyy-MM-dd"),
+    { enabled: false },
+    {
+      enabled: true,
+      planetsEnabled: true
+    },
+    store.observerLocation,
+    store.timeZone)
+  );
+
+  try {
+    const response = yield call(fetch, {
+      params: params
+    });
+
+    if (response) {
+      yield put(buildStoreFutureEventsListAction(response.data));
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-export function* watchFetchEvents() {
+export function* watchEventsListSagas() {
+  yield takeLatest(UPDATE_EVENTS_LIST_SETTINGS_SECTION_SAGA, updateEventsListSettingsSectionsSaga)
   yield takeLatest(FETCH_EVENTS, fetchEvents)
+  yield takeLatest(FETCH_FUTURE_EVENTS, fetchFutureEvents)
 };

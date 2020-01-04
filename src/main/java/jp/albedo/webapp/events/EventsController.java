@@ -27,20 +27,20 @@ public class EventsController {
     EventsOrchestrator eventsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/events")
-    public List<ResponseWrapper<AstronomicalEvent>> events(@RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                           @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+    public List<ResponseWrapper<AstronomicalEvent>> events(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                           @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                                            @RequestParam("longitude") double observerLongitude,
                                                            @RequestParam("latitude") double observerLatitude,
                                                            @RequestParam("height") double observerHeight,
                                                            @RequestParam("timeZone") String timeZone,
-                                                           @RequestParam(value = "rtsSunEnabled", defaultValue = "true") boolean rtsSunEnabled,
-                                                           @RequestParam(value = "rtsMoonEnabled", defaultValue = "true") boolean rtsMoonEnabled,
-                                                           @RequestParam(value = "conjunctionsSunEnabled", defaultValue = "true") boolean conjunctionsSunEnabled,
-                                                           @RequestParam(value = "conjunctionsMoonEnabled", defaultValue = "true") boolean conjunctionsMoonEnabled,
-                                                           @RequestParam(value = "conjunctionsPlanetsEnabled", defaultValue = "true") boolean conjunctionsPlanetsEnabled,
-                                                           @RequestParam(value = "conjunctionsCometsEnabled", defaultValue = "true") boolean conjunctionsCometsEnabled,
-                                                           @RequestParam(value = "conjunctionsAsteroidsEnabled", defaultValue = "false") boolean conjunctionsAsteroidsEnabled,
-                                                           @RequestParam(value = "conjunctionsCataloguesDSEnabled", defaultValue = "false") boolean conjunctionsCataloguesDSEnabled) throws Exception {
+                                                           @RequestParam(value = "rtsSunEnabled", required = false) boolean rtsSunEnabled,
+                                                           @RequestParam(value = "rtsMoonEnabled", required = false) boolean rtsMoonEnabled,
+                                                           @RequestParam(value = "conjunctionsSunEnabled", required = false) boolean conjunctionsSunEnabled,
+                                                           @RequestParam(value = "conjunctionsMoonEnabled", required = false) boolean conjunctionsMoonEnabled,
+                                                           @RequestParam(value = "conjunctionsPlanetsEnabled", required = false) boolean conjunctionsPlanetsEnabled,
+                                                           @RequestParam(value = "conjunctionsCometsEnabled", required = false) boolean conjunctionsCometsEnabled,
+                                                           @RequestParam(value = "conjunctionsAsteroidsEnabled", required = false) boolean conjunctionsAsteroidsEnabled,
+                                                           @RequestParam(value = "conjunctionsCataloguesDSEnabled", required = false) boolean conjunctionsCataloguesDSEnabled) throws Exception {
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);

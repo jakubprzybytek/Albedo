@@ -11,7 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { grey, blue, red } from '@material-ui/core/colors';
 import RiseTransitSetEventListItem from './RiseTransitSet/RiseTransitSetEventListItem';
 import ConjunctionEventListItem from './conjunctions/ConjunctionEventListItem';
-import { buildEventsListToggleDaySectionAction } from './actions/EventsListActions';
+import { buildEventsListToggleDaySectionAction, buildFutureEventsListToggleDaySectionAction } from './actions/EventsListActions';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     overflow: 'auto',
-    maxHeight: 1200,
+    //maxHeight: 1200,
   },
   listRow: {
     borderBottom: '1px solid',
@@ -32,13 +32,20 @@ const useStyles = makeStyles(theme => ({
   },
   ul: {
     backgroundColor: 'inherit',
-    padding: 0,
+    padding: '0 0 2px 0',
   },
   subheader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     fontSize: '1.2rem',
     color: blue[800],
-    backgroundColor: grey[50],
-    paddingLeft: 32
+    backgroundColor: grey[300],
+    paddingLeft: 32,
+    cursor: 'pointer'
+  },
+  expanded: {
+    backgroundColor: grey[100],
   },
   hidden: {
     display: 'none'
@@ -53,7 +60,7 @@ const useStyles = makeStyles(theme => ({
 
 function EventsList(props) {
 
-  const { eventsGroups, toggleDaySection } = props;
+  const { eventsGroups, futureEventsGroups, toggleDaySection, toggleFutureDaySection } = props;
 
   const classes = useStyles();
 
@@ -70,8 +77,11 @@ function EventsList(props) {
   }
 
   const toggleDaySectionHandle = (daySection) => () => {
-    console.log("Handle Clicked...." + daySection);
     toggleDaySection(daySection);
+  }
+
+  const toggleFutureDaySectionHandle = (daySection) => () => {
+    toggleFutureDaySection(daySection);
   }
 
   return (
@@ -80,9 +90,27 @@ function EventsList(props) {
         {Object.keys(eventsGroups).map(daySection => (
           <li key={daySection} className={classes.listSection}>
             <ul className={classes.ul}>
-              <ListSubheader className={classes.subheader} onClick={toggleDaySectionHandle(daySection)}>{daySection}{eventsGroups[daySection].expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListSubheader>
+              <ListSubheader className={clsx(classes.subheader, eventsGroups[daySection].expanded && classes.expanded)} onClick={toggleDaySectionHandle(daySection)}>
+                {daySection}
+                {eventsGroups[daySection].expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </ListSubheader>
               {eventsGroups[daySection].events.map(event => (
                 <EventSelect key={event.id} event={event} sectionExpanded={eventsGroups[daySection].expanded} />
+              ))}
+            </ul>
+          </li>
+        ))}
+      </List>
+      <List dense={true} className={classes.list} subheader={<li />}>
+        {Object.keys(futureEventsGroups || {}).map(daySection => (
+          <li key={daySection} className={classes.listSection}>
+            <ul className={classes.ul}>
+              <ListSubheader className={clsx(classes.subheader, futureEventsGroups[daySection].expanded && classes.expanded)} onClick={toggleFutureDaySectionHandle(daySection)}>
+                {daySection}
+                {futureEventsGroups[daySection].expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </ListSubheader>
+              {futureEventsGroups[daySection].events.map(event => (
+                <EventSelect key={event.id} event={event} sectionExpanded={futureEventsGroups[daySection].expanded} />
               ))}
             </ul>
           </li>
@@ -93,10 +121,16 @@ function EventsList(props) {
 }
 
 const StateAwareEventsList = connect(
-  state => ({ eventsGroups: state.eventsList.events }),
+  state => ({
+    eventsGroups: state.eventsList.events,
+    futureEventsGroups: state.eventsList.futureEvents
+  }),
   dispatch => ({
     toggleDaySection: (daySection) => {
       dispatch(buildEventsListToggleDaySectionAction(daySection));
+    },
+    toggleFutureDaySection: (daySection) => {
+      dispatch(buildFutureEventsListToggleDaySectionAction(daySection));
     }
   })
 )(EventsList);
