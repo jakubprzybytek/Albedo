@@ -10,15 +10,15 @@ import { formatDegrees } from '../../utils/Angles';
 import { BodyChip, CatalogueEntryChip } from '../../components/Chips';
 
 const useStyles = makeStyles(theme => ({
-	card: {
-		maxWidth: 345,
-	},
-	cardHeader: {
-		paddingBottom: 0,
-	},
-	avatar: {
-		backgroundColor: yellow[500],
-	},
+  card: {
+    maxWidth: 345,
+  },
+  cardHeader: {
+    paddingBottom: 0,
+  },
+  avatar: {
+    backgroundColor: yellow[500],
+  },
   listItem: {
     marginTop: '0px',
     marginBottom: '0px'
@@ -58,9 +58,11 @@ export default function ConjunctionCard(props) {
       <CardHeader className={classes.cardHeader} title="Conjunction" subheader={conjunction.time && format(Date.parse(conjunction.time), "yyyy-MM-dd HH:mm:ss") + " (TDE)"} />
       <CardContent>
         <RelativeDistanceInformation />
-        <Typography>Separation</Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {conjunction.separation && formatDegrees(conjunction.separation)}
+        <Typography>
+          <span>Separation: </span>
+          <Typography component="span" color="textSecondary">
+            {conjunction.separation && formatDegrees(conjunction.separation)}
+          </Typography>
         </Typography>
       </CardContent>
     </Card>

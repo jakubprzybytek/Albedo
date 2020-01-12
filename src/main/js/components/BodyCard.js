@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import List from '@material-ui/core/List';
@@ -16,6 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { red, orange, yellow, grey, purple } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+import { SlimCardHeader, SlimCardContent } from '../common/SlimCard';
 import { SunIcon, MoonIcon, PlanetIcon, CometIcon } from './AstronomicalIcons';
 import { formatHourAngle, formatDegrees, formatArcSeconds } from './../utils/Angles';
 import { ElongationChip } from '../components/Chips';
@@ -38,6 +39,9 @@ const useStyles = makeStyles(theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
+  sectionTitle: {
+    textAlign: 'center',
+  },
   avatarRed: {
     backgroundColor: red[500],
   },
@@ -57,14 +61,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: '0px',
     marginBottom: '0px'
   },
-  inline: {
-    display: 'inline',
-    fontSize: '0.8rem',
-  },
-  link: {
+  smallFont: {
     fontSize: '0.8rem',
   },
 }));
+
 
 function Ephemeris(props) {
 
@@ -74,55 +75,53 @@ function Ephemeris(props) {
 
   return (
     <React.Fragment>
-      <Typography>Ephemeris:</Typography>
-      <List dense={true}>
-        <ListItem>
-          <ListItemText className={classes.listItem} secondary={<React.Fragment>
-            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">RA: </Typography>
-            <Tooltip title={ephemeris.coordinates.rightAscension.toFixed(6) + "° (J2000)"}>
-              <span>{formatHourAngle(ephemeris.coordinates.rightAscension)}</span>
-            </Tooltip>
-          </React.Fragment>} />
-        </ListItem>
-        <ListItem>
-          <ListItemText className={classes.listItem} secondary={<React.Fragment>
-            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Dec: </Typography>
-            <Tooltip title={ephemeris.coordinates.declination.toFixed(6) + "° (J2000)"}>
-              <span>{formatDegrees(ephemeris.coordinates.declination)}</span>
-            </Tooltip>
-          </React.Fragment>} />
-        </ListItem>
-        <ListItem>
-          <ListItemText className={classes.listItem} secondary={<React.Fragment>
-            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Distance from Sun: </Typography>
-            {ephemeris.distanceFromSun} [AU]
-            </React.Fragment>} />
-        </ListItem>
-        <ListItem>
-          <ListItemText className={classes.listItem} secondary={<React.Fragment>
-            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Distance from Earth: </Typography>
-            {ephemeris.distanceFromEarth} [AU]
-            </React.Fragment>} />
-        </ListItem>
-        <ListItem>
-          <ListItemText className={classes.listItem} secondary={<React.Fragment>
-            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Elongation: </Typography>
-            <span><ElongationChip elongation={ephemeris.elongation} /></span>
-          </React.Fragment>} />
-        </ListItem>
-        <ListItem>
-          <ListItemText className={classes.listItem} secondary={<React.Fragment>
-            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Magnitude: </Typography>
-            {ephemeris.apparentMagnitude} [mag]
-            </React.Fragment>} />
-        </ListItem>
-        {ephemeris.angularSize && <ListItem>
-          <ListItemText className={classes.listItem} secondary={<React.Fragment>
-            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Angular size: </Typography>
-            {formatArcSeconds(ephemeris.angularSize)}
-          </React.Fragment>} />
-        </ListItem>}
-      </List>
+      <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Ephemeris</Typography>
+      <Typography variant="body2" className={classes.smallFont}>
+        <span>RA (α): </span>
+        <Typography component="span" variant="body2" color="textSecondary">
+          <Tooltip title={ephemeris.coordinates.rightAscension.toFixed(6) + "° (J2000)"}>
+            <React.Fragment>{formatHourAngle(ephemeris.coordinates.rightAscension)}</React.Fragment>
+          </Tooltip>
+        </Typography>
+      </Typography>
+      <Typography variant="body2" className={classes.smallFont}>
+        <span>Dec (δ): </span>
+        <Typography component="span" variant="body2" color="textSecondary">
+          <Tooltip title={ephemeris.coordinates.declination.toFixed(6) + "° (J2000)"}>
+            <span>{formatDegrees(ephemeris.coordinates.declination)}</span>
+          </Tooltip>
+        </Typography>
+      </Typography>
+      <Typography variant="body2" className={classes.smallFont}>
+        <span>Distance from Sun (d<sub>☉</sub>): </span>
+        <Typography component="span" variant="body2" color="textSecondary">
+          {ephemeris.distanceFromSun} AU
+        </Typography>
+      </Typography>
+      <Typography variant="body2" className={classes.smallFont}>
+        <span>Distance from Earth (d<sub>♁</sub>): </span>
+        <Typography component="span" variant="body2" color="textSecondary">
+          {ephemeris.distanceFromEarth} AU
+        </Typography>
+      </Typography>
+      <Typography variant="body2" className={classes.smallFont}>
+        <span>Elongation: </span>
+        <Typography component="span" variant="body2" color="textSecondary">
+          <ElongationChip elongation={ephemeris.elongation} />
+        </Typography>
+      </Typography>
+      <Typography variant="body2" className={classes.smallFont}>
+        <span>Magnitude: </span>
+        <Typography component="span" variant="body2" color="textSecondary">
+          {ephemeris.apparentMagnitude} mag
+        </Typography>
+      </Typography>
+      {ephemeris.angularSize && <Typography variant="body2" className={classes.smallFont}>
+        <span>Angular size (θ): </span>
+        <Typography component="span" variant="body2" color="textSecondary">
+          {formatArcSeconds(ephemeris.angularSize)}
+        </Typography>
+      </Typography>}
     </React.Fragment>
   );
 }
@@ -207,7 +206,7 @@ function OrbitElements(props) {
           </React.Fragment>} />
         </ListItem>
       </List>
-      <Link href='https://minorplanetcenter.net/data' className={classes.link}>Source</Link>
+      <Link href='https://minorplanetcenter.net/data' className={classes.smallFont}>Source</Link>
     </React.Fragment>
   );
 }
@@ -226,14 +225,14 @@ export default function BodyCard(props) {
 
   return (
     <Card className={classes.card}>
-      {bodyInfo.bodyDetails.name === 'Sun' && <CardHeader avatar={<Avatar className={classes.avatarYellow}><SunIcon width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.bodyDetails.name === 'Moon' && <CardHeader avatar={<Avatar className={classes.avatarGrey}><MoonIcon width={32} height={32} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.bodyDetails.bodyType === 'Planet' && <CardHeader avatar={<Avatar className={classes.avatarRed}><PlanetIcon planetName={bodyInfo.bodyDetails.name} width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.bodyDetails.bodyType === 'Comet' && <CardHeader avatar={<Avatar className={classes.avatarPurple}><CometIcon width={28} height={28} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.bodyDetails.bodyType === 'Asteroid' && <CardHeader avatar={<Avatar className={classes.avatarOrange}>A</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.ephemeris && <CardContent>
+      {bodyInfo.bodyDetails.name === 'Sun' && <SlimCardHeader avatar={<Avatar className={classes.avatarYellow}><SunIcon width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+      {bodyInfo.bodyDetails.name === 'Moon' && <SlimCardHeader avatar={<Avatar className={classes.avatarGrey}><MoonIcon width={32} height={32} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+      {bodyInfo.bodyDetails.bodyType === 'Planet' && <SlimCardHeader avatar={<Avatar className={classes.avatarRed}><PlanetIcon planetName={bodyInfo.bodyDetails.name} width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+      {bodyInfo.bodyDetails.bodyType === 'Comet' && <SlimCardHeader avatar={<Avatar className={classes.avatarPurple}><CometIcon width={28} height={28} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+      {bodyInfo.bodyDetails.bodyType === 'Asteroid' && <SlimCardHeader avatar={<Avatar className={classes.avatarOrange}>A</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+      {bodyInfo.ephemeris && <SlimCardContent>
         <Ephemeris ephemeris={bodyInfo.ephemeris} />
-      </CardContent>}
+      </SlimCardContent>}
       {(bodyInfo.orbitElements || bodyInfo.magnitudeParameters) && <React.Fragment>
         <CardActions disableSpacing>
           <IconButton

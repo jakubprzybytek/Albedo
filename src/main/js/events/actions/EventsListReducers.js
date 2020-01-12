@@ -2,9 +2,11 @@ import update from 'immutability-helper';
 import {
   UPDATE_EVENTS_LIST_SETTINGS_SECTION,
   STORE_EVENTS_LIST,
-  STORE_FUTURE_EVENTS_LIST,
   EVENTS_LIST_TOGGLE_DAY_SECTION,
-  FUTURE_EVENTS_LIST_TOGGLE_DAY_SECTION
+  EVENTS_LIST_TOGGLE_EVENT,
+  STORE_FUTURE_EVENTS_LIST,
+  FUTURE_EVENTS_LIST_TOGGLE_DAY_SECTION,
+  FUTURE_EVENTS_LIST_TOGGLE_EVENT
 } from './EventsListActions';
 
 const initialState = {
@@ -24,7 +26,9 @@ const initialState = {
       cataloguesDSEnabled: true,
     }
   },
-  events: []
+  events: [],
+  eventProps: [],
+  futureEventProps: []
 }
 
 function groupByDay(flatEventsList) {
@@ -35,14 +39,32 @@ function groupByDay(flatEventsList) {
   }, {});
 }
 
+function initEventProps(flatEventsList) {
+  return flatEventsList.reduce((eventProps, event) => {
+    eventProps[event.id] = { expanded: false };
+    return eventProps;
+  }, {});
+}
+
 export function eventsListReducer(state = initialState, action) {
   switch (action.type) {
     case UPDATE_EVENTS_LIST_SETTINGS_SECTION:
-      return { ...state, settings: { ...state.settings, [action.sectionName]: action.settingsSection } };
+      return {
+        ...state,
+        settings: { ...state.settings, [action.sectionName]: action.settingsSection }
+      };
     case STORE_EVENTS_LIST:
-      return { ...state, events: groupByDay(action.eventsList) };
+      return {
+        ...state,
+        events: groupByDay(action.eventsList),
+        eventProps: initEventProps(action.eventsList)
+      };
     case STORE_FUTURE_EVENTS_LIST:
-      return { ...state, futureEvents: groupByDay(action.eventsList) };
+      return {
+        ...state,
+        futureEvents: groupByDay(action.eventsList),
+        futureEventProps: initEventProps(action.eventsList)
+      };
     case EVENTS_LIST_TOGGLE_DAY_SECTION:
       return update(state, {
         events: {
@@ -56,6 +78,22 @@ export function eventsListReducer(state = initialState, action) {
         futureEvents: {
           [action.daySection]: {
             expanded: { $set: !state.futureEvents[action.daySection].expanded }
+          }
+        }
+      });
+    case EVENTS_LIST_TOGGLE_EVENT:
+      return update(state, {
+        eventProps: {
+          [action.eventId]: {
+            expanded: { $set: !state.eventProps[action.eventId].expanded }
+          }
+        }
+      });
+    case FUTURE_EVENTS_LIST_TOGGLE_EVENT:
+      return update(state, {
+        futureEventProps: {
+          [action.eventId]: {
+            expanded: { $set: !state.futureEventProps[action.eventId].expanded }
           }
         }
       });

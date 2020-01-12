@@ -11,7 +11,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { grey, blue, red } from '@material-ui/core/colors';
 import RiseTransitSetEventListItem from './RiseTransitSet/RiseTransitSetEventListItem';
 import ConjunctionEventListItem from './conjunctions/ConjunctionEventListItem';
-import { buildEventsListToggleDaySectionAction, buildFutureEventsListToggleDaySectionAction } from './actions/EventsListActions';
+import {
+  buildEventsListToggleDaySectionAction,
+  buildFutureEventsListToggleDaySectionAction,
+  buildEventsListToggleEventAction,
+  buildFutureEventsListToggleEventAction
+} from './actions/EventsListActions';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -60,21 +65,12 @@ const useStyles = makeStyles(theme => ({
 
 function EventsList(props) {
 
-  const { eventsGroups, futureEventsGroups, toggleDaySection, toggleFutureDaySection } = props;
+  const {
+    eventsGroups, eventProps, toggleDaySection, toggleEvent,
+    futureEventsGroups, futureEventProps, toggleFutureDaySection, toggleFutureEvent
+  } = props;
 
   const classes = useStyles();
-
-  function EventSelect(props) {
-
-    const { event, sectionExpanded } = props;
-
-    return (
-      <ListItem className={clsx(classes.listRow, classes[event.type], !sectionExpanded && classes.hidden)}>
-        {event.type === "RiseTransitSet" && <RiseTransitSetEventListItem event={event} />}
-        {event.type === "Conjunction" && <ConjunctionEventListItem event={event} />}
-      </ListItem>
-    );
-  }
 
   const toggleDaySectionHandle = (daySection) => () => {
     toggleDaySection(daySection);
@@ -82,6 +78,26 @@ function EventsList(props) {
 
   const toggleFutureDaySectionHandle = (daySection) => () => {
     toggleFutureDaySection(daySection);
+  }
+
+  const toggleEventHandle = (eventId) => () => {
+    toggleEvent(eventId);
+  }
+
+  const toggleFutureEventHandle = (eventId) => () => {
+    toggleFutureEvent(eventId);
+  }
+
+  function EventSelect(props) {
+
+    const { event, eventSelectFunction, eventSelected, sectionExpanded } = props;
+
+    return (
+      <ListItem className={clsx(classes.listRow, classes[event.type], !sectionExpanded && classes.hidden)}>
+        {event.type === "RiseTransitSet" && <RiseTransitSetEventListItem event={event} />}
+        {event.type === "Conjunction" && <ConjunctionEventListItem event={event} eventSelect={eventSelectFunction} eventSelected={eventSelected} />}
+      </ListItem>
+    );
   }
 
   return (
@@ -95,7 +111,11 @@ function EventsList(props) {
                 {eventsGroups[daySection].expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListSubheader>
               {eventsGroups[daySection].events.map(event => (
-                <EventSelect key={event.id} event={event} sectionExpanded={eventsGroups[daySection].expanded} />
+                <EventSelect key={event.id}
+                  event={event}
+                  sectionExpanded={eventsGroups[daySection].expanded}
+                  eventSelectFunction={toggleEventHandle}
+                  eventSelected={eventProps[event.id].expanded} />
               ))}
             </ul>
           </li>
@@ -110,7 +130,11 @@ function EventsList(props) {
                 {futureEventsGroups[daySection].expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListSubheader>
               {futureEventsGroups[daySection].events.map(event => (
-                <EventSelect key={event.id} event={event} sectionExpanded={futureEventsGroups[daySection].expanded} />
+                <EventSelect key={event.id}
+                  event={event}
+                  sectionExpanded={futureEventsGroups[daySection].expanded}
+                  eventSelectFunction={toggleFutureEventHandle}
+                  eventSelected={futureEventProps[event.id].expanded} />
               ))}
             </ul>
           </li>
@@ -123,7 +147,9 @@ function EventsList(props) {
 const StateAwareEventsList = connect(
   state => ({
     eventsGroups: state.eventsList.events,
-    futureEventsGroups: state.eventsList.futureEvents
+    eventProps: state.eventsList.eventProps,
+    futureEventsGroups: state.eventsList.futureEvents,
+    futureEventProps: state.eventsList.futureEventProps,
   }),
   dispatch => ({
     toggleDaySection: (daySection) => {
@@ -131,7 +157,13 @@ const StateAwareEventsList = connect(
     },
     toggleFutureDaySection: (daySection) => {
       dispatch(buildFutureEventsListToggleDaySectionAction(daySection));
-    }
+    },
+    toggleEvent: (eventId) => {
+      dispatch(buildEventsListToggleEventAction(eventId));
+    },
+    toggleFutureEvent: (eventId) => {
+      dispatch(buildFutureEventsListToggleEventAction(eventId));
+    },
   })
 )(EventsList);
 
