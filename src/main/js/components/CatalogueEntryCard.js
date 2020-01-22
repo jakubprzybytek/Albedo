@@ -61,7 +61,7 @@ export default function CatalogueEntryCard(props) {
           </Typography>
         </Typography>}
         {(catalogueEntry.majorAxisSize || catalogueEntry.minorAxisSize) && <Typography variant="body2" className={classes.smallFont}>
-          <span>Angular size: </span>
+          <span>Angular size (θ): </span>
           <Typography component="span" variant="body2" color="textSecondary">
             {catalogueEntry.majorAxisSize && catalogueEntry.majorAxisSize + "'"}{catalogueEntry.minorAxisSize && " x " + catalogueEntry.minorAxisSize + "'"}
           </Typography>

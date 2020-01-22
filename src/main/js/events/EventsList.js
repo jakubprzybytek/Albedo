@@ -28,6 +28,12 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
     //maxHeight: 1200,
   },
+  listHeader: {
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: '1.4rem',
+    color: blue[700],
+  },
   listRow: {
     borderBottom: '1px solid',
     borderBottomColor: theme.palette.background.default,
@@ -43,14 +49,15 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    fontSize: '1.2rem',
-    color: blue[800],
-    backgroundColor: grey[300],
+    fontSize: '1.4rem',
+    color: grey[700],
+    backgroundColor: grey[100],
     paddingLeft: 32,
     cursor: 'pointer'
   },
-  expanded: {
-    backgroundColor: grey[100],
+  collapsed: {
+    color: grey[500],
+    backgroundColor: grey[200],
   },
   hidden: {
     display: 'none'
@@ -102,11 +109,14 @@ function EventsList(props) {
 
   return (
     <Paper className={classes.paper}>
-      <List dense={true} className={classes.list} subheader={<li />}>
+      <List dense={true} className={classes.list}>
+        <ListSubheader className={classes.listHeader}>
+          Now
+        </ListSubheader>
         {Object.keys(eventsGroups).map(daySection => (
           <li key={daySection} className={classes.listSection}>
             <ul className={classes.ul}>
-              <ListSubheader className={clsx(classes.subheader, eventsGroups[daySection].expanded && classes.expanded)} onClick={toggleDaySectionHandle(daySection)}>
+              <ListSubheader className={clsx(classes.subheader, !eventsGroups[daySection].expanded && classes.collapsed)} onClick={toggleDaySectionHandle(daySection)}>
                 {daySection}
                 {eventsGroups[daySection].expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListSubheader>
@@ -121,11 +131,14 @@ function EventsList(props) {
           </li>
         ))}
       </List>
-      <List dense={true} className={classes.list} subheader={<li />}>
+      <List dense={true} className={classes.list}>
+        <ListSubheader className={classes.listHeader}>
+          Later
+        </ListSubheader>
         {Object.keys(futureEventsGroups || {}).map(daySection => (
           <li key={daySection} className={classes.listSection}>
             <ul className={classes.ul}>
-              <ListSubheader className={clsx(classes.subheader, futureEventsGroups[daySection].expanded && classes.expanded)} onClick={toggleFutureDaySectionHandle(daySection)}>
+              <ListSubheader className={clsx(classes.subheader, !futureEventsGroups[daySection].expanded && classes.collapsed)} onClick={toggleFutureDaySectionHandle(daySection)}>
                 {daySection}
                 {futureEventsGroups[daySection].expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListSubheader>
