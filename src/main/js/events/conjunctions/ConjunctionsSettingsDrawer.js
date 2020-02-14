@@ -29,7 +29,7 @@ export function ConjunctionsSettingsDrawer(props) {
       </SettingsExpansionSummary>
       <SettingsExpansionPanelDetails disabled={!settingsSection.enabled}>
         <Typography variant="subtitle2" component="span">
-          Show conjunctions between following object types:
+          Show conjunctions between following types of objects:
             <FormGroup className={classes.singlePaddingLeft}>
             <InternalCheckbox label="Sun"
               disabled={!settingsSection.enabled} checked={settingsSection.sunEnabled} setChecked={value => updateConjunctionsSettings('sunEnabled', value)} />
@@ -43,6 +43,15 @@ export function ConjunctionsSettingsDrawer(props) {
               disabled={!settingsSection.enabled} checked={settingsSection.asteroidsEnabled} setChecked={value => updateConjunctionsSettings('asteroidsEnabled', value)} />
             <InternalCheckbox label="Deep Space Objects"
               disabled={!settingsSection.enabled} checked={settingsSection.cataloguesDSEnabled} setChecked={value => updateConjunctionsSettings('cataloguesDSEnabled', value)} />
+          </FormGroup>
+        </Typography>
+      </SettingsExpansionPanelDetails>
+      <SettingsExpansionPanelDetails disabled={!settingsSection.enabled}>
+        <Typography variant="subtitle2" component="span">
+          Filter out:
+            <FormGroup className={classes.singlePaddingLeft}>
+            <InternalCheckbox label="Objects dimmer than "
+              disabled={!settingsSection.enabled} checked={settingsSection.sunEnabled} setChecked={value => updateConjunctionsSettings('sunEnabled', value)} />
           </FormGroup>
         </Typography>
       </SettingsExpansionPanelDetails>

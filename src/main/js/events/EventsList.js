@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer'
   },
   collapsed: {
-    color: grey[500],
+    color: grey[400],
     backgroundColor: grey[200],
   },
   hidden: {
