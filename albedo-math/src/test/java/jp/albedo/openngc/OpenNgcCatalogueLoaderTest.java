@@ -17,20 +17,18 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class OpenNgcCatalogueLoaderTest {
 
-    private Catalogue catalogue;
+    final private OpenNgcCatalogueLoader loader = new OpenNgcCatalogueLoader();
 
     @BeforeEach
     void setUp() throws URISyntaxException, IOException {
-        final OpenNgcCatalogueLoader loader = new OpenNgcCatalogueLoader();
-
         final URL catalogueULR = OpenNgcCatalogueLoaderTest.class.getClassLoader().getResource("OpenNGC/NGC-sample.csv");
-        loader.load(new File(catalogueULR.toURI()));
-
-        this.catalogue = loader.create(CatalogueName.IC);
+        this.loader.load(new File(catalogueULR.toURI()));
     }
 
     @Test
-    void loadFile() {
+    void testICCatalogue() {
+
+        final Catalogue catalogue = loader.create(CatalogueName.IC);
 
         assertEquals(2, catalogue.getAllEntries().size());
 
@@ -57,4 +55,22 @@ class OpenNgcCatalogueLoaderTest {
         assertEquals("Sb", secondEntry.morphologicalType);
     }
 
+    @Test
+    void testMessierCatalogue() {
+
+        final Catalogue catalogue = loader.create(CatalogueName.Messier);
+
+        assertEquals(1, catalogue.getAllEntries().size());
+
+        CatalogueEntry firstEntry = catalogue.getAllEntries().get(0);
+        assertEquals("M45", firstEntry.name);
+        assertEquals(CatalogueEntryType.OpenCluster, firstEntry.type);
+        assertEquals(Math.toRadians((3.0 + 47.0 / 60 + 28.6 / 3600.0) * 15.0), firstEntry.coordinates.rightAscension);
+        assertEquals(Math.toRadians(24.0 + 6.0 / 60 + 19.0 / 3600.0), firstEntry.coordinates.declination);
+        assertEquals(150.0, firstEntry.majorAxisSize);
+        assertEquals(150.0, firstEntry.minorAxisSize);
+        assertEquals(null, firstEntry.bMagnitude);
+        assertEquals(1.2, firstEntry.vMagnitude);
+        assertEquals(null, firstEntry.morphologicalType);
+    }
 }

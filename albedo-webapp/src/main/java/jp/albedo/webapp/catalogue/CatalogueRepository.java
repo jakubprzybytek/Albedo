@@ -14,8 +14,8 @@ import java.util.Map;
 @Service
 public class CatalogueRepository {
 
-    @Value("${openNGC.fileName}")
-    private String openNGCFileName;
+    @Value("${openNGC.files}")
+    private String openNGCFiles;
 
     final private Map<CatalogueName, Catalogue> catalogueMap = new HashMap<>();
 
@@ -26,8 +26,11 @@ public class CatalogueRepository {
         }
 
         final OpenNgcCatalogueLoader loader = new OpenNgcCatalogueLoader();
-        loader.load(new File(this.openNGCFileName));
+        for (String fineName : this.openNGCFiles.split(",")) {
+            loader.load(new File(fineName));
+        }
 
+        this.catalogueMap.put(CatalogueName.Messier, loader.create(CatalogueName.Messier));
         this.catalogueMap.put(CatalogueName.NGC, loader.create(CatalogueName.NGC));
         this.catalogueMap.put(CatalogueName.IC, loader.create(CatalogueName.IC));
 

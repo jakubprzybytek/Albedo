@@ -34,6 +34,7 @@ export default function ConjunctionsForm(props) {
   const [secondaryPlanetsChecked, setSecondaryPlanetsChecked] = React.useState(false);
   const [secondaryCometsChecked, setSecondaryCometsChecked] = React.useState(true);
   const [secondaryAsteroidsChecked, setSecondaryAsteroidsChecked] = React.useState(true);
+  const [messierChecked, setMessierChecked] = React.useState(true);
   const [ngcChecked, setNgcChecked] = React.useState(true);
   const [icChecked, setIcChecked] = React.useState(false);
 
@@ -54,6 +55,7 @@ export default function ConjunctionsForm(props) {
     if (secondaryCometsChecked) { secondaryBodyTypes.push ("Comet") }
     if (secondaryAsteroidsChecked) { secondaryBodyTypes.push ("Asteroid") }
     const catalogues = [];
+    if (messierChecked) { catalogues.push ("Messier") }
     if (ngcChecked) { catalogues.push ("NGC") }
     if (icChecked) { catalogues.push ("IC") }
 
@@ -111,6 +113,9 @@ export default function ConjunctionsForm(props) {
             }/>
           <FormControlLabel label="Asteroids" labelPlacement="start" control={
               <Switch checked={secondaryAsteroidsChecked} onChange={event => setSecondaryAsteroidsChecked(event.target.checked)} color="primary" />
+            }/>
+          <FormControlLabel label="Messier" labelPlacement="start" control={
+              <Switch checked={messierChecked} onChange={event => setMessierChecked(event.target.checked)} color="secondary" />
             }/>
           <FormControlLabel label="NGC" labelPlacement="start" control={
               <Switch checked={ngcChecked} onChange={event => setNgcChecked(event.target.checked)} color="secondary" />

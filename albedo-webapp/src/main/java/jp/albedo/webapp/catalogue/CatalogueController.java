@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 public class CatalogueController {
 
-    private static Log LOG = LogFactory.getLog(CatalogueController.class);
+    final private static Log LOG = LogFactory.getLog(CatalogueController.class);
 
     @Autowired
     private CatalogueRepository catalogueRepository;

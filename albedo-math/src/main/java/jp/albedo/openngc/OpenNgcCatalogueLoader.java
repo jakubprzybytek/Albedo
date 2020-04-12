@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 
 public class OpenNgcCatalogueLoader {
 
-    private static Log LOG = LogFactory.getLog(OpenNgcCatalogueLoader.class);
+    final private static Log LOG = LogFactory.getLog(OpenNgcCatalogueLoader.class);
 
-    final private List<CatalogueEntry> catalogueEntries = new ArrayList<>();
+    final private List<OpenNgcCatalogueEntry> catalogueEntries = new ArrayList<>();
 
     public void load(File file) throws IOException {
         final Instant start = Instant.now();
@@ -60,38 +60,49 @@ public class OpenNgcCatalogueLoader {
 
                 final String morphologicalType = !values[14].isEmpty() ? values[14] : null;
 
-                this.catalogueEntries.add(new CatalogueEntry(name, parseType(type), coordinates, bMagnitude, vMagnitude, majorAxisSize, minorAxisSize, morphologicalType));
+                final Integer messierNumber = !values[18].isEmpty() ? Integer.parseInt(values[18]) : null;
+
+                this.catalogueEntries.add(new OpenNgcCatalogueEntry(name, parseType(type), coordinates, bMagnitude, vMagnitude, majorAxisSize, minorAxisSize, morphologicalType, messierNumber));
                 loadedEntries++;
             }
         }
 
-        LOG.info(String.format("Loaded %d and skipped %d catalogue entries in %s", catalogueEntries.size(), skippedEntries, Duration.between(start, Instant.now())));
+        LOG.info(String.format("Loaded %d and skipped %d catalogue entries from %s in %s", loadedEntries, skippedEntries, file.getAbsolutePath(), Duration.between(start, Instant.now())));
     }
 
     public Catalogue create(CatalogueName catalogueName) {
-        if (this.catalogueEntries == null) {
+        if (this.catalogueEntries.isEmpty()) {
             throw new RuntimeException("Load catalogue file first!");
         }
 
-        List<CatalogueEntry> filteredCatalogueEntries;
-
         switch (catalogueName) {
-            case IC:
-                final List<CatalogueEntry> icEntries = this.catalogueEntries.stream()
-                        .filter(entry -> entry.name.startsWith("IC"))
-                        .collect(Collectors.toList());
-
-                LOG.info(String.format("Created %s catalogue with %d entries", catalogueName, icEntries.size()));
-
-                return new Catalogue(icEntries);
             case NGC:
                 final List<CatalogueEntry> ngcEntries = this.catalogueEntries.stream()
                         .filter(entry -> entry.name.startsWith("NGC"))
+                        .map(entry -> new CatalogueEntry(entry.name, entry.type, entry.coordinates, entry.bMagnitude, entry.vMagnitude, entry.majorAxisSize, entry.minorAxisSize, entry.morphologicalType))
                         .collect(Collectors.toList());
 
                 LOG.info(String.format("Created %s catalogue with %d entries", catalogueName, ngcEntries.size()));
 
                 return new Catalogue(ngcEntries);
+            case IC:
+                final List<CatalogueEntry> icEntries = this.catalogueEntries.stream()
+                        .filter(entry -> entry.name.startsWith("IC"))
+                        .map(entry -> new CatalogueEntry(entry.name, entry.type, entry.coordinates, entry.bMagnitude, entry.vMagnitude, entry.majorAxisSize, entry.minorAxisSize, entry.morphologicalType))
+                        .collect(Collectors.toList());
+
+                LOG.info(String.format("Created %s catalogue with %d entries", catalogueName, icEntries.size()));
+
+                return new Catalogue(icEntries);
+            case Messier:
+                final List<CatalogueEntry> messierEntries = this.catalogueEntries.stream()
+                        .filter(entry -> entry.messierNumber != null)
+                        .map(entry -> new CatalogueEntry("M" + entry.messierNumber, entry.type, entry.coordinates, entry.bMagnitude, entry.vMagnitude, entry.majorAxisSize, entry.minorAxisSize, entry.morphologicalType))
+                        .collect(Collectors.toList());
+
+                LOG.info(String.format("Created %s catalogue with %d entries", catalogueName, messierEntries.size()));
+
+                return new Catalogue(messierEntries);
         }
         throw new RuntimeException("Unsupported type: " + catalogueName);
     }

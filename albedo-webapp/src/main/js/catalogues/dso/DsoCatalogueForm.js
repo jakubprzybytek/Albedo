@@ -49,6 +49,7 @@ export default function EphemerisForm(props) {
           <FormControl className={classes.field} margin="normal">
             <InputLabel id="catalogue-name-select-label">Catalogue</InputLabel>
             <Select labelId="catalogue-name-select-label" id="catalogue-name-select" value={catalogueName} onChange={event => setCatalogueName(event.target.value)}>
+              <MenuItem value={"Messier"}>Messier</MenuItem>
               <MenuItem value={"NGC"}>NGC</MenuItem>
               <MenuItem value={"IC"}>IC</MenuItem>
             </Select>

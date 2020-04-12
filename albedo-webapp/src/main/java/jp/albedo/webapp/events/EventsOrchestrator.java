@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Component
 public class EventsOrchestrator {
 
-    private static Log LOG = LogFactory.getLog(EventsOrchestrator.class);
+    final private static Log LOG = LogFactory.getLog(EventsOrchestrator.class);
 
     @Autowired
     private RiseTransitSetOrchestrator riseTransitSetOrchestrator;
@@ -57,6 +57,7 @@ public class EventsOrchestrator {
                 Optional.ofNullable(conjunctionsParameters.areAsteroidsEnabled() ? BodyType.Asteroid : null),
                 Optional.ofNullable(conjunctionsParameters.areCometsEnabled() ? BodyType.Comet : null));
         List<CatalogueName> conjunctionCatalogues = StreamUtils.collectPresent(
+                Optional.ofNullable(conjunctionsParameters.isCataloguesDSEnabled() ? CatalogueName.Messier : null),
                 Optional.ofNullable(conjunctionsParameters.isCataloguesDSEnabled() ? CatalogueName.NGC : null),
                 Optional.ofNullable(conjunctionsParameters.isCataloguesDSEnabled() ? CatalogueName.IC : null));
 
