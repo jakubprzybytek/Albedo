@@ -11,7 +11,7 @@ Download following resources and save on local disk:
 Update `application.properties` accordingly.
 
 ## Quick Run
-`mvn mvn spring-boot:run`
+`mvn spring-boot:run`
 
 Hit http://localhost:8080/
 
