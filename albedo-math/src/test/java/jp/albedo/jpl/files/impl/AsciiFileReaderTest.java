@@ -1,6 +1,6 @@
 package jp.albedo.jpl.files.impl;
 
-import jp.albedo.jpl.Constant;
+import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.kernel.XYZCoefficients;
 import org.junit.jupiter.api.BeforeAll;
@@ -55,13 +55,13 @@ class AsciiFileReaderTest {
 
     @Test
     void testConstants() {
-        final Map<Constant, Double> constants = this.asciiHeaderFileReader.getConstants();
+        final Map<JplConstant, Double> constants = this.asciiHeaderFileReader.getConstants();
 
         assertEquals(3, constants.size());
 
-        assertEquals(299792.457999999984, constants.get(Constant.SpeedOfLight));
-        assertEquals(149597870.699999988, constants.get(Constant.AU));
-        assertEquals(81.3005683381650925, constants.get(Constant.EarthMoonMassRatio));
+        assertEquals(299792.457999999984, constants.get(JplConstant.SpeedOfLight));
+        assertEquals(149597870.699999988, constants.get(JplConstant.AU));
+        assertEquals(81.3005683381650925, constants.get(JplConstant.EarthMoonMassRatio));
     }
 
     @Test

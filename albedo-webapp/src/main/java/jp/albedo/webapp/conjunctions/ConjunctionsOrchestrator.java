@@ -10,7 +10,7 @@ import jp.albedo.utils.MixListSupplier;
 import jp.albedo.utils.MixTwoListsSupplier;
 import jp.albedo.webapp.ephemeris.ComputedEphemerides;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
-import jp.albedo.webapp.catalogue.CatalogueRepository;
+import jp.albedo.webapp.catalogue.DsoCatalogueRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.util.Pair;
@@ -43,7 +43,7 @@ public class ConjunctionsOrchestrator {
     private ConjunctionsCalculator conjunctionsCalculator;
 
     @Autowired
-    private CatalogueRepository catalogueRepository;
+    private DsoCatalogueRepository dsoCatalogueRepository;
 
     /**
      * Finds conjunctions between requested bodies. Only bodies that moves across the sky (as seen from Earth) and
@@ -154,7 +154,7 @@ public class ConjunctionsOrchestrator {
 
     private List<CatalogueEntry> getCatalogueEntries(Collection<CatalogueName> catalogueNames) {
         return catalogueNames.stream()
-                .map(FunctionUtils.wrap(catalogueType -> this.catalogueRepository.getCatalogue(catalogueType)))
+                .map(FunctionUtils.wrap(catalogueType -> this.dsoCatalogueRepository.getCatalogue(catalogueType)))
                 .flatMap(catalogue -> catalogue.getAllEntries().stream())
                 .collect(Collectors.toList());
     }

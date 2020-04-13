@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ToolTabs() {
 
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = React.useState(0);
 
   const classes = useStyles();
 

@@ -1,5 +1,8 @@
-package jp.albedo.jpl;
+package jp.albedo.jpl.kernel;
 
+import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.JplConstant;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.state.impl.PositionCalculator;
 import jp.albedo.jpl.kernel.XYZCoefficients;
@@ -10,15 +13,15 @@ import java.util.Optional;
 
 public class SPKernel {
 
-    final private Map<Constant, Double> constants = new HashMap<>();
+    final private Map<JplConstant, Double> constants = new HashMap<>();
 
     final private Map<JplBody, Map<TimeSpan, XYZCoefficients>> coefficientsMap = new HashMap<>();
 
-    public void addConstants(Map<Constant, Double> newConstants) {
+    public void addConstants(Map<JplConstant, Double> newConstants) {
         this.constants.putAll(newConstants);
     }
 
-    public Double getConstant(Constant constant) {
+    public Double getConstant(JplConstant constant) {
         return this.constants.get(constant);
     }
 

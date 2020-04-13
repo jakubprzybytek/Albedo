@@ -7,7 +7,6 @@ import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculatorFactory;
-import jp.albedo.webapp.services.JplKernelsService;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -5,8 +5,6 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.EllipticMotion;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.vsop87.VSOPException;
-import jp.albedo.webapp.services.OrbitingBodyRecord;
-import jp.albedo.webapp.services.OrbitsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

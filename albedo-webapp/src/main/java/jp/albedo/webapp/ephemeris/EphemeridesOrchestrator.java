@@ -7,7 +7,7 @@ import jp.albedo.jpl.JplBody;
 import jp.albedo.utils.FunctionUtils;
 import jp.albedo.webapp.ephemeris.jpl.JplEphemerisCalculator;
 import jp.albedo.webapp.ephemeris.orbitbased.OrbitBasedEphemerisCalculator;
-import jp.albedo.webapp.services.OrbitingBodyRecord;
+import jp.albedo.webapp.ephemeris.orbitbased.OrbitingBodyRecord;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

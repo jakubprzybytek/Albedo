@@ -4,6 +4,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TabPanel from '../common/TabPanel';
 import DsoCataloguePanel from './dso/DsoCataloguePanel';
+import CometsCataloguePanel from './comets/CometsCataloguePanel';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function CataloguesPanel() {
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
 
   const classes = useStyles();
 
@@ -35,9 +36,13 @@ export default function CataloguesPanel() {
     <div className={classes.root}>
       <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} aria-label="Vertical tabs example" className={classes.tabs}>
         <Tab label="DSO" />
+        <Tab label="Comets" />
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
         <DsoCataloguePanel />
+      </TabPanel>
+      <TabPanel className={classes.tabPanel} value={value} index={1}>
+        <CometsCataloguePanel />
       </TabPanel>
     </div>
   );

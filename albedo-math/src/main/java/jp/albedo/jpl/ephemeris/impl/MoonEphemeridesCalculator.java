@@ -5,10 +5,10 @@ import jp.albedo.common.BodyInformation;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
-import jp.albedo.jpl.Constant;
+import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.SPKernel;
+import jp.albedo.jpl.kernel.SPKernel;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.state.EarthStateCalculator;
 import jp.albedo.jpl.state.StateCalculator;
@@ -34,9 +34,9 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
     private final EarthStateCalculator earthStateCalculator;
 
     public MoonEphemeridesCalculator(SPKernel spKernel) throws JplException {
-        this.speedOfLight = spKernel.getConstant(Constant.SpeedOfLight);
-        this.au = spKernel.getConstant(Constant.AU);
-        this.earthMoonMassRatio = spKernel.getConstant(Constant.EarthMoonMassRatio);
+        this.speedOfLight = spKernel.getConstant(JplConstant.SpeedOfLight);
+        this.au = spKernel.getConstant(JplConstant.AU);
+        this.earthMoonMassRatio = spKernel.getConstant(JplConstant.EarthMoonMassRatio);
 
         this.moonEquatorialRadius = BodyInformation.Moon.equatorialRadius;
 

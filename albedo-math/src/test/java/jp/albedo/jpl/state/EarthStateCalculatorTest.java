@@ -4,7 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.files.AsciiFileLoader;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.SPKernel;
+import jp.albedo.jpl.kernel.SPKernel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

@@ -1,8 +1,8 @@
-package jp.albedo.webapp.services;
+package jp.albedo.webapp.ephemeris.jpl;
 
 import jp.albedo.jpl.files.AsciiFileLoader;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.SPKernel;
+import jp.albedo.jpl.kernel.SPKernel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

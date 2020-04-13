@@ -6,10 +6,10 @@ import jp.albedo.common.ephemeris.Elongation;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
 import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.jpl.Constant;
+import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.SPKernel;
+import jp.albedo.jpl.kernel.SPKernel;
 import jp.albedo.common.magnitude.ApparentMagnitudeCalculator;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.ephemeris.MagnitudeCalculatorFactory;
@@ -37,8 +37,8 @@ public class BarycenterReferencedBodiesEphemeridesCalculator implements Ephemeri
     private final ApparentMagnitudeCalculator magnitudeCalculator;
 
     public BarycenterReferencedBodiesEphemeridesCalculator(JplBody body, SPKernel spKernel) throws JplException {
-        this.speedOfLight = spKernel.getConstant(Constant.SpeedOfLight);
-        this.au = spKernel.getConstant(Constant.AU);
+        this.speedOfLight = spKernel.getConstant(JplConstant.SpeedOfLight);
+        this.au = spKernel.getConstant(JplConstant.AU);
 
         this.bodyEquatorialRadius = BodyInformation.valueOf(body.name()).equatorialRadius;
 

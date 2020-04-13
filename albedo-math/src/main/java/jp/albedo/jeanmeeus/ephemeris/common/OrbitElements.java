@@ -1,26 +1,30 @@
 package jp.albedo.jeanmeeus.ephemeris.common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.common.Epoch;
+import jp.albedo.webapp.utils.Precision6Converter;
 
 public class OrbitElements {
 
-    private Epoch epoch;
+    final private Epoch epoch;
 
-    private double eccentricity;
+    final private double eccentricity;
 
-    private double semiMajorAxis;
+    @JsonSerialize(converter = Precision6Converter.class)
+    final private double semiMajorAxis;
 
-    private double meanMotion;
+    final private double meanMotion;
 
-    private double argumentOfPerihelion;
+    final private double argumentOfPerihelion;
 
-    private double longitudeOfAscendingNode;
+    final private double longitudeOfAscendingNode;
 
-    private double inclination;
+    final private double inclination;
 
-    private double meanAnomalyEpoch;
+    final private double meanAnomalyEpoch;
 
-    private double meanAnomalyAtEpoch;
+    final private double meanAnomalyAtEpoch;
 
     public OrbitElements(Epoch epoch, double eccentricity, double semiMajorAxis, double meanMotion, double argumentOfPerihelion, double longitudeOfAscendingNode, double inclination, double meanAnomalyEpoch, double meanAnomalyAtEpoch) {
         this.epoch = epoch;
@@ -44,6 +48,18 @@ public class OrbitElements {
 
     public double getSemiMajorAxis() {
         return semiMajorAxis;
+    }
+
+    @JsonProperty
+    @JsonSerialize(converter = Precision6Converter.class)
+    public double getPeriapsis() {
+        return (1.0 - this.eccentricity) * this.semiMajorAxis;
+    }
+
+    @JsonProperty
+    @JsonSerialize(converter = Precision6Converter.class)
+    public double getApoapsis() {
+        return (1.0 + this.eccentricity) * this.semiMajorAxis;
     }
 
     public double getArgumentOfPerihelion() {

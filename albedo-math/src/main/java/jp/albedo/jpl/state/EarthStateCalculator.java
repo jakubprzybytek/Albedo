@@ -1,10 +1,10 @@
 package jp.albedo.jpl.state;
 
 import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.jpl.Constant;
+import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.SPKernel;
+import jp.albedo.jpl.kernel.SPKernel;
 import jp.albedo.jpl.state.impl.PositionCalculator;
 
 /**
@@ -19,7 +19,7 @@ public class EarthStateCalculator {
     private final PositionCalculator earthBarycenterPositionCalculator;
 
     public EarthStateCalculator(SPKernel spKernel) throws JplException {
-        this.earthMoonMassRatio = spKernel.getConstant(Constant.EarthMoonMassRatio);
+        this.earthMoonMassRatio = spKernel.getConstant(JplConstant.EarthMoonMassRatio);
 
         this.moonPositionCalculator = spKernel.getPositionCalculatorFor(JplBody.Moon);
         this.earthBarycenterPositionCalculator = spKernel.getPositionCalculatorFor(JplBody.EarthMoonBarycenter);

@@ -1,6 +1,6 @@
 package jp.albedo.jpl.files.impl;
 
-import jp.albedo.jpl.Constant;
+import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.kernel.XYZCoefficients;
 import org.apache.commons.logging.Log;
@@ -20,7 +20,7 @@ public class AsciiFileReader {
 
     private static Log LOG = LogFactory.getLog(AsciiFileReader.class);
 
-    protected Map<Constant, Double> constants;
+    protected Map<JplConstant, Double> constants;
 
     protected List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
 

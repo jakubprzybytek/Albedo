@@ -1,4 +1,4 @@
-package jp.albedo.webapp.services;
+package jp.albedo.webapp.ephemeris.orbitbased;
 
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.magnitude.MagnitudeParameters;

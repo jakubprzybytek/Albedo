@@ -1,6 +1,6 @@
 package jp.albedo.jpl.files.impl;
 
-import jp.albedo.jpl.Constant;
+import jp.albedo.jpl.JplConstant;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -19,7 +19,7 @@ public class AsciiHeaderFileReader {
 
     private static Log LOG = LogFactory.getLog(AsciiHeaderFileReader.class);
 
-    private Map<Constant, Double> constants;
+    private Map<JplConstant, Double> constants;
 
     private List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
 
@@ -39,27 +39,33 @@ public class AsciiHeaderFileReader {
             String line;
             // skip to data
             while ((line = bufferedReader.readLine()) != null && !line.contains("GROUP   1041")) ;
-            constants = parseConstants(bufferedReader);
+            this.constants = parseConstants(bufferedReader);
 
             while ((line = bufferedReader.readLine()) != null && !line.contains("GROUP   1050")) ;
             this.contentDescriptor = parseContentDescriptor1050(bufferedReader);
         }
 
+        this.constants.forEach((constName, value) -> {
+            LOG.info(String.format("Loaded const: %s=%f", constName, value));
+        });
+
         LOG.info(String.format("Loaded %d coefficient descriptors from %s in %s", this.contentDescriptor.size(), file.getPath(), Duration.between(start, Instant.now())));
     }
 
-    private Map<Constant, Double> parseConstants(BufferedReader bufferedReader) throws IOException {
+    private Map<JplConstant, Double> parseConstants(BufferedReader bufferedReader) throws IOException {
         bufferedReader.readLine();
         bufferedReader.readLine();
 
-        Map<Constant, Double> constants = new HashMap<>();
+        Map<JplConstant, Double> constants = new HashMap<>();
 
         DoublesBlockReader doublesBlockReader = new DoublesBlockReader(bufferedReader);
         doublesBlockReader.read(6);
-        constants.put(Constant.SpeedOfLight, doublesBlockReader.read());
+        constants.put(JplConstant.SpeedOfLight, doublesBlockReader.read());
         doublesBlockReader.read(2);
-        constants.put(Constant.AU, doublesBlockReader.read());
-        constants.put(Constant.EarthMoonMassRatio, doublesBlockReader.read());
+        constants.put(JplConstant.AU, doublesBlockReader.read());
+        constants.put(JplConstant.EarthMoonMassRatio, doublesBlockReader.read());
+        doublesBlockReader.read(9);
+        constants.put(JplConstant.GMSun, doublesBlockReader.read());
 
         return constants;
     }
@@ -85,7 +91,7 @@ public class AsciiHeaderFileReader {
         return contentDescriptor;
     }
 
-    public Map<Constant, Double> getConstants() {
+    public Map<JplConstant, Double> getConstants() {
         return constants;
     }
 

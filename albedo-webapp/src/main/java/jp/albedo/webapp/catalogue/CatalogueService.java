@@ -15,15 +15,15 @@ import java.util.stream.Collectors;
 public class CatalogueService {
 
     @Autowired
-    private CatalogueRepository catalogueRepository;
+    private DsoCatalogueRepository dsoCatalogueRepository;
 
     public List<CatalogueEntry> allCatalogueEntries() throws IOException {
-        Catalogue catalogue = this.catalogueRepository.getCatalogue(CatalogueName.NGC);
+        Catalogue catalogue = this.dsoCatalogueRepository.getCatalogue(CatalogueName.NGC);
         return catalogue.getAllEntries();
     }
 
     public List<CatalogueEntry> filteredCatalogueEntries(@GraphQLArgument(name = "nameFilter") String nameFilter) throws IOException {
-        Catalogue catalogue = this.catalogueRepository.getCatalogue(CatalogueName.NGC);
+        Catalogue catalogue = this.dsoCatalogueRepository.getCatalogue(CatalogueName.NGC);
         return catalogue.getAllEntries().stream()
                 .filter(catalogueEntry -> catalogueEntry.name.contains(nameFilter))
                 .collect(Collectors.toList());

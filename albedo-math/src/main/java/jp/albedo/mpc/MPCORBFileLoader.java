@@ -22,9 +22,9 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MPCORBFile {
+public class MPCORBFileLoader {
 
-    private static Log LOG = LogFactory.getLog(MPCORBFile.class);
+    private static Log LOG = LogFactory.getLog(MPCORBFileLoader.class);
 
     final private static Pattern orbitPattern = Pattern.compile("^(\\w+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)\\s+([\\w.]+)(\\s+[\\w.\\-()]+){11}\\s+(.{18})");
 

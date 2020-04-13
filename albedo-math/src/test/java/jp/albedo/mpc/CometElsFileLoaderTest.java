@@ -15,17 +15,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CometElsFileTest {
+class CometElsFileLoaderTest {
 
     @Test
     @DisplayName("Reading 6 orbits from sample file")
     void load() throws IOException, URISyntaxException {
 
-        final URL cometElsFileULR = CometElsFileTest.class.getClassLoader().getResource("MPC/CometEls.txt.testSample");
+        final URL cometElsFileULR = CometElsFileLoaderTest.class.getClassLoader().getResource("MPC/CometEls.txt.testSample");
 
         System.out.println("Reading Comets file: " + cometElsFileULR);
 
-        List<MPCRecord> cometRecords = CometElsFile.load(new File(cometElsFileULR.toURI()));
+        List<MPCRecord> cometRecords = CometElsFileLoader.load(new File(cometElsFileULR.toURI()));
         for (MPCRecord record : cometRecords) {
             System.out.printf("%s: %s%n", record.bodyDetails.name, record.orbitElements);
         }
@@ -38,7 +38,7 @@ class CometElsFileTest {
     void parseOrbitLineCorrectFormat() {
         String lineToParse = "0391P         2018 03 17.4927  4.109579  0.120770  186.4949  124.7349   21.2761  20191209   8.0  4.0  391P/Kowalski                                            MPEC 2019-VB6";
 
-        MPCRecord recordOptional = CometElsFile.parseCometLine(lineToParse);
+        MPCRecord recordOptional = CometElsFileLoader.parseCometLine(lineToParse);
 
         assertEquals("391P/Kowalski", recordOptional.bodyDetails.name);
 

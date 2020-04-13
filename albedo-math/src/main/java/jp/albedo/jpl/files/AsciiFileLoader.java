@@ -2,7 +2,7 @@ package jp.albedo.jpl.files;
 
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.SPKernel;
+import jp.albedo.jpl.kernel.SPKernel;
 import jp.albedo.jpl.files.impl.AsciiFileReader;
 import jp.albedo.jpl.files.impl.AsciiHeaderFileReader;
 

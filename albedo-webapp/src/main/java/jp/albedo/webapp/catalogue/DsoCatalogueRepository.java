@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class CatalogueRepository {
+public class DsoCatalogueRepository {
 
     @Value("${openNGC.files}")
     private String openNGCFiles;

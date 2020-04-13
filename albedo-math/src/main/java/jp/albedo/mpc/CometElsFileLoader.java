@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CometElsFile {
+public class CometElsFileLoader {
 
-    private static Log LOG = LogFactory.getLog(CometElsFile.class);
+    final private static Log LOG = LogFactory.getLog(CometElsFileLoader.class);
 
     public static List<MPCRecord> load(File sourceFile) throws IOException {
 
@@ -30,10 +30,10 @@ public class CometElsFile {
 
         try (final Stream<String> stream = Files.lines(Paths.get(sourceFile.toURI()))) {
             final List<MPCRecord> cometRecords = stream
-                    .map(CometElsFile::parseCometLine)
+                    .map(CometElsFileLoader::parseCometLine)
                     .collect(Collectors.toList());
 
-            LOG.info(String.format("Loaded %d comet orbit details from %s in %s", cometRecords.size(), sourceFile.getPath(), Duration.between(start, Instant.now())));
+            LOG.info(String.format("Loaded %d comet orbit details from '%s' in %s", cometRecords.size(), sourceFile.getPath(), Duration.between(start, Instant.now())));
 
             return cometRecords;
         }
@@ -66,4 +66,5 @@ public class CometElsFile {
 
         return new MPCRecord(new BodyDetails(name, BodyType.Comet), magnitudeParameters, orbitElements);
     }
+
 }
