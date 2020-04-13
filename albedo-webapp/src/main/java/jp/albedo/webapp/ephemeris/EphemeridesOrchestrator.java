@@ -37,10 +37,10 @@ public class EphemeridesOrchestrator {
      * <p>
      * Different backend ephemerides calculators can be chosen depending on which can handle given body.
      *
-     * @param bodyName Name of body for which the ephemerides should be computed.
-     * @param fromDate Start of the time period for which ephemerides should be computed in Julian days.
-     * @param toDate End of the time period for which ephemerides should be computed in Julian days.
-     * @param interval Interval for computations in Julian days.
+     * @param bodyName         Name of body for which the ephemerides should be computed.
+     * @param fromDate         Start of the time period for which ephemerides should be computed in Julian days.
+     * @param toDate           End of the time period for which ephemerides should be computed in Julian days.
+     * @param interval         Interval for computations in Julian days.
      * @param observerLocation Location of observer for parallax correction.
      * @return
      * @throws Exception
@@ -74,10 +74,10 @@ public class EphemeridesOrchestrator {
     /**
      * Computes ephemerides to all bodies of given type supported by known calculators.
      *
-     * @param bodyType Body type that determines for which objects ephemeris will be computed.
-     * @param fromDate Start of the time period for which ephemerides should be computed in Julian days.
-     * @param toDate End of the time period for which ephemerides should be computed in Julian days.
-     * @param interval Interval for computations in Julian days.
+     * @param bodyType         Body type that determines for which objects ephemeris will be computed.
+     * @param fromDate         Start of the time period for which ephemerides should be computed in Julian days.
+     * @param toDate           End of the time period for which ephemerides should be computed in Julian days.
+     * @param interval         Interval for computations in Julian days.
      * @param observerLocation Location of observer for parallax correction.
      * @return List of computed ephemerides.
      */
@@ -99,6 +99,7 @@ public class EphemeridesOrchestrator {
                 .forEachOrdered(ephemeridesList::add);
 
         this.orbitBasedEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
+                .filter(orbitingBodyRecord -> orbitingBodyRecord.getOrbitElements().isOrbitElliptic())
                 .map(FunctionUtils.wrap(orbitingBodyRecord -> {
                     final List<Ephemeris> ephemerides = this.orbitBasedEphemerisCalculator.compute(orbitingBodyRecord, fromDate, toDate, interval).parallelStream()
                             .map(ParallaxCorrection.correctFor(observerLocation))

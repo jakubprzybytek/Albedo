@@ -1,6 +1,5 @@
 package jp.albedo.webapp.catalogue;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.common.Year;
@@ -12,11 +11,9 @@ public class OrbitingBodyStateRecord {
     @JsonUnwrapped
     final private OrbitingBodyRecord orbitingBodyRecord;
 
-    @JsonProperty
     @JsonSerialize(converter = Precision2Converter.class)
     private Double orbitalPeriod;
 
-    @JsonProperty
     @JsonSerialize(converter = Precision2Converter.class)
     private Double orbitalPeriodInDays;
 

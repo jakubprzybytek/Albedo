@@ -107,6 +107,10 @@ public class OrbitElements {
         return Math.toRadians(meanAnomalyAtEpoch);
     }
 
+    public boolean isOrbitElliptic() {
+        return this.eccentricity < 1.0;
+    }
+
     @Override
     public String toString() {
         return String.format("[Epoch=%s, e=%.3f, a=%.4fAU, n=%.4f°, ω=%.3f°, Ω=%.3f°, i=%.4f°, T=%.4fTD, M=%.3f°]",
