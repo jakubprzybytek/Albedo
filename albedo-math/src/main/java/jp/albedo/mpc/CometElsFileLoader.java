@@ -57,7 +57,7 @@ public class CometElsFileLoader {
         final String name = line.substring(102, 158).trim();
 
         final OrbitElements orbitElements = new OrbitElementsBuilder()
-                .orbitShapeUsingPerihelionDistance(eccentricity, perihelionDistance)
+                .orbitShapeUsingPeriapsis(eccentricity, perihelionDistance)
                 .orbitPosition(Epoch.J2000, argumentOfPerihelion, longitudeOfAscendingNode, inclination)
                 .bodyPosition(JulianDay.fromDate(anomalyEpochYear, anomalyEpochMonth, anomalyEpochDay), 0.0) // FixMe: expected TD but provided TT
                 .build();

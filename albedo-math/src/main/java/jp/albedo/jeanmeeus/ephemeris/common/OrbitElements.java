@@ -12,9 +12,11 @@ public class OrbitElements {
     final private double eccentricity;
 
     @JsonSerialize(converter = Precision6Converter.class)
-    final private double semiMajorAxis;
+    final private Double semiMajorAxis;
 
-    final private double meanMotion;
+    final private double periapsis;
+
+    final private Double meanMotion;
 
     final private double argumentOfPerihelion;
 
@@ -26,10 +28,11 @@ public class OrbitElements {
 
     final private double meanAnomalyAtEpoch;
 
-    public OrbitElements(Epoch epoch, double eccentricity, double semiMajorAxis, double meanMotion, double argumentOfPerihelion, double longitudeOfAscendingNode, double inclination, double meanAnomalyEpoch, double meanAnomalyAtEpoch) {
+    public OrbitElements(Epoch epoch, double eccentricity, Double semiMajorAxis, double periapsis, Double meanMotion, double argumentOfPerihelion, double longitudeOfAscendingNode, double inclination, double meanAnomalyEpoch, double meanAnomalyAtEpoch) {
         this.epoch = epoch;
         this.eccentricity = eccentricity;
         this.semiMajorAxis = semiMajorAxis;
+        this.periapsis = periapsis;
         this.meanMotion = meanMotion;
         this.argumentOfPerihelion = argumentOfPerihelion;
         this.longitudeOfAscendingNode = longitudeOfAscendingNode;
@@ -46,20 +49,18 @@ public class OrbitElements {
         return eccentricity;
     }
 
-    public double getSemiMajorAxis() {
+    public Double getSemiMajorAxis() {
         return semiMajorAxis;
     }
 
-    @JsonProperty
-    @JsonSerialize(converter = Precision6Converter.class)
     public double getPeriapsis() {
-        return (1.0 - this.eccentricity) * this.semiMajorAxis;
+        return this.periapsis;
     }
 
     @JsonProperty
     @JsonSerialize(converter = Precision6Converter.class)
-    public double getApoapsis() {
-        return (1.0 + this.eccentricity) * this.semiMajorAxis;
+    public Double getApoapsis() {
+        return this.semiMajorAxis != null ? (1.0 + this.eccentricity) * this.semiMajorAxis : null;
     }
 
     public double getArgumentOfPerihelion() {
@@ -90,7 +91,7 @@ public class OrbitElements {
         return meanAnomalyEpoch;
     }
 
-    public double getMeanMotion() {
+    public Double getMeanMotion() {
         return meanMotion;
     }
 

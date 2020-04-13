@@ -156,6 +156,18 @@ function OrbitElements(props) {
         </ListItem>
         <ListItem>
           <ListItemText className={classes.listItem} secondary={<React.Fragment>
+            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Periapsis (r<sub>pr</sub>): </Typography>
+            {orbitElements.periapsis + " AU"}
+          </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
+            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Apoapsis (r<sub>ap</sub>): </Typography>
+            {orbitElements.apoapsis + " AU"}
+          </React.Fragment>} />
+        </ListItem>
+        <ListItem>
+          <ListItemText className={classes.listItem} secondary={<React.Fragment>
             <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">Mean motion (n): </Typography>
             {orbitElements.meanMotion + '°/day'}
           </React.Fragment>} />

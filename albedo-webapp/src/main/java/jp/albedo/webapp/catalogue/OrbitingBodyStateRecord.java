@@ -3,6 +3,7 @@ package jp.albedo.webapp.catalogue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jp.albedo.common.Year;
 import jp.albedo.webapp.ephemeris.orbitbased.OrbitingBodyRecord;
 import jp.albedo.webapp.utils.Precision2Converter;
 
@@ -13,15 +14,18 @@ public class OrbitingBodyStateRecord {
 
     @JsonProperty
     @JsonSerialize(converter = Precision2Converter.class)
-    final private double orbitalPeriod;
+    private Double orbitalPeriod;
 
     @JsonProperty
     @JsonSerialize(converter = Precision2Converter.class)
-    final private double orbitalPeriodInDays;
+    private Double orbitalPeriodInDays;
 
-    public OrbitingBodyStateRecord(OrbitingBodyRecord orbitingBodyRecord, double orbitalPeriod, double orbitalPeriodInDays) {
+    public OrbitingBodyStateRecord(OrbitingBodyRecord orbitingBodyRecord) {
         this.orbitingBodyRecord = orbitingBodyRecord;
-        this.orbitalPeriod = orbitalPeriod;
+    }
+
+    public void setOrbitalPeriod(Double orbitalPeriodInDays) {
+        this.orbitalPeriod = orbitalPeriodInDays / Year.SOLAR_DAYS;
         this.orbitalPeriodInDays = orbitalPeriodInDays;
     }
 

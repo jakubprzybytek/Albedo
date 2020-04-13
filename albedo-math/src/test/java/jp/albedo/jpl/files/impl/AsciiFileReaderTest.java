@@ -57,11 +57,12 @@ class AsciiFileReaderTest {
     void testConstants() {
         final Map<JplConstant, Double> constants = this.asciiHeaderFileReader.getConstants();
 
-        assertEquals(3, constants.size());
+        assertEquals(4, constants.size());
 
         assertEquals(299792.457999999984, constants.get(JplConstant.SpeedOfLight));
         assertEquals(149597870.699999988, constants.get(JplConstant.AU));
         assertEquals(81.3005683381650925, constants.get(JplConstant.EarthMoonMassRatio));
+        assertEquals(2.959122082855911E-4, constants.get(JplConstant.GMSun));
     }
 
     @Test

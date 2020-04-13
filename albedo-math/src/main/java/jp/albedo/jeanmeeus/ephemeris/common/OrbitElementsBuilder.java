@@ -8,9 +8,11 @@ public class OrbitElementsBuilder {
 
     private double eccentricity;
 
-    private double semiMajorAxis;
+    private Double semiMajorAxis;
 
-    private double meanDailyMotion;
+    private double periapsis;
+
+    private Double meanDailyMotion;
 
     private double longitudeOfAscendingNode;
 
@@ -22,23 +24,30 @@ public class OrbitElementsBuilder {
 
     private double meanAnomalyAtEpoch;
 
-    public OrbitElementsBuilder orbitShapeUsingSemiMajorAxis(double eccentricity, double semiMajorAxis) {
+    private OrbitElementsBuilder orbitShape(double eccentricity, Double semiMajorAxis, double periapsis, Double meanDailyMotion) {
         this.eccentricity = eccentricity;
         this.semiMajorAxis = semiMajorAxis;
-        this.meanDailyMotion = MeanMotion.fromSemiMajorAxis(semiMajorAxis);
-        return this;
-    }
-
-    public OrbitElementsBuilder orbitShapeUsingSemiMajorAxis(double eccentricity, double semiMajorAxis, double meanDailyMotion) {
-        this.eccentricity = eccentricity;
-        this.semiMajorAxis = semiMajorAxis;
+        this.periapsis = periapsis;
         this.meanDailyMotion = meanDailyMotion;
         return this;
     }
 
-    public OrbitElementsBuilder orbitShapeUsingPerihelionDistance(double eccentricity, double perihelionDistance) {
-        orbitShapeUsingSemiMajorAxis(eccentricity, perihelionDistance / (1 - eccentricity));
-        return this;
+    public OrbitElementsBuilder orbitShapeUsingSemiMajorAxis(double eccentricity, double semiMajorAxis) {
+        return orbitShape(eccentricity, semiMajorAxis, (1.0 - eccentricity) * semiMajorAxis, MeanMotion.fromSemiMajorAxis(semiMajorAxis));
+    }
+
+    public OrbitElementsBuilder orbitShapeUsingSemiMajorAxis(double eccentricity, double semiMajorAxis, double meanDailyMotion) {
+        return orbitShape(eccentricity, semiMajorAxis, (1.0 - eccentricity) * semiMajorAxis, meanDailyMotion);
+    }
+
+    public OrbitElementsBuilder orbitShapeUsingPeriapsis(double eccentricity, double periapsis) {
+        if (eccentricity < 1.0) {
+            final double semiMajorAxis = periapsis / (1 - eccentricity);
+            return orbitShape(eccentricity, semiMajorAxis, periapsis, MeanMotion.fromSemiMajorAxis(semiMajorAxis)
+            );
+        } else {
+            return orbitShape(eccentricity, null, periapsis, null);
+        }
     }
 
     public OrbitElementsBuilder orbitPosition(Epoch epoch, double argumentOfPerihelion, double longitudeOfAscendingNode, double inclination) {
@@ -57,7 +66,7 @@ public class OrbitElementsBuilder {
 
     public OrbitElements build() {
         return new OrbitElements(this.epoch,
-                this.eccentricity, this.semiMajorAxis, this.meanDailyMotion,
+                this.eccentricity, this.semiMajorAxis, this.periapsis, this.meanDailyMotion,
                 this.argumentOfPerihelion, this.longitudeOfAscendingNode, this.inclination,
                 this.meanAnomalyEpoch, this.meanAnomalyAtEpoch
         );
