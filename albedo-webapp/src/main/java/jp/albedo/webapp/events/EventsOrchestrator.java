@@ -61,6 +61,8 @@ public class EventsOrchestrator {
                 Optional.ofNullable(conjunctionsParameters.isCataloguesDSEnabled() ? CatalogueName.NGC : null),
                 Optional.ofNullable(conjunctionsParameters.isCataloguesDSEnabled() ? CatalogueName.IC : null));
 
+        ConjunctionEventsFilter conjunctionEventsFilter = new ConjunctionEventsFilter(conjunctionsParameters.isFilterBlindedBySun());
+
         if (!conjunctionBodyNames.isEmpty() || !conjunctionPrimaryBodyTypes.isEmpty()) {
             astronomicalEvents.addAll(this.conjunctionsOrchestrator.computeForTwoMovingBodies(
                     conjunctionBodyNames,
@@ -71,6 +73,7 @@ public class EventsOrchestrator {
                     observerLocation)
                     .stream()
                     .filter(conjunction -> conjunction.jde > fromDate) // FixMe
+                    .filter(conjunctionEventsFilter)
                     .map(ConjunctionEvent::fromTwoBodies)
                     .collect(Collectors.toList()));
         }

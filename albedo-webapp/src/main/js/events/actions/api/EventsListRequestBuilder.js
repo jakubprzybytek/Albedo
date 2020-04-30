@@ -12,5 +12,6 @@ export function buildEventsListRequestParams(fromDate, toDate, rtsSettings, conj
         conjunctionsCometsEnabled: conjunctionsSettings.enabled && conjunctionsSettings.cometsEnabled,
         conjunctionsAsteroidsEnabled: conjunctionsSettings.enabled && conjunctionsSettings.asteroidsEnabled,
         conjunctionsCataloguesDSEnabled: conjunctionsSettings.enabled && conjunctionsSettings.cataloguesDSEnabled,
+        cFilterBlindedBySun: conjunctionsSettings.enabled && conjunctionsSettings.filterBlindedBySun,
     };
 }

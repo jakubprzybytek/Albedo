@@ -14,13 +14,16 @@ public class ConjunctionsParameters {
 
     private final boolean cataloguesDSEnabled;
 
-    public ConjunctionsParameters(boolean sunEnabled, boolean moonEnabled, boolean planetsEnabled, boolean cometsEnabled, boolean asteroidsEnabled, boolean cataloguesDSEnabled) {
+    private final boolean filterBlindedBySun;
+
+    public ConjunctionsParameters(boolean sunEnabled, boolean moonEnabled, boolean planetsEnabled, boolean cometsEnabled, boolean asteroidsEnabled, boolean cataloguesDSEnabled, boolean filterBlindedBySun) {
         this.sunEnabled = sunEnabled;
         this.moonEnabled = moonEnabled;
         this.planetsEnabled = planetsEnabled;
         this.cometsEnabled = cometsEnabled;
         this.asteroidsEnabled = asteroidsEnabled;
         this.cataloguesDSEnabled = cataloguesDSEnabled;
+        this.filterBlindedBySun = filterBlindedBySun;
     }
 
     public boolean isSunEnabled() {
@@ -45,5 +48,9 @@ public class ConjunctionsParameters {
 
     public boolean isCataloguesDSEnabled() {
         return cataloguesDSEnabled;
+    }
+
+    public boolean isFilterBlindedBySun() {
+        return filterBlindedBySun;
     }
 }

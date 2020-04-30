@@ -50,8 +50,8 @@ export function ConjunctionsSettingsDrawer(props) {
         <Typography variant="subtitle2" component="span">
           Filter out:
             <FormGroup className={classes.singlePaddingLeft}>
-            <InternalCheckbox label="Objects dimmer than "
-              disabled={!settingsSection.enabled} checked={settingsSection.sunEnabled} setChecked={value => updateConjunctionsSettings('sunEnabled', value)} />
+            <InternalCheckbox label="Events when blinded by Sun"
+              disabled={!settingsSection.enabled} checked={settingsSection.filterBlindedBySun} setChecked={value => updateConjunctionsSettings('filterBlindedBySun', value)} />
           </FormGroup>
         </Typography>
       </SettingsExpansionPanelDetails>

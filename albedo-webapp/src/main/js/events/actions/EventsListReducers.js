@@ -24,6 +24,7 @@ const initialState = {
       cometsEnabled: true,
       asteroidsEnabled: true,
       cataloguesDSEnabled: true,
+      filterBlindedBySun: true,
     }
   },
   events: [],

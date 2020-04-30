@@ -40,13 +40,21 @@ public class EventsController {
                                                            @RequestParam(value = "conjunctionsPlanetsEnabled", required = false) boolean conjunctionsPlanetsEnabled,
                                                            @RequestParam(value = "conjunctionsCometsEnabled", required = false) boolean conjunctionsCometsEnabled,
                                                            @RequestParam(value = "conjunctionsAsteroidsEnabled", required = false) boolean conjunctionsAsteroidsEnabled,
-                                                           @RequestParam(value = "conjunctionsCataloguesDSEnabled", required = false) boolean conjunctionsCataloguesDSEnabled) throws Exception {
+                                                           @RequestParam(value = "conjunctionsCataloguesDSEnabled", required = false) boolean conjunctionsCataloguesDSEnabled,
+                                                           @RequestParam(value = "cFilterBlindedBySun", required = true) boolean conjunctionsFilterBlindedBySun) throws Exception {
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         final RtsParameters rtsParameters = new RtsParameters(rtsSunEnabled, rtsMoonEnabled);
-        final ConjunctionsParameters conjunctionsParameters = new ConjunctionsParameters(conjunctionsSunEnabled, conjunctionsMoonEnabled, conjunctionsPlanetsEnabled, conjunctionsCometsEnabled, conjunctionsAsteroidsEnabled, conjunctionsCataloguesDSEnabled);
+        final ConjunctionsParameters conjunctionsParameters = new ConjunctionsParameters(
+                conjunctionsSunEnabled,
+                conjunctionsMoonEnabled,
+                conjunctionsPlanetsEnabled,
+                conjunctionsCometsEnabled,
+                conjunctionsAsteroidsEnabled,
+                conjunctionsCataloguesDSEnabled,
+                conjunctionsFilterBlindedBySun);
 
         final AtomicInteger id = new AtomicInteger();
 

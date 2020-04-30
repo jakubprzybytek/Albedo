@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
 
-  const [tabValue, setTabValue] = React.useState(2);
+  const [tabValue, setTabValue] = React.useState(0);
   const [settingsDrawerOpened, setSettingsDrawerOpened] = React.useState(true);
   const [userDrawerOpened, setUserDrawerOpened] = React.useState(false);
 

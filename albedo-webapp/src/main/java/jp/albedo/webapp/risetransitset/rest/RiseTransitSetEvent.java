@@ -2,9 +2,11 @@ package jp.albedo.webapp.risetransitset.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.JulianDay;
 import jp.albedo.webapp.common.AstronomicalEvent;
+import jp.albedo.webapp.utils.RadiansToPrecision6DegreesConverter;
 
 public class RiseTransitSetEvent extends AstronomicalEvent {
 
@@ -17,10 +19,12 @@ public class RiseTransitSetEvent extends AstronomicalEvent {
     private final RiseTransitSetEventType eventType;
 
     @JsonProperty
+    @JsonSerialize(converter = RadiansToPrecision6DegreesConverter.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final Double azimuth;
 
     @JsonProperty
+    @JsonSerialize(converter = RadiansToPrecision6DegreesConverter.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final Double altitude;
 
