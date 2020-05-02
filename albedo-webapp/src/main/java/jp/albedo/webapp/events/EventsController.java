@@ -41,7 +41,7 @@ public class EventsController {
                                                            @RequestParam(value = "conjunctionsCometsEnabled", required = false) boolean conjunctionsCometsEnabled,
                                                            @RequestParam(value = "conjunctionsAsteroidsEnabled", required = false) boolean conjunctionsAsteroidsEnabled,
                                                            @RequestParam(value = "conjunctionsCataloguesDSEnabled", required = false) boolean conjunctionsCataloguesDSEnabled,
-                                                           @RequestParam(value = "cFilterBlindedBySun", required = true) boolean conjunctionsFilterBlindedBySun) throws Exception {
+                                                           @RequestParam(value = "cFilterBlindedBySun", required = false) boolean conjunctionsFilterBlindedBySun) throws Exception {
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);

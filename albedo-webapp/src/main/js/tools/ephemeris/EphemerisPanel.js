@@ -8,6 +8,7 @@ import TabPanel from '../../common/TabPanel';
 import EphemerisForm from './EphemerisForm';
 import EphemerisTable from './EphemerisTable';
 import EphemerisCharts from './EphemerisCharts';
+import EphemerisStarMap from './EphemerisStarMap';
 import BodyCard from '../../components/BodyCard';
 
 const useStyles = makeStyles(theme => ({
@@ -46,7 +47,7 @@ export default function EphemerisPanel() {
 
   const [rows, setRows] = React.useState([]);
   const [bodyCard, setBodyCard] = React.useState(defaultBodyCard);
-  const [selectedTab, setSelectedTab] = React.useState(0);
+  const [selectedTab, setSelectedTab] = React.useState(2);
 
   const classes = useStyles();
 
@@ -68,6 +69,7 @@ export default function EphemerisPanel() {
           <Tabs value={selectedTab} onChange={handleChange} variant="scrollable" scrollButtons="auto">
             <Tab label="Table" />
             <Tab label="Charts" />
+            <Tab label="Star Map" />
           </Tabs>
         </AppBar>
         <TabPanel value={selectedTab} index={0}>
@@ -75,6 +77,9 @@ export default function EphemerisPanel() {
         </TabPanel>
         <TabPanel value={selectedTab} index={1}>
           <EphemerisCharts ephemerides={rows} />
+        </TabPanel>
+        <TabPanel value={selectedTab} index={2}>
+          <EphemerisStarMap ephemerides={rows} />
         </TabPanel>
       </Grid>
       <Grid item xs={3}>

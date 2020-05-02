@@ -69,7 +69,7 @@ export function* fetchFutureEvents() {
   const switchDay = addDays(new Date(), 2);
   const params = yield select(store => buildEventsListRequestParams(
     format(switchDay, "yyyy-MM-dd"),
-    format(addMonths(switchDay, 6), "yyyy-MM-dd"),
+    format(addMonths(switchDay, 12), "yyyy-MM-dd"),
     { enabled: false },
     {
       enabled: true,
