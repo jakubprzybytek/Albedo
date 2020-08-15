@@ -2,7 +2,7 @@ package jp.albedo.webapp.risetransitset;
 
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
-import jp.albedo.webapp.ephemeris.ComputedEphemerides;
+import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
 import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
 import org.apache.commons.logging.Log;
@@ -38,8 +38,8 @@ public class RiseTransitSetOrchestrator {
         final List<RiseTransitSetEvent> riseTransitSetList = new ArrayList<>();
 
         for (String bodyName : bodyNames) {
-            ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation);
-            riseTransitSetList.addAll(this.riseTransitSetCalculator.compute(bodyName, computedEphemerides, observerLocation.coords));
+            ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation);
+            riseTransitSetList.addAll(this.riseTransitSetCalculator.compute(bodyName, computedEphemeris, observerLocation.coords));
         }
 
         riseTransitSetList.sort(Comparator.comparingDouble(AstronomicalEvent::getJde));

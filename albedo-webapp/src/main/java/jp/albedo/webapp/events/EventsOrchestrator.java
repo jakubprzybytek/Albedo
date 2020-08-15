@@ -61,7 +61,8 @@ public class EventsOrchestrator {
                 Optional.ofNullable(conjunctionsParameters.isCataloguesDSEnabled() ? CatalogueName.NGC : null),
                 Optional.ofNullable(conjunctionsParameters.isCataloguesDSEnabled() ? CatalogueName.IC : null));
 
-        ConjunctionEventsFilter conjunctionEventsFilter = new ConjunctionEventsFilter(conjunctionsParameters.isFilterBlindedBySun());
+        ConjunctionTwoBodyEventsFilter conjunctionTwoBodyEventsFilter = new ConjunctionTwoBodyEventsFilter(conjunctionsParameters.isFilterBlindedBySun());
+        ConjunctionBodyAndCatalogueEventsFilter conjunctionBodyAndCatalogueEventsFilter = new ConjunctionBodyAndCatalogueEventsFilter(conjunctionsParameters.isFilterBlindedBySun());
 
         if (!conjunctionBodyNames.isEmpty() || !conjunctionPrimaryBodyTypes.isEmpty()) {
             astronomicalEvents.addAll(this.conjunctionsOrchestrator.computeForTwoMovingBodies(
@@ -73,7 +74,7 @@ public class EventsOrchestrator {
                     observerLocation)
                     .stream()
                     .filter(conjunction -> conjunction.jde > fromDate) // FixMe
-                    .filter(conjunctionEventsFilter)
+                    .filter(conjunctionTwoBodyEventsFilter)
                     .map(ConjunctionEvent::fromTwoBodies)
                     .collect(Collectors.toList()));
         }
@@ -87,6 +88,7 @@ public class EventsOrchestrator {
                     observerLocation)
                     .stream()
                     .filter(conjunction -> conjunction.jde > fromDate) // FixMe
+                    .filter(conjunctionBodyAndCatalogueEventsFilter)
                     .map(ConjunctionEvent::fromBodyAndCatalogueEntry)
                     .collect(Collectors.toList()));
         }

@@ -44,6 +44,40 @@ public class OrbitBasedEphemerisCalculator {
         return Collections.emptyList();
     }
 
+    /**
+     * Computes ephemeris for given body and given time moment.
+     *
+     * @param bodyRecord Body for which ephemeris should be computed.
+     * @param jde        Moment for ephemeris [JD].
+     * @return Ephemeris
+     * @throws VSOPException
+     */
+    public Ephemeris compute(OrbitingBodyRecord bodyRecord, Double jde) throws VSOPException {
+        if (LOG.isDebugEnabled()) {
+            LOG.info(String.format("Starting calculations based on orbit elements, params: [body: %s, jde=%.2f]", bodyRecord.getBodyDetails().name, jde));
+        }
+
+        Instant start = Instant.now();
+
+        final Ephemeris ephemeris = EllipticMotion.compute(jde, bodyRecord.getMagnitudeParameters(), bodyRecord.getOrbitElements());
+
+        if (LOG.isDebugEnabled()) {
+            LOG.info(String.format("Calculated ephemeris in %s", Duration.between(start, Instant.now())));
+        }
+
+        return ephemeris;
+    }
+
+    /**
+     * Computes ephemeris for given body and given time span.
+     *
+     * @param bodyRecord Body for which ephemeris should be computed.
+     * @param fromDate   Starting moment for the time span.
+     * @param toDate     End moment for the time span.
+     * @param interval   Interval indicating how the time span should be chopped.
+     * @return List<Ephemeris>
+     * @throws VSOPException
+     */
     public List<Ephemeris> compute(OrbitingBodyRecord bodyRecord, Double fromDate, Double toDate, double interval) throws VSOPException {
         if (LOG.isDebugEnabled()) {
             LOG.info(String.format("Starting calculations based on orbit elements, params: [body: %s, from=%s, to=%s, interval=%.2f]", bodyRecord.getBodyDetails().name, fromDate, toDate, interval));

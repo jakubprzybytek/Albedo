@@ -22,6 +22,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function EphemerisForm(props) {
 
+  const { updateRows, updateBodyInfo } = props;
+
   const [bodyName, setBodyName] = React.useState("Venus");
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
@@ -37,8 +39,8 @@ export default function EphemerisForm(props) {
   }
 
   function onSubmitResponse(data) {
-    props.updateRows(data.ephemerisList);
-    props.updateBodyCard(data.bodyInfo);
+    updateRows(data.ephemerisList);
+    updateBodyInfo(data.bodyInfo);
   }
 
   const classes = useStyles();

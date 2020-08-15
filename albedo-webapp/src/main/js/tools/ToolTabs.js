@@ -7,6 +7,7 @@ import EphemerisPanel from './ephemeris/EphemerisPanel';
 import ConjunctionsPanel from './conjunctions/ConjunctionsPanel';
 import SeparationPanel from './separation/SeparationPanel';
 import RiseTransitSetPanel from './riseTransitSet/RiseTransitSetPanel';
+import BrightCometsPanel from './comets/BrightCometsPanel';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ToolTabs() {
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(4);
 
   const classes = useStyles();
 
@@ -41,6 +42,7 @@ export default function ToolTabs() {
         <Tab label="Conjunctions" />
         <Tab label="Separation" />
         <Tab label="Rise Transit Set" />
+        <Tab label="Bright Comets" />
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
         <EphemerisPanel />
@@ -53,6 +55,9 @@ export default function ToolTabs() {
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={3}>
         <RiseTransitSetPanel />
+      </TabPanel>
+      <TabPanel className={classes.tabPanel} value={value} index={4}>
+        <BrightCometsPanel />
       </TabPanel>
     </div>
   );

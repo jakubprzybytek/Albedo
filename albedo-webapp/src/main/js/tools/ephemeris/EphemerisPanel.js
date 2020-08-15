@@ -23,37 +23,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function EphemerisPanel() {
 
-  const defaultBodyCard = {
-    bodyDetails: {
-      name: "n/a",
-      bodyType: "?"
-    },
-    orbitElements: {
-      epoch: 'n/a',
-      eccentricity: 'n/a',
-      semiMajorAxis: 'n/a',
-      meanMotion: 'n/a',
-      argumentOfPerihelion: 'n/a',
-      longitudeOfAscendingNode: 'n/a',
-      inclination: 'n/a',
-      meanAnomalyEpoch: 'n/a',
-      meanAnomalyAtEpoch: 'n/a'
-    },
-    magnitudeParameters: {
-      H: 'n/a',
-      G: 'n/a'
-    }, ...{}
-  };
-
   const [rows, setRows] = React.useState([]);
-  const [bodyCard, setBodyCard] = React.useState(defaultBodyCard);
-  const [selectedTab, setSelectedTab] = React.useState(2);
+  const [bodyInfo, setBodyInfo] = React.useState();
+  const [selectedTab, setSelectedTab] = React.useState(0);
 
   const classes = useStyles();
-
-  function updateBodyCard(newBodyCard) {
-    setBodyCard({...defaultBodyCard, ...newBodyCard});
-  }
 
   function handleChange(event, newValue) {
     setSelectedTab(newValue);
@@ -63,7 +37,7 @@ export default function EphemerisPanel() {
     <Grid container spacing={2}>
       <Grid item xs={9}>
         <div className={classes.area}>
-          <EphemerisForm updateRows={setRows} updateBodyCard={updateBodyCard} />
+          <EphemerisForm updateRows={setRows} updateBodyInfo={setBodyInfo} />
         </div>
         <AppBar position="static" color="default">
           <Tabs value={selectedTab} onChange={handleChange} variant="scrollable" scrollButtons="auto">
@@ -83,7 +57,7 @@ export default function EphemerisPanel() {
         </TabPanel>
       </Grid>
       <Grid item xs={3}>
-        <BodyCard bodyInfo={bodyCard} />
+        <BodyCard bodyInfo={bodyInfo} />
       </Grid>
     </Grid>
   );

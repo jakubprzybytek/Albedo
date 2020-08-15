@@ -39,9 +39,9 @@ public class EphemeridesController {
 
         LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s", bodyName, fromDate, toDate, interval, observerLocation));
 
-        final ComputedEphemerides computedEphemerides = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval, observerLocation);
+        final ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval, observerLocation);
 
-        return new EphemeridesResponse(computedEphemerides, zoneId);
+        return new EphemeridesResponse(computedEphemeris, zoneId);
     }
 
 }

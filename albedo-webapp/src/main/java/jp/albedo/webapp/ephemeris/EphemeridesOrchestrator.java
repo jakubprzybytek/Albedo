@@ -45,7 +45,7 @@ public class EphemeridesOrchestrator {
      * @return
      * @throws Exception
      */
-    public ComputedEphemerides compute(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws Exception {
+    public ComputedEphemeris compute(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws Exception {
 
         final Optional<JplBody> jplSupportedBody = this.jplEphemerisCalculator.parseBody(bodyName);
         if (jplSupportedBody.isPresent()) {
@@ -54,7 +54,7 @@ public class EphemeridesOrchestrator {
                     .map(ParallaxCorrection.correctFor(observerLocation))
                     .collect(Collectors.toList());
 
-            return new ComputedEphemerides(body.toBodyDetails(), ephemerides);
+            return new ComputedEphemeris(body.toBodyDetails(), ephemerides);
         }
 
         final Optional<OrbitingBodyRecord> orbitingBodyRecordOptional = this.orbitBasedEphemerisCalculator.findBody(bodyName);
@@ -68,7 +68,7 @@ public class EphemeridesOrchestrator {
                 .map(ParallaxCorrection.correctFor(observerLocation))
                 .collect(Collectors.toList());
 
-        return new ComputedEphemerides(orbitingBodyRecord.getBodyDetails(), ephemerides, orbitingBodyRecord.getOrbitElements(), orbitingBodyRecord.getMagnitudeParameters());
+        return new ComputedEphemeris(orbitingBodyRecord.getBodyDetails(), ephemerides, orbitingBodyRecord.getOrbitElements(), orbitingBodyRecord.getMagnitudeParameters());
     }
 
     /**
@@ -81,30 +81,30 @@ public class EphemeridesOrchestrator {
      * @param observerLocation Location of observer for parallax correction.
      * @return List of computed ephemerides.
      */
-    public List<ComputedEphemerides> computeAllByType(BodyType bodyType, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws IOException {
+    public List<ComputedEphemeris> computeAllByType(BodyType bodyType, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws IOException {
 
         LOG.info(String.format("Computing ephemerides for multiple bodies, params: [bodyType=%s, from=%s, to=%s, interval=%f]", bodyType, fromDate, toDate, interval));
 
         final Instant start = Instant.now();
 
-        final List<ComputedEphemerides> ephemeridesList = new ArrayList<>();
+        final List<ComputedEphemeris> ephemeridesList = new ArrayList<>();
 
         this.jplEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
                 .map(FunctionUtils.wrap(body -> {
                     final List<Ephemeris> ephemerides = this.jplEphemerisCalculator.compute(body, fromDate, toDate, interval).parallelStream()
                             .map(ParallaxCorrection.correctFor(observerLocation))
                             .collect(Collectors.toList());
-                    return new ComputedEphemerides(body.toBodyDetails(), ephemerides);
+                    return new ComputedEphemeris(body.toBodyDetails(), ephemerides);
                 }))
                 .forEachOrdered(ephemeridesList::add);
 
         this.orbitBasedEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
                 .filter(orbitingBodyRecord -> orbitingBodyRecord.getOrbitElements().isOrbitElliptic())
                 .map(FunctionUtils.wrap(orbitingBodyRecord -> {
-                    final List<Ephemeris> ephemerides = this.orbitBasedEphemerisCalculator.compute(orbitingBodyRecord, fromDate, toDate, interval).parallelStream()
+                    final List<Ephemeris> ephemerisList = this.orbitBasedEphemerisCalculator.compute(orbitingBodyRecord, fromDate, toDate, interval).parallelStream()
                             .map(ParallaxCorrection.correctFor(observerLocation))
                             .collect(Collectors.toList());
-                    return new ComputedEphemerides(orbitingBodyRecord.getBodyDetails(), ephemerides);
+                    return new ComputedEphemeris(orbitingBodyRecord.getBodyDetails(), ephemerisList);
                 }))
                 .forEachOrdered(ephemeridesList::add);
 

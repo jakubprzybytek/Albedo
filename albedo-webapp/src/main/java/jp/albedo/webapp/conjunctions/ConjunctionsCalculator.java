@@ -5,7 +5,7 @@ import jp.albedo.common.Radians;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.conjunctions.impl.LocalMinimumsFindingCollector;
-import jp.albedo.webapp.ephemeris.ComputedEphemerides;
+import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.util.Pair;
@@ -27,7 +27,7 @@ class ConjunctionsCalculator {
      * @param pairOfBodies
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, BodyDetails>> calculateForTwoBodies(List<Pair<ComputedEphemerides, ComputedEphemerides>> pairOfBodies) {
+    List<Conjunction<BodyDetails, BodyDetails>> calculateForTwoBodies(List<Pair<ComputedEphemeris, ComputedEphemeris>> pairOfBodies) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d body pairs", pairOfBodies.size()));
@@ -59,7 +59,7 @@ class ConjunctionsCalculator {
      * @param pairToCompare
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, CatalogueEntry>> calculateForBodyAndCatalogueEntry(List<Pair<ComputedEphemerides, CatalogueEntry>> pairToCompare) {
+    List<Conjunction<BodyDetails, CatalogueEntry>> calculateForBodyAndCatalogueEntry(List<Pair<ComputedEphemeris, CatalogueEntry>> pairToCompare) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d pairs of objects", pairToCompare.size()));
@@ -91,12 +91,12 @@ class ConjunctionsCalculator {
      * @param pairOfBodies
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, BodyDetails>> findConjunctionsBetweenTwoBodies(Pair<ComputedEphemerides, ComputedEphemerides> pairOfBodies) {
+    List<Conjunction<BodyDetails, BodyDetails>> findConjunctionsBetweenTwoBodies(Pair<ComputedEphemeris, ComputedEphemeris> pairOfBodies) {
 
         return StreamUtils
                 .zip(
-                        pairOfBodies.getFirst().getEphemerides().stream(),
-                        pairOfBodies.getSecond().getEphemerides().stream(),
+                        pairOfBodies.getFirst().getEphemerisList().stream(),
+                        pairOfBodies.getSecond().getEphemerisList().stream(),
                         Pair::new)
                 .collect(LocalMinimumsFindingCollector.of(
                         (ephemerisPair) -> Radians.separation(ephemerisPair.getFirst().coordinates, ephemerisPair.getSecond().coordinates),
@@ -116,9 +116,9 @@ class ConjunctionsCalculator {
      * @param pairToCompare
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, CatalogueEntry>> findConjunctionsBetweenBodyAndCatalogueEntry(Pair<ComputedEphemerides, CatalogueEntry> pairToCompare) {
+    List<Conjunction<BodyDetails, CatalogueEntry>> findConjunctionsBetweenBodyAndCatalogueEntry(Pair<ComputedEphemeris, CatalogueEntry> pairToCompare) {
 
-        return pairToCompare.getFirst().getEphemerides().stream()
+        return pairToCompare.getFirst().getEphemerisList().stream()
                 .collect(LocalMinimumsFindingCollector.of(
                         (ephemeris) -> Radians.separation(ephemeris.coordinates, pairToCompare.getSecond().coordinates),
                         (ephemeris, separation) -> new Conjunction<>(

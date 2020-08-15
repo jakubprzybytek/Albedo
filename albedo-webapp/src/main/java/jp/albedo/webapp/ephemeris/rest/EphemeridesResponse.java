@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.JulianDay;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.webapp.common.ResponseWrapper;
-import jp.albedo.webapp.ephemeris.ComputedEphemerides;
+import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 
 import java.time.ZoneId;
 import java.util.List;
@@ -19,12 +19,12 @@ public class EphemeridesResponse {
     @JsonProperty
     final private List<ResponseWrapper<Ephemeris>> ephemerisList;
 
-    public EphemeridesResponse(ComputedEphemerides computedEphemerides, ZoneId zoneId) {
-        this.bodyInfo = new BodyInfo(computedEphemerides.getBodyDetails(), computedEphemerides.getOrbitElements(), computedEphemerides.getMagnitudeParameters());
+    public EphemeridesResponse(ComputedEphemeris computedEphemeris, ZoneId zoneId) {
+        this.bodyInfo = new BodyInfo(computedEphemeris.getBodyDetails(), computedEphemeris.getOrbitElements(), computedEphemeris.getMagnitudeParameters());
 
         final AtomicInteger id = new AtomicInteger();
 
-        this.ephemerisList = computedEphemerides.getEphemerides().stream()
+        this.ephemerisList = computedEphemeris.getEphemerisList().stream()
                 .map(ephemeris -> new ResponseWrapper<>(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(ephemeris.jde).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),

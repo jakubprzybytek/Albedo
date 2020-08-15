@@ -25,6 +25,14 @@ const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: 345,
   },
+  alwaysVisible: {
+    position: 'relative',
+  },
+  actions: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+  },
   media: {
     height: 0,
     paddingTop: '56.25%', // 16:9
@@ -65,7 +73,6 @@ const useStyles = makeStyles(theme => ({
     fontSize: '0.8rem',
   },
 }));
-
 
 function Ephemeris(props) {
 
@@ -223,9 +230,32 @@ function OrbitElements(props) {
   );
 }
 
+const defaultBodyInfo = {
+  bodyDetails: {
+    name: "n/a",
+    bodyType: "?"
+  },
+  orbitElements: {
+    epoch: 'n/a',
+    eccentricity: 'n/a',
+    semiMajorAxis: 'n/a',
+    meanMotion: 'n/a',
+    argumentOfPerihelion: 'n/a',
+    longitudeOfAscendingNode: 'n/a',
+    inclination: 'n/a',
+    meanAnomalyEpoch: 'n/a',
+    meanAnomalyAtEpoch: 'n/a'
+  },
+  magnitudeParameters: {
+    H: 'n/a',
+    G: 'n/a'
+  }
+};
+
 export default function BodyCard(props) {
 
-  const { bodyInfo } = props;
+  var { bodyInfo } = props;
+  bodyInfo = {...defaultBodyInfo, ...bodyInfo};
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -237,32 +267,34 @@ export default function BodyCard(props) {
 
   return (
     <Card className={classes.card}>
-      {bodyInfo.bodyDetails.name === 'Sun' && <SlimCardHeader avatar={<Avatar className={classes.avatarYellow}><SunIcon width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.bodyDetails.name === 'Moon' && <SlimCardHeader avatar={<Avatar className={classes.avatarGrey}><MoonIcon width={32} height={32} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.bodyDetails.bodyType === 'Planet' && <SlimCardHeader avatar={<Avatar className={classes.avatarRed}><PlanetIcon planetName={bodyInfo.bodyDetails.name} width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.bodyDetails.bodyType === 'Comet' && <SlimCardHeader avatar={<Avatar className={classes.avatarPurple}><CometIcon width={28} height={28} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.bodyDetails.bodyType === 'Asteroid' && <SlimCardHeader avatar={<Avatar className={classes.avatarOrange}>A</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
-      {bodyInfo.ephemeris && <SlimCardContent>
-        <Ephemeris ephemeris={bodyInfo.ephemeris} />
-      </SlimCardContent>}
-      {(bodyInfo.orbitElements || bodyInfo.magnitudeParameters) && <React.Fragment>
-        <CardActions disableSpacing>
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more">
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <OrbitElements orbitElements={bodyInfo.orbitElements} magnitudeParameters={bodyInfo.magnitudeParameters} />
-          </CardContent>
-        </Collapse>
-      </React.Fragment>}
+      <div className={classes.alwaysVisible}>
+        {bodyInfo.bodyDetails.name === 'Sun' && <SlimCardHeader avatar={<Avatar className={classes.avatarYellow}><SunIcon width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+        {bodyInfo.bodyDetails.name === 'Moon' && <SlimCardHeader avatar={<Avatar className={classes.avatarGrey}><MoonIcon width={32} height={32} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+        {bodyInfo.bodyDetails.bodyType === 'Planet' && <SlimCardHeader avatar={<Avatar className={classes.avatarRed}><PlanetIcon planetName={bodyInfo.bodyDetails.name} width={36} height={36} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+        {bodyInfo.bodyDetails.bodyType === 'Comet' && <SlimCardHeader avatar={<Avatar className={classes.avatarPurple}><CometIcon width={28} height={28} /></Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+        {bodyInfo.bodyDetails.bodyType === 'Asteroid' && <SlimCardHeader avatar={<Avatar className={classes.avatarOrange}>A</Avatar>} title={bodyInfo.bodyDetails.name} subheader={bodyInfo.bodyDetails.bodyType} />}
+        {bodyInfo.ephemeris && <SlimCardContent>
+          <Ephemeris ephemeris={bodyInfo.ephemeris} />
+        </SlimCardContent>}
+        {(bodyInfo.orbitElements || bodyInfo.magnitudeParameters) && <React.Fragment>
+          <CardActions className={classes.actions} disableSpacing>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more">
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+        </React.Fragment>}
+      </div>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <OrbitElements orbitElements={bodyInfo.orbitElements} magnitudeParameters={bodyInfo.magnitudeParameters} />
+        </CardContent>
+      </Collapse>
     </Card>
   );
 }

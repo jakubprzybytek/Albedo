@@ -4,7 +4,7 @@ import jp.albedo.common.Radians;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.utils.StreamUtils;
-import jp.albedo.webapp.ephemeris.ComputedEphemerides;
+import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
 import jp.albedo.webapp.separation.rest.Separation;
 import org.apache.commons.logging.Log;
@@ -31,12 +31,12 @@ public class SeparationOrchestrator {
 
         final Instant start = Instant.now();
 
-        ComputedEphemerides firstBodyEphemerides = this.ephemeridesOrchestrator.compute(firstBody, fromDate, toDate, interval, observerLocation);
-        ComputedEphemerides secondBodyEphemerides = this.ephemeridesOrchestrator.compute(secondBody, fromDate, toDate, interval, observerLocation);
+        ComputedEphemeris firstBodyEphemerides = this.ephemeridesOrchestrator.compute(firstBody, fromDate, toDate, interval, observerLocation);
+        ComputedEphemeris secondBodyEphemerides = this.ephemeridesOrchestrator.compute(secondBody, fromDate, toDate, interval, observerLocation);
 
         List<Separation> separations = StreamUtils.zip(
-                firstBodyEphemerides.getEphemerides().stream(),
-                secondBodyEphemerides.getEphemerides().stream(),
+                firstBodyEphemerides.getEphemerisList().stream(),
+                secondBodyEphemerides.getEphemerisList().stream(),
                 this::establishSeparation)
                 .collect(Collectors.toList());
 

@@ -4,7 +4,7 @@ import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.ephemeris.Ephemeris;
-import jp.albedo.webapp.ephemeris.ComputedEphemerides;
+import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 import org.apache.commons.math3.util.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,9 +32,9 @@ class ConjunctionsCalculatorTest {
                 new Ephemeris(3.0, coords(3.0, 1.0), 2.0, 1.0, 0.0, 0.0)
         );
 
-        Pair<ComputedEphemerides, ComputedEphemerides> pair = new Pair<>(
-                new ComputedEphemerides(null, ephemeris1),
-                new ComputedEphemerides(null, ephemeris2));
+        Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(
+                new ComputedEphemeris(null, ephemeris1),
+                new ComputedEphemeris(null, ephemeris2));
 
         ConjunctionsCalculator calculator = new ConjunctionsCalculator();
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = calculator.findConjunctionsBetweenTwoBodies(pair);
@@ -64,9 +64,9 @@ class ConjunctionsCalculatorTest {
                 new Ephemeris(5.0, coords(5.0, 1.0), 2.0, 1.0, 0.0, 0.0)
         );
 
-        Pair<ComputedEphemerides, ComputedEphemerides> pair = new Pair<>(
-                new ComputedEphemerides(null, ephemeris1),
-                new ComputedEphemerides(null, ephemeris2));
+        Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(
+                new ComputedEphemeris(null, ephemeris1),
+                new ComputedEphemeris(null, ephemeris2));
 
         ConjunctionsCalculator calculator = new ConjunctionsCalculator();
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = calculator.findConjunctionsBetweenTwoBodies(pair);
@@ -91,8 +91,8 @@ class ConjunctionsCalculatorTest {
 
         final AstronomicalCoordinates catalogueEntryCoords = coords(2.0, 2.0);
 
-        Pair<ComputedEphemerides, CatalogueEntry> pair = new Pair<>(
-                new ComputedEphemerides(null, ephemeris1),
+        Pair<ComputedEphemeris, CatalogueEntry> pair = new Pair<>(
+                new ComputedEphemeris(null, ephemeris1),
                 new CatalogueEntry(null, null, catalogueEntryCoords, 0.0, 0.0, 0.0, 0.0, null));
 
         ConjunctionsCalculator calculator = new ConjunctionsCalculator();

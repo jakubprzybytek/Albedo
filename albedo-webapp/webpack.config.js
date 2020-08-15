@@ -4,7 +4,7 @@ module.exports = {
     entry: './src/main/js/app.js',
     devtool: 'sourcemaps',
     devServer: {
-     contentBase: './src/main/resources/templates',
+     contentBase: './src/main/resources/static',
      proxy: {
        '/api': {
          target: 'http://localhost:8090'
