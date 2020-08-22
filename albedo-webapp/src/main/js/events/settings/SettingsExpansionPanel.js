@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -39,7 +39,7 @@ export const SettingsExpansionPanel = withStyles({
     backgroundColor: props => props.color,
   },
   expanded: {},
-})(ExpansionPanel);
+})(Accordion);
 
 export function SettingsExpansionSummary(props) {
 
@@ -48,7 +48,7 @@ export function SettingsExpansionSummary(props) {
   const classes = useStyles();
 
   return (
-    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} >
+    <AccordionSummary expandIcon={<ExpandMoreIcon />} >
       <FormControlLabel className={classes.smallFormControlLabel}
         aria-label="Acknowledge"
         onClick={event => event.stopPropagation()}
@@ -57,7 +57,7 @@ export function SettingsExpansionSummary(props) {
           <Checkbox className={classes.smallButton} color="primary" checked={checked} onChange={event => setChecked(event.target.checked)} />
         } />
       {children}
-    </ExpansionPanelSummary>
+    </AccordionSummary>
   );
 }
 
@@ -67,7 +67,7 @@ export const SettingsExpansionPanelDetails = withStyles(theme => ({
     padding: theme.spacing(0, 1, 1, 2),
     color: props => props.disabled ? grey[500] : '',
   },
-}))(ExpansionPanelDetails);
+}))(AccordionDetails);
 
 export function InternalCheckbox(props) {
 
