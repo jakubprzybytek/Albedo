@@ -16,7 +16,7 @@ export function D3Celestial(props) {
 
     var featuresCollections = [];
     
-    const [featuresCollectionsHash, setFeaturesCollectionsHash] = React.useState("");
+    const [featuresCollectionsHash, setFeaturesCollectionsHash] = useState("");
 
     useEffect(() => {
 
@@ -69,44 +69,43 @@ export function D3Celestial(props) {
                     var m = Celestial.metrics(), // Get the current map size in pixels
                     // empty quadtree, will be used for proximity check
                     quadtree = d3.geom.quadtree().extent([[-1, -1], [m.width + 1, m. height + 1]])([]);
-
                     // Select the added objects by class name as given previously
                     Celestial.container.selectAll(".body").each(function(d) {
                         // If point is visible (this doesn't work automatically for points)
                         if (Celestial.clip(d.geometry.coordinates)) {
-                        // get point coordinates
-                        var pt = Celestial.mapProjection(d.geometry.coordinates);
-                        // object radius in pixel, could be varable depending on e.g. dimension or magnitude 
-                        var r = Math.pow(20 - d.properties.mag, 0.7); // replace 20 with dimmest magnitude in the data
-                    
-                        // draw on canvas
-                        //  Set object styles fill color, line color & width etc.
-                        Celestial.setStyle(pointStyle);
-                        // Start the drawing path
-                        Celestial.context.beginPath();
-                        // Thats a circle in html5 canvas
-                        Celestial.context.arc(pt[0], pt[1], r, 0, 2 * Math.PI);
-                        // Finish the drawing path
-                        Celestial.context.closePath();
-                        // Draw a line along the path with the prevoiusly set stroke color and line width      
-                        Celestial.context.stroke();
-                        // Fill the object path with the prevoiusly set fill color
-                        Celestial.context.fill();     
+                            // get point coordinates
+                            var pt = Celestial.mapProjection(d.geometry.coordinates);
+                            // object radius in pixel, could be varable depending on e.g. dimension or magnitude 
+                            var r = Math.pow(20 - d.properties.mag, 0.7); // replace 20 with dimmest magnitude in the data
+                        
+                            // draw on canvas
+                            //  Set object styles fill color, line color & width etc.
+                            Celestial.setStyle(pointStyle);
+                            // Start the drawing path
+                            Celestial.context.beginPath();
+                            // Thats a circle in html5 canvas
+                            Celestial.context.arc(pt[0], pt[1], r, 0, 2 * Math.PI);
+                            // Finish the drawing path
+                            Celestial.context.closePath();
+                            // Draw a line along the path with the prevoiusly set stroke color and line width      
+                            Celestial.context.stroke();
+                            // Fill the object path with the prevoiusly set fill color
+                            Celestial.context.fill();     
 
-                        // Find nearest neighbor
-                        var nearest = quadtree.find(pt);
+                            // Find nearest neighbor
+                            var nearest = quadtree.find(pt);
 
-                        // If neigbor exists, check distance limit
-                        if (!nearest || distance(nearest, pt) > PROXIMITY_LIMIT) {
-                            // Nothing too close, add it and go on
-                            quadtree.add(pt)
-                            // Set text styles
-                            Celestial.setTextStyle(textStyle);
-                            // and draw text on canvas with offset
-                            Celestial.context.fillText(d.properties.name, pt[0] + r + 2, pt[1] + r + 2);
-                        }
-                    }      
-                });
+                            // If neigbor exists, check distance limit
+                            if (!nearest || distance(nearest, pt) > PROXIMITY_LIMIT) {
+                                // Nothing too close, add it and go on
+                                quadtree.add(pt)
+                                // Set text styles
+                                Celestial.setTextStyle(textStyle);
+                                // and draw text on canvas with offset
+                                Celestial.context.fillText(d.properties.name, pt[0] + r + 2, pt[1] + r + 2);
+                            }
+                        }      
+                    });
                 }
             });
 

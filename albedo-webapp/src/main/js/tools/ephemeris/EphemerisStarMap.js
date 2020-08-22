@@ -38,7 +38,6 @@ export default function EphemerisStarMap(props) {
 
   return (
     <Paper>
-      <div id="celestial-map"></div>
       <D3Celestial config={config}>
         <D3CelestialFeaturesCollections>
           {ephemerides.map(ephemeris =>

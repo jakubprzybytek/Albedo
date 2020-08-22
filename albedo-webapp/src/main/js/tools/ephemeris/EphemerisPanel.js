@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStateWithLocalStorageInt } from '../../utils/LocalStorage';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
@@ -25,7 +26,7 @@ export default function EphemerisPanel() {
 
   const [rows, setRows] = React.useState([]);
   const [bodyInfo, setBodyInfo] = React.useState();
-  const [selectedTab, setSelectedTab] = React.useState(0);
+  const [selectedTab, setSelectedTab] = useStateWithLocalStorageInt('ephemeris.currentTab', 0);
 
   const classes = useStyles();
 
@@ -40,7 +41,7 @@ export default function EphemerisPanel() {
           <EphemerisForm updateRows={setRows} updateBodyInfo={setBodyInfo} />
         </div>
         <AppBar position="static" color="default">
-          <Tabs value={selectedTab} onChange={handleChange} variant="scrollable" scrollButtons="auto">
+          <Tabs value={selectedTab} onChange={(event, newValue) => setSelectedTab(newValue)} variant="scrollable" scrollButtons="auto">
             <Tab label="Table" />
             <Tab label="Charts" />
             <Tab label="Star Map" />

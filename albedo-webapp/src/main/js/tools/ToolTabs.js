@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStateWithLocalStorageInt } from '../utils/LocalStorage';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -27,17 +28,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function ToolTabs() {
 
-  const [value, setValue] = React.useState(4);
+  const [value, setValue] = useStateWithLocalStorageInt('toolTabs.currentTab', 0);
 
   const classes = useStyles();
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   return (
     <div className={classes.root}>
-      <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} aria-label="Vertical tabs example" className={classes.tabs}>
+      <Tabs orientation="vertical" variant="scrollable" value={value} onChange={(event, newValue) => setValue(newValue)} aria-label="Vertical tabs" className={classes.tabs}>
         <Tab label="Ephemeris" />
         <Tab label="Conjunctions" />
         <Tab label="Separation" />
