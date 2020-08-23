@@ -4,9 +4,9 @@ import Chart from 'react-apexcharts';
 
 export default function EphemerisCharts(props) {
 
-  const { ephemerides } = props;
+  const { ephemerisList } = props;
 
-  function createOptions(ephemerides) {
+  function createOptions(ephemerisList) {
     return {
       stroke: {
         curve: 'straight'
@@ -15,7 +15,7 @@ export default function EphemerisCharts(props) {
         size: 0
       },
       xaxis: {
-        categories: ephemerides.map(ephemeris => ephemeris.localTime),
+        categories: ephemerisList.map(ephemeris => ephemeris.localTime),
         type: 'datetime',
         title: {
           text: 'TDB'
@@ -53,25 +53,25 @@ export default function EphemerisCharts(props) {
     }
   };
 
-  function createSeries(ephemerides) {
+  function createSeries(ephemerisList) {
     return [{
       name: 'Apparent brightness [mag]',
-      data: ephemerides.map(ephemeris => ephemeris.apparentMagnitude)
+      data: ephemerisList.map(ephemeris => ephemeris.apparentMagnitude)
     },{
       name: 'Angular size ["]',
-      data: ephemerides.map(ephemeris => (ephemeris.angularSize * 3600.0).toFixed(2))
+      data: ephemerisList.map(ephemeris => (ephemeris.angularSize * 3600.0).toFixed(2))
     },{
       name: 'Distance from Sun [AU]',
-      data: ephemerides.map(ephemeris => ephemeris.distanceFromSun)
+      data: ephemerisList.map(ephemeris => ephemeris.distanceFromSun)
     },{
       name: 'Distance from Earth [AU]',
-      data: ephemerides.map(ephemeris => ephemeris.distanceFromEarth)
+      data: ephemerisList.map(ephemeris => ephemeris.distanceFromEarth)
     }];
   }
 
   return (
     <Paper>
-      <Chart options={createOptions(ephemerides)} series={createSeries(ephemerides)} type="line" />
+      <Chart options={createOptions(ephemerisList)} series={createSeries(ephemerisList)} type="line" />
     </Paper>
   );
 }

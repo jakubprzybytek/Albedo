@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function EphemerisForm(props) {
 
-  const { updateRows, updateBodyInfo } = props;
+  const { updateEphemerisList, updateBodyInfo } = props;
 
   const [bodyName, setBodyName] = React.useState("Venus");
   const [fromDate, setFromDate] = React.useState(new Date());
@@ -39,7 +39,7 @@ export default function EphemerisForm(props) {
   }
 
   function onSubmitResponse(data) {
-    updateRows(data.ephemerisList);
+    updateEphemerisList(data.ephemerisList);
     updateBodyInfo(data.bodyInfo);
   }
 

@@ -20,6 +20,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function EphemerisTable(props) {
 
+  const { ephemerisList } = props;
+
   const classes = useStyles();
 
   return (
@@ -38,7 +40,7 @@ export default function EphemerisTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.rows.map(ephemeris => (
+          {ephemerisList.map(ephemeris => (
             <TableRow key={ephemeris.id}>
               <TableCell component="th" scope="row">
                 <LocalDateTimeChip time={ephemeris.localTime} jd={ephemeris.jde} />

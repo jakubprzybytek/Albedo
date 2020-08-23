@@ -4,7 +4,7 @@ import { D3Celestial, D3CelestialFeaturesCollections, D3CelestialPoint } from '.
 
 export default function EphemerisStarMap(props) {
 
-  const { ephemerides } = props;
+  const { ephemerisList } = props;
 
   const config = {
     projection: "airy",
@@ -40,7 +40,7 @@ export default function EphemerisStarMap(props) {
     <Paper>
       <D3Celestial config={config}>
         <D3CelestialFeaturesCollections>
-          {ephemerides.map(ephemeris =>
+          {ephemerisList.map(ephemeris =>
             (<D3CelestialPoint key={ephemeris.localTime}
               ra={ephemeris.coordinates.rightAscension}
               dec={ephemeris.coordinates.declination}
