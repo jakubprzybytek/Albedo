@@ -2,17 +2,19 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 
 const useStyles = makeStyles(theme => ({
-  paper: {
+  simulator: {
     position: 'relative',
+    width: '100%',
     height: '1000px',
   },
-  simulator: {
-    width: '100%',
-    height: '100%',
-  },
+  jdSlider: {
+    marginLeft: '20px',
+    paddingRight: '20px',
+  }
 }));
 
 export default function EphemerisOrbitSimulator(props) {
@@ -53,8 +55,12 @@ export default function EphemerisOrbitSimulator(props) {
     viz.createObject('uranus', Spacekit.SpaceObjectPresets.URANUS);
     viz.createObject('neptune', Spacekit.SpaceObjectPresets.NEPTUNE);
     
-    const tempel = viz.createObject('comet', {
+    viz.createObject('comet', {
       labelText: bodyInfo.bodyDetails.name,
+      theme: {
+        orbitColor: 0xffff33,
+        color: 0xff3333,
+      },
       ecliptic: {
         displayLines: true,
         lineColor: 0x333333,
@@ -72,19 +78,27 @@ export default function EphemerisOrbitSimulator(props) {
   }
 
   return (
-    <Paper className={classes.paper}>
+    <Paper>
       <Button onClick={handleSubmit}>
           Click me
       </Button>
-      {ephemerisList.length > 0 && <Slider
-        min={ephemerisList[0].jde}
-        max={ephemerisList[ephemerisList.length - 1].jde}
-        defaultValue={ephemerisList[0].jde}
-        step={1}
-        valueLabelDisplay="on"
-        marks
-        onChange={(event, newValue) => viz.setJd(newValue)}
-      />}
+      {ephemerisList.length > 0 && <React.Fragment>
+        <Typography gutterBottom>
+          JDE:
+        </Typography>
+        <div className={classes.jdSlider}>
+          <Slider
+            min={ephemerisList[0].jde}
+            max={ephemerisList[ephemerisList.length - 1].jde}
+            defaultValue={ephemerisList[0].jde}
+            step={1}
+            valueLabelDisplay="on"
+            marks
+            onChange={(event, newValue) => viz.setJd(newValue)}
+          />
+        </div>
+      </React.Fragment>
+      }
       <div id="spacekit-simulator" className={classes.simulator}></div>
     </Paper>
   );
