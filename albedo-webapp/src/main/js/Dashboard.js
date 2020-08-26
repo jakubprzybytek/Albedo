@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { useStateWithLocalStorageInt } from './utils/LocalStorage';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -74,7 +75,7 @@ const useStyles = makeStyles(theme => ({
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
 
-  const [tabValue, setTabValue] = React.useState(1);
+  const [tabValue, setTabValue] = useStateWithLocalStorageInt('dashboard.currentTab', 0);
   const [settingsDrawerOpened, setSettingsDrawerOpened] = React.useState(false);
   const [userDrawerOpened, setUserDrawerOpened] = React.useState(false);
 

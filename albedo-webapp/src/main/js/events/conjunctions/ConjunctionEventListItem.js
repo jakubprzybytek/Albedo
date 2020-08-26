@@ -9,18 +9,17 @@ import { formatDegrees, formatArcSeconds } from '../../utils/Angles';
 const useStyles = makeStyles(theme => ({
   top: {
     display: 'flex',
+    width: '100%',
     flexDirection: 'column',
     alignItems: 'start',
   },
-  headerBanner: {
+  header: {
     display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
     height: 32,
     alignItems: 'center',
     cursor: 'pointer'
-  },
-  detailsBanner: {
-    display: 'flex',
-    flexDirection: 'row',
   },
   timeField: {
     width: 80,
@@ -28,6 +27,15 @@ const useStyles = makeStyles(theme => ({
   },
   inline: {
     display: 'flex',
+    flexGrow: 1,
+  },
+  scoreField: {
+    width: 12,
+    display: 'flex',
+  },
+  detailsBanner: {
+    display: 'flex',
+    flexDirection: 'row',
   },
   card: {
     margin: theme.spacing(1, 1, 0.5, 1),
@@ -48,7 +56,7 @@ function ConjunctionEventCopy(props) {
     return (
       <React.Fragment>
         <BodyChip bodyDetails={bodyInfo.bodyDetails} />
-        ({bodyInfo.ephemeris.apparentMagnitude} mag{bodyInfo.ephemeris.angularSize && <React.Fragment>, θ={formatArcSeconds(bodyInfo.ephemeris.angularSize)}</React.Fragment>})
+          ({bodyInfo.ephemeris.apparentMagnitude} mag{bodyInfo.ephemeris.angularSize && <React.Fragment>, θ={formatArcSeconds(bodyInfo.ephemeris.angularSize)}</React.Fragment>})
         </React.Fragment>
     );
   }
@@ -68,7 +76,7 @@ function ConjunctionEventCopy(props) {
       Conjunction between <BodyInfo bodyInfo={conjunction.first} /> and
       {conjunction.secondObjectType === 'Body' && <BodyInfo bodyInfo={conjunction.second} />}
       {conjunction.secondObjectType === 'CatalogueEntry' && <CatalogueEntryChip catalogueEntry={conjunction.second} />
-      } with separation of {formatDegrees(conjunction.separation)}.
+      } with separation of {formatDegrees(conjunction.separation)} (separation factor is {conjunction.separationFactor}).
       {!sunInvolved && <Elongation />}
     </React.Fragment>
   );
@@ -82,12 +90,15 @@ export default function ConjunctionEventListItem(props) {
 
   return (
     <div className={classes.top}>
-      <div className={classes.headerBanner} onClick={eventSelect(event.id)}>
+      <div className={classes.header} onClick={eventSelect(event.id)}>
         <Typography component="span" variant="body2" className={classes.timeField}>
           <LocalTimeChip time={event.localTime} jd={event.jde} />
         </Typography>
         <Typography component="span" variant="body2" className={classes.inline}>
           <ConjunctionEventCopy conjunction={event} />
+        </Typography>
+        <Typography component="span" variant="body2" className={classes.scoreField}>
+          {event.score}
         </Typography>
       </div>
       {eventSelected && <div className={classes.detailsBanner}>

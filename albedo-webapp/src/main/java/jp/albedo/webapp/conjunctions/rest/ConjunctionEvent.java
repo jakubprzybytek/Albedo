@@ -35,7 +35,7 @@ public class ConjunctionEvent extends AstronomicalEvent {
     private final double separationFactor;
 
     private ConjunctionEvent(double jde, AstronomicalObjectTypes firstObjectType, Object firstObject, AstronomicalObjectTypes secondObjectType, Object secondObject, double separation, double separationFactor) {
-        super(jde, EVENT_TYPE);
+        super(jde, EVENT_TYPE, computeScore(separationFactor));
         this.firstObjectType = firstObjectType;
         this.firstObject = firstObject;
         this.secondObjectType = secondObjectType;
@@ -59,6 +59,17 @@ public class ConjunctionEvent extends AstronomicalEvent {
                 AstronomicalObjectTypes.CatalogueEntry, conjunction.secondObject,
                 conjunction.separation,
                 conjunction.separationFactor);
+    }
+
+    protected static int computeScore(double separationFactor) {
+        if (separationFactor < 1.0) {
+            return 10;
+        } else if (separationFactor < 1.5) {
+            return 9;
+        } else if (separationFactor < 5.0) {
+            return 8;
+        }
+        return (int) Math.max(9.0 - Math.log(separationFactor), 1.0);
     }
 
 }

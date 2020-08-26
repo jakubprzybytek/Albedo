@@ -10,9 +10,13 @@ public class AstronomicalEvent {
     @JsonProperty
     private final String type;
 
-    public AstronomicalEvent(double jde, String type) {
+    @JsonProperty
+    private final int score;
+
+    public AstronomicalEvent(double jde, String type, int score) {
         this.jde = jde;
         this.type = type;
+        this.score = score;
     }
 
     public double getJde() {
