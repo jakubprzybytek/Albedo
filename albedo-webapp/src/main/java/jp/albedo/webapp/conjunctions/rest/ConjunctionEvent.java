@@ -7,6 +7,7 @@ import jp.albedo.common.BodyDetails;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.common.AstronomicalObjectTypes;
 import jp.albedo.webapp.conjunctions.Conjunction;
+import jp.albedo.webapp.utils.Precision2Converter;
 import jp.albedo.webapp.utils.RadiansToPrecision6DegreesConverter;
 
 public class ConjunctionEvent extends AstronomicalEvent {
@@ -29,13 +30,18 @@ public class ConjunctionEvent extends AstronomicalEvent {
     @JsonSerialize(converter = RadiansToPrecision6DegreesConverter.class)
     private final double separation;
 
-    private ConjunctionEvent(double jde, AstronomicalObjectTypes firstObjectType, Object firstObject, AstronomicalObjectTypes secondObjectType, Object secondObject, double separation) {
+    @JsonProperty
+    @JsonSerialize(converter = Precision2Converter.class)
+    private final double separationFactor;
+
+    private ConjunctionEvent(double jde, AstronomicalObjectTypes firstObjectType, Object firstObject, AstronomicalObjectTypes secondObjectType, Object secondObject, double separation, double separationFactor) {
         super(jde, EVENT_TYPE);
         this.firstObjectType = firstObjectType;
         this.firstObject = firstObject;
         this.secondObjectType = secondObjectType;
         this.secondObject = secondObject;
         this.separation = separation;
+        this.separationFactor = separationFactor;
     }
 
     public static ConjunctionEvent fromTwoBodies(Conjunction<BodyDetails, BodyDetails> conjunction) {
@@ -43,14 +49,16 @@ public class ConjunctionEvent extends AstronomicalEvent {
                 conjunction.jde,
                 AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.firstObject, conjunction.firstObjectEphemeris),
                 AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.secondObject, conjunction.secondObjectEphemeris),
-                conjunction.separation);
+                conjunction.separation,
+                conjunction.separationFactor);
     }
 
     public static ConjunctionEvent fromBodyAndCatalogueEntry(Conjunction<BodyDetails, CatalogueEntry> conjunction) {
         return new ConjunctionEvent(conjunction.jde,
                 AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.firstObject, conjunction.firstObjectEphemeris),
                 AstronomicalObjectTypes.CatalogueEntry, conjunction.secondObject,
-                conjunction.separation);
+                conjunction.separation,
+                conjunction.separationFactor);
     }
 
 }

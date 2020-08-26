@@ -64,7 +64,8 @@ function CatalogueEntryCell(props) {
       <div className={classes.objectCellRow}>
         {catalogueEntry.vMagnitude && <React.Fragment>{catalogueEntry.vMagnitude} mag (V), </React.Fragment>}
         {!catalogueEntry.vMagnitude && catalogueEntry.bMagnitude && <React.Fragment>{catalogueEntry.bMagnitude} mag (B), </React.Fragment>}
-        {catalogueEntry.majorAxisSize && <React.Fragment>{catalogueEntry.majorAxisSize + "\""}</React.Fragment>}
+        {catalogueEntry.majorAxisSize && <React.Fragment>{catalogueEntry.majorAxisSize + "'"}</React.Fragment>}
+        {catalogueEntry.minorAxisSize && <React.Fragment> x {catalogueEntry.minorAxisSize + "'"}</React.Fragment>}
       </div>
     </div>
   );
@@ -93,8 +94,11 @@ export function ConjunctionTableRow(props) {
         {conjunction.secondObjectType == 'Body' && <BodyInfoCell bodyInfo={conjunction.second} />}
         {conjunction.secondObjectType == 'CatalogueEntry' && <CatalogueEntryCell catalogueEntry={conjunction.second} />}
       </TableCell>
-      <TableCell align="right" title={conjunction.separation.toFixed(6)}>
+      <TableCell align="center" title={conjunction.separation.toFixed(6)}>
         {formatDegrees(conjunction.separation)}
+      </TableCell>
+      <TableCell align="right">
+        {conjunction.separationFactor}
       </TableCell>
     </TableRow>
   );
@@ -122,7 +126,8 @@ export default function ConjunctionsTable(props) {
             <TableCell>Local Time</TableCell>
             <TableCell align="center">First body</TableCell>
             <TableCell align="center">Second body</TableCell>
-            <TableCell align="right">Separation [°]</TableCell>
+            <TableCell align="center">Separation [°]</TableCell>
+            <TableCell align="right">Separation factor</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

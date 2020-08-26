@@ -3,6 +3,7 @@ package jp.albedo.webapp.conjunctions;
 import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.common.Radians;
 import jp.albedo.common.BodyDetails;
+import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.conjunctions.impl.LocalMinimumsFindingCollector;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @Component
 class ConjunctionsCalculator {
 
-    private static Log LOG = LogFactory.getLog(ConjunctionsCalculator.class);
+    private static final Log LOG = LogFactory.getLog(ConjunctionsCalculator.class);
 
     /**
      * Finds conjunctions between pairs of ephemerides by looking for smallest separation.
@@ -103,11 +104,17 @@ class ConjunctionsCalculator {
                         (ephemerisPair, separation) -> new Conjunction<>(
                                 ephemerisPair.getFirst().jde,
                                 separation,
+                                separation / computeAverageSize(ephemerisPair.getFirst(), ephemerisPair.getSecond()),
                                 pairOfBodies.getFirst().getBodyDetails(),
                                 ephemerisPair.getFirst(),
                                 pairOfBodies.getSecond().getBodyDetails(),
                                 ephemerisPair.getSecond())
                 ));
+    }
+
+    double computeAverageSize(Ephemeris firstEphemeris, Ephemeris secondEphemeris) {
+        return ((firstEphemeris.angularSize != null ? firstEphemeris.angularSize : Radians.fromDegrees(0, 0, 1))
+                + (secondEphemeris.angularSize != null ? secondEphemeris.angularSize : Radians.fromDegrees(0, 0, 1))) / 2.0;
     }
 
     /**
@@ -124,6 +131,7 @@ class ConjunctionsCalculator {
                         (ephemeris, separation) -> new Conjunction<>(
                                 ephemeris.jde,
                                 separation,
+                                separation / computeAverageSize(ephemeris, pairToCompare.getSecond()),
                                 pairToCompare.getFirst().getBodyDetails(),
                                 ephemeris,
                                 pairToCompare.getSecond(),
@@ -131,4 +139,10 @@ class ConjunctionsCalculator {
                 ));
     }
 
+    double computeAverageSize(Ephemeris firstEphemeris, CatalogueEntry catalogueEntry) {
+        final double catalogueEntrySize = (catalogueEntry.minorAxisSize != null ? (catalogueEntry.majorAxisSize + catalogueEntry.minorAxisSize) / 2.0
+                : (catalogueEntry.majorAxisSize != null ? catalogueEntry.majorAxisSize : Radians.fromDegrees(0, 0, 1)));
+        return ((firstEphemeris.angularSize != null ? firstEphemeris.angularSize : Radians.fromDegrees(0, 0, 1))
+                + Math.toRadians(catalogueEntrySize / 60.0)) / 2.0;
+    }
 }

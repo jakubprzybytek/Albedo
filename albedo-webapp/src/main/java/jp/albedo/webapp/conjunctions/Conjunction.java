@@ -8,6 +8,8 @@ public class Conjunction<A, B extends Object> {
 
     final public double separation;
 
+    final public double separationFactor;
+
     final public A firstObject;
 
     final public Ephemeris firstObjectEphemeris;
@@ -16,9 +18,10 @@ public class Conjunction<A, B extends Object> {
 
     final public Ephemeris secondObjectEphemeris;
 
-    public Conjunction(double jde, double separation, A firstObject, Ephemeris firstObjectEphemeris, B secondObject, Ephemeris secondObjectEphemeris) {
+    public Conjunction(double jde, double separation, double separationFactor, A firstObject, Ephemeris firstObjectEphemeris, B secondObject, Ephemeris secondObjectEphemeris) {
         this.jde = jde;
         this.separation = separation;
+        this.separationFactor = separationFactor;
         this.firstObject = firstObject;
         this.firstObjectEphemeris = firstObjectEphemeris;
         this.secondObject = secondObject;

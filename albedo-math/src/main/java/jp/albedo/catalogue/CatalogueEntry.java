@@ -24,10 +24,16 @@ public class CatalogueEntry {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     final public Double vMagnitude;
 
+    /*
+     In arc minutes.
+     */
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
     final public Double majorAxisSize;
 
+    /*
+     In arc minutes.
+     */
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
     final public Double minorAxisSize;
