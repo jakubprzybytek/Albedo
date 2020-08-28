@@ -50,6 +50,21 @@ export default function NightChartPanel(props) {
         }
       });
     }
+    if (sunRiseTransitSetEvents.length > 0) {
+      annotations.push({
+        x: new Date(sunRiseTransitSetEvents[sunRiseTransitSetEvents.length - 1].localTime).getTime(),
+        label: {
+          borderColor: '#5050a0',
+          style: {
+            fontSize: '16px',
+            color: '#fff',
+            background: '#404080',
+          },
+          offsetY: -10,
+          text: sunRiseTransitSetEvents[sunRiseTransitSetEvents.length - 1].eventType + " " + stripTime(sunRiseTransitSetEvents[sunRiseTransitSetEvents.length - 1].localTime),
+        }
+      });
+    }
     return annotations;
   }
 
@@ -63,7 +78,7 @@ export default function NightChartPanel(props) {
         height: 350,
         type: 'line',
         zoom: {
-          enabled: true
+          enabled: false
         },
       },
       annotations: {
