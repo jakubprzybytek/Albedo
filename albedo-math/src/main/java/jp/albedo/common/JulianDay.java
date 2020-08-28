@@ -14,10 +14,10 @@ public class JulianDay {
     /**
      * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
      *
-     * @param year Gregorian year.
-     * @param month Gregorian month.
-     * @param day Gregorian day of the month.
-     * @param hours Hours.
+     * @param year    Gregorian year.
+     * @param month   Gregorian month.
+     * @param day     Gregorian day of the month.
+     * @param hours   Hours.
      * @param minutes Minutes.
      * @param seconds Seconds.
      * @return Date in Julian Days.
@@ -39,9 +39,9 @@ public class JulianDay {
     /**
      * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
      *
-     * @param year Gregorian year.
+     * @param year  Gregorian year.
      * @param month Gregorian month.
-     * @param day Gregorian day of the month.
+     * @param day   Gregorian day of the month.
      * @return Date in Julian Days.
      */
     public static double fromDate(int year, int month, double day) {
@@ -56,6 +56,17 @@ public class JulianDay {
      */
     public static double fromDate(LocalDate date) {
         return fromDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+    }
+
+    /**
+     * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
+     *
+     * @param dateTime Gregorian date time.
+     * @return Date in Julian Days.
+     */
+    public static double fromDate(LocalDateTime dateTime) {
+        return fromDateTime(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth(),
+                dateTime.getHour(), dateTime.getMinute(), dateTime.getSecond());
     }
 
     public static List<Double> forRange(double jdFrom, double jdTo, double interval) {
@@ -94,29 +105,29 @@ public class JulianDay {
         int year = (int) (C - (month > 2 ? 4716.0 : 4715.0));
         int dayOfMonth = (int) (B - D - Math.floor(30.6001 * E));
 
-        double hours = F * 24.0;
-        F = F * 24.0 - Math.floor(hours);
-        double minutes = F * 60.0;
-        F = F * 60.0 - Math.floor(minutes);
+        int hours = (int) Math.floor(F * 24.0);
+        F = F * 24.0 - hours;
+        int minutes = (int) Math.floor(F * 60.0);
+        F = F * 60.0 - minutes;
         int seconds = (int) Math.rint(F * 60.0);
 
         // FixMe: Correct up to years
         if (seconds == 60) {
             seconds = 0;
             minutes++;
-            if (minutes == 60) {
-                minutes = 0;
-                hours++;
-                if (hours == 24) {
-                    hours = 0;
-                    dayOfMonth++;
-                }
-            }
+        }
+        if (minutes == 60) {
+            minutes = 0;
+            hours++;
+        }
+        if (hours == 24) {
+            hours = 0;
+            dayOfMonth++;
         }
 
         return LocalDateTime.of(
                 year, month, dayOfMonth,
-                (int) hours, (int) minutes, seconds);
+                hours, minutes, seconds);
     }
 
 }

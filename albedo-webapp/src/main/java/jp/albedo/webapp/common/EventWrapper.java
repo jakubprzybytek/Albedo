@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.time.ZonedDateTime;
 
-public class ResponseWrapper<T> {
+public class EventWrapper<T> {
 
     @JsonProperty
     private final int id;
@@ -16,7 +16,7 @@ public class ResponseWrapper<T> {
     @JsonUnwrapped
     private final T innerObject;
 
-    public ResponseWrapper(int id, ZonedDateTime localTime, T innerObject) {
+    public EventWrapper(int id, ZonedDateTime localTime, T innerObject) {
         this.id = id;
         this.localTime = localTime;
         this.innerObject = innerObject;

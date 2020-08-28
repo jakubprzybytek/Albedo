@@ -47,4 +47,7 @@ public class RiseTransitSetEvent extends AstronomicalEvent {
         return new RiseTransitSetEvent(jde, bodyDetails, eventType, azimuth, null);
     }
 
+    public RiseTransitSetEventType getEventType() {
+        return eventType;
+    }
 }

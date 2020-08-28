@@ -12,6 +12,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import PersonIcon from '@material-ui/icons/Person';
 import TabPanel from './common/TabPanel';
 import EventsList from './events/EventsList';
+import NightChartPanel from './nightChart/NightChartPanel';
 import ToolTabs from './tools/ToolTabs';
 import CataloguesPanel from './catalogues/CataloguesPanel';
 import UserDrawer from './UserDrawer';
@@ -89,7 +90,8 @@ export default function PersistentDrawerLeft() {
           </IconButton>
         </Toolbar>
         <Tabs className={classes.tabs} value={tabValue} onChange={(event, newTabValue) => setTabValue(newTabValue)} indicatorColor="primary" textColor="primary" variant="scrollable" scrollButtons="auto">
-          <Tab label="Dashboard" />
+          <Tab label="Events" />
+          <Tab label="Charts" />
           <Tab label="Tools" />
           <Tab label="Catalogues" />
         </Tabs>
@@ -106,9 +108,12 @@ export default function PersistentDrawerLeft() {
           <EventsList />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          <ToolTabs />
+          <NightChartPanel />
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
+          <ToolTabs />
+        </TabPanel>
+        <TabPanel value={tabValue} index={3}>
           <CataloguesPanel />
         </TabPanel>
       </main>

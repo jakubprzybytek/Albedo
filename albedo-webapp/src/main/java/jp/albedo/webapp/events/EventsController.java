@@ -4,7 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
-import jp.albedo.webapp.common.ResponseWrapper;
+import jp.albedo.webapp.common.EventWrapper;
 import jp.albedo.webapp.events.parameters.ConjunctionsParameters;
 import jp.albedo.webapp.events.parameters.RtsParameters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,21 +27,21 @@ public class EventsController {
     EventsOrchestrator eventsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/events")
-    public List<ResponseWrapper<AstronomicalEvent>> events(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                           @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
-                                                           @RequestParam("longitude") double observerLongitude,
-                                                           @RequestParam("latitude") double observerLatitude,
-                                                           @RequestParam("height") double observerHeight,
-                                                           @RequestParam("timeZone") String timeZone,
-                                                           @RequestParam(value = "rtsSunEnabled", required = false) boolean rtsSunEnabled,
-                                                           @RequestParam(value = "rtsMoonEnabled", required = false) boolean rtsMoonEnabled,
-                                                           @RequestParam(value = "conjunctionsSunEnabled", required = false) boolean conjunctionsSunEnabled,
-                                                           @RequestParam(value = "conjunctionsMoonEnabled", required = false) boolean conjunctionsMoonEnabled,
-                                                           @RequestParam(value = "conjunctionsPlanetsEnabled", required = false) boolean conjunctionsPlanetsEnabled,
-                                                           @RequestParam(value = "conjunctionsCometsEnabled", required = false) boolean conjunctionsCometsEnabled,
-                                                           @RequestParam(value = "conjunctionsAsteroidsEnabled", required = false) boolean conjunctionsAsteroidsEnabled,
-                                                           @RequestParam(value = "conjunctionsCataloguesDSEnabled", required = false) boolean conjunctionsCataloguesDSEnabled,
-                                                           @RequestParam(value = "cFilterBlindedBySun", required = false) boolean conjunctionsFilterBlindedBySun) throws Exception {
+    public List<EventWrapper<AstronomicalEvent>> events(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                        @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+                                                        @RequestParam("longitude") double observerLongitude,
+                                                        @RequestParam("latitude") double observerLatitude,
+                                                        @RequestParam("height") double observerHeight,
+                                                        @RequestParam("timeZone") String timeZone,
+                                                        @RequestParam(value = "rtsSunEnabled", required = false) boolean rtsSunEnabled,
+                                                        @RequestParam(value = "rtsMoonEnabled", required = false) boolean rtsMoonEnabled,
+                                                        @RequestParam(value = "conjunctionsSunEnabled", required = false) boolean conjunctionsSunEnabled,
+                                                        @RequestParam(value = "conjunctionsMoonEnabled", required = false) boolean conjunctionsMoonEnabled,
+                                                        @RequestParam(value = "conjunctionsPlanetsEnabled", required = false) boolean conjunctionsPlanetsEnabled,
+                                                        @RequestParam(value = "conjunctionsCometsEnabled", required = false) boolean conjunctionsCometsEnabled,
+                                                        @RequestParam(value = "conjunctionsAsteroidsEnabled", required = false) boolean conjunctionsAsteroidsEnabled,
+                                                        @RequestParam(value = "conjunctionsCataloguesDSEnabled", required = false) boolean conjunctionsCataloguesDSEnabled,
+                                                        @RequestParam(value = "cFilterBlindedBySun", required = false) boolean conjunctionsFilterBlindedBySun) throws Exception {
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
@@ -59,7 +59,7 @@ public class EventsController {
         final AtomicInteger id = new AtomicInteger();
 
         return this.eventsOrchestrator.compute(JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, rtsParameters, conjunctionsParameters).stream()
-                .map(event -> new ResponseWrapper<>(
+                .map(event -> new EventWrapper<>(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
                         event))

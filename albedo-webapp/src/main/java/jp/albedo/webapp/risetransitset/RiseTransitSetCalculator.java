@@ -18,9 +18,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-class RiseTransitSetCalculator {
+public class RiseTransitSetCalculator {
 
-    List<RiseTransitSetEvent> compute(String bodyName, ComputedEphemeris computedEphemeris, GeographicCoordinates observerCoords) {
+    public List<RiseTransitSetEvent> compute(String bodyName, ComputedEphemeris computedEphemeris, GeographicCoordinates observerCoords) {
 
         final List<RiseTransitSetEvent> riseTransitSetList = new ArrayList<>();
 
@@ -47,7 +47,7 @@ class RiseTransitSetCalculator {
                 } else {
                     mainRiseSet = rtsEventCalculator.computeRiseAndSetTime(RiseTransitSetEventCalculator.RISE_AND_SET_ALTITUDE_FOR_SMALL_BODIES);
                 }
-                riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + mainRiseSet.risingTime, computedEphemeris.getBodyDetails(), RiseTransitSetEventType.Raising, mainRiseSet.risingAzimuth));
+                riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + mainRiseSet.risingTime, computedEphemeris.getBodyDetails(), RiseTransitSetEventType.Rising, mainRiseSet.risingAzimuth));
                 riseTransitSetList.add(RiseTransitSetEvent.forRiseAndSet(jde + mainRiseSet.settingTime, computedEphemeris.getBodyDetails(), RiseTransitSetEventType.Setting, mainRiseSet.settingAzimuth));
 
                 if (BodyInformation.Sun.name().equals(bodyName)) {

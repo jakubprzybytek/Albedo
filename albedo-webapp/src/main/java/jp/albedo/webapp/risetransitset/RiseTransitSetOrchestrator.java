@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class RiseTransitSetOrchestrator {
 
-    private static Log LOG = LogFactory.getLog(RiseTransitSetOrchestrator.class);
+    private static final Log LOG = LogFactory.getLog(RiseTransitSetOrchestrator.class);
 
     public static final double INTERVAL = 1.0;
 

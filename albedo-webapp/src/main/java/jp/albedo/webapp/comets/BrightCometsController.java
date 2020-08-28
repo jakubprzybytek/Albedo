@@ -18,9 +18,9 @@ import java.time.ZoneId;
 import java.util.List;
 
 @RestController
-public class CometsController {
+public class BrightCometsController {
 
-    final private static Log LOG = LogFactory.getLog(CometsController.class);
+    final private static Log LOG = LogFactory.getLog(BrightCometsController.class);
 
     @Autowired
     private CometsOrchestrator cometsOrchestrator;
