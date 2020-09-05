@@ -15,7 +15,7 @@ import EventsList from './events/EventsList';
 import NightChartPanel from './nightChart/NightChartPanel';
 import ToolTabs from './tools/ToolTabs';
 import CataloguesPanel from './catalogues/CataloguesPanel';
-import UserDrawer from './UserDrawer';
+import UserDrawer from './userSettings/UserDrawer';
 import SettingsDrawer from './events/SettingsDrawer';
 
 const drawerWidth = 240;

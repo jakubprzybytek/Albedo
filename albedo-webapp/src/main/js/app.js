@@ -6,9 +6,8 @@ import 'regenerator-runtime/runtime';
 import createSagaMiddleware from 'redux-saga'
 import { all } from 'redux-saga/effects';
 import Dashboard from './Dashboard';
-
-import locationReducer from './components/observerlocation/LocationReducer';
-import timeZoneReducer from './components/timezone/TimeZoneReducer';
+import locationReducer from './userSettings/observerlocation/LocationReducer';
+import timeZoneReducer from './userSettings/timezone/TimeZoneReducer';
 import { eventsListReducer } from './events/actions/EventsListReducers';
 import { watchEventsListSagas, fetchEvents, fetchFutureEvents } from './events/actions/EventsListSagas';
 

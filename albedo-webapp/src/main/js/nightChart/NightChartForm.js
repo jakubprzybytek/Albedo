@@ -24,7 +24,7 @@ export default function NightChartForm(props) {
 
   const { updateAltitudesResponse } = props;
   
-  const [bodyNames, setBodyNames] = React.useState("Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus");
+  const [bodyNames, setBodyNames] = React.useState("Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus");
   const [date, setDate] = React.useState(new Date());
 
   function onBuildProps() {

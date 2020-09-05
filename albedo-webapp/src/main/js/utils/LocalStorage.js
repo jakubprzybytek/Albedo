@@ -11,3 +11,16 @@ export const useStateWithLocalStorageInt = (localStorageKey, defaultValue) => {
    
     return [value, setValue];
   };
+
+export function localStorageVariable(localStorageKey, defaultValue) {
+
+  const storedValue = localStorage.getItem(localStorageKey);
+  const initialValue = (storedValue && JSON.parse(storedValue)) || defaultValue;
+
+  const updateValue = (value) => {
+    localStorage.setItem(localStorageKey, JSON.stringify(value));
+    return value;  
+  }
+
+  return [initialValue, updateValue];
+}

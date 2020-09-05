@@ -1,12 +1,11 @@
 import React from 'react';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
-import LocationForm from './components/observerlocation/LocationForm';
-import TimeZoneForm from './components/timezone/TimeZoneForm';
+import LocationForm from './observerlocation/LocationForm';
+import TimeZoneForm from './timezone/TimeZoneForm';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
