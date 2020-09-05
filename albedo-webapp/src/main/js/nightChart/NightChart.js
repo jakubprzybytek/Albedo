@@ -9,16 +9,28 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const annotationColours = {
-  'Setting':          '#80a080',
+  'Setting':          '#e0a0a0',
   'CivilDusk':        '#505080',
   'NauticalDusk':     '#202080',
   'AstronomicalDusk': '#202020',
   'AstronomicalDawn': '#202080',
   'NauticalDawn':     '#505080',
-  'CivilDawn':        '#80a080',
+  'CivilDawn':        '#e0a0a0',
   'Raising':          '#e0d0c0',
   'Transit':          '#e0d0c0',
 };
+
+const seriesColours = {
+  'Sun': '#ffff00',
+  'Moon': '#b0b0b0',
+  'Mercury': '#6600ff',
+  'Venus': '#ff99cc',
+  'Mars': '#ff0000',
+  'Jupiter': '#33cc33',
+  'Saturn': '#ff6600',
+  'Neptune': '#0066ff',
+  'Uranus': '#33cccc',
+}
 
 export default function NightChartPanel(props) {
 
@@ -81,6 +93,7 @@ export default function NightChartPanel(props) {
           enabled: false
         },
       },
+      colors: altitudesResponse.altitudeSeries.map(bodyAltitudes => bodyAltitudes.bodyDetails.name in seriesColours ? seriesColours[bodyAltitudes.bodyDetails.name] : '#808080' ),
       annotations: {
         xaxis: createAnnotations(altitudesResponse.sunRiseTransitSetEvents),   
       },
@@ -94,10 +107,12 @@ export default function NightChartPanel(props) {
         text: 'Bodies Altitude',
         align: 'center'
       },
-      
       xaxis: {
         type: 'datetime',
         categories: altitudesResponse.timeSeries,
+        labels: {
+          datetimeUTC: false,
+        }
       },
       yaxis: {
         min: 0,
@@ -107,6 +122,11 @@ export default function NightChartPanel(props) {
           text: "Altitude [°]",
         }
       },
+      tooltip: {
+        x: {
+          format: 'dd MMM HH:mm',
+        }
+      }
     },
   };
 

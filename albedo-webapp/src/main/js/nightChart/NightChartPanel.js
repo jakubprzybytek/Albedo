@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function NightChartPanel() {
 
-  const [altitudesResponse, setAltitudesResponse] = React.useState({ altitudeSeries: [], sunRiseTransitSetEvents: [] });
+  const [altitudesResponse, setAltitudesResponse] = React.useState({ timeSeries: [], altitudeSeries: [], sunRiseTransitSetEvents: [] });
 
   const classes = useStyles();
 
