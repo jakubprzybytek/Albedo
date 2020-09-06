@@ -12,7 +12,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import PersonIcon from '@material-ui/icons/Person';
 import TabPanel from './common/TabPanel';
 import EventsList from './events/EventsList';
-import NightChartPanel from './nightChart/NightChartPanel';
+import ChartTabs from './charts/ChartTabs';
 import ToolTabs from './tools/ToolTabs';
 import CataloguesPanel from './catalogues/CataloguesPanel';
 import UserDrawer from './userSettings/UserDrawer';
@@ -108,7 +108,7 @@ export default function PersistentDrawerLeft() {
           <EventsList />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          <NightChartPanel />
+          <ChartTabs />
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
           <ToolTabs />

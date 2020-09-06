@@ -10,11 +10,11 @@ const useStyles = makeStyles(theme => ({
 
 const annotationColours = {
   'Setting':          '#e0a0a0',
-  'CivilDusk':        '#505080',
-  'NauticalDusk':     '#202080',
-  'AstronomicalDusk': '#202020',
-  'AstronomicalDawn': '#202080',
-  'NauticalDawn':     '#505080',
+  'CivilDusk':        '#a0a060',
+  'NauticalDusk':     '#4040a0',
+  'AstronomicalDusk': '#505050',
+  'AstronomicalDawn': '#4040a0',
+  'NauticalDawn':     '#a0a060',
   'CivilDawn':        '#e0a0a0',
   'Raising':          '#e0d0c0',
   'Transit':          '#e0d0c0',
