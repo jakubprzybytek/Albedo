@@ -53,8 +53,9 @@ export default function RiseTransitSetForm(props) {
             label="Name"
             value={bodyNames}
             className={classes.field}
-            onChange={event => setBodyNames(event.target.value)}
-            margin="normal" />
+            multiline
+            margin="normal"
+            onChange={event => setBodyNames(event.target.value)} />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar

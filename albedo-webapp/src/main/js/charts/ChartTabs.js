@@ -5,7 +5,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TabPanel from '../common/TabPanel';
 import NightChartPanel from './nightChart/NightChartPanel';
-import HourglassChartPanel from './hourglass/HourglassChartPanel';
+import VisibilityChartPanel from './visibility/VisibilityChartPanel';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,7 +37,7 @@ export default function ToolTabs() {
         <NightChartPanel />
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={1}>
-        <HourglassChartPanel />
+        <VisibilityChartPanel />
       </TabPanel>
     </div>
   );

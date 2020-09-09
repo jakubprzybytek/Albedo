@@ -20,27 +20,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function EphemerisForm(props) {
+export default function VisibilityForm(props) {
 
-  const { updateEphemerisList, updateBodyInfo } = props;
-
-  const [bodyName, setBodyName] = React.useState("Venus");
+  const { updateVisibilityChartResponse } = props;
+  
+  const [bodyNames, setBodyNames] = React.useState("Moon,Mercury,Jupiter");
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
   const [interval, setInterval] = React.useState("1.0");
 
   function onBuildProps() {
     return {
-      body: bodyName,
+      bodies: bodyNames,
       from: format(fromDate, "yyyy-MM-dd"),
       to: format(toDate, "yyyy-MM-dd"),
       interval: interval
     }
-  }
-
-  function onSubmitResponse(data) {
-    updateEphemerisList(data.ephemerisList);
-    updateBodyInfo(data.bodyInfo);
   }
 
   const classes = useStyles();
@@ -52,12 +47,13 @@ export default function EphemerisForm(props) {
       </Typography>
       <form className={classes.container} noValidate autoComplete="off">
         <div>
-          <TextField
-            className={classes.field}
-            margin="normal"
+          <TextField 
             label="Name"
-            value={bodyName} 
-            onChange={event => setBodyName(event.target.value)} />
+            value={bodyNames}
+            className={classes.field}
+            multiline
+            margin="normal"
+            onChange={event => setBodyNames(event.target.value)} />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal" label="From" value={fromDate} onChange={date => setFromDate(date)}
               KeyboardButtonProps={{
@@ -70,7 +66,7 @@ export default function EphemerisForm(props) {
           </MuiPickersUtilsProvider>
           <TextField label="Interval" value={interval} className={classes.field} onChange={event => setInterval(event.target.value)} margin="normal" />
         </div>
-        <SubmitBar url='/api/ephemerides' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar url='/api/charts/visibility' buildProps={onBuildProps} submitResponse={(data) => updateVisibilityChartResponse(data)} />
       </form>
     </Paper>
   );
