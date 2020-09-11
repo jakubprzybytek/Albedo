@@ -29,9 +29,9 @@ public class SiderealTime {
     }
 
     private static double computeGreenwichMeanInDegrees(double ut) {
-        double T = (ut - 2451545.0) / 36525.0;
+        final double T = (ut - 2451545.0) / 36525.0;
         double result = 280.46061837 + 360.98564736629 * (ut - 2451545.0);
-        double tSquare = T * T;
+        final double tSquare = T * T;
         result += 0.000387933 * tSquare;
         return result - (tSquare * T) / 38710000.0;
     }

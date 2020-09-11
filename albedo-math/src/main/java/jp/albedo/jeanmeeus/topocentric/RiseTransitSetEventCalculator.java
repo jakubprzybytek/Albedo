@@ -25,7 +25,7 @@ public class RiseTransitSetEventCalculator {
 
     public final static double ASTRONOMICAL_DAWN_AND_DUSK_ALTITUDE_FOR_SUN = Math.toRadians(-18.0);
 
-    private final double solarToSidereal = Math.toRadians(24.0 * 360.0 / 23.9344696);
+    private final double solarToSidereal = 24.0 * MathUtils.TWO_PI / 23.9344696;
 
     private final List<AstronomicalCoordinates> coordsTriple;
 
@@ -60,11 +60,12 @@ public class RiseTransitSetEventCalculator {
      *
      * @return
      */
-    public Transit computeTransitTime() {
+    public Transit computeTransit() {
         final AstronomicalCoordinates coordsForEvent = interpolateCoordinates(this.mEstimateTransit);
 
         final double estimatedEventGreenwichSiderealTime = MathUtils.normalizeAngle(this.greenwichSiderealTime + this.solarToSidereal * this.mEstimateTransit, Math.PI);
         final double estimatedLocalHourAngle = MathUtils.normalizeAngle(HourAngle.getLocal(estimatedEventGreenwichSiderealTime, coordsForEvent.rightAscension, this.observerCoords.longitude), 0);
+        //final double finalMTransit = bringToZeroOneRange(this.mEstimateTransit + -estimatedLocalHourAngle / MathUtils.TWO_PI);
         final double finalMTransit = this.mEstimateTransit + -estimatedLocalHourAngle / MathUtils.TWO_PI;
 
         final double correctedEventGreenwichSiderealTime = MathUtils.normalizeAngle(this.greenwichSiderealTime + this.solarToSidereal * finalMTransit, Math.PI);
@@ -77,11 +78,11 @@ public class RiseTransitSetEventCalculator {
     /**
      * Computes rising and setting times along with corresponding azimuths.
      *
-     * @param riseAndSetAltitude Altitude for which rising and setting time should be completed.
+     * @param riseAndSetAltitude Altitude for which rising and setting time should be computed.
      *                           For example, due to Atmospheric refraction, bodies appear to raise over horizon when they are actually half degree bellow it.
      * @return Rising and setting times for corresponding altitude along with azimuths.
      */
-    public RiseSet computeRiseAndSetTime(double riseAndSetAltitude) {
+    public RiseSet computeRiseAndSet(double riseAndSetAltitude) {
         final double H0 = Math.acos(
                 (Math.sin(riseAndSetAltitude) - Math.sin(this.observerCoords.latitude) * Math.sin(this.coordsTriple.get(1).declination))
                         / (Math.cos(this.observerCoords.latitude) * Math.cos(this.coordsTriple.get(1).declination)));
@@ -120,7 +121,16 @@ public class RiseTransitSetEventCalculator {
                 .map(coords -> coords.rightAscension)
                 .collect(Collectors.toList());
 
-        final double rightAscension = Interpolation.interpolate(rightAscensionList, interpolationFactor);
+        double rightAscension;
+
+        if (needsShifting(rightAscensionList)) {
+            final List<Double> shiftedRightAscensionList = rightAscensionList.stream()
+                    .map(angle -> MathUtils.normalizeAngle(angle + Math.PI, Math.PI))
+                    .collect(Collectors.toList());
+            rightAscension = MathUtils.normalizeAngle(Interpolation.interpolate(shiftedRightAscensionList, interpolationFactor) - Math.PI, Math.PI);
+        } else {
+            rightAscension = Interpolation.interpolate(rightAscensionList, interpolationFactor);
+        }
 
         final List<Double> declinationList = this.coordsTriple.stream()
                 .map(coords -> coords.declination)
@@ -129,6 +139,11 @@ public class RiseTransitSetEventCalculator {
         final double declination = Interpolation.interpolate(declinationList, interpolationFactor);
 
         return new AstronomicalCoordinates(rightAscension, declination);
+    }
+
+    static boolean needsShifting(List<Double> angles) {
+        return (angles.get(0) < Math.PI / 2 || angles.get(1) < Math.PI / 2 || angles.get(2) < Math.PI / 2)
+                && (angles.get(0) > 3 * Math.PI / 2 || angles.get(1) > 3 * Math.PI / 2 || angles.get(2) > 3 * Math.PI / 2);
     }
 
     static double bringToZeroOneRange(double a) {

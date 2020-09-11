@@ -109,7 +109,7 @@ export default function NightChartPanel(props) {
       },
       xaxis: {
         type: 'datetime',
-        categories: altitudesResponse.timeSeries,
+        categories: altitudesResponse.timeSeries, //.map(datetime => datetime.substr(0, 19)),
         labels: {
           datetimeUTC: false,
         }
