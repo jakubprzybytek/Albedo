@@ -25,6 +25,10 @@ public class RiseTransitSetEventCalculator {
 
     public final static double ASTRONOMICAL_DAWN_AND_DUSK_ALTITUDE_FOR_SUN = Math.toRadians(-18.0);
 
+    public static final double HALF_PI = Math.PI / 2;
+
+    public static final double TREE_QUARTERS_PI = 3 * Math.PI / 2;
+
     private final double solarToSidereal = 24.0 * MathUtils.TWO_PI / 23.9344696;
 
     private final List<AstronomicalCoordinates> coordsTriple;
@@ -117,33 +121,33 @@ public class RiseTransitSetEventCalculator {
     private AstronomicalCoordinates interpolateCoordinates(double m) {
         final double interpolationFactor = m + this.deltaT / 86400.0;
 
-        final List<Double> rightAscensionList = this.coordsTriple.stream()
-                .map(coords -> coords.rightAscension)
-                .collect(Collectors.toList());
+        final double[] rightAscensionTriple = this.coordsTriple.stream()
+                .mapToDouble(coords -> coords.rightAscension)
+                .toArray();
 
         double rightAscension;
 
-        if (needsShifting(rightAscensionList)) {
-            final List<Double> shiftedRightAscensionList = rightAscensionList.stream()
-                    .map(angle -> MathUtils.normalizeAngle(angle + Math.PI, Math.PI))
-                    .collect(Collectors.toList());
-            rightAscension = MathUtils.normalizeAngle(Interpolation.interpolate(shiftedRightAscensionList, interpolationFactor) - Math.PI, Math.PI);
+        if (needsShifting(rightAscensionTriple)) {
+            for (int i = 0; i < rightAscensionTriple.length; i++) {
+                rightAscensionTriple[i] = MathUtils.normalizeAngle(rightAscensionTriple[i] + Math.PI, Math.PI);
+            }
+            rightAscension = MathUtils.normalizeAngle(Interpolation.interpolate(rightAscensionTriple, interpolationFactor) - Math.PI, Math.PI);
         } else {
-            rightAscension = Interpolation.interpolate(rightAscensionList, interpolationFactor);
+            rightAscension = Interpolation.interpolate(rightAscensionTriple, interpolationFactor);
         }
 
-        final List<Double> declinationList = this.coordsTriple.stream()
-                .map(coords -> coords.declination)
-                .collect(Collectors.toList());
+        final double[] declinationTriple = this.coordsTriple.stream()
+                .mapToDouble(coords -> coords.declination)
+                .toArray();
 
-        final double declination = Interpolation.interpolate(declinationList, interpolationFactor);
+        final double declination = Interpolation.interpolate(declinationTriple, interpolationFactor);
 
         return new AstronomicalCoordinates(rightAscension, declination);
     }
 
-    static boolean needsShifting(List<Double> angles) {
-        return (angles.get(0) < Math.PI / 2 || angles.get(1) < Math.PI / 2 || angles.get(2) < Math.PI / 2)
-                && (angles.get(0) > 3 * Math.PI / 2 || angles.get(1) > 3 * Math.PI / 2 || angles.get(2) > 3 * Math.PI / 2);
+    static boolean needsShifting(double[] angles) {
+        return (angles[0] < HALF_PI || angles[1] < HALF_PI || angles[2] < HALF_PI)
+                && (angles[0] > TREE_QUARTERS_PI || angles[1] > TREE_QUARTERS_PI || angles[2] > TREE_QUARTERS_PI);
     }
 
     static double bringToZeroOneRange(double a) {
