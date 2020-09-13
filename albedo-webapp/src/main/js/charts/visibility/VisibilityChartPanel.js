@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import VisibilityChartForm from './VisibilityChartForm';
 import VisibilityChart from './VisibilityChart';
-import { height } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,7 +15,16 @@ const useStyles = makeStyles(theme => ({
 
 export default function VisibilityChartPanel() {
 
-  const [visibilityChartResponse, setVisibilityChartResponse] = React.useState({ sunRiseTransitSetEvents: [] });
+  const [visibilityChartResponse, setVisibilityChartResponse] = React.useState({ 
+    sunSets:[], 
+    sunCivilDusks: [], 
+    sunNauticalDusks: [], 
+    sunAstronomicalDusks: [], 
+    sunAstronomicalDawns: [],
+    sunNauticalDawns: [],
+    sunCivilDawns: [],
+    sunRises: [],
+    sunRiseTransitSetEvents: [] });
 
   const classes = useStyles();
 

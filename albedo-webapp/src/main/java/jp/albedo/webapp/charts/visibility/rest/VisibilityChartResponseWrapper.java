@@ -2,38 +2,65 @@ package jp.albedo.webapp.charts.visibility.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.JulianDay;
-import jp.albedo.webapp.altitude.AltitudeResponse;
-import jp.albedo.webapp.altitude.rest.AltitudeSeries;
 import jp.albedo.webapp.charts.visibility.VisibilityChartResponse;
-import jp.albedo.webapp.common.AstronomicalEvent;
-import jp.albedo.webapp.common.EventWrapper;
-import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class VisibilityChartResponseWrapper {
 
     @JsonProperty
-    final private List<EventWrapper<RiseTransitSetEvent>> sunRiseTransitSetEvents;
+    final List<ZonedDateTime> sunSets;
 
-    private VisibilityChartResponseWrapper(List<EventWrapper<RiseTransitSetEvent>> sunRiseTransitSetEvents) {
-        this.sunRiseTransitSetEvents = sunRiseTransitSetEvents;
+    @JsonProperty
+    final List<ZonedDateTime> sunCivilDusks;
+
+    @JsonProperty
+    final List<ZonedDateTime> sunNauticalDusks;
+
+    @JsonProperty
+    final List<ZonedDateTime> sunAstronomicalDusks;
+
+    @JsonProperty
+    final List<ZonedDateTime> sunAstronomicalDawns;
+
+    @JsonProperty
+    final List<ZonedDateTime> sunNauticalDawns;
+
+    @JsonProperty
+    final List<ZonedDateTime> sunCivilDawns;
+
+    @JsonProperty
+    final List<ZonedDateTime> sunRises;
+
+    private VisibilityChartResponseWrapper(List<ZonedDateTime> sunSets, List<ZonedDateTime> sunCivilDusks, List<ZonedDateTime> sunNauticalDusks, List<ZonedDateTime> sunAstronomicalDusks, List<ZonedDateTime> sunAstronomicalDawns, List<ZonedDateTime> sunNauticalDawns, List<ZonedDateTime> sunCivilDawns, List<ZonedDateTime> sunRises) {
+        this.sunSets = sunSets;
+        this.sunCivilDusks = sunCivilDusks;
+        this.sunNauticalDusks = sunNauticalDusks;
+        this.sunAstronomicalDusks = sunAstronomicalDusks;
+        this.sunAstronomicalDawns = sunAstronomicalDawns;
+        this.sunNauticalDawns = sunNauticalDawns;
+        this.sunCivilDawns = sunCivilDawns;
+        this.sunRises = sunRises;
     }
 
     public static VisibilityChartResponseWrapper wrap(VisibilityChartResponse visibilityChartResponse, ZoneId zoneId) {
         return new VisibilityChartResponseWrapper(
-                visibilityChartResponse.getSunRiseTransitSetEvents().stream()
-                        .sorted(Comparator.comparingDouble(AstronomicalEvent::getJde))
-                        .map(event -> new EventWrapper<>(
-                                0,
-                                JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
-                                event
-                        ))
-                        .collect(Collectors.toList())
-        );
+                localTime(visibilityChartResponse.getSunSets(), zoneId),
+                localTime(visibilityChartResponse.getSunCivilDusks(), zoneId),
+                localTime(visibilityChartResponse.getSunNauticalDusks(), zoneId),
+                localTime(visibilityChartResponse.getSunAstronomicalDusks(), zoneId),
+                localTime(visibilityChartResponse.getSunAstronomicalDawns(), zoneId),
+                localTime(visibilityChartResponse.getSunNauticalDawns(), zoneId),
+                localTime(visibilityChartResponse.getSunCivilDawns(), zoneId),
+                localTime(visibilityChartResponse.getSunRises(), zoneId));
+    }
+
+    private static List<ZonedDateTime> localTime(List<Double> jdes, ZoneId zoneId) {
+        return jdes.stream()
+                .map(jde -> JulianDay.toDateTime(jde).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId))
+                .collect(Collectors.toList());
     }
 }
