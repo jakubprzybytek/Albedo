@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
-import { addMonths, format } from 'date-fns';
+import { format } from 'date-fns';
 import SubmitBar from '../../components/SubmitBar';
 
 const useStyles = makeStyles(theme => ({
@@ -25,8 +25,8 @@ export default function VisibilityForm(props) {
   const { updateVisibilityChartResponse } = props;
   
   const [bodyNames, setBodyNames] = React.useState("Moon,Mercury,Jupiter");
-  const [fromDate, setFromDate] = React.useState(new Date());
-  const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
+  const [fromDate, setFromDate] = React.useState(new Date(new Date().getFullYear(), 0, 1));
+  const [toDate, setToDate] = React.useState(new Date(new Date().getFullYear(), 11, 31));
   const [interval, setInterval] = React.useState("1.0");
 
   function onBuildProps() {

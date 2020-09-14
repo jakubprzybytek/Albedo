@@ -28,6 +28,9 @@ Run `jp.albedo.webapp.AlbedoApplication` in IDE with `-Dserver.port=8090` as VM 
 
 `npm run start`
 
+Unit tests:
+`npm run test:watch`
+
 ## Release
 
 `mvn package`
