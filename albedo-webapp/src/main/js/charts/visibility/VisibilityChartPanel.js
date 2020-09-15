@@ -24,7 +24,8 @@ export default function VisibilityChartPanel() {
     sunNauticalDawns: [],
     sunCivilDawns: [],
     sunRises: [],
-    sunRiseTransitSetEvents: [] });
+    sunRiseTransitSetEvents: [],
+    bodies: [] });
 
   const classes = useStyles();
 

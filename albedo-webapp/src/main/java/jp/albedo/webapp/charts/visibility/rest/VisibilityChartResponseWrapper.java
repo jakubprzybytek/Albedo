@@ -2,6 +2,7 @@ package jp.albedo.webapp.charts.visibility.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.JulianDay;
+import jp.albedo.webapp.charts.visibility.BodyVisibility;
 import jp.albedo.webapp.charts.visibility.VisibilityChartResponse;
 
 import java.time.ZoneId;
@@ -35,7 +36,10 @@ public class VisibilityChartResponseWrapper {
     @JsonProperty
     final List<ZonedDateTime> sunRises;
 
-    private VisibilityChartResponseWrapper(List<ZonedDateTime> sunSets, List<ZonedDateTime> sunCivilDusks, List<ZonedDateTime> sunNauticalDusks, List<ZonedDateTime> sunAstronomicalDusks, List<ZonedDateTime> sunAstronomicalDawns, List<ZonedDateTime> sunNauticalDawns, List<ZonedDateTime> sunCivilDawns, List<ZonedDateTime> sunRises) {
+    @JsonProperty("bodies")
+    final List<BodyVisibilityWrapper> bodyVisibilityList;
+
+    private VisibilityChartResponseWrapper(List<ZonedDateTime> sunSets, List<ZonedDateTime> sunCivilDusks, List<ZonedDateTime> sunNauticalDusks, List<ZonedDateTime> sunAstronomicalDusks, List<ZonedDateTime> sunAstronomicalDawns, List<ZonedDateTime> sunNauticalDawns, List<ZonedDateTime> sunCivilDawns, List<ZonedDateTime> sunRises, List<BodyVisibilityWrapper> bodyVisibilityList) {
         this.sunSets = sunSets;
         this.sunCivilDusks = sunCivilDusks;
         this.sunNauticalDusks = sunNauticalDusks;
@@ -44,6 +48,7 @@ public class VisibilityChartResponseWrapper {
         this.sunNauticalDawns = sunNauticalDawns;
         this.sunCivilDawns = sunCivilDawns;
         this.sunRises = sunRises;
+        this.bodyVisibilityList = bodyVisibilityList;
     }
 
     public static VisibilityChartResponseWrapper wrap(VisibilityChartResponse visibilityChartResponse, ZoneId zoneId) {
@@ -55,7 +60,10 @@ public class VisibilityChartResponseWrapper {
                 localTime(visibilityChartResponse.getSunAstronomicalDawns(), zoneId),
                 localTime(visibilityChartResponse.getSunNauticalDawns(), zoneId),
                 localTime(visibilityChartResponse.getSunCivilDawns(), zoneId),
-                localTime(visibilityChartResponse.getSunRises(), zoneId));
+                localTime(visibilityChartResponse.getSunRises(), zoneId),
+                visibilityChartResponse.getBodiesVisibilityList().stream()
+                        .map(bodyVisibility -> BodyVisibilityWrapper.wrap(bodyVisibility, zoneId))
+                        .collect(Collectors.toList()));
     }
 
     private static List<ZonedDateTime> localTime(List<Double> jdes, ZoneId zoneId) {

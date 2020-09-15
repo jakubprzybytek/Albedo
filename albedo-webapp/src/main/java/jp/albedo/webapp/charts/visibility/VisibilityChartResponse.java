@@ -1,7 +1,5 @@
 package jp.albedo.webapp.charts.visibility;
 
-import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
-
 import java.util.List;
 
 public class VisibilityChartResponse {
@@ -22,7 +20,9 @@ public class VisibilityChartResponse {
 
     final List<Double> sunRises;
 
-    public VisibilityChartResponse(List<Double> sunSets, List<Double> sunCivilDusks, List<Double> sunNauticalDusks, List<Double> sunAstronomicalDusks, List<Double> sunAstronomicalDawns, List<Double> sunNauticalDawns, List<Double> sunCivilDawns, List<Double> sunRises) {
+    final List<BodyVisibility> bodiesVisibilityList;
+
+    public VisibilityChartResponse(List<Double> sunSets, List<Double> sunCivilDusks, List<Double> sunNauticalDusks, List<Double> sunAstronomicalDusks, List<Double> sunAstronomicalDawns, List<Double> sunNauticalDawns, List<Double> sunCivilDawns, List<Double> sunRises, List<BodyVisibility> bodiesVisibilityList) {
          this.sunSets = sunSets;
         this.sunCivilDusks = sunCivilDusks;
         this.sunNauticalDusks = sunNauticalDusks;
@@ -31,6 +31,7 @@ public class VisibilityChartResponse {
         this.sunNauticalDawns = sunNauticalDawns;
         this.sunCivilDawns = sunCivilDawns;
         this.sunRises = sunRises;
+        this.bodiesVisibilityList = bodiesVisibilityList;
     }
 
     public List<Double> getSunSets() {
@@ -63,5 +64,9 @@ public class VisibilityChartResponse {
 
     public List<Double> getSunRises() {
         return sunRises;
+    }
+
+    public List<BodyVisibility> getBodiesVisibilityList() {
+        return bodiesVisibilityList;
     }
 }

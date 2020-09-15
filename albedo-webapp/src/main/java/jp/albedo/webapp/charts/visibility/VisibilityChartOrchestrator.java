@@ -2,6 +2,7 @@ package jp.albedo.webapp.charts.visibility;
 
 import jp.albedo.common.BodyInformation;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
+import jp.albedo.utils.FunctionUtils;
 import jp.albedo.webapp.altitude.AltitudeCalculator;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
@@ -17,6 +18,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class VisibilityChartOrchestrator {
@@ -93,11 +95,39 @@ public class VisibilityChartOrchestrator {
                     }
                 });
 
+        List<BodyVisibility> bodiesVisibilityList = bodyNames.stream()
+                .map(FunctionUtils.wrap(bodyName -> computeForBody(bodyName, fromDate, toDate, interval, observerLocation)))
+                .collect(Collectors.toList());
 
         LOG.info(String.format("Calculated %d events in %s", sunRiseTransitSetEvents.size(), Duration.between(start, Instant.now())));
 
         return new VisibilityChartResponse(
-                sunSets, sunCivilDusks, sunNauticalDusks, sunAstronomicalDusks, sunAstronomicalDawns, sunNauticalDawns, sunCivilDawns, sunRises);
+                sunSets, sunCivilDusks, sunNauticalDusks, sunAstronomicalDusks, sunAstronomicalDawns, sunNauticalDawns, sunCivilDawns, sunRises, bodiesVisibilityList);
+    }
+
+    private BodyVisibility computeForBody(String bodyName, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws Exception {
+        final ComputedEphemeris computedEphemerisForBody = this.ephemeridesOrchestrator.compute(bodyName, fromDate, toDate, interval, observerLocation);
+        final List<RiseTransitSetEvent> bodyRiseTransitSetEvents = this.riseTransitSetCalculator.compute(bodyName, computedEphemerisForBody, observerLocation.coords);
+
+        final List<Double> bodyRises = new LinkedList<>();
+        final List<Double> bodyTransits = new LinkedList<>();
+        final List<Double> bodySets = new LinkedList<>();
+
+        bodyRiseTransitSetEvents.forEach(rtsEvent -> {
+            switch (rtsEvent.getEventType()) {
+                case Rising:
+                    bodyRises.add(rtsEvent.getJde());
+                    break;
+                case Transit:
+                    bodyTransits.add(rtsEvent.getJde());
+                    break;
+                case Setting:
+                    bodySets.add(rtsEvent.getJde());
+                    break;
+            }
+        });
+
+        return new BodyVisibility(computedEphemerisForBody.getBodyDetails(), bodyRises, bodyTransits, bodySets);
     }
 
 }

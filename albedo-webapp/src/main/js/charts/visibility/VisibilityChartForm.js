@@ -24,7 +24,7 @@ export default function VisibilityForm(props) {
 
   const { updateVisibilityChartResponse } = props;
   
-  const [bodyNames, setBodyNames] = React.useState("Moon,Mercury,Jupiter");
+  const [bodyNames, setBodyNames] = React.useState("Jupiter");
   const [fromDate, setFromDate] = React.useState(new Date(new Date().getFullYear(), 0, 1));
   const [toDate, setToDate] = React.useState(new Date(new Date().getFullYear(), 11, 31));
   const [interval, setInterval] = React.useState("1.0");
