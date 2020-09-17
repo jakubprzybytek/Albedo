@@ -6,18 +6,17 @@ import HourGrid from './svg/HourGrid';
 
 export function scaleFactory(timePoints, height, yOffset) {
   const yMultiplier = timePoints <= height ? height / timePoints : height / timePoints;
-  return point => {
-    const scaledY = point[1] * yMultiplier + yOffset;
-    return [point[0], scaledY];
-  }
+  return {
+    x: x => x,
+    y: y => y * yMultiplier + yOffset,
+  };
 }
 
 export function toPoints(timePoints, scale, reverse) {
   const points = [];
   
   for (var i = 0; i < timePoints.length; i++) {
-    const point = scale(timePoints[i]);
-    points.push("" + point[0] + "," + point[1]);
+    points.push("" + scale.x(timePoints[i][0]) + "," + scale.y(timePoints[i][1]));
   }
 
   return (reverse ? points.reverse() : points).join(' ');
@@ -40,8 +39,9 @@ export default function VisibilityChart(props) {
 
   const { visibilityChartData } = props;
 
+  const centerAt = 0;
   const scale = scaleFactory(visibilityChartData.sunSets.length, 1000 - 40, 20);
-  const arrangeDates = arrangeDatesFactory(visibilityChartData.sunSets[0], 0);
+  const arrangeDates = arrangeDatesFactory(visibilityChartData.sunSets[0], centerAt);
 
   const sunSets = arrangeDates(visibilityChartData.sunSets);
   const sunRises = arrangeDates(visibilityChartData.sunRises);
@@ -67,7 +67,7 @@ export default function VisibilityChart(props) {
           sunRisesMap={sunRisesMap}
           scale={scale} />
       ))}
-      <HourGrid scale={scale} />
+      <HourGrid scale={scale} centerAt={centerAt} />
     </svg>
   );
 }
