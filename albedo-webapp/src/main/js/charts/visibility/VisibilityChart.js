@@ -3,6 +3,7 @@ import differenceInDays from 'date-fns/differenceInDays';
 import NightContour from './svg/NightContour';
 import BodyVisibilityPath from './svg/BodyVisibilityPath';
 import HourGrid from './svg/HourGrid';
+import MonthsGrid from './svg/MonthsGrid';
 
 export function scaleFactory(timePoints, height, yOffset) {
   const yMultiplier = timePoints <= height ? height / timePoints : height / timePoints;
@@ -67,7 +68,14 @@ export default function VisibilityChart(props) {
           sunRisesMap={sunRisesMap}
           scale={scale} />
       ))}
-      <HourGrid scale={scale} centerAt={centerAt} />
+      {sunSets.length > 0 && (<React.Fragment>
+        <HourGrid centerAt={centerAt} maxY={sunSets[sunSets.length - 1][1]} scale={scale} />
+        <MonthsGrid
+          firstDateString={visibilityChartData.sunSets[0]}
+          lastDateString={visibilityChartData.sunSets[visibilityChartData.sunSets.length - 1]}
+          sunSetsMap={sunSetsMap}
+          scale={scale} />
+      </React.Fragment>)}}
     </svg>
   );
 }

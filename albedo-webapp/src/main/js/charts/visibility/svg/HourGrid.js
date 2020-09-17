@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function HourGrid(props) {
 
-  const { scale, centerAt } = props;
+  const { scale, centerAt, maxY } = props;
 
   const classes = useStyles();
 
@@ -34,10 +34,10 @@ export default function HourGrid(props) {
   }
 
   return (<g className={classes.root}>
-    {hours.map(hour => (
-      <React.Fragment>
-        <text x={scale.x(hour * 60)} y="15" fill="grey" className={classes.label}>{(hour + 12 + centerAt) % 24}:00</text>
-        <polyline points={toPoints([ [hour * 60, 0], [hour * 60, 200] ], scale, false)} className={classes.axis} />
+    {hours.map((hour, index) => (
+      <React.Fragment key={index}>
+        <text x={scale.x(hour * 60)} y="15" fill="grey" textAnchor="middle" className={classes.label}>{(hour + 12 + centerAt) % 24}:00</text>
+        <polyline points={toPoints([ [hour * 60, 0], [hour * 60, maxY] ], scale, false)} className={classes.axis} />
       </React.Fragment>
     ))}
   </g>);
