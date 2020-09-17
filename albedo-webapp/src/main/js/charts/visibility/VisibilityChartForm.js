@@ -24,7 +24,7 @@ export default function VisibilityForm(props) {
 
   const { updateVisibilityChartResponse } = props;
   
-  const [bodyNames, setBodyNames] = React.useState("Jupiter");
+  const [bodyNames, setBodyNames] = React.useState("Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus");
   const [fromDate, setFromDate] = React.useState(new Date(new Date().getFullYear(), 0, 1));
   const [toDate, setToDate] = React.useState(new Date(new Date().getFullYear(), 11, 31));
   const [interval, setInterval] = React.useState("1.0");
@@ -43,7 +43,7 @@ export default function VisibilityForm(props) {
   return (
     <Paper className={classes.root}>
       <Typography component="h3">
-        Provide ephemeris parameters:
+        Provide chart parameters:
       </Typography>
       <form className={classes.container} noValidate autoComplete="off">
         <div>

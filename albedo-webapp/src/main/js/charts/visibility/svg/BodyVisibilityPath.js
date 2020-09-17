@@ -11,8 +11,14 @@ const useStyles = makeStyles(theme => ({
       strokeOpacity: 1.0,
     },
   },
+  bodyRiseEdge: {
+    strokeDasharray: "5,5",
+  },
   bodyTransitEdge: {
     strokeOpacity: 1.0,
+  },
+  bodySetEdge: {
+    strokeDasharray: "10,5",
   },
 }));
 
@@ -63,13 +69,13 @@ export default function BodyVisibilityPath(props) {
 
   return (<g style={{stroke: colour }} className={classes.bodyPath}>
     {extractedRiseSeries.map((series, index) => (
-      <polyline key={index} points={toPoints(series, scale, false)} />
+      <polyline key={index} points={toPoints(series, scale, false)} className={classes.bodyRiseEdge} />
     ))}
     {extractedTransitSeries.map((series, index) => (
       <polyline key={index} points={toPoints(series, scale, false)} className={classes.bodyTransitEdge} />
     ))}
     {extractedSetSeries.map((series, index) => (
-      <polyline key={index} points={toPoints(series, scale, false)} />
+      <polyline key={index} points={toPoints(series, scale, false)} className={classes.bodySetEdge} />
     ))}
   </g>);
 }

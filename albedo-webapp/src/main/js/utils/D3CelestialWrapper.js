@@ -98,11 +98,11 @@ export function D3Celestial(props) {
                             // If neigbor exists, check distance limit
                             if (!nearest || distance(nearest, pt) > PROXIMITY_LIMIT) {
                                 // Nothing too close, add it and go on
-                                //quadtree.add(pt)
+                                quadtree.add(pt)
                                 // Set text styles
-                                //Celestial.setTextStyle(textStyle);
+                                Celestial.setTextStyle(textStyle);
                                 // and draw text on canvas with offset
-                                //Celestial.context.fillText(d.properties.name, pt[0] + r + 2, pt[1] + r + 2);
+                                Celestial.context.fillText(d.properties.name, pt[0] + r + 2, pt[1] + r + 2);
                             }
                         }      
                     });

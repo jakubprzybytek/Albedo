@@ -2,6 +2,15 @@ import React from 'react';
 import differenceInDays from 'date-fns/differenceInDays';
 import NightContour from './svg/NightContour';
 import BodyVisibilityPath from './svg/BodyVisibilityPath';
+import HourGrid from './svg/HourGrid';
+
+export function scaleFactory(timePoints, height, yOffset) {
+  const yMultiplier = timePoints <= height ? height / timePoints : height / timePoints;
+  return point => {
+    const scaledY = point[1] * yMultiplier + yOffset;
+    return [point[0], scaledY];
+  }
+}
 
 export function toPoints(timePoints, scale, reverse) {
   const points = [];
@@ -27,19 +36,11 @@ export function arrangeDatesFactory(startingDayString, centerAt) {
   }
 }
 
-export function scaleFactory(timePoints, height, yOffset) {
-  const yMultiplier = timePoints <= height ? height / timePoints : height / timePoints;
-  return (point) => {
-    const scaledY = point[1] * yMultiplier + yOffset;
-    return [point[0], scaledY];
-  }
-}
-
 export default function VisibilityChart(props) {
 
   const { visibilityChartData } = props;
 
-  const scale = scaleFactory(visibilityChartData.sunSets.length, 1000 - 10, 5);
+  const scale = scaleFactory(visibilityChartData.sunSets.length, 1000 - 40, 20);
   const arrangeDates = arrangeDatesFactory(visibilityChartData.sunSets[0], 0);
 
   const sunSets = arrangeDates(visibilityChartData.sunSets);
@@ -66,6 +67,7 @@ export default function VisibilityChart(props) {
           sunRisesMap={sunRisesMap}
           scale={scale} />
       ))}
+      <HourGrid scale={scale} />
     </svg>
   );
 }
