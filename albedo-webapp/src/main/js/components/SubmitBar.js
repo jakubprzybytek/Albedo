@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -47,15 +47,14 @@ function SubmitBar(props) {
 
   const classes = useStyles();
 
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   
-  const [lastCall, setLastCall] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
-  const [linkUrl, setLinkUrl] = React.useState("");
-  const [duration, setDuration] = React.useState(0);
+  const [lastCall, setLastCall] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
+  const [duration, setDuration] = useState(0);
 
   function handleSubmit() {
-
     setLoading(true);
     var startTime = new Date();
 

@@ -2,6 +2,7 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
@@ -17,6 +18,14 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 200,
+  },
+  buttons: {
+    display: 'inline-flex',
+    flexDirection: 'column',
+  },
+  button: {
+    display: 'inline-flex',
+    marginBottom: theme.spacing(1),
   }
 }));
 
@@ -27,18 +36,14 @@ export default function NightChartForm(props) {
   const [bodyNames, setBodyNames] = React.useState("Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus");
   const [date, setDate] = React.useState(new Date());
 
+  const classes = useStyles();
+
   function onBuildProps() {
     return {
       bodies: bodyNames,
       date: format(date, "yyyy-MM-dd"),
     }
   }
-
-  function onSubmitResponse(data) {
-    updateAltitudesResponse(data);
-  }
-
-  const classes = useStyles();
 
   return (
     <Paper className={classes.root}>
@@ -47,29 +52,31 @@ export default function NightChartForm(props) {
       </Typography>
       <form className={classes.container} noValidate autoComplete="off">
         <div>
-          <TextField
-            label="Bodies"
+          <TextField className={classes.field} label="Bodies" multiline margin="normal"
             value={bodyNames}
-            className={classes.field}
-            multiline
-            onChange={event => setBodyNames(event.target.value)}
-            margin="normal" />
+            onChange={event => setBodyNames(event.target.value)} />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
+            <KeyboardDatePicker className={classes.field} label="Date" disableToolbar variant="inline" margin="normal"
               format="yyyy-MM-dd"
-              className={classes.field}
-              margin="normal"
-              label="Date"
               value={date}
-              onChange={date => setDate(date)}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }} />
+              onChange={date => setDate(date)} />
           </MuiPickersUtilsProvider>
+          <div className={classes.buttons}>
+            <Button className={classes.button} size="small" variant="outlined" color="secondary"
+              onClick={() => setDate(new Date())}>
+              Now
+            </Button>
+            <Button className={classes.button} size="small" variant="outlined" color="secondary"
+              onClick={() => setDate(addDays(date, -1))}>
+              Prev day
+            </Button>
+            <Button className={classes.button} size="small" variant="outlined" color="secondary"
+              onClick={() => setDate(addDays(date, 1))}>
+              Next day
+            </Button>
+          </div>
         </div>
-        <SubmitBar url='/api/altitude' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar url='/api/altitude' buildProps={onBuildProps} submitResponse={data => updateAltitudesResponse(data)} />
       </form>
     </Paper>
   );
