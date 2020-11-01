@@ -49,12 +49,17 @@ Unit tests:
 ### Build data volume
 
 ```
-docker container create --name temp -v albedo-data:/usr/data hello-world
-docker cp ./misc/mpc/MPCORB.DAT temp:/usr/data
-docker cp ./misc/mpc/CometEls.txt temp:/usr/data
-docker cp ./misc/de438/header.438 temp:/usr/data
-docker cp ./misc/de438/ascp01950.438 temp:/usr/data
-docker rm temp
+docker container create --name volumeSetup -v albedo-data:/usr/data busybox
+docker run --rm -i -v=albedo-data:/usr/data busybox mkdir /usr/data/mpc
+docker cp ./misc/mpc/MPCORB.DAT volumeSetup:/usr/data/mpc
+docker cp ./misc/mpc/CometEls.txt volumeSetup:/usr/data/mpc
+docker run --rm -i -v=albedo-data:/usr/data busybox mkdir /usr/data/de438
+docker cp ./misc/de438/header.438 volumeSetup:/usr/data/de438
+docker cp ./misc/de438/ascp01950.438 volumeSetup:/usr/data/de438
+docker run --rm -i -v=albedo-data:/usr/data busybox mkdir /usr/data/OpenNGC
+docker cp ./misc/OpenNGC/NGC.csv volumeSetup:/usr/data/OpenNGC
+docker cp ./misc/OpenNGC/addendum/addendum.csv volumeSetup:/usr/data/OpenNGC
+docker rm volumeSetup
 ```
 
 List content of the volume:
@@ -64,4 +69,4 @@ docker run --rm -i -v=albedo-data:/usr/data busybox ls /usr/data
 
 ### Run
 
-`docker run --publish 8000:8080 --detach --name albedo albedo:1.0`
+`docker run --publish 8000:8080 --detach --name albedo -v=albedo-data:/usr/data albedo:1.0`
