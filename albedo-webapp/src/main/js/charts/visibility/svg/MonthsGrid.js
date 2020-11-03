@@ -13,8 +13,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   label: {
-    stroke: 'grey',
-    strokeWidth: 0.5,
+    stroke: 'black',
+    strokeWidth: 0.1,
     strokeOpacity: 1.0,
   },
   axis: {

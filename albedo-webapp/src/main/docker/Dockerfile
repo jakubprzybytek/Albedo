@@ -1,6 +1,7 @@
 FROM openjdk
 WORKDIR /usr/src/albedo
-COPY albedo-webapp/target/albedo-webapp-1.0-SNAPSHOT.jar .
+# COPY target/albedo-webapp-1.0-SNAPSHOT.jar .
+COPY maven/ .
 
 ENV spring.profiles.active=docker
 

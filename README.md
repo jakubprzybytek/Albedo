@@ -43,7 +43,11 @@ Unit tests:
 
 ### Build main container
 
-`mvn clean package`
+In`albedo-webapp/`:
+
+`mvn clean package docker:build`
+
+Also:
 `docker build --tag albedo:1.0 .`
 
 ### Build data volume
@@ -69,4 +73,4 @@ docker run --rm -i -v=albedo-data:/usr/data busybox ls /usr/data
 
 ### Run
 
-`docker run --publish 8000:8080 --detach --name albedo -v=albedo-data:/usr/data albedo:1.0`
+`docker run --publish 8000:8080 --detach --name albedo -v=albedo-data:/usr/data jp/albedo`
