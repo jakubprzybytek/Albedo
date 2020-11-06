@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.JulianDay;
 import jp.albedo.webapp.altitude.AltitudeResponse;
 import jp.albedo.webapp.common.AstronomicalEvent;
-import jp.albedo.webapp.common.EventWrapper;
+import jp.albedo.webapp.rest.WrappedEvent;
 import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
 
 import java.time.ZoneId;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class AltitudeResponseWrapper {
 
     @JsonProperty
-    final private List<EventWrapper<RiseTransitSetEvent>> sunRiseTransitSetEvents;
+    final private List<WrappedEvent<RiseTransitSetEvent>> sunRiseTransitSetEvents;
 
     @JsonProperty
     final private List<ZonedDateTime> timeSeries;
@@ -24,7 +24,7 @@ public class AltitudeResponseWrapper {
     @JsonProperty
     final private List<AltitudeSeries> altitudeSeries;
 
-    private AltitudeResponseWrapper(List<EventWrapper<RiseTransitSetEvent>> sunRiseTransitSetEvents, List<ZonedDateTime> timeSeries, List<AltitudeSeries> altitudeSeries) {
+    private AltitudeResponseWrapper(List<WrappedEvent<RiseTransitSetEvent>> sunRiseTransitSetEvents, List<ZonedDateTime> timeSeries, List<AltitudeSeries> altitudeSeries) {
         this.sunRiseTransitSetEvents = sunRiseTransitSetEvents;
         this.timeSeries = timeSeries;
         this.altitudeSeries = altitudeSeries;
@@ -34,7 +34,7 @@ public class AltitudeResponseWrapper {
         return new AltitudeResponseWrapper(
                 altitudeResponse.getSunRiseTransitSetEvents().stream()
                         .sorted(Comparator.comparingDouble(AstronomicalEvent::getJde))
-                        .map(event -> new EventWrapper<>(
+                        .map(event -> new WrappedEvent<>(
                                 0,
                                 JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
                                 event

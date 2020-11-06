@@ -41,7 +41,7 @@ public class VisibilityChartOrchestrator {
         final Instant start = Instant.now();
 
         final ComputedEphemeris computedEphemerisForSun = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), fromDate, toDate, interval, observerLocation);
-        final List<RiseTransitSetEvent> sunRiseTransitSetEvents = this.riseTransitSetCalculator.compute(BodyInformation.Sun.name(), computedEphemerisForSun, observerLocation.coords);
+        final List<RiseTransitSetEvent> sunRiseTransitSetEvents = this.riseTransitSetCalculator.computeEvents(BodyInformation.Sun.name(), computedEphemerisForSun, observerLocation.coords);
 
         final double firstSunSet = sunRiseTransitSetEvents.stream()
                 .filter(rtsEvent -> RiseTransitSetEventType.Setting.equals(rtsEvent.getEventType()))
@@ -107,7 +107,7 @@ public class VisibilityChartOrchestrator {
 
     private BodyVisibility computeForBody(String bodyName, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws Exception {
         final ComputedEphemeris computedEphemerisForBody = this.ephemeridesOrchestrator.compute(bodyName, fromDate, toDate, interval, observerLocation);
-        final List<RiseTransitSetEvent> bodyRiseTransitSetEvents = this.riseTransitSetCalculator.compute(bodyName, computedEphemerisForBody, observerLocation.coords);
+        final List<RiseTransitSetEvent> bodyRiseTransitSetEvents = this.riseTransitSetCalculator.computeEvents(bodyName, computedEphemerisForBody, observerLocation.coords);
 
         final List<Double> bodyRises = new LinkedList<>();
         final List<Double> bodyTransits = new LinkedList<>();

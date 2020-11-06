@@ -47,7 +47,7 @@ public class AltitudeOrchestrator {
         final Instant start = Instant.now();
 
         final ComputedEphemeris computedEphemerisForSun = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), jde - DAY_INTERVAL, jde + 2 * DAY_INTERVAL, DAY_INTERVAL, observerLocation);
-        final List<RiseTransitSetEvent> sunRiseTransitSetEvents = this.riseTransitSetCalculator.compute(BodyInformation.Sun.name(), computedEphemerisForSun, observerLocation.coords);
+        final List<RiseTransitSetEvent> sunRiseTransitSetEvents = this.riseTransitSetCalculator.computeEvents(BodyInformation.Sun.name(), computedEphemerisForSun, observerLocation.coords);
 
         final RiseTransitSetEvent settingEvent = sunRiseTransitSetEvents.stream()
                 .filter(event -> RiseTransitSetEventType.Setting.equals(event.getEventType()))

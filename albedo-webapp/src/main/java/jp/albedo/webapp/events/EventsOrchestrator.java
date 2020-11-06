@@ -45,7 +45,7 @@ public class EventsOrchestrator {
             List<String> rtsBodies = StreamUtils.collectPresent(
                     Optional.ofNullable(rtsParameters.isSunEnabled() ? "Sun" : null),
                     Optional.ofNullable(rtsParameters.isMoonEnabled() ? "Moon" : null));
-            astronomicalEvents.addAll(this.riseTransitSetOrchestrator.compute(rtsBodies, fromDate, toDate, observerLocation));
+            astronomicalEvents.addAll(this.riseTransitSetOrchestrator.computeEvents(rtsBodies, fromDate, toDate, observerLocation));
         }
 
         List<String> conjunctionBodyNames = StreamUtils.collectPresent(

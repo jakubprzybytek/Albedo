@@ -6,7 +6,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
-import jp.albedo.webapp.common.EventWrapper;
+import jp.albedo.webapp.rest.WrappedEvent;
 import jp.albedo.webapp.conjunctions.rest.ConjunctionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,7 +31,7 @@ public class ConjunctionsController {
     private ConjunctionsOrchestrator conjunctionsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/conjunctions")
-    public List<EventWrapper<ConjunctionEvent>> conjunctions(@RequestParam(value = "primaryBodies", defaultValue = "") Set<String> primaryBodyNames,
+    public List<WrappedEvent<ConjunctionEvent>> conjunctions(@RequestParam(value = "primaryBodies", defaultValue = "") Set<String> primaryBodyNames,
                                                              @RequestParam(value = "primary", defaultValue = "") Set<String> primaryTypeStrings,
                                                              @RequestParam(value = "secondary", defaultValue = "") Set<String> secondaryTypeStrings,
                                                              @RequestParam(value = "catalogues", defaultValue = "") Set<String> catalogueTypeStrings,
@@ -57,7 +57,7 @@ public class ConjunctionsController {
                 this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(primaryBodyNames, primaryBodyTypes, catalogueNames, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
                         .map(ConjunctionEvent::fromBodyAndCatalogueEntry))
                 .sorted(Comparator.comparingDouble(AstronomicalEvent::getJde))
-                .map(event -> new EventWrapper<>(
+                .map(event -> new WrappedEvent<>(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
                         event))

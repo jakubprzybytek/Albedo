@@ -6,6 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import TabPanel from '../common/TabPanel';
 import NightChartPanel from './nightChart/NightChartPanel';
 import VisibilityChartPanel from './visibility/VisibilityChartPanel';
+import TransitsChartPanel from './transits/TransitsChartPanel';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,12 +33,16 @@ export default function ToolTabs() {
       <Tabs orientation="vertical" variant="scrollable" value={value} onChange={(event, newValue) => setValue(newValue)} aria-label="Vertical tabs" className={classes.tabs}>
         <Tab label="Night Chart" />
         <Tab label="Hourglass Chart" />
+        <Tab label="Transits Chart" />
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
         <NightChartPanel />
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={1}>
         <VisibilityChartPanel />
+      </TabPanel>
+      <TabPanel className={classes.tabPanel} value={value} index={2}>
+        <TransitsChartPanel />
       </TabPanel>
     </div>
   );

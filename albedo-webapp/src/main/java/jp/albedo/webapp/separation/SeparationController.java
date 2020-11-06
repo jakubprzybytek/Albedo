@@ -3,7 +3,7 @@ package jp.albedo.webapp.separation;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
-import jp.albedo.webapp.common.EventWrapper;
+import jp.albedo.webapp.rest.WrappedEvent;
 import jp.albedo.webapp.separation.rest.Separation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,7 +25,7 @@ public class SeparationController {
     private SeparationOrchestrator separationOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/separation")
-    public List<EventWrapper<Separation>> separation(@RequestParam(value = "firstBody", defaultValue = "Sun") String firstBody,
+    public List<WrappedEvent<Separation>> separation(@RequestParam(value = "firstBody", defaultValue = "Sun") String firstBody,
                                                      @RequestParam(value = "secondBody", defaultValue = "Moon") String secondBody,
                                                      @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                      @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
@@ -41,7 +41,7 @@ public class SeparationController {
         final AtomicInteger id = new AtomicInteger();
 
         return this.separationOrchestrator.compute(firstBody, secondBody, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval, observerLocation).stream()
-                .map(separation -> new EventWrapper<>(
+                .map(separation -> new WrappedEvent<>(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(separation.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
                         separation))

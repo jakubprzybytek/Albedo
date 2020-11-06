@@ -4,7 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
-import jp.albedo.webapp.common.EventWrapper;
+import jp.albedo.webapp.rest.WrappedEvent;
 import jp.albedo.webapp.events.parameters.ConjunctionsParameters;
 import jp.albedo.webapp.events.parameters.RtsParameters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class EventsController {
     EventsOrchestrator eventsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/events")
-    public List<EventWrapper<AstronomicalEvent>> events(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+    public List<WrappedEvent<AstronomicalEvent>> events(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                         @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                                         @RequestParam("longitude") double observerLongitude,
                                                         @RequestParam("latitude") double observerLatitude,
@@ -59,7 +59,7 @@ public class EventsController {
         final AtomicInteger id = new AtomicInteger();
 
         return this.eventsOrchestrator.compute(JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, rtsParameters, conjunctionsParameters).stream()
-                .map(event -> new EventWrapper<>(
+                .map(event -> new WrappedEvent<>(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
                         event))

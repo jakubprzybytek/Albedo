@@ -1,10 +1,11 @@
 package jp.albedo.webapp.risetransitset;
 
 import jp.albedo.common.JulianDay;
-import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
-import jp.albedo.webapp.common.EventWrapper;
+import jp.albedo.webapp.rest.EventWrapper;
+import jp.albedo.webapp.rest.WrappedEvent;
 import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
+import jp.albedo.webapp.risetransitset.rest.TransitsResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,26 +26,35 @@ public class RiseTransitSetController {
     @Autowired
     RiseTransitSetOrchestrator riseTransitSetOrchestrator;
 
-    @RequestMapping(method = RequestMethod.GET, path = "/api/riseTransitSet")
-    public List<EventWrapper<RiseTransitSetEvent>> events(@RequestParam(value = "bodies", defaultValue = "Sun") String[] bodyNames,
+    @RequestMapping(method = RequestMethod.GET, path = "/api/events/riseTransitSet")
+    public List<WrappedEvent<RiseTransitSetEvent>> events(@RequestParam(value = "bodies", defaultValue = "Sun") String[] bodyNames,
                                                           @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                           @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
-                                                          @RequestParam("longitude") double observerLongitude,
-                                                          @RequestParam("latitude") double observerLatitude,
-                                                          @RequestParam("height") double observerHeight,
+                                                          ObserverLocation observerLocation,
                                                           @RequestParam("timeZone") String timeZone) throws Exception {
 
-        final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         final AtomicInteger id = new AtomicInteger();
 
-        return this.riseTransitSetOrchestrator.compute(Arrays.asList(bodyNames), JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
-                .map(event -> new EventWrapper<>(
-                        id.getAndIncrement(),
-                        JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
-                        event))
+        return this.riseTransitSetOrchestrator.computeEvents(Arrays.asList(bodyNames), JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
+                .map(EventWrapper.wrap(id, zoneId))
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/api/series/transit")
+    public TransitsResponseWrapper series(@RequestParam(value = "bodies", defaultValue = "Sun") String[] bodyNames,
+                                          @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                          @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+                                          ObserverLocation observerLocation,
+                                          @RequestParam("timeZone") String timeZone) throws Exception {
+
+        final ZoneId zoneId = ZoneId.of(timeZone);
+
+        return TransitsResponseWrapper.wrap(
+                this.riseTransitSetOrchestrator.computeRecords(Arrays.asList(bodyNames), JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation),
+                zoneId
+        );
     }
 
 }

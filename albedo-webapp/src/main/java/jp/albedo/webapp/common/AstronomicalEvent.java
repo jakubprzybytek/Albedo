@@ -2,7 +2,7 @@ package jp.albedo.webapp.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class AstronomicalEvent {
+public class AstronomicalEvent implements JdeEvent {
 
     @JsonProperty
     private final double jde;

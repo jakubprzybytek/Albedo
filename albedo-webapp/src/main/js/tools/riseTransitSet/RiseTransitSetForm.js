@@ -83,7 +83,7 @@ export default function RiseTransitSetForm(props) {
               }} />
           </MuiPickersUtilsProvider>
         </div>
-        <SubmitBar url='/api/riseTransitSet' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar url='/api/events/riseTransitSet' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
       </form>
     </Paper>
   );
