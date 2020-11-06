@@ -1,3 +1,0 @@
- curl -X POST http://localhost:8090/graphql -H "Content-Type: application/json;charset=UTF-8" -d "{ \"query\": \"{ allCatalogueEntries { name, type, bMagnitude, morphologicalType } }\" }"
- 
- curl -X POST http://localhost:8090/graphql -H "Content-Type: application/json;charset=UTF-8" -d "{ \"query\": \"{ filteredCatalogueEntries (nameFilter: \\\"7600\\\") { name, type, coordinates { rightAscension, declination }, bMagnitude, morphologicalType } }\" }"

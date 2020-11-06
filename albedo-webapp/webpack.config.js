@@ -8,9 +8,6 @@ module.exports = {
      proxy: {
        '/api': {
          target: 'http://localhost:8090'
-       },
-       '/graphql': {
-         target: 'http://localhost:8090'
        }
      }
     },

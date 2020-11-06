@@ -24,12 +24,9 @@ public class AltitudeController {
     @RequestMapping(method = RequestMethod.GET, path = "/api/altitude")
     public AltitudeResponseWrapper events(@RequestParam(value = "bodies", defaultValue = "Mercury") String[] bodyNames,
                                           @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                                          @RequestParam("longitude") double observerLongitude,
-                                          @RequestParam("latitude") double observerLatitude,
-                                          @RequestParam("height") double observerHeight,
+                                          ObserverLocation observerLocation,
                                           @RequestParam("timeZone") String timeZone) throws Exception {
 
-        final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         final AltitudeResponse altitudeResponse = this.altitudeOrchestrator.compute(Arrays.asList(bodyNames), JulianDay.fromDate(date), observerLocation);
