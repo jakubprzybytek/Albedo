@@ -6,7 +6,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns';
-import SubmitBar from '../../components/SubmitBar';
+import SubmitBar from '../../components/SubmitBar2';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,21 +22,25 @@ const useStyles = makeStyles(theme => ({
 
 export default function TransitsChartForm(props) {
 
-  const { updateTransitsResponse } = props;
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
   
   const [bodyNames, setBodyNames] = React.useState("Mars,Jupiter,Saturn,Neptune,Uranus");
   const [fromDate, setFromDate] = React.useState(new Date(new Date().getFullYear(), 0, 1));
   const [toDate, setToDate] = React.useState(new Date(new Date().getFullYear(), 11, 31));
 
-  const classes = useStyles();
-
-  function onBuildProps() {
+  function buildRequestUrl() {
     return {
-      bodies: bodyNames,
-      from: format(fromDate, "yyyy-MM-dd"),
-      to: format(toDate, "yyyy-MM-dd"),
+      url: '/api/series/transit',
+      params: {
+        bodies: bodyNames,
+        from: format(fromDate, "yyyy-MM-dd"),
+        to: format(toDate, "yyyy-MM-dd"),
+      }
     }
   }
+
+  const classes = useStyles();
 
   return (
     <Paper className={classes.root}>
@@ -59,7 +63,7 @@ export default function TransitsChartForm(props) {
               onChange={date => setToDate(date)} />
           </MuiPickersUtilsProvider>
         </div>
-        <SubmitBar url='/api/series/transit' buildProps={onBuildProps} submitResponse={data => updateTransitsResponse(data)} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );

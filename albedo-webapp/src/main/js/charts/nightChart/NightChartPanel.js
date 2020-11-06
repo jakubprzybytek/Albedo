@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import useJsonConnection from '../../api/JsonConnection';
 import NightChartForm from './NightChartForm';
 import NightChart from './NightChart';
 
@@ -18,12 +18,18 @@ export default function NightChartPanel() {
 
   const [altitudesResponse, setAltitudesResponse] = React.useState({ timeSeries: [], altitudeSeries: [], sunRiseTransitSetEvents: [] });
 
+  const jsonConnection = useJsonConnection(setAltitudesResponse);
+  
+  useEffect(() => {
+    jsonConnection.performAutoSubmitIfNeeded();
+  });
+
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <div className={classes.area}>
-        <NightChartForm updateAltitudesResponse={setAltitudesResponse} />
+        <NightChartForm jsonConnection={jsonConnection} />
       </div>
       <div className={classes.area}>
         <NightChart altitudesResponse={altitudesResponse} />

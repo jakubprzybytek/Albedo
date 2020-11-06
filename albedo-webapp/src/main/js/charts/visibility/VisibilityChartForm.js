@@ -6,7 +6,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns';
-import SubmitBar from '../../components/SubmitBar';
+import SubmitBar from '../../components/SubmitBar2';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,19 +22,23 @@ const useStyles = makeStyles(theme => ({
 
 export default function VisibilityForm(props) {
 
-  const { updateVisibilityChartResponse } = props;
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
   
   const [bodyNames, setBodyNames] = React.useState("Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus");
   const [fromDate, setFromDate] = React.useState(new Date(new Date().getFullYear(), 0, 1));
   const [toDate, setToDate] = React.useState(new Date(new Date().getFullYear(), 11, 31));
   const [interval, setInterval] = React.useState("1.0");
 
-  function onBuildProps() {
+  function buildRequestUrl() {
     return {
-      bodies: bodyNames,
-      from: format(fromDate, "yyyy-MM-dd"),
-      to: format(toDate, "yyyy-MM-dd"),
-      interval: interval
+      url: '/api/charts/visibility',
+      params: {
+        bodies: bodyNames,
+        from: format(fromDate, "yyyy-MM-dd"),
+        to: format(toDate, "yyyy-MM-dd"),
+        interval: interval
+      }
     }
   }
 
@@ -66,7 +70,7 @@ export default function VisibilityForm(props) {
           </MuiPickersUtilsProvider>
           <TextField label="Interval" value={interval} className={classes.field} onChange={event => setInterval(event.target.value)} margin="normal" />
         </div>
-        <SubmitBar url='/api/charts/visibility' buildProps={onBuildProps} submitResponse={(data) => updateVisibilityChartResponse(data)} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import useJsonConnection from '../../api/JsonConnection';
 import VisibilityChartForm from './VisibilityChartForm';
 import VisibilityChart from './VisibilityChart';
 
@@ -27,12 +28,14 @@ export default function VisibilityChartPanel() {
     sunRiseTransitSetEvents: [],
     bodies: [] });
 
+  const jsonConnection = useJsonConnection(setVisibilityChartResponse);
+
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <div className={classes.area}>
-        <VisibilityChartForm updateVisibilityChartResponse={setVisibilityChartResponse} />
+        <VisibilityChartForm jsonConnection={jsonConnection} />
       </div>
       <div className={classes.area} style={{height: '1000px'}}>
         <VisibilityChart visibilityChartData={visibilityChartResponse} />

@@ -7,7 +7,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import { addDays, format } from 'date-fns';
-import SubmitBar from '../../components/SubmitBar';
+import SubmitBar from '../../components/SubmitBar2';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,19 +31,28 @@ const useStyles = makeStyles(theme => ({
 
 export default function NightChartForm(props) {
 
-  const { updateAltitudesResponse } = props;
-  
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
+
   const [bodyNames, setBodyNames] = React.useState("Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus");
   const [date, setDate] = React.useState(new Date());
 
-  const classes = useStyles();
+  function submitRequestWithNewDate(newDate) {
+    jsonConnection.requestAutoSubmit();
+    setDate(newDate);
+  }
 
-  function onBuildProps() {
+  function buildRequestUrl() {
     return {
-      bodies: bodyNames,
-      date: format(date, "yyyy-MM-dd"),
+      url: '/api/altitude',
+      params: {
+        bodies: bodyNames,
+        date: format(date, "yyyy-MM-dd"),
+      }
     }
   }
+
+  const classes = useStyles();
 
   return (
     <Paper className={classes.root}>
@@ -63,20 +72,23 @@ export default function NightChartForm(props) {
           </MuiPickersUtilsProvider>
           <div className={classes.buttons}>
             <Button className={classes.button} size="small" variant="outlined" color="secondary"
-              onClick={() => setDate(new Date())}>
+              disabled={jsonConnection.loading}
+              onClick={() => submitRequestWithNewDate(new Date())}>
               Now
             </Button>
             <Button className={classes.button} size="small" variant="outlined" color="secondary"
-              onClick={() => setDate(addDays(date, -1))}>
-              Prev day
+              disabled={jsonConnection.loading}
+              onClick={() => submitRequestWithNewDate(addDays(date, 1))}>
+              Next day
             </Button>
             <Button className={classes.button} size="small" variant="outlined" color="secondary"
-              onClick={() => setDate(addDays(date, 1))}>
-              Next day
+              disabled={jsonConnection.loading}
+              onClick={() => submitRequestWithNewDate(addDays(date, -1))}>
+              Prev day
             </Button>
           </div>
         </div>
-        <SubmitBar url='/api/altitude' buildProps={onBuildProps} submitResponse={data => updateAltitudesResponse(data)} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );
