@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import useJsonConnection from '../../api/JsonConnection';
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -24,16 +25,19 @@ export default function SeparationPanel() {
   const [rows, setRows] = React.useState([]);
   const [selectedTab, setSelectedTab] = React.useState(0);
 
+  const jsonConnection = useJsonConnection(setRows);
+
   const classes = useStyles();
 
   function handleChange(event, newValue) {
     setSelectedTab(newValue);
   }
+
   return (
     <Grid container spacing={2}>
       <Grid item>
         <div className={classes.area}>
-          <SeparationForm updateRows={setRows} />
+          <SeparationForm jsonConnection={jsonConnection} />
         </div>
         <AppBar position="static" color="default">
           <Tabs value={selectedTab} onChange={handleChange} variant="scrollable" scrollButtons="auto">

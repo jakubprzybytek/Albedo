@@ -22,25 +22,24 @@ const useStyles = makeStyles(theme => ({
 
 export default function EphemerisForm(props) {
 
-  const { updateEphemerisList, updateBodyInfo } = props;
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
 
   const [bodyName, setBodyName] = React.useState("Venus");
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
   const [interval, setInterval] = React.useState("1.0");
 
-  function onBuildProps() {
+  function buildRequestUrl() {
     return {
-      body: bodyName,
-      from: format(fromDate, "yyyy-MM-dd"),
-      to: format(toDate, "yyyy-MM-dd"),
-      interval: interval
+      url: '/api/ephemerides',
+      params: {
+        body: bodyName,
+        from: format(fromDate, "yyyy-MM-dd"),
+        to: format(toDate, "yyyy-MM-dd"),
+        interval: interval
+      }
     }
-  }
-
-  function onSubmitResponse(data) {
-    updateEphemerisList(data.ephemerisList);
-    updateBodyInfo(data.bodyInfo);
   }
 
   const classes = useStyles();
@@ -53,24 +52,21 @@ export default function EphemerisForm(props) {
       <form className={classes.container} noValidate autoComplete="off">
         <div>
           <TextField
-            className={classes.field}
-            margin="normal"
+            className={classes.field} margin="normal"
             label="Name"
             value={bodyName} 
             onChange={event => setBodyName(event.target.value)} />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal" label="From" value={fromDate} onChange={date => setFromDate(date)}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }} />
-            <KeyboardDatePicker disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal" label="To" value={toDate} onChange={date => setToDate(date)}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }} />
+            <KeyboardDatePicker disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal" label="From" 
+              value={fromDate} 
+              onChange={date => setFromDate(date)} />
+            <KeyboardDatePicker disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal" label="To"
+              value={toDate} 
+              onChange={date => setToDate(date)} />
           </MuiPickersUtilsProvider>
           <TextField label="Interval" value={interval} className={classes.field} onChange={event => setInterval(event.target.value)} margin="normal" />
         </div>
-        <SubmitBar url='/api/ephemerides' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );

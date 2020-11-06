@@ -22,22 +22,22 @@ const useStyles = makeStyles(theme => ({
 
 export default function RiseTransitSetForm(props) {
 
-  const { updateRiseTransitSetEvents } = props;
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
   
   const [bodyNames, setBodyNames] = React.useState("Sun,Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus");
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addDays(new Date(), 1));
 
-  function onBuildProps() {
+  function buildRequestUrl() {
     return {
-      bodies: bodyNames,
-      from: format(fromDate, "yyyy-MM-dd"),
-      to: format(toDate, "yyyy-MM-dd")
+      url: '/api/events/riseTransitSet',
+      params: {
+        bodies: bodyNames,
+        from: format(fromDate, "yyyy-MM-dd"),
+        to: format(toDate, "yyyy-MM-dd"),
+      }
     }
-  }
-
-  function onSubmitResponse(data) {
-    updateRiseTransitSetEvents(data);
   }
 
   const classes = useStyles();
@@ -83,7 +83,7 @@ export default function RiseTransitSetForm(props) {
               }} />
           </MuiPickersUtilsProvider>
         </div>
-        <SubmitBar url='/api/events/riseTransitSet' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );

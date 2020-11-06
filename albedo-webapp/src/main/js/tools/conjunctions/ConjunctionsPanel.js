@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import useJsonConnection from '../../api/JsonConnection';
 import Grid from '@material-ui/core/Grid';
 import ConjunctionsForm from './ConjunctionsForm';
 import ConjunctionsTable from './ConjunctionsTable';
@@ -18,12 +19,14 @@ export default function ConjunctionsPanel() {
   const [rows, setRows] = React.useState([]);
   const [conjunction, setConjunction] = React.useState(null);
 
+  const jsonConnection = useJsonConnection(setRows);
+
   const classes = useStyles();
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={9}>
-        <ConjunctionsForm updateRows={setRows} />
+        <ConjunctionsForm jsonConnection={jsonConnection} />
         <ConjunctionsTable rows={rows} onConjunctionSelected={setConjunction} />
       </Grid>
       <Grid item xs={3}>

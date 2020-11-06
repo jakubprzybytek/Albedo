@@ -22,20 +22,20 @@ const useStyles = makeStyles(theme => ({
 
 export default function BrightCometsForm(props) {
 
-  const { updateBrightComets } = props;
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
   
   const [date, setDate] = React.useState(new Date());
   const [magnitudeLimit, setMagnitudeLimit] = React.useState(10.0);
 
-  function onBuildProps() {
+  function buildRequestUrl() {
     return {
-      date: format(date, "yyyy-MM-dd"),
-      magnitudeLimit: magnitudeLimit
+      url: '/api/comets/bright',
+      params: {
+        date: format(date, "yyyy-MM-dd"),
+        magnitudeLimit: magnitudeLimit
+      }
     }
-  }
-
-  function onSubmitResponse(data) {
-    updateBrightComets(data);
   }
 
   const classes = useStyles();
@@ -49,21 +49,14 @@ export default function BrightCometsForm(props) {
         <div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="yyyy-MM-dd"
-              className={classes.field}
-              margin="normal"
+              disableToolbar variant="inline" format="yyyy-MM-dd" className={classes.field} margin="normal"
               label="Date"
               value={date}
-              onChange={date => setDate(date)}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }} />
+              onChange={date => setDate(date)}  />
           </MuiPickersUtilsProvider>
           <TextField label="Magnitude limit" value={magnitudeLimit} className={classes.field} onChange={event => setMagnitudeLimit(event.target.value)} margin="normal" />
         </div>
-        <SubmitBar url='/api/comets/bright' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );

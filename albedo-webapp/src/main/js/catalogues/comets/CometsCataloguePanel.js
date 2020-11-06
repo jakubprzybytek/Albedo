@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import useJsonConnection from '../../api/JsonConnection';
 import CometsCatalogueForm from './CometsCatalogueForm';
 import CometsCatalogueTable from './CometsCatalogueTable';
 
@@ -15,12 +16,14 @@ export default function DsoCataloguePanel() {
 
   const [rows, setRows] = React.useState([]);
 
+  const jsonConnection = useJsonConnection(setRows);
+
   const classes = useStyles();
 
   return (
     <div>
       <div className={classes.area}>
-        <CometsCatalogueForm updateRows={setRows} />
+        <CometsCatalogueForm jsonConnection={jsonConnection} />
       </div>
       <CometsCatalogueTable rows={rows} />
     </div>

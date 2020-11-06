@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import useJsonConnection from '../../api/JsonConnection';
 import Grid from '@material-ui/core/Grid';
 import BodyCard from '../../components/BodyCard';
 import BrightCometsForm from './BrightCometsForm';
@@ -17,13 +18,15 @@ export default function BrightCometsPanel() {
   const [brightComets, setBrightComets] = React.useState([]);
   const [bodyInfo, setBodyInfo] = React.useState();
 
+  const jsonConnection = useJsonConnection(setBrightComets);
+
   const classes = useStyles();
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={9}>
         <div className={classes.area}>
-          <BrightCometsForm updateBrightComets={setBrightComets} />
+          <BrightCometsForm jsonConnection={jsonConnection} />
         </div>
         <div className={classes.area}>
           <BrightCometsTable brightComets={brightComets} onCometSelected={setBodyInfo} />

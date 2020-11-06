@@ -22,8 +22,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SeparationForm(props) {
-
-  const { updateRows } = props;
+  
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
 
   const [firstBodyName, setFirstBodyName] = React.useState('Sun');
   const [secondBodyName, setSecondBodyName] = React.useState('Moon');
@@ -31,13 +32,16 @@ export default function SeparationForm(props) {
   const [toDate, setToDate] = React.useState(addMonths(new Date(), 1));
   const [interval, setInterval] = React.useState('1.0');
 
-  function onBuildProps() {
+  function buildRequestUrl() {
     return {
-      firstBody: firstBodyName,
-      secondBody: secondBodyName,
-      from: format(fromDate, "yyyy-MM-dd"),
-      to: format(toDate, "yyyy-MM-dd"),
-      interval: interval
+      url: '/api/separation',
+      params: {
+        firstBody: firstBodyName,
+        secondBody: secondBodyName,
+        from: format(fromDate, "yyyy-MM-dd"),
+        to: format(toDate, "yyyy-MM-dd"),
+        interval: interval
+      }
     }
   }
 
@@ -66,7 +70,7 @@ export default function SeparationForm(props) {
           </MuiPickersUtilsProvider>
           <TextField label="Interval" value={interval} className={classes.field} onChange={event => setInterval(event.target.value)} margin="normal" />
         </FormGroup>
-        <SubmitBar url='/api/separation' buildProps={onBuildProps} submitResponse={(data) => updateRows(data)} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );

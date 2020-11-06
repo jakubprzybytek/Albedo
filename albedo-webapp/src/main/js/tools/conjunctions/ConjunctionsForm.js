@@ -25,6 +25,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ConjunctionsForm(props) {
+  
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
 
   const [sunChecked, setSunChecked] = React.useState(true);
   const [moonChecked, setMoonChecked] = React.useState(true);
@@ -41,7 +44,7 @@ export default function ConjunctionsForm(props) {
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addWeeks(new Date(), 1));
 
-  function onBuildProps() {
+  function buildRequestUrl() {
     const primaryBodyNames = [];
     if (sunChecked) { primaryBodyNames.push ("Sun") }
     if (moonChecked) { primaryBodyNames.push ("Moon") }
@@ -60,12 +63,15 @@ export default function ConjunctionsForm(props) {
     if (icChecked) { catalogues.push ("IC") }
 
     return {
-      primaryBodies: primaryBodyNames.join(','),
-      primary: primaryBodyTypes.join(','),
-      secondary: secondaryBodyTypes.join(','),
-      catalogues: catalogues.join(','),
-      from: format(fromDate, "yyyy-MM-dd"),
-      to: format(toDate, "yyyy-MM-dd")
+      url: '/api/conjunctions',
+      params: {
+        primaryBodies: primaryBodyNames.join(','),
+        primary: primaryBodyTypes.join(','),
+        secondary: secondaryBodyTypes.join(','),
+        catalogues: catalogues.join(','),
+        from: format(fromDate, "yyyy-MM-dd"),
+        to: format(toDate, "yyyy-MM-dd")
+      }
     }
   }
 
@@ -124,7 +130,7 @@ export default function ConjunctionsForm(props) {
               <Switch checked={icChecked} onChange={event => setIcChecked(event.target.checked)} color="secondary" />
             }/>
         </FormGroup>
-        <SubmitBar url='/api/conjunctions' buildProps={onBuildProps} submitResponse={props.updateRows} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );

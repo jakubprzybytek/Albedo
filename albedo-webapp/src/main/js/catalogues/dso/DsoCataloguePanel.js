@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import useJsonConnection from '../../api/JsonConnection';
 import DsoCatalogueForm from './DsoCatalogueForm';
 import DsoCatalogueTable from './DsoCatalogueTable';
 
@@ -16,12 +16,14 @@ export default function DsoCataloguePanel() {
 
   const [rows, setRows] = React.useState([]);
 
+  const jsonConnection = useJsonConnection(setRows);
+
   const classes = useStyles();
 
   return (
     <div>
       <div className={classes.area}>
-        <DsoCatalogueForm updateRows={setRows} />
+        <DsoCatalogueForm jsonConnection={jsonConnection} />
       </div>
       <DsoCatalogueTable rows={rows} />
     </div>

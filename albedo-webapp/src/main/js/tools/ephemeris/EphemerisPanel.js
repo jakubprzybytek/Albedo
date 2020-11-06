@@ -1,5 +1,6 @@
 import React from 'react';
 import { useStateWithLocalStorageInt } from '../../utils/LocalStorage';
+import useJsonConnection from '../../api/JsonConnection';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
@@ -29,13 +30,20 @@ export default function EphemerisPanel() {
   const [bodyInfo, setBodyInfo] = React.useState();
   const [selectedTab, setSelectedTab] = useStateWithLocalStorageInt('ephemeris.currentTab', 0);
 
+  function onSubmitResponse(data) {
+    setEphemerisList(data.ephemerisList);
+    setBodyInfo(data.bodyInfo);
+  }
+
+  const jsonConnection = useJsonConnection(onSubmitResponse);
+
   const classes = useStyles();
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={9}>
         <div className={classes.area}>
-          <EphemerisForm updateEphemerisList={setEphemerisList} updateBodyInfo={setBodyInfo} />
+          <EphemerisForm jsonConnection={jsonConnection} />
         </div>
         <AppBar position="static" color="default">
           <Tabs value={selectedTab} onChange={(event, newValue) => setSelectedTab(newValue)} variant="scrollable" scrollButtons="auto">

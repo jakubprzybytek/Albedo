@@ -1,11 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import SubmitBar from '../../components/SubmitBar';
 
@@ -23,16 +19,18 @@ const useStyles = makeStyles(theme => ({
 
 export default function CometsCatalogueForm(props) {
 
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
+
   const [nameFilter, setNameFilter] = React.useState("ATLAS");
 
-  function onBuildProps() {
+  function buildRequestUrl() {
     return {
-      nameFilter: nameFilter,
+      url: '/api/catalogue/comets',
+      params: {
+        nameFilter: nameFilter,
+      }
     }
-  }
-
-  function onSubmitResponse(data) {
-    props.updateRows(data);
   }
 
   const classes = useStyles();
@@ -44,7 +42,7 @@ export default function CometsCatalogueForm(props) {
       </Typography>
       <form className={classes.container} noValidate autoComplete="off">
         <TextField label="Name filter" className={classes.field} margin="normal" value={nameFilter} onChange={event => setNameFilter(event.target.value)} />
-        <SubmitBar url='/api/catalogue/comets' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );

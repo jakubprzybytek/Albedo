@@ -23,18 +23,20 @@ const useStyles = makeStyles(theme => ({
 
 export default function EphemerisForm(props) {
 
+  const { jsonConnection } = props;
+  jsonConnection.registerRequestUriBuilder(buildRequestUrl);
+
   const [catalogueName, setCatalogueName] = React.useState("NGC");
   const [nameFilter, setNameFilter] = React.useState("7600");
 
-  function onBuildProps() {
+  function buildRequestUrl() {
     return {
-      catalogueName: catalogueName,
-      nameFilter: nameFilter,
+      url: '/api/catalogue',
+      params: {
+        catalogueName: catalogueName,
+        nameFilter: nameFilter,
+      }
     }
-  }
-
-  function onSubmitResponse(data) {
-    props.updateRows(data);
   }
 
   const classes = useStyles();
@@ -56,7 +58,7 @@ export default function EphemerisForm(props) {
           </FormControl>
           <TextField label="Name filter" className={classes.field} margin="normal" value={nameFilter} onChange={event => setNameFilter(event.target.value)} />
         </div>
-        <SubmitBar url='/api/catalogue' buildProps={onBuildProps} submitResponse={onSubmitResponse} />
+        <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>
   );
