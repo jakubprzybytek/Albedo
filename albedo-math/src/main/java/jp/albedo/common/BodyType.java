@@ -13,7 +13,8 @@ public enum BodyType {
     Comet,
 
     // Special body types
-    Barycenter;
+    Barycenter,
+    TimeType;
 
     public static Set<BodyType> parse(Set<String> strings) {
         return strings.stream()

@@ -1,4 +1,4 @@
-package jp.albedo.jpl.files.impl;
+package jp.albedo.jpl.files.ascii;
 
 import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.kernel.TimeSpan;

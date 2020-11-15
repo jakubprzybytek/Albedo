@@ -2,7 +2,7 @@ package jp.albedo.jpl.state.impl;
 
 public class ChebyshevPolynomialExpander {
 
-    private double[] coefficients;
+    private final double[] coefficients;
 
     public ChebyshevPolynomialExpander(double[] coefficients) {
         this.coefficients = coefficients;

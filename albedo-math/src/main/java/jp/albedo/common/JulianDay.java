@@ -15,7 +15,7 @@ public class JulianDay {
      * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
      *
      * @param year    Gregorian year.
-     * @param month   Gregorian month.
+     * @param month   Gregorian month. January is 1.
      * @param day     Gregorian day of the month.
      * @param hours   Hours.
      * @param minutes Minutes.
@@ -40,7 +40,7 @@ public class JulianDay {
      * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
      *
      * @param year  Gregorian year.
-     * @param month Gregorian month.
+     * @param month Gregorian month. January is 1.
      * @param day   Gregorian day of the month.
      * @return Date in Julian Days.
      */

@@ -65,7 +65,7 @@ public class TimeSpan {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof TimeSpan)) {
+        if (!(obj instanceof TimeSpan)) {
             return false;
         }
         TimeSpan other = (TimeSpan) obj;

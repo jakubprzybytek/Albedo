@@ -6,4 +6,8 @@ public class JplException extends Exception {
         super(message);
     }
 
+    public JplException(String message, Throwable e) {
+        super(message, e);
+    }
+
 }

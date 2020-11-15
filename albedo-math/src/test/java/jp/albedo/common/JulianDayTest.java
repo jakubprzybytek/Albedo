@@ -16,6 +16,7 @@ class JulianDayTest {
     assertEquals(2436116.31, JulianDay.fromDate(1957, 10, 4.81));
     assertEquals(2448170.5, JulianDay.fromDate(1990, 10, 6.0));
     assertEquals(2448193.04502, JulianDay.fromDate(1990, 10, 28.54502));
+    assertEquals(2688945.5, JulianDay.fromDate(2650, 0, 25.0));
   }
 
   @Test

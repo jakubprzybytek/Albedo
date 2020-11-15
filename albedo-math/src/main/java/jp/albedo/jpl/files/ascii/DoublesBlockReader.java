@@ -1,31 +1,32 @@
-package jp.albedo.jpl.files.impl;
+package jp.albedo.jpl.files.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class StringsBlockReader {
+public class DoublesBlockReader {
 
-    private BufferedReader reader;
+    final private BufferedReader reader;
 
     private String[] buffer;
 
     private int bufferIndex;
 
-    public StringsBlockReader(BufferedReader reader) {
+    public DoublesBlockReader(BufferedReader reader) {
         this.reader = reader;
     }
 
-    public String read() throws IOException {
+    public double read() throws IOException {
         if (this.buffer == null || this.bufferIndex >= this.buffer.length) {
             this.buffer = this.reader.readLine().trim().split("\\s+");
             this.bufferIndex = 0;
         }
 
-        return this.buffer[bufferIndex++];
+        String doubleString = this.buffer[bufferIndex++].replace('D', 'E');
+        return Double.parseDouble(doubleString);
     }
 
-    public String[] read(int number) throws IOException {
-        String[] values = new String[number];
+    public double[] read(int number) throws IOException {
+        double[] values = new double[number];
         for (int i = 0; i < number; i++) {
             values[i] = read();
         }

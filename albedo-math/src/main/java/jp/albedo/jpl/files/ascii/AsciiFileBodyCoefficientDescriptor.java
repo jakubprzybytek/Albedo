@@ -1,12 +1,12 @@
-package jp.albedo.jpl.files.impl;
+package jp.albedo.jpl.files.ascii;
 
 public class AsciiFileBodyCoefficientDescriptor {
 
-    private int startIndex;
+    private final int startIndex;
 
-    private int coefficientNumber;
+    private final int coefficientNumber;
 
-    private int setsNumber;
+    private final int setsNumber;
 
     public AsciiFileBodyCoefficientDescriptor(int startIndex, int coefficientNumber, int setsNumber) {
         this.startIndex = startIndex;
