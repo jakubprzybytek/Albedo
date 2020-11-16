@@ -6,6 +6,7 @@ import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.binary.SpkFileReader;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.ChebyshevRecord;
+import jp.albedo.jpl.kernel.KernelRepository;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +23,19 @@ public class Test {
 
     public static void main(String args[]) throws Exception {
 
-        load("d:/Workspace/Java/Albedo/misc/de438t.bsp");
-        load("d:/Workspace/Java/Albedo/misc/jup357.bsp");
+        //load("d:/Workspace/Java/Albedo/misc/de438t.bsp");
+        //load("d:/Workspace/Java/Albedo/misc/jup357.bsp");
+
+//        SpkFileLoader loader = new SpkFileLoader(new File("d:/Workspace/Java/Albedo/misc/de438t.bsp"));
+//        loader.loadAll(JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25)).forEach(data ->
+//                System.out.printf("Body: %s(%d), center body: %s(%d), frame: %s, records: %d%n",
+//                        data.getBody(), data.getBody().id, data.getCenterBody(), data.getCenterBody().id,
+//                        data.getReferenceFrame(), data.getChebyshevRecords().size())
+//        );
+
+        KernelRepository kernel = new KernelRepository();
+        kernel.load(new File("d:/Workspace/Java/Albedo/misc/de438t.bsp"), JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25));
+        kernel.load(new File("d:/Workspace/Java/Albedo/misc/jup357.bsp"), JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25));
     }
 
     private static void load(String fileName) throws IOException, JplException {

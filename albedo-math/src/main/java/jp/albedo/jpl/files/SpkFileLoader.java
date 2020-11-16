@@ -5,12 +5,14 @@ import jp.albedo.jpl.files.binary.SpkFileArrayInformation;
 import jp.albedo.jpl.files.binary.SpkFileReader;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.ChebyshevRecord;
+import jp.albedo.jpl.kernel.SpkKernelObjectChebyshevData;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpkFileLoader {
@@ -21,13 +23,20 @@ public class SpkFileLoader {
         this.file = file;
     }
 
-    public void loadAll(double startJde, double endJde) throws JplException {
+    public List<SpkKernelObjectChebyshevData> loadAll(double startJde, double endJde) throws JplException {
         try (FileChannel fileChannel = (FileChannel) Files.newByteChannel(file.toPath(), StandardOpenOption.READ)) {
+
+            final List<SpkKernelObjectChebyshevData> spkData = new ArrayList<>();
 
             SpkFileReader reader = new SpkFileReader(fileChannel);
             for (SpkFileArrayInformation arrayInfo : reader.getArraysInformation()) {
                 List<ChebyshevRecord> chebyshevRecords = reader.getEntireChebyshevArray(arrayInfo, EphemerisSeconds.fromJde(startJde), EphemerisSeconds.fromJde(endJde));
+
+                spkData.add(
+                        SpkKernelObjectChebyshevData.fromArrayInformation(arrayInfo, chebyshevRecords));
             }
+
+            return spkData;
 
         } catch (IOException e) {
             throw new JplException("Cannot read spk file!", e);
