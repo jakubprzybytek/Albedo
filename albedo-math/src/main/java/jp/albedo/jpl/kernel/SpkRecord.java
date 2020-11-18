@@ -7,7 +7,7 @@ import jp.albedo.jpl.files.binary.SpkFileArrayInformation;
 import java.util.Comparator;
 import java.util.List;
 
-public class SpkKernelObjectChebyshevData {
+public class SpkRecord {
 
     private final JplBody body;
 
@@ -17,15 +17,15 @@ public class SpkKernelObjectChebyshevData {
 
     private final List<ChebyshevRecord> chebyshevRecords;
 
-    public SpkKernelObjectChebyshevData(JplBody body, JplBody centerBody, ReferenceFrame referenceFrame, List<ChebyshevRecord> chebyshevRecords) {
+    public SpkRecord(JplBody body, JplBody centerBody, ReferenceFrame referenceFrame, List<ChebyshevRecord> chebyshevRecords) {
         this.body = body;
         this.centerBody = centerBody;
         this.referenceFrame = referenceFrame;
         this.chebyshevRecords = chebyshevRecords;
     }
 
-    public static SpkKernelObjectChebyshevData fromArrayInformation(SpkFileArrayInformation arrayInfo, List<ChebyshevRecord> chebyshevRecords) {
-        return new SpkKernelObjectChebyshevData(arrayInfo.getBody(), arrayInfo.getCenterBody(), arrayInfo.getReferenceFrame(), chebyshevRecords);
+    public static SpkRecord fromArrayInformation(SpkFileArrayInformation arrayInfo, List<ChebyshevRecord> chebyshevRecords) {
+        return new SpkRecord(arrayInfo.getBody(), arrayInfo.getCenterBody(), arrayInfo.getReferenceFrame(), chebyshevRecords);
     }
 
     public JplBody getBody() {
@@ -44,7 +44,7 @@ public class SpkKernelObjectChebyshevData {
         return chebyshevRecords;
     }
 
-    public void merge(SpkKernelObjectChebyshevData newData) {
+    public void merge(SpkRecord newData) {
         if (body != newData.body || centerBody != newData.centerBody || referenceFrame != newData.referenceFrame) {
             throw new IllegalArgumentException("Cannot merge data for different bodies or/and reference frame!");
         }

@@ -60,13 +60,13 @@ public class SpkFileReader {
      * @return List of Chebyshev records.
      * @throws JplException if cannot read from file.
      */
-    public List<ChebyshevRecord> getEntireChebyshevArray(SpkFileArrayInformation arrayInfo, double startEt, double endEt) throws JplException {
+    public List<ChebyshevRecord> getChebyshevArray(SpkFileArrayInformation arrayInfo, double startEt, double endEt) throws JplException {
 
         if (arrayInfo.getDataType() != DataType.ChebyshevPosition) {
             throw new UnsupportedOperationException("Unsupported data type id: " + arrayInfo.getDataType());
         }
 
-        if (endEt < arrayInfo.getStartDate() || startEt > arrayInfo.getEndDate()) {
+        if (startEt > arrayInfo.getEndDate() || endEt < arrayInfo.getStartDate()) {
             return Collections.emptyList();
         }
 
@@ -93,7 +93,7 @@ public class SpkFileReader {
 
                 // check if record overlaps with requested time period
                 // TODO: make the test inside getChebyshevRecord method so no unnecessary objects are created
-                if (chebyshevRecord.getTimeSpan().getFrom() <= endEt && chebyshevRecord.getTimeSpan().getTo() >= startEt) {
+                if (startEt <= chebyshevRecord.getTimeSpan().getTo() && endEt >= chebyshevRecord.getTimeSpan().getFrom()) {
                     chebyshevRecords.add(chebyshevRecord);
                 }
             }
@@ -127,7 +127,7 @@ public class SpkFileReader {
         coefficients.y = byteBuffer.readDoubles(coefficientsNumber);
         coefficients.z = byteBuffer.readDoubles(coefficientsNumber);
 
-        TimeSpan timeSpan = new TimeSpan(dateMidPoint - dateRadius / 2.0, dateMidPoint + dateRadius / 2.0);
+        TimeSpan timeSpan = new TimeSpan(dateMidPoint - dateRadius, dateMidPoint + dateRadius);
         return new ChebyshevRecord(timeSpan, coefficients);
     }
 
