@@ -3,11 +3,11 @@ package jp.albedo.jpl.kernel;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.state.impl.PositionCalculator;
-import jp.albedo.jpl.kernel.XYZCoefficients;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,7 +15,7 @@ public class SPKernel {
 
     final private Map<JplConstant, Double> constants = new HashMap<>();
 
-    final private Map<JplBody, Map<TimeSpan, XYZCoefficients>> coefficientsMap = new HashMap<>();
+    final private Map<JplBody, List<ChebyshevRecord>> coefficientsMap = new HashMap<>();
 
     public void addConstants(Map<JplConstant, Double> newConstants) {
         this.constants.putAll(newConstants);
@@ -25,28 +25,29 @@ public class SPKernel {
         return this.constants.get(constant);
     }
 
-    public void registerBodyCoefficients(JplBody body, Map<TimeSpan, XYZCoefficients> coefficientsByTime) {
+    public void registerBodyCoefficients(JplBody body, List<ChebyshevRecord> chebyshevRecords) {
         if (!coefficientsMap.containsKey(body)) {
-            this.coefficientsMap.put(body, new HashMap<>());
+            this.coefficientsMap.put(body, new ArrayList<>());
         }
-        this.coefficientsMap.get(body).putAll(coefficientsByTime);
+        this.coefficientsMap.get(body).addAll(chebyshevRecords);
     }
 
-    Optional<Map<TimeSpan, XYZCoefficients>> getCoefficientsForBody(JplBody body) {
+    Optional<List<ChebyshevRecord>> getCoefficientsForBody(JplBody body) {
         return Optional.ofNullable(this.coefficientsMap.get(body));
     }
 
     /**
      * Creates and returns a PositionCalculator for given body.
+     *
      * @param body
      * @return PositionCalculator.
      * @throws JplException
      */
     public PositionCalculator getPositionCalculatorFor(JplBody body) throws JplException {
-        final Map<TimeSpan, XYZCoefficients> coefficients = getCoefficientsForBody(body)
+        final List<ChebyshevRecord> chebyshevRecords = getCoefficientsForBody(body)
                 .orElseThrow(() -> new JplException(String.format("No coefficients for %s found in SPKernel", body)));
 
-        return new PositionCalculator(coefficients);
+        return new PositionCalculator(chebyshevRecords);
     }
 
 }

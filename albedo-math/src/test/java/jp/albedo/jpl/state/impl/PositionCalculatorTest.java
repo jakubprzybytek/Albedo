@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PositionCalculator2Test {
+public class PositionCalculatorTest {
 
     private static List<ChebyshevRecord> records;
 
@@ -25,7 +25,7 @@ public class PositionCalculator2Test {
 
     @Test
     public void test() throws JplException {
-        PositionCalculator2 positionCalculator = new PositionCalculator2(records);
+        PositionCalculator positionCalculator = new PositionCalculator(records);
         final RectangularCoordinates coordinates = positionCalculator.compute(EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9)));
 
         assertAll(

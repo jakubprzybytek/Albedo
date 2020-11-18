@@ -1,8 +1,8 @@
 package jp.albedo.jpl.files.ascii;
 
 import jp.albedo.jpl.JplConstant;
+import jp.albedo.jpl.kernel.ChebyshevRecord;
 import jp.albedo.jpl.kernel.TimeSpan;
-import jp.albedo.jpl.kernel.XYZCoefficients;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -69,19 +70,31 @@ class AsciiFileReaderTest {
     void testCoefficientsMap() {
         assertEquals(12, this.asciiReader.coefficientsMap.size());
 
-        Map<TimeSpan, XYZCoefficients> firstBodyCoefficientsMap = asciiReader.getCoefficientsMapForIndex(0);
+        List<ChebyshevRecord> firstBodyCoefficientsMap = asciiReader.getCoefficientsMapForIndex(0);
 
         assertEquals(16, firstBodyCoefficientsMap.size());
 
         final TimeSpan firstTimeSpan = new TimeSpan(2433264.5, 2433272.5);
         final TimeSpan secondTimeSpan = new TimeSpan(2433272.5, 2433280.5);
 
-        assertNotNull(firstBodyCoefficientsMap.get(firstTimeSpan));
-        assertNotNull(firstBodyCoefficientsMap.get(secondTimeSpan));
+        final ChebyshevRecord firstChebyshevRecord = firstBodyCoefficientsMap.get(0);
+        final ChebyshevRecord secondChebyshevRecord = firstBodyCoefficientsMap.get(1);
+        assertNotNull(firstChebyshevRecord);
+        assertNotNull(secondChebyshevRecord);
 
-        final XYZCoefficients firstBodyCoefficients = firstBodyCoefficientsMap.get(firstTimeSpan);
+        assertAll(
+                () -> assertEquals(2433232.5, firstChebyshevRecord.getTimeSpan().getFrom()),
+                () -> assertEquals(2433240.5, firstChebyshevRecord.getTimeSpan().getTo())
+        );
 
-        assertEquals(44169514.68071251, firstBodyCoefficients.x[0]);
-        assertEquals(8080851.859133677, firstBodyCoefficients.x[1]);
+        assertAll(
+                () -> assertEquals(2433240.5, secondChebyshevRecord.getTimeSpan().getFrom()),
+                () -> assertEquals(2433248.5, secondChebyshevRecord.getTimeSpan().getTo())
+        );
+
+        assertAll(
+                () -> assertEquals(-4.807591310073455E7, firstChebyshevRecord.getCoefficients().x[0]),
+                () -> assertEquals(7951556.07911521, firstChebyshevRecord.getCoefficients().x[1])
+        );
     }
 }

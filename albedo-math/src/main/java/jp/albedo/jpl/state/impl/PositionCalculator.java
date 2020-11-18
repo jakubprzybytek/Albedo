@@ -2,40 +2,35 @@ package jp.albedo.jpl.state.impl;
 
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.kernel.TimeSpan;
-import jp.albedo.jpl.kernel.XYZCoefficients;
+import jp.albedo.jpl.kernel.ChebyshevRecord;
 
-import java.util.Map;
+import java.util.List;
 
 public class PositionCalculator {
 
-    final private Map<TimeSpan, XYZCoefficients> coefficientsByTime;
+    private final List<ChebyshevRecord> chebyshevRecords;
 
-    private TimeSpan cachedTimeSpan;
+    private ChebyshevRecord cachedChebyshevRecord;
 
-    private XYZCoefficients cachedCoefficients;
-
-    public PositionCalculator(Map<TimeSpan, XYZCoefficients> coefficientsByTime) {
-        this.coefficientsByTime = coefficientsByTime;
+    public PositionCalculator(List<ChebyshevRecord> chebyshevRecords) {
+        this.chebyshevRecords = chebyshevRecords;
     }
 
     public RectangularCoordinates compute(double jde) throws JplException {
 
-        if (this.cachedTimeSpan == null || !this.cachedTimeSpan.inside(jde)) {
-            this.cachedTimeSpan = this.coefficientsByTime.keySet().stream()
-                    .filter(ts -> ts.inside(jde))
+        if (cachedChebyshevRecord == null || !cachedChebyshevRecord.getTimeSpan().inside(jde)) {
+            cachedChebyshevRecord = chebyshevRecords.stream()
+                    .filter(record -> record.getTimeSpan().inside(jde))
                     .reduce((a, b) -> b) // find last
                     .orElseThrow(() -> new JplException(String.format("Couldn't find coefficients for T=%f", jde)));
-
-            this.cachedCoefficients = this.coefficientsByTime.get(this.cachedTimeSpan);
         }
 
-        final double normalizedTime = this.cachedTimeSpan.normalizeFor(jde);
+        final double normalizedTime = cachedChebyshevRecord.getTimeSpan().normalizeFor(jde);
 
         return new RectangularCoordinates(
-                new ChebyshevPolynomialExpander(this.cachedCoefficients.x).computeFor(normalizedTime),
-                new ChebyshevPolynomialExpander(this.cachedCoefficients.y).computeFor(normalizedTime),
-                new ChebyshevPolynomialExpander(this.cachedCoefficients.z).computeFor(normalizedTime)
+                new ChebyshevPolynomialExpander(cachedChebyshevRecord.getCoefficients().x).computeFor(normalizedTime),
+                new ChebyshevPolynomialExpander(cachedChebyshevRecord.getCoefficients().y).computeFor(normalizedTime),
+                new ChebyshevPolynomialExpander(cachedChebyshevRecord.getCoefficients().z).computeFor(normalizedTime)
         );
     }
 

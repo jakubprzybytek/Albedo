@@ -1,6 +1,7 @@
 package jp.albedo.jpl.files.ascii;
 
 import jp.albedo.jpl.JplConstant;
+import jp.albedo.jpl.kernel.ChebyshevRecord;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.kernel.XYZCoefficients;
 import org.apache.commons.logging.Log;
@@ -12,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class AsciiFileReader {
 
     protected List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
 
-    protected Map<Integer, Map<TimeSpan, XYZCoefficients>> coefficientsMap = new HashMap<>();
+    protected Map<Integer, List<ChebyshevRecord>> coefficientsMap = new HashMap<>();
 
     public AsciiFileReader(List<AsciiFileBodyCoefficientDescriptor> contentDescriptor) {
         this.contentDescriptor = contentDescriptor;
@@ -65,10 +67,11 @@ public class AsciiFileReader {
                             coefficients.z = doublesReader.read(coefficientDescriptor.getCoefficientNumber());
 
                             if (!this.coefficientsMap.containsKey(bodyIndex)) {
-                                this.coefficientsMap.put(bodyIndex, new HashMap<>());
+                                this.coefficientsMap.put(bodyIndex, new ArrayList<>());
                             }
 
-                            this.coefficientsMap.get(bodyIndex).put(timeSpan, coefficients);
+                            this.coefficientsMap.get(bodyIndex).add(
+                                    new ChebyshevRecord(timeSpan, coefficients));
                         } else {
                             // body 12 has two coefficients. ignoring for now
                             doublesReader.read(coefficientDescriptor.getCoefficientNumber());
@@ -83,7 +86,7 @@ public class AsciiFileReader {
         LOG.info(String.format("Loaded %d blocks of coefficients for %d bodies from %s in %s", blocksRead, this.coefficientsMap.size(), file.getPath(), Duration.between(start, Instant.now())));
     }
 
-    public Map<TimeSpan, XYZCoefficients> getCoefficientsMapForIndex(int index) {
+    public List<ChebyshevRecord> getCoefficientsMapForIndex(int index) {
         return coefficientsMap.get(index);
     }
 

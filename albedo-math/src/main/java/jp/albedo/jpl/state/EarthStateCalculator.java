@@ -1,8 +1,8 @@
 package jp.albedo.jpl.state;
 
 import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.SPKernel;
 import jp.albedo.jpl.state.impl.PositionCalculator;
