@@ -3,7 +3,7 @@ package jp.albedo.jpl.state;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.files.binary.ReferenceFrame;
 import jp.albedo.jpl.kernel.ChebyshevRecord;
-import jp.albedo.jpl.kernel.SpkRecord;
+import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.kernel.XYZCoefficients;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TestData {
 
-    public static SpkRecord MOON_EARTH_BARYCENTER_FOR_2019_10_09;
+    public static SpkKernelRecord MOON_EARTH_BARYCENTER_FOR_2019_10_09;
 
     static {
         TimeSpan timeSpan = new TimeSpan(6.22728E8, 6.241104E8);
@@ -23,7 +23,7 @@ public class TestData {
 
         List<ChebyshevRecord> chebyshevRecords = Collections.singletonList(new ChebyshevRecord(timeSpan, coefficients));
 
-        MOON_EARTH_BARYCENTER_FOR_2019_10_09 = new SpkRecord(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, chebyshevRecords);
+        MOON_EARTH_BARYCENTER_FOR_2019_10_09 = new SpkKernelRecord(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, chebyshevRecords);
     }
 
 }

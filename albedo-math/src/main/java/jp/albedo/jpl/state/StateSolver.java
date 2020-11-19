@@ -4,7 +4,7 @@ import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.KernelRepository;
-import jp.albedo.jpl.kernel.SpkRecord;
+import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.state.impl.PositionCalculator;
 
 public class StateSolver {
@@ -22,7 +22,7 @@ public class StateSolver {
         this.targetBody = targetBody;
         this.observerBody = observerBody;
 
-        SpkRecord chebyshevData = kernel.getChebyshevDataFor(targetBody, observerBody);
+        SpkKernelRecord chebyshevData = kernel.getChebyshevDataFor(targetBody, observerBody);
         this.positionCalculator = new PositionCalculator(chebyshevData.getChebyshevRecords());
     }
 

@@ -7,7 +7,7 @@ import jp.albedo.jpl.files.binary.SpkFileReader;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.ChebyshevRecord;
 import jp.albedo.jpl.kernel.KernelRepository;
-import jp.albedo.jpl.kernel.SpkRecord;
+import jp.albedo.jpl.kernel.SpkKernelRecord;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class Test {
         //kernel.load(new File("d:/Workspace/Java/Albedo/misc/jup357.bsp"), JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25));
 
         final double jde = EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9));
-        SpkRecord chebyshevData = kernel.getChebyshevDataFor(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter);
+        SpkKernelRecord chebyshevData = kernel.getChebyshevDataFor(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter);
         ChebyshevRecord record = chebyshevData.getChebyshevRecords().stream()
                 .filter(r -> r.getTimeSpan().inside(jde))
                 .reduce((a, b) -> b)

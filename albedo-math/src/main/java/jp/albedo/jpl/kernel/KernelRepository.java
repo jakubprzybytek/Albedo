@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class KernelRepository {
 
-    private final List<SpkRecord> spkKernel = new ArrayList<>();
+    private final List<SpkKernelRecord> spkKernel = new ArrayList<>();
 
     public void load(File file, double startJde, double endJde) throws JplException {
         final SpkFileLoader loader = new SpkFileLoader(file);
@@ -20,7 +20,7 @@ public class KernelRepository {
                 .forEach(this::storeNewChebyshevData);
     }
 
-    public SpkRecord getChebyshevDataFor(JplBody target, JplBody observer) throws JplException {
+    public SpkKernelRecord getChebyshevDataFor(JplBody target, JplBody observer) throws JplException {
         return spkKernel.stream()
                 .filter(chebyshevData -> chebyshevData.getBody() == target && chebyshevData.getCenterBody() == observer)
                 .findFirst()
@@ -31,8 +31,8 @@ public class KernelRepository {
         return new StateSolverBuilder(this);
     }
 
-    private void storeNewChebyshevData(SpkRecord newData) {
-        Optional<SpkRecord> existingData = spkKernel.stream()
+    private void storeNewChebyshevData(SpkKernelRecord newData) {
+        Optional<SpkKernelRecord> existingData = spkKernel.stream()
                 .filter(data -> data.getBody() == newData.getBody()
                         && data.getCenterBody() == newData.getCenterBody()
                         && data.getReferenceFrame() == newData.getReferenceFrame())
