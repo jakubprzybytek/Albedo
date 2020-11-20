@@ -15,7 +15,7 @@ public class Forest<NodeType, EdgeType> {
     public void addEdge(NodeType from, NodeType to, EdgeType edgeValue) {
 
         // look if 'from' node already exist
-        Optional<TreeNode<NodeType, EdgeType>> existingFromNode = find(from);
+        Optional<TreeNode<NodeType, EdgeType>> existingFromNode = findNode(from);
         TreeNode<NodeType, EdgeType> fromNode = existingFromNode.orElseGet(() -> new TreeNode<>(from, null));
 
         if (existingFromNode.isEmpty()) {
@@ -40,6 +40,15 @@ public class Forest<NodeType, EdgeType> {
         fromNode.append(to, toNode);
     }
 
+    public Optional<EdgeType> getEdge(NodeType from, NodeType to) {
+        Optional<TreeNode<NodeType, EdgeType>> fromNode = findNode(from);
+        return fromNode
+                .map(node -> node.getChild(to))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(TreeNode::getIncomingEdgeValue);
+    }
+
     public Optional<List<NodeType>> findPathTo(NodeType toFind) {
         return findBranch(toFind).map(treeNodes -> treeNodes.stream()
                 .map(TreeNode::getNodeValue)
@@ -56,17 +65,23 @@ public class Forest<NodeType, EdgeType> {
         return edges.isPresent() && edges.get().size() == 0 ? Optional.empty() : edges;
     }
 
+    private Optional<TreeNode<NodeType, EdgeType>> findNode(NodeType toFind) {
+        if (trees.containsKey(toFind)) {
+            return Optional.of(trees.get(toFind));
+        }
+        return trees.values().stream()
+                .map(childNode -> childNode.findNode(toFind))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
+    }
+
     private Optional<LinkedList<TreeNode<NodeType, EdgeType>>> findBranch(NodeType toFind) {
         return trees.values().stream()
                 .map(childNode -> childNode.findBranch(toFind))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .findFirst();
-    }
-
-    private Optional<TreeNode<NodeType, EdgeType>> find(NodeType toFind) {
-        return findBranch(toFind)
-                .map(LinkedList::getLast);
     }
 
 }

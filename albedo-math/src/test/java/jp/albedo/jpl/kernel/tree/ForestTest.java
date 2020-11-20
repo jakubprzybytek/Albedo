@@ -26,6 +26,16 @@ public class ForestTest {
         forest.addEdge(2, 6, "26");
         forest.addEdge(1, 7, "17");
 
+        assertThat(forest.getEdge(0, 1)).isEmpty();
+        assertThat(forest.getEdge(2, 1)).isEmpty();
+        assertThat(forest.getEdge(2, 7)).isEmpty();
+
+        assertThat(forest.getEdge(1, 2)).hasValue("12");
+        assertThat(forest.getEdge(3, 4)).hasValue("34");
+        assertThat(forest.getEdge(2, 5)).hasValue("25");
+        assertThat(forest.getEdge(2, 6)).hasValue("26");
+        assertThat(forest.getEdge(1, 7)).hasValue("17");
+
         assertThat(forest.findPathTo(0)).isEmpty();
         assertThat(forest.findEdgesTo(0)).isEmpty();
 

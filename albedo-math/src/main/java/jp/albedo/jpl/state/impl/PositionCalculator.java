@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PositionCalculator {
 
-    private final List<ChebyshevRecord> chebyshevRecords;
+    final List<ChebyshevRecord> chebyshevRecords;
 
     private ChebyshevRecord cachedChebyshevRecord;
 

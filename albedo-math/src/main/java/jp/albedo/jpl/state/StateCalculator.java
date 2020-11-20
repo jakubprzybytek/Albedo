@@ -9,6 +9,7 @@ import jp.albedo.jpl.state.impl.PositionCalculator;
 /**
  * JPL's Kernel based states calculator for main Solar System objects.
  */
+@Deprecated
 public class StateCalculator {
 
     final PositionCalculator positionCalculator;

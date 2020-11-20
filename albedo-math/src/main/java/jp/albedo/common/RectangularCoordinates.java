@@ -4,11 +4,13 @@ import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
 
 public class RectangularCoordinates {
 
-    final public double x;
+    public static final RectangularCoordinates ZERO = new RectangularCoordinates(0.0, 0.0, 0.0);
 
-    final public double y;
+    public final double x;
 
-    final public double z;
+    public final double y;
+
+    public final double z;
 
     public RectangularCoordinates(double x, double y, double z) {
         this.x = x;

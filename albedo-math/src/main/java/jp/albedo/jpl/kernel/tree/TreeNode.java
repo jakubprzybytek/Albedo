@@ -19,14 +19,6 @@ public class TreeNode<NodeType, EdgeType> {
         this.incomingEdgeValue = incomingEdgeValue;
     }
 
-    public void append(NodeType nodeValue, TreeNode<NodeType, EdgeType> child) {
-        children.put(nodeValue, child);
-    }
-
-    public boolean hasChild(NodeType nodeValue) {
-        return children.containsKey(nodeValue);
-    }
-
     public NodeType getNodeValue() {
         return nodeValue;
     }
@@ -42,6 +34,29 @@ public class TreeNode<NodeType, EdgeType> {
         return incomingEdgeValue;
     }
 
+    public void append(NodeType nodeValue, TreeNode<NodeType, EdgeType> child) {
+        children.put(nodeValue, child);
+    }
+
+    public boolean hasChild(NodeType nodeValue) {
+        return children.containsKey(nodeValue);
+    }
+
+    public Optional<TreeNode<NodeType, EdgeType>> getChild(NodeType child) {
+        return Optional.ofNullable(children.get(child));
+    }
+
+    public Optional<TreeNode<NodeType, EdgeType>> findNode(NodeType toFind) {
+        if (children.containsKey(toFind)) {
+            return Optional.of(children.get(toFind));
+        }
+        return children.values().stream()
+                .map(childNode -> childNode.findNode(toFind))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
+    }
+
     public Optional<LinkedList<TreeNode<NodeType, EdgeType>>> findBranch(NodeType toFind) {
         if (nodeValue.equals(toFind)) {
             return Optional.of(new LinkedList<>(Collections.singletonList(this)));
@@ -53,21 +68,6 @@ public class TreeNode<NodeType, EdgeType> {
                 .map(Optional::get)
                 .peek(branch -> branch.addFirst(this))
                 .findFirst();
-    }
-
-    public Optional<TreeNode<NodeType, EdgeType>> find(NodeType toFind, LinkedList<NodeType> path) {
-        if (children.containsKey(toFind)) {
-            path.addFirst(toFind);
-            return Optional.of(children.get(toFind));
-        }
-        for (NodeType nodeValue : children.keySet()) {
-            Optional<TreeNode<NodeType, EdgeType>> foundNode = children.get(nodeValue).find(toFind, path);
-            if (foundNode.isPresent()) {
-                path.addFirst(nodeValue);
-                return foundNode;
-            }
-        }
-        return Optional.empty();
     }
 
 }
