@@ -1,35 +1,73 @@
 package jp.albedo.jpl.kernel.tree;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-public class TreeNode<T> {
+public class TreeNode<NodeType, EdgeType> {
 
-    private final T value;
+    private final NodeType nodeValue;
 
-    private final List<TreeNode<T>> children = new ArrayList<>();
+    private EdgeType incomingEdgeValue;
 
-    public TreeNode(T value) {
-        this.value = value;
+    private final Map<NodeType, TreeNode<NodeType, EdgeType>> children = new HashMap<>();
+
+    public TreeNode(NodeType nodeValue, EdgeType incomingEdgeValue) {
+        this.nodeValue = nodeValue;
+        this.incomingEdgeValue = incomingEdgeValue;
     }
 
-    public void append(TreeNode<T> child) {
-        children.add(child);
+    public void append(NodeType nodeValue, TreeNode<NodeType, EdgeType> child) {
+        children.put(nodeValue, child);
     }
 
-    public Optional<TreeNode<T>> find(T toFind, LinkedList<T> path) {
-        if (value.equals(toFind)) {
-            path.add(value);
-            return Optional.of(this);
+    public boolean hasChild(NodeType nodeValue) {
+        return children.containsKey(nodeValue);
+    }
+
+    public NodeType getNodeValue() {
+        return nodeValue;
+    }
+
+    public void setIncomingEdgeValue(EdgeType incomingEdgeValue) {
+        if (this.incomingEdgeValue != null) {
+            throw new IllegalStateException("Node already has edge value!");
         }
-        return children.stream()
-                .map(child -> child.find(toFind, path))
+        this.incomingEdgeValue = incomingEdgeValue;
+    }
+
+    public EdgeType getIncomingEdgeValue() {
+        return incomingEdgeValue;
+    }
+
+    public Optional<LinkedList<TreeNode<NodeType, EdgeType>>> findBranch(NodeType toFind) {
+        if (nodeValue.equals(toFind)) {
+            return Optional.of(new LinkedList<>(Collections.singletonList(this)));
+        }
+
+        return children.values().stream()
+                .map(childNode -> childNode.findBranch(toFind))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .peek((r) -> path.addFirst(value))
+                .peek(branch -> branch.addFirst(this))
                 .findFirst();
+    }
+
+    public Optional<TreeNode<NodeType, EdgeType>> find(NodeType toFind, LinkedList<NodeType> path) {
+        if (children.containsKey(toFind)) {
+            path.addFirst(toFind);
+            return Optional.of(children.get(toFind));
+        }
+        for (NodeType nodeValue : children.keySet()) {
+            Optional<TreeNode<NodeType, EdgeType>> foundNode = children.get(nodeValue).find(toFind, path);
+            if (foundNode.isPresent()) {
+                path.addFirst(nodeValue);
+                return foundNode;
+            }
+        }
+        return Optional.empty();
     }
 
 }
