@@ -19,19 +19,30 @@ import static org.junit.jupiter.api.Assertions.assertAll;
  */
 public class DirectStateSolverTest {
 
+    private static final List<SpkKernelRecord> SPK_RECORDS = Arrays.asList(
+            TestData.MOON_EARTH_BARYCENTER_FOR_2019_10_09,
+            TestData.EARTH_FOR_2019_10_09);
+
     @Test
     public void testSolarSystemBarycenterToEarth() {
-        List<SpkKernelRecord> spkRecords = Arrays.asList(
-                TestData.MOON_EARTH_BARYCENTER_FOR_2019_10_09,
-                TestData.EARTH_FOR_2019_10_09);
-
-        StateSolver solver = new DirectStateSolver(spkRecords);
+        StateSolver solver = new DirectStateSolver(SPK_RECORDS, false);
         final RectangularCoordinates coordinates = solver.forDate(EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9)));
 
         assertAll(
                 () -> Assertions.assertThat(coordinates.x).isEqualTo(143811431.38536263, TestData.WEB_GEOCALC_OFFSET),
                 () -> Assertions.assertThat(coordinates.y).isEqualTo(36856636.26047815, TestData.WEB_GEOCALC_OFFSET),
                 () -> Assertions.assertThat(coordinates.z).isEqualTo(15977858.62839704, TestData.WEB_GEOCALC_OFFSET));
+    }
+
+    @Test
+    public void testEarthToSolarSystemBarycenter() {
+        StateSolver solver = new DirectStateSolver(SPK_RECORDS, true);
+        final RectangularCoordinates coordinates = solver.forDate(EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9)));
+
+        assertAll(
+                () -> Assertions.assertThat(coordinates.x).isEqualTo(-143811431.38536263, TestData.WEB_GEOCALC_OFFSET),
+                () -> Assertions.assertThat(coordinates.y).isEqualTo(-36856636.26047815, TestData.WEB_GEOCALC_OFFSET),
+                () -> Assertions.assertThat(coordinates.z).isEqualTo(-15977858.62839704, TestData.WEB_GEOCALC_OFFSET));
     }
 
 }

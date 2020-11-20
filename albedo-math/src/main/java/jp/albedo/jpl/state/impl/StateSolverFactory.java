@@ -5,8 +5,8 @@ import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.jpl.state.StateSolver;
+import jp.albedo.utils.Collectors;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class StateSolverFactory {
@@ -30,18 +30,24 @@ public class StateSolverFactory {
 
         // check if observer is on the spkRecords for target
         List<SpkKernelRecord> directSpkRecords = spkRecordsForTarget.stream()
-                .collect(
-                        LinkedList<SpkKernelRecord>::new,
-                        (collectedRecords, record) -> {
-                            if (!collectedRecords.isEmpty() || record.getCenterBody() == observerBody) {
-                                collectedRecords.add(record);
-                            }
-                        },
-                        LinkedList::addAll
-                );
+                .collect(Collectors.sublistWithStartingCondition(
+                        record -> record.getCenterBody() == observerBody
+                ));
 
         if (!directSpkRecords.isEmpty()) {
-            return new DirectStateSolver(directSpkRecords);
+            return new DirectStateSolver(directSpkRecords, false);
+        }
+
+        List<SpkKernelRecord> spkRecordsForObserver = spkKernel.getSpkKernelRecords(observerBody);
+
+        // check if target is on the spkRecords for observer
+        List<SpkKernelRecord> directSpkRecordsToObserver = spkRecordsForObserver.stream()
+                .collect(Collectors.sublistWithStartingCondition(
+                        record -> record.getCenterBody() == targetBody
+                ));
+
+        if (!directSpkRecordsToObserver.isEmpty()) {
+            return new DirectStateSolver(directSpkRecordsToObserver, true);
         }
 
         return null;

@@ -41,16 +41,17 @@ public class StateSolverFactoryTest {
     }
 
     @Test
-    public void testTreeBodyPath() throws JplException {
+    public void testTreeBodyPath_1to3() throws JplException {
         StateSolver stateSolver = new StateSolverFactory(spkKernel)
                 .target(JplBody.Pluto)
                 .observer(JplBody.SolarSystemBarycenter)
                 .build();
 
         assertThat(stateSolver).isInstanceOf(DirectStateSolver.class);
-        DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
 
+        DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
         Assertions.assertAll(
+                () -> assertThat(directStateSolver.negate).isFalse(),
                 () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(3),
                 () -> assertThat(directStateSolver.positionCalculators.get(0).chebyshevRecords).isSameAs(firstChebyshevList),
                 () -> assertThat(directStateSolver.positionCalculators.get(1).chebyshevRecords).isSameAs(secondChebyshevList),
@@ -59,16 +60,36 @@ public class StateSolverFactoryTest {
     }
 
     @Test
-    public void testTreeBodyPath_1and2() throws JplException {
+    public void testTreeBodyPathWithOppositeDirection_3to1() throws JplException {
+        StateSolver stateSolver = new StateSolverFactory(spkKernel)
+                .target(JplBody.SolarSystemBarycenter)
+                .observer(JplBody.Pluto)
+                .build();
+
+        assertThat(stateSolver).isInstanceOf(DirectStateSolver.class);
+
+        DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
+        Assertions.assertAll(
+                () -> assertThat(directStateSolver.negate).isTrue(),
+                () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(3),
+                () -> assertThat(directStateSolver.positionCalculators.get(0).chebyshevRecords).isSameAs(firstChebyshevList),
+                () -> assertThat(directStateSolver.positionCalculators.get(1).chebyshevRecords).isSameAs(secondChebyshevList),
+                () -> assertThat(directStateSolver.positionCalculators.get(2).chebyshevRecords).isSameAs(thirdChebyshevList)
+        );
+    }
+
+    @Test
+    public void testTreeBodyPath_1to2() throws JplException {
         StateSolver stateSolver = new StateSolverFactory(spkKernel)
                 .target(JplBody.Earth)
                 .observer(JplBody.SolarSystemBarycenter)
                 .build();
 
         assertThat(stateSolver).isInstanceOf(DirectStateSolver.class);
-        DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
 
+        DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
         Assertions.assertAll(
+                () -> assertThat(directStateSolver.negate).isFalse(),
                 () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(2),
                 () -> assertThat(directStateSolver.positionCalculators.get(0).chebyshevRecords).isSameAs(firstChebyshevList),
                 () -> assertThat(directStateSolver.positionCalculators.get(1).chebyshevRecords).isSameAs(secondChebyshevList)
@@ -76,16 +97,53 @@ public class StateSolverFactoryTest {
     }
 
     @Test
-    public void testTwoBodyPath_2and3() throws JplException {
+    public void testTreeBodyPathWithOppositeDirection_2to1() throws JplException {
+        StateSolver stateSolver = new StateSolverFactory(spkKernel)
+                .target(JplBody.SolarSystemBarycenter)
+                .observer(JplBody.Earth)
+                .build();
+
+        assertThat(stateSolver).isInstanceOf(DirectStateSolver.class);
+
+        DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
+        Assertions.assertAll(
+                () -> assertThat(directStateSolver.negate).isTrue(),
+                () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(2),
+                () -> assertThat(directStateSolver.positionCalculators.get(0).chebyshevRecords).isSameAs(firstChebyshevList),
+                () -> assertThat(directStateSolver.positionCalculators.get(1).chebyshevRecords).isSameAs(secondChebyshevList)
+        );
+    }
+
+    @Test
+    public void testTwoBodyPath_2to3() throws JplException {
         StateSolver stateSolver = new StateSolverFactory(spkKernel)
                 .target(JplBody.Pluto)
                 .observer(JplBody.EarthMoonBarycenter)
                 .build();
 
         assertThat(stateSolver).isInstanceOf(DirectStateSolver.class);
-        DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
 
+        DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
         Assertions.assertAll(
+                () -> assertThat(directStateSolver.negate).isFalse(),
+                () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(2),
+                () -> assertThat(directStateSolver.positionCalculators.get(0).chebyshevRecords).isSameAs(secondChebyshevList),
+                () -> assertThat(directStateSolver.positionCalculators.get(1).chebyshevRecords).isSameAs(thirdChebyshevList)
+        );
+    }
+
+    @Test
+    public void testTwoBodyPathWithOppositeDirection_3to2() throws JplException {
+        StateSolver stateSolver = new StateSolverFactory(spkKernel)
+                .target(JplBody.EarthMoonBarycenter)
+                .observer(JplBody.Pluto)
+                .build();
+
+        assertThat(stateSolver).isInstanceOf(DirectStateSolver.class);
+
+        DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
+        Assertions.assertAll(
+                () -> assertThat(directStateSolver.negate).isTrue(),
                 () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(2),
                 () -> assertThat(directStateSolver.positionCalculators.get(0).chebyshevRecords).isSameAs(secondChebyshevList),
                 () -> assertThat(directStateSolver.positionCalculators.get(1).chebyshevRecords).isSameAs(thirdChebyshevList)

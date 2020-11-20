@@ -10,6 +10,7 @@ import jp.albedo.jpl.state.impl.PositionCalculator;
 /**
  * JPL's Kernel based states calculator specific for Earth (true Earth, not Earth-Moon barycenter).
  */
+@Deprecated
 public class EarthStateCalculator {
 
     private final double earthMoonMassRatio;
