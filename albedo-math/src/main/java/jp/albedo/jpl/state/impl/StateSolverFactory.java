@@ -50,7 +50,20 @@ public class StateSolverFactory {
             return new DirectStateSolver(directSpkRecordsToObserver, true);
         }
 
-        return null;
+        // try to find common center body and drop duplicated records
+        List<SpkKernelRecord> relativeSpkRecordsForTarget = spkRecordsForTarget.stream()
+                .filter(record -> !spkRecordsForObserver.contains(record))
+                .collect(java.util.stream.Collectors.toList());
+        List<SpkKernelRecord> relativeSpkRecordsForObserver = spkRecordsForObserver.stream()
+                .filter(record -> !spkRecordsForTarget.contains(record))
+                .collect(java.util.stream.Collectors.toList());
+
+        if (!relativeSpkRecordsForTarget.isEmpty() && !relativeSpkRecordsForObserver.isEmpty()
+                && relativeSpkRecordsForTarget.get(0).getCenterBody().equals(relativeSpkRecordsForObserver.get(0).getCenterBody())) {
+            return new CommonCenterBodyStateSolver(relativeSpkRecordsForTarget, relativeSpkRecordsForObserver);
+        }
+
+        throw new JplException("Cannot find SPK records for " + targetBody + " w.r.t. " + observerBody + "!");
     }
 
     public StateSolverFactory target(JplBody targetBody) {

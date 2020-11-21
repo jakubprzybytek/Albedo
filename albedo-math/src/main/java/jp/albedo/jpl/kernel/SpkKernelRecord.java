@@ -3,6 +3,8 @@ package jp.albedo.jpl.kernel;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.files.binary.ReferenceFrame;
 import jp.albedo.jpl.files.binary.SpkFileArrayInformation;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Comparator;
 import java.util.List;
@@ -51,5 +53,34 @@ public class SpkKernelRecord {
 
         chebyshevRecords.addAll(newData.getChebyshevRecords());
         chebyshevRecords.sort(Comparator.comparingDouble(record -> record.getTimeSpan().getTo()));
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(35, 67).
+                append(body).
+                append(centerBody).
+                append(referenceFrame).
+                toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        SpkKernelRecord rhs = (SpkKernelRecord) obj;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(body, rhs.body)
+                .append(centerBody, rhs.centerBody)
+                .append(referenceFrame, rhs.referenceFrame)
+                .isEquals();
     }
 }
