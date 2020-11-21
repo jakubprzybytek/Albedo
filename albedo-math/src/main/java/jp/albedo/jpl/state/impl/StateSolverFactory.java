@@ -23,19 +23,19 @@ public class StateSolverFactory {
 
     public StateSolver build() throws JplException {
         if (targetBody == null || observerBody == null) {
-            throw new IllegalStateException("Cannot build StateSolver without information about target body and observer body!");
+            throw new IllegalStateException("Cannot build StateSolver without information about target and observer bodies!");
         }
 
         List<SpkKernelRecord> spkRecordsForTarget = spkKernel.getSpkKernelRecords(targetBody);
 
         // check if observer is on the spkRecords for target
-        List<SpkKernelRecord> directSpkRecords = spkRecordsForTarget.stream()
+        List<SpkKernelRecord> directSpkRecordsToTarget = spkRecordsForTarget.stream()
                 .collect(Collectors.sublistWithStartingCondition(
                         record -> record.getCenterBody() == observerBody
                 ));
 
-        if (!directSpkRecords.isEmpty()) {
-            return new DirectStateSolver(directSpkRecords, false);
+        if (!directSpkRecordsToTarget.isEmpty()) {
+            return new DirectStateSolver(directSpkRecordsToTarget, false);
         }
 
         List<SpkKernelRecord> spkRecordsForObserver = spkKernel.getSpkKernelRecords(observerBody);

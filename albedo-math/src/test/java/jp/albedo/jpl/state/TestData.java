@@ -24,6 +24,8 @@ public class TestData {
 
     public static SpkKernelRecord EARTH_FOR_2019_10_09;
 
+    public static SpkKernelRecord MOON_FOR_2019_10_09;
+
     static {
         TimeSpan earthMoonBarycenterTimeSpan = new TimeSpan(6.22728E8, 6.241104E8);
         XYZCoefficients earthMoonBarycenterCoefficients = new XYZCoefficients();
@@ -32,7 +34,6 @@ public class TestData {
         earthMoonBarycenterCoefficients.z = new double[]{1.0953952944021957E7, 8009319.6051462935, -49855.41597184457, -6374.59856315225, 8.645923720436818, 1.5351405548197503, 0.006103310320018878, -2.1220785588716188E-4, -2.378787005248201E-5, 4.565427491061808E-6, 9.528283646581848E-8, -2.8141222995618126E-7, 6.40398951745763E-8};
 
         List<ChebyshevRecord> earthMoonBarycenterChebyshevRecords = Collections.singletonList(new ChebyshevRecord(earthMoonBarycenterTimeSpan, earthMoonBarycenterCoefficients));
-
         MOON_EARTH_BARYCENTER_FOR_2019_10_09 = new SpkKernelRecord(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, earthMoonBarycenterChebyshevRecords);
 
         TimeSpan earthTimeSpan = new TimeSpan(6.237648E8, 6.241104E8);
@@ -42,8 +43,16 @@ public class TestData {
         earthCoefficients.z = new double[]{1122.7811445836603, -604.1183133720834, -53.14083786532613, 4.718012250356397, 0.15992639739195338, -0.005626723709082821, -6.467047513375947E-5, -2.271406261921008E-5, 6.537986621252292E-7, 5.321983808943225E-8, -2.045573802419618E-9, 2.4379197722320234E-11, -1.3063165198224266E-11};
 
         List<ChebyshevRecord> earthChebyshevRecords = Collections.singletonList(new ChebyshevRecord(earthTimeSpan, earthCoefficients));
-
         EARTH_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, earthChebyshevRecords);
+
+        TimeSpan moonTimeSpan = new TimeSpan(6.237648E8, 6.241104E8);
+        XYZCoefficients moonCoefficients = new XYZCoefficients();
+        moonCoefficients.x = new double[]{342287.55496909725, 72501.70553678898, -15811.26035241688, -515.2123463126311, 51.76172244198418, 0.6225688871319132, 0.02127610940841891, -0.0017654240071114243, -2.6456666719649905E-4, 1.3292121475866732E-5, 6.996312612316899E-8, 1.0933990057916391E-8, -6.6199154513853E-10};
+        moonCoefficients.y = new double[]{-145227.7912569928, 135885.57231077438, 6899.7446854445125, -1053.241042936561, -19.58369271396536, 1.2671668319743563, 0.017033247325862814, 0.004087440673833835, -1.9025033172243496E-4, -7.492218995696926E-6, 4.2434605194752486E-7, -2.5226032660516827E-9, 2.4323312297143653E-9};
+        moonCoefficients.z = new double[]{-91282.7451740271, 49115.16222064411, 4320.380320417298, -383.5770773804004, -13.002107000241056, 0.4574558354302617, 0.005257746383073818, 0.0018466662002104503, -5.315420280951311E-5, -4.326803083535969E-6, 1.6630631271437637E-7, -1.982042630453135E-9, 1.062042754910972E-9};
+
+        List<ChebyshevRecord> moonChebyshevRecords = Collections.singletonList(new ChebyshevRecord(moonTimeSpan, moonCoefficients));
+        MOON_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Moon, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, moonChebyshevRecords);
     }
 
 }

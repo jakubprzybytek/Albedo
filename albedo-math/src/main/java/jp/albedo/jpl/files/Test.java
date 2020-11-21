@@ -27,6 +27,11 @@ public class Test {
         printChebyshevData(
                 kernel.getSpkKernelRecord(JplBody.Earth, JplBody.EarthMoonBarycenter),
                 EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9)));
+
+        System.out.println("Earth moon barycenter -> Moon");
+        printChebyshevData(
+                kernel.getSpkKernelRecord(JplBody.Moon, JplBody.EarthMoonBarycenter),
+                EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9)));
     }
 
     private static void printChebyshevData(SpkKernelRecord chebyshevData, double jde) {
