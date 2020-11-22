@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class StateSolverFactoryCommonCenterBodySolverTest {
+public class StateSolverFactoryTest_CommonCenterBodySolver {
 
     private final static List<ChebyshevRecord> firstChebyshevList = new ArrayList<>();
 

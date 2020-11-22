@@ -1,6 +1,7 @@
 package jp.albedo.jpl.state.impl;
 
 import jp.albedo.common.RectangularCoordinates;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.utils.FunctionUtils;
@@ -23,7 +24,7 @@ public class DirectStateSolver implements StateSolver {
 
     public RectangularCoordinates forDate(double jde) {
         final RectangularCoordinates computed = positionCalculators.stream()
-                .map(FunctionUtils.wrap(calculator -> calculator.compute(jde)))
+                .map(FunctionUtils.wrap(calculator -> calculator.compute(EphemerisSeconds.fromJde(jde))))
                 .reduce(RectangularCoordinates.ZERO, RectangularCoordinates::add);
         return negate ? computed.negate() : computed;
     }

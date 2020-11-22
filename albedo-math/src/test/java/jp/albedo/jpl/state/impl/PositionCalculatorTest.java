@@ -17,7 +17,7 @@ public class PositionCalculatorTest {
 
     @Test
     public void testEarthMoonBarycenterPosition() throws JplException {
-        PositionCalculator positionCalculator = new PositionCalculator(TestData.MOON_EARTH_BARYCENTER_FOR_2019_10_09.getChebyshevRecords());
+        PositionCalculator positionCalculator = new PositionCalculator(TestData.EARTH_MOON_BARYCENTER_FOR_2019_10_09.getChebyshevRecords());
         final RectangularCoordinates coordinates = positionCalculator.compute(EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9)));
 
         assertAll(

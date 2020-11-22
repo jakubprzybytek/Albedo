@@ -26,7 +26,16 @@ public class SpkKernelRepository {
     public void load(File file, double startJde, double endJde) throws JplException {
         final SpkFileLoader loader = new SpkFileLoader(file);
         loader.loadAll(startJde, endJde)
-                .forEach(this::storeNewSpkKernelRecord);
+                .forEach(this::registerSpkKernelRecord);
+    }
+
+    public void registerSpkKernelRecord(SpkKernelRecord newRecord) {
+        Optional<SpkKernelRecord> existingRecord = spkKernelForest.getEdge(newRecord.getCenterBody(), newRecord.getBody());
+        if (existingRecord.isPresent()) {
+            existingRecord.get().merge(newRecord);
+        } else {
+            spkKernelForest.addEdge(newRecord.getCenterBody(), newRecord.getBody(), newRecord);
+        }
     }
 
     /**
@@ -62,15 +71,6 @@ public class SpkKernelRepository {
      */
     public StateSolverFactory stateSolver() {
         return new StateSolverFactory(this);
-    }
-
-    private void storeNewSpkKernelRecord(SpkKernelRecord newRecord) {
-        Optional<SpkKernelRecord> existingRecord = spkKernelForest.getEdge(newRecord.getCenterBody(), newRecord.getBody());
-        if (existingRecord.isPresent()) {
-            existingRecord.get().merge(newRecord);
-        } else {
-            spkKernelForest.addEdge(newRecord.getCenterBody(), newRecord.getBody(), newRecord);
-        }
     }
 
 }

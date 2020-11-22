@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class StateSolverFactoryDirectSolverTest {
+public class StateSolverFactoryTest_DirectSolver {
 
     private final static List<ChebyshevRecord> firstChebyshevList = new ArrayList<>();
 
