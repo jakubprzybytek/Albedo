@@ -19,6 +19,11 @@ public class TestDataGenerator {
         //kernel.load(new File("d:/Workspace/Java/Albedo/misc/jup357.bsp"), JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25));
 
         generateSingleSpkKernelRecord(
+                "SUN_FOR_2019_10_09",
+                kernel, JplBody.Sun, JplBody.SolarSystemBarycenter,
+                JulianDay.fromDate(2019, 10, 9));
+
+        generateSingleSpkKernelRecord(
                 "EARTH_MOON_BARYCENTER_FOR_2019_10_09",
                 kernel, JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter,
                 JulianDay.fromDate(2019, 10, 9));

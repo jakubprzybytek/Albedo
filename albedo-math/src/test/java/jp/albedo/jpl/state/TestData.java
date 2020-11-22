@@ -16,9 +16,22 @@ import static org.assertj.core.api.Assertions.within;
 public class TestData {
 
     /**
-     * Offset that WebGeocalc seems to use.
+     * Offset to compensate for differences between WebGeocalc results and those computed here.
      */
-    public static final Offset<Double> WEB_GEOCALC_OFFSET = within(0.0000001);
+    public static final Offset<Double> WEB_GEOCALC_OFFSET = within(0.00000002);
+
+    public static SpkKernelRecord SUN_FOR_2019_10_09;
+
+    static {
+        TimeSpan timeSpan = new TimeSpan(6.22728E8, 6.241104E8);
+        XYZCoefficients coefficients = new XYZCoefficients();
+        coefficients.x = new double[]{-455884.48855585506, -10164.155499764362, -0.3411683170841032, 0.15909067868675872, 0.0018506334181158674, 9.679620602878185E-6, 7.012644179059113E-7, -3.796680698484716E-8, 3.3311014819291988E-9, -1.8172360909786425E-9, -3.1282010162857314E-11};
+        coefficients.y = new double[]{1039325.1106051152, -1189.3575759130874, -26.38909400812884, -0.04435198047992747, 0.003008260209138108, 3.102895996511483E-5, 4.842798923819553E-6, 3.976182277184461E-8, 2.4994293616558657E-8, 3.092114025093347E-10, 4.3366928003439235E-11};
+        coefficients.z = new double[]{451001.28497513244, -215.0019379509757, -11.226174278559911, -0.03109578949732903, 0.0012350005356794543, 1.0431233160300685E-5, 2.5899518757836785E-6, 2.6549954658194798E-8, 1.302207541828127E-8, 3.5734938024976557E-10, 2.2588224191907733E-11};
+
+        List<ChebyshevRecord> chebyshevRecords = Collections.singletonList(new ChebyshevRecord(timeSpan, coefficients));
+        SUN_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Sun, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, chebyshevRecords);
+    }
 
     public static SpkKernelRecord EARTH_MOON_BARYCENTER_FOR_2019_10_09;
 
