@@ -7,7 +7,6 @@ import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.TestData;
 import jp.albedo.jpl.WebGeocalc;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
-import jp.albedo.jpl.state.StateSolver;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

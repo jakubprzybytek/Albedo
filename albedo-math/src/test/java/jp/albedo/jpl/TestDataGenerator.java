@@ -1,8 +1,6 @@
 package jp.albedo.jpl;
 
 import jp.albedo.common.JulianDay;
-import jp.albedo.jpl.JplBody;
-import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.ChebyshevRecord;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
