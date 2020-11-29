@@ -30,6 +30,11 @@ public class RectangularCoordinates {
         return new RectangularCoordinates(-this.x, -this.y, -this.z);
     }
 
+    public RectangularCoordinates normalize() {
+        final double d = getDistance();
+        return new RectangularCoordinates(x / d, y / d, z / d);
+    }
+
     public RectangularCoordinates add(RectangularCoordinates second) {
         return new RectangularCoordinates(
                 this.x + second.x,
@@ -64,6 +69,33 @@ public class RectangularCoordinates {
 
     public double getDistance() {
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+
+    public double scalarProduct(RectangularCoordinates other) {
+        return x * other.x + y * other.y + z * other.z;
+    }
+
+    public RectangularCoordinates crossProduct(RectangularCoordinates other) {
+        return new RectangularCoordinates(
+                y * other.z - z * other.y,
+                z * other.x - x * other.z,
+                x * other.y - y * other.x
+        );
+    }
+
+    /**
+     * From https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+     *
+     * @param axis  Vector to rotate about.
+     * @param angle Rotation angle.
+     * @return New vector after rotation.
+     */
+    public RectangularCoordinates rotate(RectangularCoordinates axis, double angle) {
+        final RectangularCoordinates k = axis.normalize();
+        final RectangularCoordinates first = multiplyBy(Math.cos(angle));
+        final RectangularCoordinates second = k.multiplyBy(scalarProduct(k)).multiplyBy(1 - Math.cos(angle));
+        final RectangularCoordinates third = k.crossProduct(this).multiplyBy(Math.sin(angle));
+        return first.add(second).add(third);
     }
 
     @Override

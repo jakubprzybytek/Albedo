@@ -3,7 +3,7 @@ package jp.albedo.jpl.state;
 import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jeanmeeus.ephemeris.common.SphericalCoordinates;
-import jp.albedo.jpl.JplConstant;
+import jp.albedo.jpl.JplConstantEnum;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.SPKernel;
@@ -138,7 +138,7 @@ class StateCalculatorTest {
 
         StateCalculator earthMoonBarycenterStateCalculator = new StateCalculator(JplBody.EarthMoonBarycenter, this.spKernel);
         final RectangularCoordinates earthJPLCoordsKm = earthMoonBarycenterStateCalculator.compute(jde);
-        final RectangularCoordinates earthJPLCoordsAu = earthJPLCoordsKm.divideBy(this.spKernel.getConstant(JplConstant.AU));
+        final RectangularCoordinates earthJPLCoordsAu = earthJPLCoordsKm.divideBy(this.spKernel.getConstant(JplConstantEnum.AU));
         System.out.printf("Earth JLP coords: %s, distance=%f%n", earthJPLCoordsKm, earthJPLCoordsKm.getDistance());
 
         assertEquals(0.13156325736639987, earthJPLCoordsAu.x);
@@ -147,12 +147,12 @@ class StateCalculatorTest {
 
         StateCalculator moonStateCalculator = new StateCalculator(JplBody.Moon, this.spKernel);
         final RectangularCoordinates moonGeocentricJplCoordsKm = moonStateCalculator.compute(jde);
-        final RectangularCoordinates moonGeocentricJplCoordsAu = moonGeocentricJplCoordsKm.divideBy(this.spKernel.getConstant(JplConstant.AU));
+        final RectangularCoordinates moonGeocentricJplCoordsAu = moonGeocentricJplCoordsKm.divideBy(this.spKernel.getConstant(JplConstantEnum.AU));
 
         System.out.printf("Moon JLP coords [AU]: %s, distance=%f%n", moonGeocentricJplCoordsAu, moonGeocentricJplCoordsAu.getDistance());
         System.out.printf("Moon JLP coords [km]: %s, distance=%f%n", moonGeocentricJplCoordsKm, moonGeocentricJplCoordsKm.getDistance());
 
-        final double earthToBarycenterDistance = moonGeocentricJplCoordsKm.getDistance() / (1 + this.spKernel.getConstant(JplConstant.EarthMoonMassRatio));
+        final double earthToBarycenterDistance = moonGeocentricJplCoordsKm.getDistance() / (1 + this.spKernel.getConstant(JplConstantEnum.EarthMoonMassRatio));
         System.out.printf("Earth to earth-moon barycenter distance: %f%n", earthToBarycenterDistance);
     }
 

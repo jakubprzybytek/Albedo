@@ -26,7 +26,7 @@ public class StateSolverFactory {
             throw new IllegalStateException("Cannot build StateSolver without information about target and observer bodies!");
         }
 
-        List<SpkKernelRecord> spkRecordsForTarget = spkKernel.getSpkKernelRecords(targetBody);
+        List<SpkKernelRecord> spkRecordsForTarget = spkKernel.getAllTransientSpkKernelRecords(targetBody);
 
         // check if observer is on the spkRecords for target
         List<SpkKernelRecord> directSpkRecordsToTarget = spkRecordsForTarget.stream()
@@ -38,7 +38,7 @@ public class StateSolverFactory {
             return new DirectStateSolver(directSpkRecordsToTarget, false);
         }
 
-        List<SpkKernelRecord> spkRecordsForObserver = spkKernel.getSpkKernelRecords(observerBody);
+        List<SpkKernelRecord> spkRecordsForObserver = spkKernel.getAllTransientSpkKernelRecords(observerBody);
 
         // check if target is on the spkRecords for observer
         List<SpkKernelRecord> directSpkRecordsToObserver = spkRecordsForObserver.stream()

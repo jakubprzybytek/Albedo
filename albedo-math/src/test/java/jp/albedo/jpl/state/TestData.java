@@ -15,11 +15,6 @@ import static org.assertj.core.api.Assertions.within;
 
 public class TestData {
 
-    /**
-     * Offset to compensate for differences between WebGeocalc results and those computed here.
-     */
-    public static final Offset<Double> WEB_GEOCALC_OFFSET = within(0.00000002);
-
     public static SpkKernelRecord SUN_FOR_2019_10_09;
 
     static {
@@ -72,4 +67,29 @@ public class TestData {
         MOON_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Moon, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, chebyshevRecords);
     }
 
+    public static SpkKernelRecord VENUS_BARYCENTER_FOR_2019_10_09;
+
+    static {
+        TimeSpan timeSpan = new TimeSpan(6.22728E8, 6.241104E8);
+        XYZCoefficients coefficients = new XYZCoefficients();
+        coefficients.x = new double[]{-7.861341507461475E7, 1.6214962227195863E7, 985798.6283880196, -34661.90916946326, -989.9148416530567, 23.47617068422309, 0.34465006108289575, -0.008980823575339846, -1.1329197349830357E-5, 2.749110523035549E-6};
+        coefficients.y = new double[]{-6.71569713142717E7, -1.5786403056353694E7, 859841.5772621981, 32360.621295934372, -933.7183295375095, -18.58048202490514, 0.4469835788898876, 0.003428328980194743, -1.4594983577901347E-4, 1.0176343933612525E-6};
+        coefficients.z = new double[]{-2.528866897302557E7, -8129417.506267378, 324512.05905360094, 16753.906111217228, -357.4917806725975, -9.845784818905384, 0.17931554766072877, 0.002110691361240645, -6.495324291902742E-5, 2.8586507221580395E-7};
+
+        List<ChebyshevRecord> chebyshevRecords = Collections.singletonList(new ChebyshevRecord(timeSpan, coefficients));
+        VENUS_BARYCENTER_FOR_2019_10_09 = new SpkKernelRecord(JplBody.VenusBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, chebyshevRecords);
+    }
+
+    public static SpkKernelRecord VENUS_FOR_2019_10_09;
+
+    static {
+        TimeSpan timeSpan = new TimeSpan(-1.42007472E10, 2.05140816E10);
+        XYZCoefficients coefficients = new XYZCoefficients();
+        coefficients.x = new double[]{0.0, 0.0};
+        coefficients.y = new double[]{0.0, 0.0};
+        coefficients.z = new double[]{0.0, 0.0};
+
+        List<ChebyshevRecord> chebyshevRecords = Collections.singletonList(new ChebyshevRecord(timeSpan, coefficients));
+        VENUS_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Venus, JplBody.VenusBarycenter, ReferenceFrame.J2000, chebyshevRecords);
+    }
 }

@@ -5,7 +5,7 @@ import jp.albedo.common.BodyInformation;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
-import jp.albedo.jpl.JplConstant;
+import jp.albedo.jpl.JplConstantEnum;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.SPKernel;
@@ -34,9 +34,9 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
     private final EarthStateCalculator earthStateCalculator;
 
     public MoonEphemeridesCalculator(SPKernel spKernel) throws JplException {
-        this.speedOfLight = spKernel.getConstant(JplConstant.SpeedOfLight);
-        this.au = spKernel.getConstant(JplConstant.AU);
-        this.earthMoonMassRatio = spKernel.getConstant(JplConstant.EarthMoonMassRatio);
+        this.speedOfLight = spKernel.getConstant(JplConstantEnum.SpeedOfLight);
+        this.au = spKernel.getConstant(JplConstantEnum.AU);
+        this.earthMoonMassRatio = spKernel.getConstant(JplConstantEnum.EarthMoonMassRatio);
 
         this.moonEquatorialRadius = BodyInformation.Moon.equatorialRadius;
 
@@ -51,7 +51,7 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
      * @return
      * @throws JplException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    public List<Ephemeris> computeEphemeridesForJds(List<Double> jdes) throws JplException {
+    public List<Ephemeris> computeFor(List<Double> jdes) throws JplException {
 
         final List<Ephemeris> ephemerides = new ArrayList<>(jdes.size());
 

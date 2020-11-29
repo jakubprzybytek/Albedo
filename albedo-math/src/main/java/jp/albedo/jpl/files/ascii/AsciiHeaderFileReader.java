@@ -1,6 +1,6 @@
 package jp.albedo.jpl.files.ascii;
 
-import jp.albedo.jpl.JplConstant;
+import jp.albedo.jpl.JplConstantEnum;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -19,7 +19,7 @@ public class AsciiHeaderFileReader {
 
     private static Log LOG = LogFactory.getLog(AsciiHeaderFileReader.class);
 
-    private Map<JplConstant, Double> constants;
+    private Map<JplConstantEnum, Double> constants;
 
     private List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
 
@@ -52,20 +52,20 @@ public class AsciiHeaderFileReader {
         LOG.info(String.format("Loaded %d coefficient descriptors from %s in %s", this.contentDescriptor.size(), file.getPath(), Duration.between(start, Instant.now())));
     }
 
-    private Map<JplConstant, Double> parseConstants(BufferedReader bufferedReader) throws IOException {
+    private Map<JplConstantEnum, Double> parseConstants(BufferedReader bufferedReader) throws IOException {
         bufferedReader.readLine();
         bufferedReader.readLine();
 
-        Map<JplConstant, Double> constants = new HashMap<>();
+        Map<JplConstantEnum, Double> constants = new HashMap<>();
 
         DoublesBlockReader doublesBlockReader = new DoublesBlockReader(bufferedReader);
         doublesBlockReader.read(6);
-        constants.put(JplConstant.SpeedOfLight, doublesBlockReader.read());
+        constants.put(JplConstantEnum.SpeedOfLight, doublesBlockReader.read());
         doublesBlockReader.read(2);
-        constants.put(JplConstant.AU, doublesBlockReader.read());
-        constants.put(JplConstant.EarthMoonMassRatio, doublesBlockReader.read());
+        constants.put(JplConstantEnum.AU, doublesBlockReader.read());
+        constants.put(JplConstantEnum.EarthMoonMassRatio, doublesBlockReader.read());
         doublesBlockReader.read(9);
-        constants.put(JplConstant.GMSun, doublesBlockReader.read());
+        constants.put(JplConstantEnum.GMSun, doublesBlockReader.read());
 
         return constants;
     }
@@ -91,7 +91,7 @@ public class AsciiHeaderFileReader {
         return contentDescriptor;
     }
 
-    public Map<JplConstant, Double> getConstants() {
+    public Map<JplConstantEnum, Double> getConstants() {
         return constants;
     }
 

@@ -37,6 +37,16 @@ public class TestDataGenerator {
                 "MOON_FOR_2019_10_09",
                 kernel, JplBody.Moon, JplBody.EarthMoonBarycenter,
                 JulianDay.fromDate(2019, 10, 9));
+
+        generateSingleSpkKernelRecord(
+                "VENUS_BARYCENTER_FOR_2019_10_09",
+                kernel, JplBody.VenusBarycenter, JplBody.SolarSystemBarycenter,
+                JulianDay.fromDate(2019, 10, 9));
+
+        generateSingleSpkKernelRecord(
+                "VENUS_FOR_2019_10_09",
+                kernel, JplBody.Venus, JplBody.VenusBarycenter,
+                JulianDay.fromDate(2019, 10, 9));
     }
 
     private static void generateSingleSpkKernelRecord(String spkRecordName, SpkKernelRepository kernel, JplBody target, JplBody observer, double jde) throws JplException {

@@ -1,10 +1,7 @@
 package jp.albedo.jpl;
 
-public enum JplConstant {
+public class JplConstant {
 
-    SpeedOfLight,
-    AU,
-    EarthMoonMassRatio,
-    GMSun;
+    public final static double SPEED_OF_LIGHT = 299792.457999999984;
 
 }

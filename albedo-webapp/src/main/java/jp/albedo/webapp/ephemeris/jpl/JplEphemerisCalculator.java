@@ -75,7 +75,7 @@ public class JplEphemerisCalculator {
         final EphemeridesCalculator ephemeridesCalculator = EphemeridesCalculatorFactory.getFor(body, this.jplKernelsService.getSpKernel());
 
         final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
-        final List<Ephemeris> ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jdes);
+        final List<Ephemeris> ephemeris = ephemeridesCalculator.computeFor(jdes);
 
         if (LOG.isDebugEnabled()) {
             LOG.info(String.format("Calculated %d ephemeris in %s", ephemeris.size(), Duration.between(start, Instant.now())));

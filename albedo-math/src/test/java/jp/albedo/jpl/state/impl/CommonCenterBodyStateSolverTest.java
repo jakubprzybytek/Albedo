@@ -5,6 +5,7 @@ import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.jpl.state.TestData;
+import jp.albedo.jpl.state.WebGeocalc;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -31,7 +32,7 @@ public class CommonCenterBodyStateSolverTest {
         final RectangularCoordinates coordinates = solver.forDate(JulianDay.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
-                .isEqualTo(new RectangularCoordinates(317255.79347754, -220341.79908000, -119833.86836880), TestData.WEB_GEOCALC_OFFSET);
+                .isEqualTo(new RectangularCoordinates(317255.79347754, -220341.79908000, -119833.86836880), WebGeocalc.WEB_GEOCALC_OFFSET);
     }
 
     @Test
@@ -40,7 +41,7 @@ public class CommonCenterBodyStateSolverTest {
         final RectangularCoordinates coordinates = solver.forDate(JulianDay.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
-                .isEqualTo(new RectangularCoordinates(-317255.79347754, 220341.79908000, 119833.86836880), TestData.WEB_GEOCALC_OFFSET);
+                .isEqualTo(new RectangularCoordinates(-317255.79347754, 220341.79908000, 119833.86836880), WebGeocalc.WEB_GEOCALC_OFFSET);
     }
 
 }

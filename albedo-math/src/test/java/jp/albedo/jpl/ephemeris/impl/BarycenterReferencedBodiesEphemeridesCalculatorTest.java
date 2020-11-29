@@ -42,7 +42,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         double jde = JulianDay.fromDate(1949, 12, 14);
 
         BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Sun, this.spKernel);
-        Ephemeris ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jde);
+        Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
         System.out.printf("Sun ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -59,7 +59,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         double jde = JulianDay.fromDate(1949, 12, 14);
 
         BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Mercury, this.spKernel);
-        Ephemeris ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jde);
+        Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -78,7 +78,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         double jde = JulianDay.fromDate(1949, 12, 14);
 
         BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Venus, this.spKernel);
-        Ephemeris ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jde);
+        Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
         System.out.printf("Venus ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);
@@ -97,7 +97,7 @@ class BarycenterReferencedBodiesEphemeridesCalculatorTest {
         double jde = JulianDay.fromDate(1949, 12, 14);
 
         BarycenterReferencedBodiesEphemeridesCalculator ephemeridesCalculator = new BarycenterReferencedBodiesEphemeridesCalculator(JplBody.Mars, this.spKernel);
-        Ephemeris ephemeris = ephemeridesCalculator.computeEphemeridesForJds(jde);
+        Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
         System.out.printf("Mars ephemeris: %s", ephemeris.toStringHighPrecision());
 
         assertEquals(jde, ephemeris.jde);

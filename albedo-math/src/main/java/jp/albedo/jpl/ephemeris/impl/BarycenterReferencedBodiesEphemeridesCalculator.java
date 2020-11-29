@@ -6,7 +6,7 @@ import jp.albedo.common.ephemeris.Elongation;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
 import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.jpl.JplConstant;
+import jp.albedo.jpl.JplConstantEnum;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.SPKernel;
@@ -37,8 +37,8 @@ public class BarycenterReferencedBodiesEphemeridesCalculator implements Ephemeri
     private final ApparentMagnitudeCalculator magnitudeCalculator;
 
     public BarycenterReferencedBodiesEphemeridesCalculator(JplBody body, SPKernel spKernel) throws JplException {
-        this.speedOfLight = spKernel.getConstant(JplConstant.SpeedOfLight);
-        this.au = spKernel.getConstant(JplConstant.AU);
+        this.speedOfLight = spKernel.getConstant(JplConstantEnum.SpeedOfLight);
+        this.au = spKernel.getConstant(JplConstantEnum.AU);
 
         this.bodyEquatorialRadius = BodyInformation.valueOf(body.name()).equatorialRadius;
 
@@ -55,7 +55,7 @@ public class BarycenterReferencedBodiesEphemeridesCalculator implements Ephemeri
      * @return Ephemerides for provided parameters.
      * @throws JplException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    public List<Ephemeris> computeEphemeridesForJds(List<Double> jdes) throws JplException {
+    public List<Ephemeris> computeFor(List<Double> jdes) throws JplException {
 
         final List<Ephemeris> ephemerides = new ArrayList<>(jdes.size());
 

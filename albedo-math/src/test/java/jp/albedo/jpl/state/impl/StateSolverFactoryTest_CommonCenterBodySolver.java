@@ -40,8 +40,8 @@ public class StateSolverFactoryTest_CommonCenterBodySolver {
         final SpkKernelRecord fourth = new SpkKernelRecord(JplBody.Jupiter, JplBody.JupiterBarycenter, ReferenceFrame.J2000, fourthChebyshevList);
 
         spkKernel = mock(SpkKernelRepository.class);
-        when(spkKernel.getSpkKernelRecords(JplBody.Earth)).thenReturn(Arrays.asList(first, second));
-        when(spkKernel.getSpkKernelRecords(JplBody.Jupiter)).thenReturn(Arrays.asList(third, fourth));
+        when(spkKernel.getAllTransientSpkKernelRecords(JplBody.Earth)).thenReturn(Arrays.asList(first, second));
+        when(spkKernel.getAllTransientSpkKernelRecords(JplBody.Jupiter)).thenReturn(Arrays.asList(third, fourth));
     }
 
     @Test

@@ -5,6 +5,7 @@ import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.jpl.state.TestData;
+import jp.albedo.jpl.state.WebGeocalc;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -31,7 +32,7 @@ public class DirectStateSolverTest {
         final RectangularCoordinates coordinates = solver.forDate(JulianDay.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
-                .isEqualTo(new RectangularCoordinates(143811431.38536263, 36856636.26047815, 15977858.62839704), TestData.WEB_GEOCALC_OFFSET);
+                .isEqualTo(new RectangularCoordinates(143811431.38536263, 36856636.26047815, 15977858.62839704), WebGeocalc.WEB_GEOCALC_OFFSET);
     }
 
     @Test
@@ -40,7 +41,7 @@ public class DirectStateSolverTest {
         final RectangularCoordinates coordinates = solver.forDate(JulianDay.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
-                .isEqualTo(new RectangularCoordinates(-143811431.38536263, -36856636.26047815, -15977858.62839704), TestData.WEB_GEOCALC_OFFSET);
+                .isEqualTo(new RectangularCoordinates(-143811431.38536263, -36856636.26047815, -15977858.62839704), WebGeocalc.WEB_GEOCALC_OFFSET);
     }
 
     @Test
@@ -49,7 +50,7 @@ public class DirectStateSolverTest {
         final RectangularCoordinates coordinates = solver.forDate(JulianDay.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
-                .isEqualTo(new RectangularCoordinates(144128687.17884016, 36636294.46139815, 15858024.76002824), TestData.WEB_GEOCALC_OFFSET);
+                .isEqualTo(new RectangularCoordinates(144128687.17884016, 36636294.46139815, 15858024.76002824), WebGeocalc.WEB_GEOCALC_OFFSET);
     }
 
     @Test
@@ -58,7 +59,7 @@ public class DirectStateSolverTest {
         final RectangularCoordinates coordinates = solver.forDate(JulianDay.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
-                .isEqualTo(new RectangularCoordinates(-144128687.17884016, -36636294.46139815, -15858024.76002824), TestData.WEB_GEOCALC_OFFSET);
+                .isEqualTo(new RectangularCoordinates(-144128687.17884016, -36636294.46139815, -15858024.76002824), WebGeocalc.WEB_GEOCALC_OFFSET);
     }
 
 }

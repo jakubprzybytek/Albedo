@@ -36,8 +36,8 @@ public class StateSolverFactoryTest_DirectSolver {
         final SpkKernelRecord third = new SpkKernelRecord(JplBody.Pluto, JplBody.Earth, ReferenceFrame.J2000, thirdChebyshevList);
 
         spkKernel = mock(SpkKernelRepository.class);
-        when(spkKernel.getSpkKernelRecords(JplBody.Pluto)).thenReturn(Arrays.asList(first, second, third));
-        when(spkKernel.getSpkKernelRecords(JplBody.Earth)).thenReturn(Arrays.asList(first, second));
+        when(spkKernel.getAllTransientSpkKernelRecords(JplBody.Pluto)).thenReturn(Arrays.asList(first, second, third));
+        when(spkKernel.getAllTransientSpkKernelRecords(JplBody.Earth)).thenReturn(Arrays.asList(first, second));
     }
 
     @Test

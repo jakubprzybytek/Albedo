@@ -48,7 +48,7 @@ public class SpkKernelRepository {
      */
     public SpkKernelRecord getSpkKernelRecord(JplBody target, JplBody observer) throws JplException {
         return spkKernelForest.getEdge(observer, target)
-                .orElseThrow(() -> new JplException("Cannot find Chebyshev data for target: " + target + " w.r.t. " + observer));
+                .orElseThrow(() -> new JplException("Cannot find SPK Kenerl record data for target: " + target + " w.r.t. " + observer));
     }
 
     /**
@@ -59,9 +59,9 @@ public class SpkKernelRepository {
      * @return List of SPK Kernel Records
      * @throws JplException if any SPK Kernel Records cannot be found for requested target.
      */
-    public List<SpkKernelRecord> getSpkKernelRecords(JplBody target) throws JplException {
+    public List<SpkKernelRecord> getAllTransientSpkKernelRecords(JplBody target) throws JplException {
         return spkKernelForest.findEdgesTo(target)
-                .orElseThrow(() -> new JplException("Cannot find Chebyshev data for target: " + target));
+                .orElseThrow(() -> new JplException("Cannot find SPK Kernel record data for target: " + target));
     }
 
     /**
