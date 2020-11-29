@@ -1,17 +1,13 @@
-package jp.albedo.jpl.state;
+package jp.albedo.jpl;
 
-import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.files.binary.ReferenceFrame;
 import jp.albedo.jpl.kernel.ChebyshevRecord;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.kernel.XYZCoefficients;
-import org.assertj.core.data.Offset;
 
 import java.util.Collections;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.within;
 
 public class TestData {
 

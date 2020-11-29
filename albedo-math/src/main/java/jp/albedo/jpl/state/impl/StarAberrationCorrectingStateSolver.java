@@ -8,6 +8,11 @@ import jp.albedo.jpl.state.StateSolver;
 
 import java.util.List;
 
+/**
+ * Reference:
+ * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/abcorr.html
+ * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/spkezr_c.html
+ */
 public class StarAberrationCorrectingStateSolver implements StateSolver {
 
     private static final double SECONDS_IN_DAY = 24.0 * 60.0 * 60.0;

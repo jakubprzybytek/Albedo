@@ -1,13 +1,13 @@
 package jp.albedo.jpl.state;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.JulianDay;
 import jp.albedo.common.Radians;
 import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.common.VelocityVector;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
+import jp.albedo.jpl.TestData;
+import jp.albedo.jpl.WebGeocalc;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.testutils.AlbedoAssertions;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.filter;
 import static org.assertj.core.api.Assertions.within;
 
 public class VelocitySolverTest {

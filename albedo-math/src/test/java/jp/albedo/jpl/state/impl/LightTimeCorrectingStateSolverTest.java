@@ -4,7 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.state.StateSolver;
-import jp.albedo.jpl.state.TestData;
+import jp.albedo.jpl.TestData;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

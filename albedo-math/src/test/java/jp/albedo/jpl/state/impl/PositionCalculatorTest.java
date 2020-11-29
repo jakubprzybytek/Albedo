@@ -4,8 +4,8 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
-import jp.albedo.jpl.state.TestData;
-import jp.albedo.jpl.state.WebGeocalc;
+import jp.albedo.jpl.TestData;
+import jp.albedo.jpl.WebGeocalc;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

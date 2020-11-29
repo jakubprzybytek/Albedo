@@ -1,4 +1,4 @@
-package jp.albedo.jpl.state;
+package jp.albedo.jpl;
 
 import org.assertj.core.data.Offset;
 

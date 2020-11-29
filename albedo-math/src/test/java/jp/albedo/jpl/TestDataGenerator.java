@@ -1,4 +1,4 @@
-package jp.albedo.jpl.state;
+package jp.albedo.jpl;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.jpl.JplBody;
