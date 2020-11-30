@@ -4,10 +4,14 @@ import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
+import jp.albedo.jpl.state.Correction;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.utils.Collectors;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class StateSolverFactory {
 
@@ -17,8 +21,25 @@ public class StateSolverFactory {
 
     private JplBody observerBody;
 
+    private Set<Correction> corrections = new HashSet<>();
+
     public StateSolverFactory(SpkKernelRepository spkKernel) {
         this.spkKernel = spkKernel;
+    }
+
+    public StateSolverFactory target(JplBody targetBody) {
+        this.targetBody = targetBody;
+        return this;
+    }
+
+    public StateSolverFactory observer(JplBody observerBody) {
+        this.observerBody = observerBody;
+        return this;
+    }
+
+    public StateSolverFactory corrections(Correction... corrections) {
+        this.corrections.addAll(Arrays.asList(corrections));
+        return this;
     }
 
     public StateSolver build() throws JplException {
@@ -26,6 +47,14 @@ public class StateSolverFactory {
             throw new IllegalStateException("Cannot build StateSolver without information about target and observer bodies!");
         }
 
+        if (corrections.isEmpty()) {
+            return buildUncorrected();
+        } else {
+            return buildCorrected();
+        }
+    }
+
+    private StateSolver buildUncorrected() throws JplException {
         List<SpkKernelRecord> spkRecordsForTarget = spkKernel.getAllTransientSpkKernelRecords(targetBody);
 
         // check if observer is on the spkRecords for target
@@ -66,14 +95,23 @@ public class StateSolverFactory {
         throw new JplException("Cannot find SPK records for " + targetBody + " w.r.t. " + observerBody + "!");
     }
 
-    public StateSolverFactory target(JplBody targetBody) {
-        this.targetBody = targetBody;
-        return this;
-    }
+    private StateSolver buildCorrected() throws JplException {
+        List<SpkKernelRecord> spkRecordsForTarget = spkKernel.getAllTransientSpkKernelRecords(targetBody);
+        List<SpkKernelRecord> spkRecordsForObserver = spkKernel.getAllTransientSpkKernelRecords(observerBody);
 
-    public StateSolverFactory observer(JplBody observerBody) {
-        this.observerBody = observerBody;
-        return this;
-    }
+        if (spkRecordsForTarget.get(0).getCenterBody() != spkRecordsForObserver.get(0).getCenterBody()) {
+            throw new JplException("Cannot set up state solver for bodies that don't the same ancestor SPK record.");
+        }
 
+        if (corrections.containsAll(Arrays.asList(Correction.LightTime, Correction.StarAberration))) {
+            final StateSolver lightTimeCorrectingStateSolverForTarget = new LightTimeCorrectingStateSolver(spkRecordsForTarget, spkRecordsForObserver);
+            return new StarAberrationCorrectingStateSolver(lightTimeCorrectingStateSolverForTarget, spkRecordsForObserver);
+
+        } else if (corrections.contains(Correction.LightTime)) {
+
+            return new LightTimeCorrectingStateSolver(spkRecordsForTarget, spkRecordsForObserver);
+        }
+
+        throw new JplException("Cannot set up state solver for corrections: " + corrections);
+    }
 }
