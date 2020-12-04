@@ -2,11 +2,9 @@ package jp.albedo.jpl.kernel;
 
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.files.SpkFileLoader;
 import jp.albedo.jpl.kernel.tree.Forest;
 import jp.albedo.jpl.state.impl.StateSolverFactory;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,22 +12,7 @@ public class SpkKernelRepository {
 
     private final Forest<JplBody, SpkKernelRecord> spkKernelForest = new Forest<>();
 
-    /**
-     * Loads SPK Kernel Records from provided binary SPK file.
-     * Only records that overlap with requested time span will be loaded.
-     *
-     * @param file     File to load from. It needs to be binary SPK file.
-     * @param startJde Start date of the time span.
-     * @param endJde   End date of the time span.
-     * @throws JplException If any error during file load occur.
-     */
-    public void load(File file, double startJde, double endJde) throws JplException {
-        final SpkFileLoader loader = new SpkFileLoader(file);
-        loader.loadAll(startJde, endJde)
-                .forEach(this::registerSpkKernelRecord);
-    }
-
-    public void registerSpkKernelRecord(SpkKernelRecord newRecord) {
+    void registerSpkKernelRecord(SpkKernelRecord newRecord) {
         Optional<SpkKernelRecord> existingRecord = spkKernelForest.getEdge(newRecord.getCenterBody(), newRecord.getBody());
         if (existingRecord.isPresent()) {
             existingRecord.get().merge(newRecord);

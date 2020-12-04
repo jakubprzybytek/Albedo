@@ -8,6 +8,10 @@ Download following resources and save on local disk:
 * ftp://ssd.jpl.nasa.gov/pub/eph/planets/ascii/de438/ascp01950.438
 * NGC.csv from https://github.com/mattiaverga/OpenNGC
 
+DE438
+* LSK: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/
+* SPK: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/
+
 Update `application.properties` accordingly.
 
 ## Quick Run

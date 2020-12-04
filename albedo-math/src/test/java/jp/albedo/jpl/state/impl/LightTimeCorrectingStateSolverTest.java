@@ -4,7 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.state.StateSolver;
-import jp.albedo.jpl.TestData;
+import jp.albedo.jpl.TestDataSpk;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -19,16 +19,16 @@ import static org.assertj.core.api.Assertions.within;
 public class LightTimeCorrectingStateSolverTest {
 
     private static final List<SpkKernelRecord> EARTH_SPK_RECORDS = Arrays.asList(
-            TestData.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
-            TestData.EARTH_FOR_2019_10_09);
+            TestDataSpk.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
+            TestDataSpk.EARTH_FOR_2019_10_09);
 
     private static final List<SpkKernelRecord> MOON_SPK_RECORDS = Arrays.asList(
-            TestData.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
-            TestData.MOON_FOR_2019_10_09);
+            TestDataSpk.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
+            TestDataSpk.MOON_FOR_2019_10_09);
 
     private static final List<SpkKernelRecord> VENUS_SPK_RECORDS = Arrays.asList(
-            TestData.VENUS_BARYCENTER_FOR_2019_10_09,
-            TestData.VENUS_FOR_2019_10_09);
+            TestDataSpk.VENUS_BARYCENTER_FOR_2019_10_09,
+            TestDataSpk.VENUS_FOR_2019_10_09);
 
     @Test
     public void testForMoon() {

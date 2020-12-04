@@ -4,7 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
-import jp.albedo.jpl.TestData;
+import jp.albedo.jpl.TestDataSpk;
 import jp.albedo.jpl.WebGeocalc;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class PositionCalculatorTest {
 
     @Test
     public void testEarthMoonBarycenterPosition() throws JplException {
-        PositionCalculator positionCalculator = new PositionCalculator(TestData.EARTH_MOON_BARYCENTER_FOR_2019_10_09.getChebyshevRecords());
+        PositionCalculator positionCalculator = new PositionCalculator(TestDataSpk.EARTH_MOON_BARYCENTER_FOR_2019_10_09.getChebyshevRecords());
         final RectangularCoordinates coordinates = positionCalculator.compute(EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9)));
 
         assertAll(
@@ -29,7 +29,7 @@ public class PositionCalculatorTest {
 
     @Test
     public void testEarthPosition() throws JplException {
-        PositionCalculator positionCalculator = new PositionCalculator(TestData.EARTH_FOR_2019_10_09.getChebyshevRecords());
+        PositionCalculator positionCalculator = new PositionCalculator(TestDataSpk.EARTH_FOR_2019_10_09.getChebyshevRecords());
         final RectangularCoordinates coordinates = positionCalculator.compute(EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9)));
 
         assertAll(

@@ -11,30 +11,14 @@ import jp.albedo.jpl.WebGeocalc;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.testutils.AlbedoAssertions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
 public class VelocitySolverTest {
 
-    private static SpkKernelRepository kernel;
-
-    @BeforeAll
-    public static void setUp() {
-        kernel = new SpkKernelRepository();
-        Stream.of(
-                TestData.SUN_FOR_2019_10_09,
-                TestData.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
-                TestData.EARTH_FOR_2019_10_09,
-                TestData.MOON_FOR_2019_10_09,
-                TestData.VENUS_BARYCENTER_FOR_2019_10_09,
-                TestData.VENUS_FOR_2019_10_09)
-                .forEach(kernel::registerSpkKernelRecord);
-    }
+    private static final SpkKernelRepository kernel = TestData.KERNEL;
 
     @Test
     void test() throws JplException {

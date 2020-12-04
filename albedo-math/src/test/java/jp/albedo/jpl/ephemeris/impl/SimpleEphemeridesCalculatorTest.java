@@ -9,7 +9,6 @@ import jp.albedo.jpl.TestData;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.testutils.AlbedoAssertions;
 import org.assertj.core.data.Offset;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,20 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SimpleEphemeridesCalculatorTest {
 
-    private static SpkKernelRepository kernel;
-
-    @BeforeAll
-    public static void setUp() {
-        kernel = new SpkKernelRepository();
-        Stream.of(
-                TestData.SUN_FOR_2019_10_09,
-                TestData.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
-                TestData.EARTH_FOR_2019_10_09,
-                TestData.MOON_FOR_2019_10_09,
-                TestData.VENUS_BARYCENTER_FOR_2019_10_09,
-                TestData.VENUS_FOR_2019_10_09)
-                .forEach(kernel::registerSpkKernelRecord);
-    }
+    private static final SpkKernelRepository kernel = TestData.KERNEL;
 
     @ParameterizedTest
     @MethodSource

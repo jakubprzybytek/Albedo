@@ -6,31 +6,16 @@ import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.TestData;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.stream.Stream;
 
 @Disabled
 public class StateSolver_ExecutionTimesTest {
 
-    private static SpkKernelRepository kernel;
-
-    @BeforeAll
-    public static void setUp() {
-        kernel = new SpkKernelRepository();
-        Stream.of(
-                TestData.SUN_FOR_2019_10_09,
-                TestData.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
-                TestData.EARTH_FOR_2019_10_09,
-                TestData.MOON_FOR_2019_10_09,
-                TestData.VENUS_BARYCENTER_FOR_2019_10_09,
-                TestData.VENUS_FOR_2019_10_09)
-                .forEach(kernel::registerSpkKernelRecord);
-    }
+    private static final SpkKernelRepository kernel = TestData.KERNEL;
 
     @Test
     public void test() throws JplException {

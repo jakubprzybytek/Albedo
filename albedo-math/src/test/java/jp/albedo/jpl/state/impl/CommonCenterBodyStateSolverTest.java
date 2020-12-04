@@ -4,7 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.state.StateSolver;
-import jp.albedo.jpl.TestData;
+import jp.albedo.jpl.TestDataSpk;
 import jp.albedo.jpl.WebGeocalc;
 import org.junit.jupiter.api.Test;
 
@@ -19,12 +19,12 @@ import static jp.albedo.testutils.AlbedoAssertions.assertThat;
 public class CommonCenterBodyStateSolverTest {
 
     private static final List<SpkKernelRecord> MOON_SPK_RECORDS = Arrays.asList(
-            TestData.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
-            TestData.MOON_FOR_2019_10_09);
+            TestDataSpk.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
+            TestDataSpk.MOON_FOR_2019_10_09);
 
     private static final List<SpkKernelRecord> EARTH_SPK_RECORDS = Arrays.asList(
-            TestData.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
-            TestData.EARTH_FOR_2019_10_09);
+            TestDataSpk.EARTH_MOON_BARYCENTER_FOR_2019_10_09,
+            TestDataSpk.EARTH_FOR_2019_10_09);
 
     @Test
     public void testEarthToMoon() {

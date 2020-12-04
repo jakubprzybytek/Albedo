@@ -3,18 +3,21 @@ package jp.albedo.jpl;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.ChebyshevRecord;
+import jp.albedo.jpl.kernel.SpkKernelLoader;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class TestDataGenerator {
+public class TestDataSpkGenerator {
 
     public static void main(String[] args) throws Exception {
-        SpkKernelRepository kernel = new SpkKernelRepository();
-        kernel.load(new File("d:/Workspace/Java/Albedo/misc/de438t.bsp"), JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25));
-        //kernel.load(new File("d:/Workspace/Java/Albedo/misc/jup357.bsp"), JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25));
+        SpkKernelRepository kernel = new SpkKernelLoader()
+                .forDateRange(JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25))
+                .load(new File("d:/Workspace/Java/Albedo/misc/de438/de438t.bsp"))
+//                .load(new File("d:/Workspace/Java/Albedo/misc/de438/jup357.bsp"))
+                .kernel();
 
         generateSingleSpkKernelRecord(
                 "SUN_FOR_2019_10_09",
