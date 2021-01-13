@@ -29,7 +29,7 @@ class SimpleEphemeridesCalculatorTest {
 
     @ParameterizedTest
     @MethodSource
-    void test(JplBody target, double jde, AstronomicalCoordinates expected, double elongation) throws JplException {
+    void test(JplBody target, double jde, AstronomicalCoordinates expectedCoords, double expectedElongation) throws JplException {
         SimpleEphemeridesCalculator ephemeridesCalculator = new SimpleEphemeridesCalculator(kernel, target);
 
         Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
@@ -37,8 +37,8 @@ class SimpleEphemeridesCalculatorTest {
 
         assertAll(
                 () -> assertThat(ephemeris.jde).isEqualTo(jde),
-                () -> AlbedoAssertions.assertThat(ephemeris.coordinates).isEqualTo(expected),
-                () -> assertThat(Math.toDegrees(ephemeris.elongation)).isEqualTo(elongation, Offset.offset(0.0001)),
+                () -> AlbedoAssertions.assertThat(ephemeris.coordinates).isEqualTo(expectedCoords),
+                () -> assertThat(Math.toDegrees(ephemeris.elongation)).isEqualTo(expectedElongation, Offset.offset(0.0001)),
                 () -> assertThat(ephemeris.apparentMagnitude).isEqualTo(0.0)
         );
     }

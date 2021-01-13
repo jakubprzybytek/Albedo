@@ -78,3 +78,10 @@ docker run --rm -i -v=albedo-data:/usr/data busybox ls /usr/data
 ### Run
 
 `docker run --publish 8000:8080 --detach --name albedo -v=albedo-data:/usr/data jp/albedo`
+
+## References
+
+* https://naif.jpl.nasa.gov/naif/tutorials.html
+* https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/spk.html
+* https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/time.html#The%20Leapseconds%20Kernel%20(LSK) 
+* https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/pck.html
