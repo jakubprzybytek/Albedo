@@ -9,7 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { grey, blue, red } from '@material-ui/core/colors';
-import RiseTransitSetEventListItem from './RiseTransitSet/RiseTransitSetEventListItem';
+import RiseTransitSetEventListItem from './riseTransitSet/RiseTransitSetEventListItem';
 import ConjunctionEventListItem from './conjunctions/ConjunctionEventListItem';
 import {
   buildEventsListToggleDaySectionAction,
