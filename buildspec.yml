@@ -8,7 +8,7 @@ phases:
     commands:
       - echo Build started on `date`
       - mvn package
-      - echo Building the Docker image ($IMAGE_REPO_NAME:1.0-$CODEBUILD_BUILD_NUMBER) ...
+      - echo Building the Docker image $IMAGE_REPO_NAME:1.0-$CODEBUILD_BUILD_NUMBER ...
       - docker build -f albedo-webapp/src/main/docker/Dockerfile -t $IMAGE_REPO_NAME:$IMAGE_TAG -t $IMAGE_REPO_NAME:1.0-$CODEBUILD_BUILD_NUMBER .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:
