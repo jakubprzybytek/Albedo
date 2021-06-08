@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 public enum DataType {
 
-    PositionChebyshevPosition(2),
-    PositionAndVelocityChebyshevPosition(3);
+    ChebyshevPosition(2),
+    ChebyshevPositionAndVelocity(3);
 
     public final int id;
 
