@@ -1,4 +1,6 @@
 # Albedo
+Algorithms for predicting astronomical events and web application with graphic interface to use them.  
+
 "draft of a beta version" - don't expect anything ;)
 
 ## Installation

@@ -32,6 +32,8 @@ public enum JplBody {
     Earth(399, BodyType.Planet),
 
     Mars(499, BodyType.Planet),
+    Phobos(401, BodyType.NaturalSatellite),
+    Deimos(402, BodyType.NaturalSatellite),
 
     Io(501, BodyType.NaturalSatellite),
     Europa(502, BodyType.NaturalSatellite),

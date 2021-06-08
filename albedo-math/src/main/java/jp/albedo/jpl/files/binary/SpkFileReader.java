@@ -62,7 +62,7 @@ public class SpkFileReader {
      */
     public List<ChebyshevRecord> getChebyshevArray(SpkFileArrayInformation arrayInfo, double startEt, double endEt) throws JplException {
 
-        if (arrayInfo.getDataType() != DataType.ChebyshevPosition) {
+        if (arrayInfo.getDataType() != DataType.PositionChebyshevPosition) {
             throw new UnsupportedOperationException("Unsupported data type id: " + arrayInfo.getDataType());
         }
 

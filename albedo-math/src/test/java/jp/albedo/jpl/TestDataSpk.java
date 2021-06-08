@@ -88,4 +88,31 @@ public class TestDataSpk {
         List<ChebyshevRecord> chebyshevRecords = Collections.singletonList(new ChebyshevRecord(timeSpan, coefficients));
         VENUS_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Venus, JplBody.VenusBarycenter, ReferenceFrame.J2000, chebyshevRecords);
     }
+
+    public static SpkKernelRecord JUPITER_BARYCENTER_FOR_2019_10_09;
+
+    static {
+        TimeSpan timeSpan = new TimeSpan(6.213456E8, 6.241104E8);
+        XYZCoefficients coefficients = new XYZCoefficients();
+        coefficients.x = new double[]{-2.9880390784092035E7, 1.7828154842568E7, 3841.708850213341, -384.49180477825803, -0.3505562860349162, 0.0019514946158452427, 5.4500225004671795E-6, -4.141512942632222E-8};
+        coefficients.y = new double[]{-7.222017238742459E8, 319481.6571668026, 93976.2100187814, 43.495983945293986, -0.9559739495509587, -0.0015436139490097973, 3.8457451190751175E-7, 8.143980765994029E-8};
+        coefficients.z = new double[]{-3.0883385751621664E8, -296963.4080659916, 40187.64528305724, 28.003213301211996, -0.40124108111204737, -7.091210106373594E-4, 7.889984977384743E-8, 3.641035557095296E-8};
+
+        List<ChebyshevRecord> chebyshevRecords = Collections.singletonList(new ChebyshevRecord(timeSpan, coefficients));
+        JUPITER_BARYCENTER_FOR_2019_10_09 = new SpkKernelRecord(JplBody.JupiterBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, chebyshevRecords);
+    }
+
+    public static SpkKernelRecord JUPITER_FOR_2019_10_09;
+
+    static {
+        TimeSpan timeSpan = new TimeSpan(6.237864E8, 6.239808E8);
+        XYZCoefficients coefficients = new XYZCoefficients();
+        coefficients.x = new double[]{-134.5967784041254, -80.09177811651905, 19.130027930514927, 15.685133778456912, 6.221130319095021, -3.8590787828236985, -1.2592210886841517, 0.440084442123009, 0.09030085689932221, -0.029145506191401438, -4.7904796899089774E-4, 0.0015332223976045611, -5.201566515076195E-4, -1.4184688426688297E-4, 2.2139734726422944E-5, 9.534645645814521E-5};
+        coefficients.y = new double[]{93.81379348279377, -97.73348071575761, -26.289341976850515, -4.543021735671699, 7.710673907312373, 3.006227823267934, -1.2724940334725199, -0.34445605299850257, 0.10699724883149742, 0.013968205662920674, -0.005967212206118511, 8.682754927047398E-4, 3.86551596177398E-4, -1.578733877090066E-4, -1.1862348986468874E-4, -1.450402623959235E-5};
+        coefficients.z = new double[]{42.48098738703517, -47.89752959706809, -12.202159311173482, -1.8907514678082953, 3.776647724903956, 1.3723191361858733, -0.6277506829627639, -0.15741199173715525, 0.052547867301783846, 0.006202855033568877, -0.0028573413651540314, 4.3954798103884585E-4, 1.7532421594168568E-4, -7.809864857399873E-5, -5.538239458946492E-5, -4.887679158738223E-6};
+
+        List<ChebyshevRecord> chebyshevRecords = Collections.singletonList(new ChebyshevRecord(timeSpan, coefficients));
+        JUPITER_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Jupiter, JplBody.JupiterBarycenter, ReferenceFrame.J2000, chebyshevRecords);
+    }
+
 }

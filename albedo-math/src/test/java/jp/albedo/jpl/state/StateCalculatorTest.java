@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Validated using: https://wgc.jpl.nasa.gov:8443/webgeocalc/#StateVector
  */
+@Deprecated
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StateCalculatorTest {
 

@@ -14,7 +14,9 @@ public class TestData {
                     TestDataSpk.EARTH_FOR_2019_10_09,
                     TestDataSpk.MOON_FOR_2019_10_09,
                     TestDataSpk.VENUS_BARYCENTER_FOR_2019_10_09,
-                    TestDataSpk.VENUS_FOR_2019_10_09))
+                    TestDataSpk.VENUS_FOR_2019_10_09,
+                    TestDataSpk.JUPITER_BARYCENTER_FOR_2019_10_09,
+                    TestDataSpk.JUPITER_FOR_2019_10_09))
             .kernel();
 
 }

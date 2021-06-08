@@ -6,6 +6,7 @@ import jp.albedo.jpl.kernel.SPKernel;
 import jp.albedo.jpl.ephemeris.impl.BarycenterReferencedBodiesEphemeridesCalculator;
 import jp.albedo.jpl.ephemeris.impl.MoonEphemeridesCalculator;
 
+@Deprecated
 public class EphemeridesCalculatorFactory {
 
     public static EphemeridesCalculator getFor(JplBody body, SPKernel spKernel) throws JplException {

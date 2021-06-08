@@ -21,8 +21,8 @@ rm -f ./MPCORB.DAT*
 echo Updating de438 data in Docker Volume
 
 docker run --rm -i -v=%VOLUME_NAME%:/usr/data busybox mkdir /usr/data/de438
-docker cp ./misc/de438/header.438 %CONTAINER_NAME%:/usr/data/de438
-docker cp ./misc/de438/ascp01950.438 %CONTAINER_NAME%:/usr/data/de438
+docker cp ./misc/de438-ascii/header.438 %CONTAINER_NAME%:/usr/data/de438
+docker cp ./misc/de438-ascii/ascp01950.438 %CONTAINER_NAME%:/usr/data/de438
 
 echo Updating OpenNGC data in Docker Volume
 

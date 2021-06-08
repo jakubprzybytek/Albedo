@@ -30,7 +30,7 @@ public class SpkFileLoader {
 
             SpkFileReader reader = new SpkFileReader(fileChannel);
             for (SpkFileArrayInformation arrayInfo : reader.getArraysInformation()) {
-                List<ChebyshevRecord> chebyshevRecords = reader.getChebyshevArray(arrayInfo, EphemerisSeconds.fromJde(startJde), EphemerisSeconds.fromJde(endJde));
+                 List<ChebyshevRecord> chebyshevRecords = reader.getChebyshevArray(arrayInfo, EphemerisSeconds.fromJde(startJde), EphemerisSeconds.fromJde(endJde));
 
                 spkData.add(
                         SpkKernelRecord.fromArrayInformation(arrayInfo, chebyshevRecords));
