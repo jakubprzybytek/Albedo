@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ConjunctionsCalculatorTest {
+class ConjunctionFinderTest {
 
     @Test
     @DisplayName("Find conjunction on beginning of the list (ignore end the list)")
@@ -36,7 +36,7 @@ class ConjunctionsCalculatorTest {
                 new ComputedEphemeris(null, ephemeris1),
                 new ComputedEphemeris(null, ephemeris2));
 
-        ConjunctionsCalculator calculator = new ConjunctionsCalculator();
+        ConjunctionFinder calculator = new ConjunctionFinder();
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = calculator.findConjunctionsBetweenTwoBodies(pair);
 
         assertEquals(1, conjunctions.size());
@@ -68,7 +68,7 @@ class ConjunctionsCalculatorTest {
                 new ComputedEphemeris(null, ephemeris1),
                 new ComputedEphemeris(null, ephemeris2));
 
-        ConjunctionsCalculator calculator = new ConjunctionsCalculator();
+        ConjunctionFinder calculator = new ConjunctionFinder();
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = calculator.findConjunctionsBetweenTwoBodies(pair);
 
         assertEquals(2, conjunctions.size());
@@ -95,7 +95,7 @@ class ConjunctionsCalculatorTest {
                 new ComputedEphemeris(null, ephemeris1),
                 new CatalogueEntry(null, null, catalogueEntryCoords, 0.0, 0.0, 0.0, 0.0, null));
 
-        ConjunctionsCalculator calculator = new ConjunctionsCalculator();
+        ConjunctionFinder calculator = new ConjunctionFinder();
         List<Conjunction<BodyDetails, CatalogueEntry>> conjunctions = calculator.findConjunctionsBetweenBodyAndCatalogueEntry(pair);
 
         assertEquals(1, conjunctions.size());

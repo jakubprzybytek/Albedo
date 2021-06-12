@@ -40,14 +40,14 @@ public class ConjunctionsOrchestrator {
     private EphemeridesOrchestrator ephemeridesOrchestrator;
 
     @Autowired
-    private ConjunctionsCalculator conjunctionsCalculator;
+    private ConjunctionFinder conjunctionFinder;
 
     @Autowired
     private DsoCatalogueRepository dsoCatalogueRepository;
 
     /**
      * Finds conjunctions between requested bodies. Only bodies that moves across the sky (as seen from Earth) and
-     * therefor can have computed ephemerides against over specific time period are used here. Those bodies includes: planets, asteroids, Sun.
+     * therefore can have computed ephemerides against over specific time period are used here. Those bodies includes: planets, asteroids, Sun.
      * <p>
      * Bodies could be provided either by their names or by type. Providing body type means that all bodies of that type should be used for computations.
      * <p>
@@ -81,12 +81,12 @@ public class ConjunctionsOrchestrator {
         final List<ComputedEphemeris> secondaryObjectsEphemerides = getEphemeridesByBodyType(secondaryBodyTypes, fromDate, toDate, observerLocation);
 
         final List<Pair<ComputedEphemeris, ComputedEphemeris>> bodyPairs = generateBodiesPairs(primaryObjectsEphemerides, secondaryObjectsEphemerides);
-        final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = this.conjunctionsCalculator.calculateForTwoBodies(bodyPairs);
+        final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = this.conjunctionFinder.forTwoBodies(bodyPairs);
 
         final List<Pair<ComputedEphemeris, ComputedEphemeris>> closeEncounters = getDetailedBodiesEphemerides(preliminaryConjunctions, observerLocation);
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
 
-        final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = this.conjunctionsCalculator.calculateForTwoBodies(closeEncounters);
+        final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = this.conjunctionFinder.forTwoBodies(closeEncounters);
         LOG.info(String.format("Found %d conjunctions in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
 
         return detailedConjunctions;
@@ -128,12 +128,12 @@ public class ConjunctionsOrchestrator {
         final List<CatalogueEntry> catalogueEntries = getCatalogueEntries(catalogueNames);
 
         final List<Pair<ComputedEphemeris, CatalogueEntry>> pairsToCompare = generatePairs(primaryObjectsEphemerides, catalogueEntries);
-        final List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions = this.conjunctionsCalculator.calculateForBodyAndCatalogueEntry(pairsToCompare);
+        final List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions = this.conjunctionFinder.forBodyAndCatalogueEntry(pairsToCompare);
 
         final List<Pair<ComputedEphemeris, CatalogueEntry>> closeEncounters = getDetailedEphemerides(preliminaryConjunctions, observerLocation);
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size(), closeEncounters.size()));
 
-        final List<Conjunction<BodyDetails, CatalogueEntry>> detailedConjunctions = this.conjunctionsCalculator.calculateForBodyAndCatalogueEntry(closeEncounters);
+        final List<Conjunction<BodyDetails, CatalogueEntry>> detailedConjunctions = this.conjunctionFinder.forBodyAndCatalogueEntry(closeEncounters);
         LOG.info(String.format("Found %d conjunctions in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
 
         return detailedConjunctions;

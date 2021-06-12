@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-class ConjunctionsCalculator {
+class ConjunctionFinder {
 
-    private static final Log LOG = LogFactory.getLog(ConjunctionsCalculator.class);
+    private static final Log LOG = LogFactory.getLog(ConjunctionFinder.class);
 
     /**
      * Finds conjunctions between pairs of ephemerides by looking for smallest separation.
@@ -28,7 +28,7 @@ class ConjunctionsCalculator {
      * @param pairOfBodies
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, BodyDetails>> calculateForTwoBodies(List<Pair<ComputedEphemeris, ComputedEphemeris>> pairOfBodies) {
+    List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(List<Pair<ComputedEphemeris, ComputedEphemeris>> pairOfBodies) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d body pairs", pairOfBodies.size()));
@@ -60,7 +60,7 @@ class ConjunctionsCalculator {
      * @param pairToCompare
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, CatalogueEntry>> calculateForBodyAndCatalogueEntry(List<Pair<ComputedEphemeris, CatalogueEntry>> pairToCompare) {
+    List<Conjunction<BodyDetails, CatalogueEntry>> forBodyAndCatalogueEntry(List<Pair<ComputedEphemeris, CatalogueEntry>> pairToCompare) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d pairs of objects", pairToCompare.size()));
