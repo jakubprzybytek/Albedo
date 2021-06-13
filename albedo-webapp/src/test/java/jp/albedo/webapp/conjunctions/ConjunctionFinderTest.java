@@ -36,8 +36,7 @@ class ConjunctionFinderTest {
                 new ComputedEphemeris(null, ephemeris1),
                 new ComputedEphemeris(null, ephemeris2));
 
-        ConjunctionFinder calculator = new ConjunctionFinder();
-        List<Conjunction<BodyDetails, BodyDetails>> conjunctions = calculator.findConjunctionsBetweenTwoBodies(pair);
+        List<Conjunction<BodyDetails, BodyDetails>> conjunctions = ConjunctionFinder.findConjunctionsBetweenTwoBodies(pair);
 
         assertEquals(1, conjunctions.size());
         assertEquals(1.0, conjunctions.get(0).jde);
@@ -68,8 +67,7 @@ class ConjunctionFinderTest {
                 new ComputedEphemeris(null, ephemeris1),
                 new ComputedEphemeris(null, ephemeris2));
 
-        ConjunctionFinder calculator = new ConjunctionFinder();
-        List<Conjunction<BodyDetails, BodyDetails>> conjunctions = calculator.findConjunctionsBetweenTwoBodies(pair);
+        List<Conjunction<BodyDetails, BodyDetails>> conjunctions = ConjunctionFinder.findConjunctionsBetweenTwoBodies(pair);
 
         assertEquals(2, conjunctions.size());
         assertEquals(2.0, conjunctions.get(0).jde);
@@ -95,12 +93,11 @@ class ConjunctionFinderTest {
                 new ComputedEphemeris(null, ephemeris1),
                 new CatalogueEntry(null, null, catalogueEntryCoords, 0.0, 0.0, 0.0, 0.0, null));
 
-        ConjunctionFinder calculator = new ConjunctionFinder();
-        List<Conjunction<BodyDetails, CatalogueEntry>> conjunctions = calculator.findConjunctionsBetweenBodyAndCatalogueEntry(pair);
+        List<Conjunction<BodyDetails, CatalogueEntry>> conjunctions = ConjunctionFinder.findConjunctionsBetweenBodyAndCatalogueEntry(pair);
 
         assertEquals(1, conjunctions.size());
         assertEquals(2.0, conjunctions.get(0).jde);
-        assertEquals( Math.toRadians(1.0), conjunctions.get(0).separation);
+        assertEquals(Math.toRadians(1.0), conjunctions.get(0).separation);
     }
 
     private AstronomicalCoordinates coords(double ra, double d) {

@@ -28,7 +28,7 @@ class ConjunctionFinder {
      * @param pairOfBodies
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(List<Pair<ComputedEphemeris, ComputedEphemeris>> pairOfBodies) {
+    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(List<Pair<ComputedEphemeris, ComputedEphemeris>> pairOfBodies) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d body pairs", pairOfBodies.size()));
@@ -38,7 +38,7 @@ class ConjunctionFinder {
 
         // Compare all bodies between each other
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = pairOfBodies.parallelStream()
-                .map(this::findConjunctionsBetweenTwoBodies)
+                .map(ConjunctionFinder::findConjunctionsBetweenTwoBodies)
                 .flatMap(List<Conjunction<BodyDetails, BodyDetails>>::stream)
                 .filter(bodiesPair -> bodiesPair.separation < Math.toRadians(1.00))
                 .peek(conjunction -> {
@@ -60,7 +60,7 @@ class ConjunctionFinder {
      * @param pairToCompare
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, CatalogueEntry>> forBodyAndCatalogueEntry(List<Pair<ComputedEphemeris, CatalogueEntry>> pairToCompare) {
+    public static List<Conjunction<BodyDetails, CatalogueEntry>> forBodyAndCatalogueEntry(List<Pair<ComputedEphemeris, CatalogueEntry>> pairToCompare) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d pairs of objects", pairToCompare.size()));
@@ -70,7 +70,7 @@ class ConjunctionFinder {
 
         // Compare all bodies between each other
         List<Conjunction<BodyDetails, CatalogueEntry>> conjunctions = pairToCompare.parallelStream()
-                .map(this::findConjunctionsBetweenBodyAndCatalogueEntry)
+                .map(ConjunctionFinder::findConjunctionsBetweenBodyAndCatalogueEntry)
                 .flatMap(List<Conjunction<BodyDetails, CatalogueEntry>>::stream)
                 .filter(bodiesPair -> bodiesPair.separation < Math.toRadians(1.00))
                 .peek(conjunction -> {
@@ -92,7 +92,7 @@ class ConjunctionFinder {
      * @param pairOfBodies
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, BodyDetails>> findConjunctionsBetweenTwoBodies(Pair<ComputedEphemeris, ComputedEphemeris> pairOfBodies) {
+    static List<Conjunction<BodyDetails, BodyDetails>> findConjunctionsBetweenTwoBodies(Pair<ComputedEphemeris, ComputedEphemeris> pairOfBodies) {
 
         return StreamUtils
                 .zip(
@@ -112,7 +112,7 @@ class ConjunctionFinder {
                 ));
     }
 
-    double computeAverageSize(Ephemeris firstEphemeris, Ephemeris secondEphemeris) {
+    static double computeAverageSize(Ephemeris firstEphemeris, Ephemeris secondEphemeris) {
         return ((firstEphemeris.angularSize != null ? firstEphemeris.angularSize : Radians.fromDegrees(0, 0, 1))
                 + (secondEphemeris.angularSize != null ? secondEphemeris.angularSize : Radians.fromDegrees(0, 0, 1))) / 2.0;
     }
@@ -123,7 +123,7 @@ class ConjunctionFinder {
      * @param pairToCompare
      * @return List of conjunctions.
      */
-    List<Conjunction<BodyDetails, CatalogueEntry>> findConjunctionsBetweenBodyAndCatalogueEntry(Pair<ComputedEphemeris, CatalogueEntry> pairToCompare) {
+    static List<Conjunction<BodyDetails, CatalogueEntry>> findConjunctionsBetweenBodyAndCatalogueEntry(Pair<ComputedEphemeris, CatalogueEntry> pairToCompare) {
 
         return pairToCompare.getFirst().getEphemerisList().stream()
                 .collect(LocalMinimumsFindingCollector.of(
@@ -139,7 +139,7 @@ class ConjunctionFinder {
                 ));
     }
 
-    double computeAverageSize(Ephemeris firstEphemeris, CatalogueEntry catalogueEntry) {
+    static double computeAverageSize(Ephemeris firstEphemeris, CatalogueEntry catalogueEntry) {
         final double catalogueEntrySize = (catalogueEntry.minorAxisSize != null ? (catalogueEntry.majorAxisSize + catalogueEntry.minorAxisSize) / 2.0
                 : (catalogueEntry.majorAxisSize != null ? catalogueEntry.majorAxisSize : Radians.fromDegrees(0, 0, 1)));
         return ((firstEphemeris.angularSize != null ? firstEphemeris.angularSize : Radians.fromDegrees(0, 0, 1))
