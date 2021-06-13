@@ -1,12 +1,12 @@
-package jp.albedo.webapp.risetransitset;
+package jp.albedo.webapp.events.risetransitset;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
-import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
-import jp.albedo.webapp.risetransitset.rest.TransitSeries;
+import jp.albedo.webapp.events.risetransitset.rest.RiseTransitSetEvent;
+import jp.albedo.webapp.events.risetransitset.rest.TransitSeries;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

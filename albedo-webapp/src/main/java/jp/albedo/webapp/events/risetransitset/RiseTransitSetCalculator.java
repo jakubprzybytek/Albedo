@@ -1,4 +1,4 @@
-package jp.albedo.webapp.risetransitset;
+package jp.albedo.webapp.events.risetransitset;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyDetails;
@@ -10,8 +10,8 @@ import jp.albedo.jeanmeeus.topocentric.RiseSet;
 import jp.albedo.jeanmeeus.topocentric.RiseTransitSetEventCalculator;
 import jp.albedo.jeanmeeus.topocentric.Transit;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
-import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
-import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEventType;
+import jp.albedo.webapp.events.risetransitset.rest.RiseTransitSetEvent;
+import jp.albedo.webapp.events.risetransitset.rest.RiseTransitSetEventType;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

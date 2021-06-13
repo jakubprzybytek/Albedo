@@ -1,6 +1,6 @@
-package jp.albedo.webapp.risetransitset;
+package jp.albedo.webapp.events.risetransitset;
 
-import jp.albedo.webapp.risetransitset.rest.TransitSeries;
+import jp.albedo.webapp.events.risetransitset.rest.TransitSeries;
 
 import java.util.List;
 

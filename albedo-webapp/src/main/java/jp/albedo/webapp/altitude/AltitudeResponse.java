@@ -1,9 +1,8 @@
 package jp.albedo.webapp.altitude;
 
 import jp.albedo.webapp.altitude.rest.AltitudeSeries;
-import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
+import jp.albedo.webapp.events.risetransitset.rest.RiseTransitSetEvent;
 
-import java.time.ZoneId;
 import java.util.List;
 
 public class AltitudeResponse {

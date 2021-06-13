@@ -1,8 +1,8 @@
-package jp.albedo.webapp.risetransitset.rest;
+package jp.albedo.webapp.events.risetransitset.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.JulianDay;
-import jp.albedo.webapp.risetransitset.TransitsResponse;
+import jp.albedo.webapp.events.risetransitset.TransitsResponse;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

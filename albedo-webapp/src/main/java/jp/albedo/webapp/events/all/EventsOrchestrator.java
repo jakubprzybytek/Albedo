@@ -1,4 +1,4 @@
-package jp.albedo.webapp.events;
+package jp.albedo.webapp.events.all;
 
 import jp.albedo.catalogue.CatalogueName;
 import jp.albedo.common.BodyType;
@@ -7,9 +7,9 @@ import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.conjunctions.ConjunctionsOrchestrator;
 import jp.albedo.webapp.conjunctions.rest.ConjunctionEvent;
-import jp.albedo.webapp.events.parameters.ConjunctionsParameters;
-import jp.albedo.webapp.events.parameters.RtsParameters;
-import jp.albedo.webapp.risetransitset.RiseTransitSetOrchestrator;
+import jp.albedo.webapp.events.all.parameters.ConjunctionsParameters;
+import jp.albedo.webapp.events.all.parameters.RtsParameters;
+import jp.albedo.webapp.events.risetransitset.RiseTransitSetOrchestrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

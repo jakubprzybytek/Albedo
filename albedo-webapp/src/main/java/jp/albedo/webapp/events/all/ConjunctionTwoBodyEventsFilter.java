@@ -1,4 +1,4 @@
-package jp.albedo.webapp.events;
+package jp.albedo.webapp.events.all;
 
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyInformation;

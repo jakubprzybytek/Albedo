@@ -1,12 +1,12 @@
-package jp.albedo.webapp.events;
+package jp.albedo.webapp.events.all;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.rest.WrappedEvent;
-import jp.albedo.webapp.events.parameters.ConjunctionsParameters;
-import jp.albedo.webapp.events.parameters.RtsParameters;
+import jp.albedo.webapp.events.all.parameters.ConjunctionsParameters;
+import jp.albedo.webapp.events.all.parameters.RtsParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;

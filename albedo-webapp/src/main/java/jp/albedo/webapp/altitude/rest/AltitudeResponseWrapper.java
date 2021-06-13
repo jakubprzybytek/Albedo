@@ -5,7 +5,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.webapp.altitude.AltitudeResponse;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.rest.WrappedEvent;
-import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
+import jp.albedo.webapp.events.risetransitset.rest.RiseTransitSetEvent;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

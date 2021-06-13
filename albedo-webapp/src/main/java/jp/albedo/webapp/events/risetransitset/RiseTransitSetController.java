@@ -1,11 +1,11 @@
-package jp.albedo.webapp.risetransitset;
+package jp.albedo.webapp.events.risetransitset;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.rest.EventWrapper;
 import jp.albedo.webapp.rest.WrappedEvent;
-import jp.albedo.webapp.risetransitset.rest.RiseTransitSetEvent;
-import jp.albedo.webapp.risetransitset.rest.TransitsResponseWrapper;
+import jp.albedo.webapp.events.risetransitset.rest.RiseTransitSetEvent;
+import jp.albedo.webapp.events.risetransitset.rest.TransitsResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;

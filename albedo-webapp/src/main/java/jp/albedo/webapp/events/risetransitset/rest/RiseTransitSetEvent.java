@@ -1,4 +1,4 @@
-package jp.albedo.webapp.risetransitset.rest;
+package jp.albedo.webapp.events.risetransitset.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

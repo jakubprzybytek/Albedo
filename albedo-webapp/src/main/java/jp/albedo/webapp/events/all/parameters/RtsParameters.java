@@ -1,4 +1,4 @@
-package jp.albedo.webapp.events.parameters;
+package jp.albedo.webapp.events.all.parameters;
 
 public class RtsParameters {
 
