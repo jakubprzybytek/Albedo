@@ -159,15 +159,15 @@ public class ConjunctionsOrchestrator {
     private List<Pair<ComputedEphemeris, ComputedEphemeris>> generateBodiesPairs(List<ComputedEphemeris> primaryObjectsEphemerides, List<ComputedEphemeris> secondaryObjectsEphemerides) {
         return Stream.concat(
                 Stream.generate(new MixListSupplier<>(primaryObjectsEphemerides))
-                        .limit(primaryObjectsEphemerides.size() * (primaryObjectsEphemerides.size() - 1) / 2),
+                        .limit((long) primaryObjectsEphemerides.size() * (primaryObjectsEphemerides.size() - 1) / 2),
                 Stream.generate(new MixTwoListsSupplier<>(primaryObjectsEphemerides, secondaryObjectsEphemerides))
-                        .limit(primaryObjectsEphemerides.size() * secondaryObjectsEphemerides.size()))
+                        .limit((long) primaryObjectsEphemerides.size() * secondaryObjectsEphemerides.size()))
                 .collect(Collectors.toList());
     }
 
     private List<Pair<ComputedEphemeris, CatalogueEntry>> generatePairs(List<ComputedEphemeris> primaryObjectsEphemerides, List<CatalogueEntry> catalogueEntries) {
         return Stream.generate(new MixTwoListsSupplier<>(primaryObjectsEphemerides, catalogueEntries))
-                .limit(primaryObjectsEphemerides.size() * catalogueEntries.size())
+                .limit((long) primaryObjectsEphemerides.size() * catalogueEntries.size())
                 .collect(Collectors.toList());
     }
 
