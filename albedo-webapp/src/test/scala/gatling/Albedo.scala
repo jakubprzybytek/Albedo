@@ -33,60 +33,73 @@ class Albedo extends Simulation {
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
 
-  // A scenario is a chain of requests and pauses
-  val scn = scenario("Main scenario").during(120 minutes, "ds", true) {
-    exec(
-      http("index.html")
-        .get("/index.html")
+  var static = exec(
+    http("index.html")
+      .get("/index.html")
+  )
+    .pause(5)
+
+  val events = exec(
+      http("/api/events")
+        .get("/api/events?from=2021-06-05&to=2021-06-07&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00&rtsSunEnabled=false&rtsMoonEnabled=true&conjunctionsSunEnabled=true&conjunctionsMoonEnabled=true&conjunctionsPlanetsEnabled=true&conjunctionsCometsEnabled=true&conjunctionsAsteroidsEnabled=true&conjunctionsCataloguesDSEnabled=true&cFilterBlindedBySun=true")
     )
-    // Note that Gatling has recorded real time pauses
-    .pause(1)
-    .exec(
+      .pause(2)
+      .exec(
+        http("/api/events/riseTransitSet")
+          .get("/api/events/riseTransitSet?bodies=Sun,Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus&from=2021-06-04&to=2021-06-05&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
+      )
+      .pause(2)
+
+  // A scenario is a chain of requests and pauses
+  val other = exec(
       http("/api/ephemerides")
         .get("/api/ephemerides?body=Venus&from=2021-06-01&to=2021-07-01&interval=1.0&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
     )
-    .pause(2)
-    .exec(
-      http("/api/conjunctions")
-        .get("/api/conjunctions?primaryBodies=Sun,Moon&primary=Planet&secondary=Comet,Asteroid&catalogues=Messier,NGC&from=2021-06-04&to=2021-06-11&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
-    )
-    .pause(1)
-    .exec(
-      http("/api/separation")
-        .get("/api/separation?firstBody=Sun&secondBody=Moon&from=2021-06-04&to=2021-07-04&interval=1.0&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
-    )
-    .pause(2)
-    .exec(
-      http("/api/comets/bright")
-        .get("/api/comets/bright?date=2021-06-04&magnitudeLimit=10&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
-    )
-	.pause(2)
-    .exec(
-      http("/api/altitude")
-        .get("/api/altitude?bodies=Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus&date=2021-06-04&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
-    )
-	.pause(2)
-    .exec(
-      http("/api/charts/visibility")
-        .get("/api/charts/visibility?bodies=Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus&from=2021-01-01&to=2021-12-31&interval=1.0&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
-    )
-	.pause(2)
-    .exec(
-      http("/api/series/transit")
-        .get("/api/series/transit?bodies=Mars,Jupiter,Saturn,Neptune,Uranus&from=2021-01-01&to=2021-12-31&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
-    )
-  .pause(2)
-  .exec(
-    http("/api/catalogue?catalogueName=NGC")
-      .get("/api/catalogue?catalogueName=NGC&nameFilter=760&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
-  )
-  .pause(2)
-  .exec(
-    http("/api/catalogue/comets")
-      .get("/api/catalogue/comets?nameFilter=ATLAS&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
-  )
+      .pause(2)
+      .exec(
+        http("/api/conjunctions")
+          .get("/api/conjunctions?primaryBodies=Sun,Moon&primary=Planet&secondary=Comet,Asteroid&catalogues=Messier,NGC&from=2021-06-04&to=2021-06-11&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
+      )
+      .pause(1)
+      .exec(
+        http("/api/separation")
+          .get("/api/separation?firstBody=Sun&secondBody=Moon&from=2021-06-04&to=2021-07-04&interval=1.0&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
+      )
+      .pause(2)
+      .exec(
+        http("/api/comets/bright")
+          .get("/api/comets/bright?date=2021-06-04&magnitudeLimit=10&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
+      )
+      .pause(2)
+      .exec(
+        http("/api/altitude")
+          .get("/api/altitude?bodies=Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus&date=2021-06-04&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
+      )
+      .pause(2)
+      .exec(
+        http("/api/charts/visibility")
+          .get("/api/charts/visibility?bodies=Mercury,Venus,Mars,Jupiter,Saturn,Neptune,Uranus&from=2021-01-01&to=2021-12-31&interval=1.0&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
+      )
+      .pause(2)
+      .exec(
+        http("/api/series/transit")
+          .get("/api/series/transit?bodies=Mars,Jupiter,Saturn,Neptune,Uranus&from=2021-01-01&to=2021-12-31&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
+      )
+      .pause(2)
+      .exec(
+        http("/api/catalogue?catalogueName=NGC")
+          .get("/api/catalogue?catalogueName=NGC&nameFilter=760&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
+      )
+      .pause(2)
+      .exec(
+        http("/api/catalogue/comets")
+          .get("/api/catalogue/comets?nameFilter=ATLAS&longitude=-16.8745&latitude=52.3944028&height=70&timeZone=UTC%2B01:00")
+      )
+
+  val scn = scenario("Scenario").during(30 minutes, "ds", true) {
+    exec(static, events, other)
   }
-  
+
   setUp(
     scn.inject(rampUsers(6).during(1.minutes))
   ).protocols(httpProtocol)
