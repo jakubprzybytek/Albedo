@@ -1,8 +1,8 @@
 package jp.albedo.webapp.conjunctions;
 
 import jp.albedo.catalogue.CatalogueEntry;
-import jp.albedo.common.Radians;
 import jp.albedo.common.BodyDetails;
+import jp.albedo.common.Radians;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.conjunctions.impl.LocalMinimumsFindingCollector;
@@ -14,13 +14,24 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-class ConjunctionFinder {
+public class ConjunctionFinder {
 
     private static final Log LOG = LogFactory.getLog(ConjunctionFinder.class);
+
+    /**
+     * Finds conjunctions between pairs of ephemerides by looking for smallest separation.
+     *
+     * @param pairOfBodies
+     * @return List of conjunctions.
+     */
+    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(Pair<ComputedEphemeris, ComputedEphemeris> pairOfBodies) {
+        return forTwoBodies(Collections.singletonList(pairOfBodies));
+    }
 
     /**
      * Finds conjunctions between pairs of ephemerides by looking for smallest separation.

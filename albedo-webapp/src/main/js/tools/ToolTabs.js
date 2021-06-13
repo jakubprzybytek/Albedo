@@ -8,6 +8,7 @@ import EphemerisPanel from './ephemeris/EphemerisPanel';
 import ConjunctionsPanel from './conjunctions/ConjunctionsPanel';
 import SeparationPanel from './separation/SeparationPanel';
 import RiseTransitSetPanel from './riseTransitSet/RiseTransitSetPanel';
+import EclipsesPanel from './eclipses/EclipsesPanel';
 import BrightCometsPanel from './comets/BrightCometsPanel';
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +40,7 @@ export default function ToolTabs() {
         <Tab label="Conjunctions" />
         <Tab label="Separation" />
         <Tab label="Rise Transit Set" />
+        <Tab label="Eclipses" />
         <Tab label="Bright Comets" />
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
@@ -54,6 +56,9 @@ export default function ToolTabs() {
         <RiseTransitSetPanel />
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={4}>
+        <EclipsesPanel />
+      </TabPanel>
+      <TabPanel className={classes.tabPanel} value={value} index={5}>
         <BrightCometsPanel />
       </TabPanel>
     </div>
