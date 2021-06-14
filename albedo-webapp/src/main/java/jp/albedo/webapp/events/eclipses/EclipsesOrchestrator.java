@@ -9,6 +9,7 @@ import jp.albedo.webapp.conjunctions.Conjunction;
 import jp.albedo.webapp.conjunctions.ConjunctionFinder;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
+import jp.albedo.webapp.events.eclipses.rest.EclipseBodyInfo;
 import jp.albedo.webapp.events.eclipses.rest.EclipseEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -77,8 +78,12 @@ public class EclipsesOrchestrator {
     }
 
     private EclipseEvent mapToEclipseEvent(Conjunction<BodyDetails, BodyDetails> conjunction) {
+        EclipseBodyInfo sunBodyInfo = new EclipseBodyInfo(conjunction.firstObject, conjunction.firstObjectEphemeris);
+        EclipseBodyInfo moonBodyInfo = new EclipseBodyInfo(conjunction.secondObject, conjunction.secondObjectEphemeris);
+
         double positionAngle = Radians.positionAngle(conjunction.firstObjectEphemeris.coordinates, conjunction.secondObjectEphemeris.coordinates);
-        return new EclipseEvent(conjunction.jde, conjunction.firstObjectEphemeris, conjunction.secondObjectEphemeris, conjunction.separation, positionAngle);
+
+        return new EclipseEvent(conjunction.jde, sunBodyInfo, moonBodyInfo, conjunction.separation, positionAngle);
     }
 
 }

@@ -2,8 +2,6 @@ package jp.albedo.webapp.events.eclipses.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import jp.albedo.common.AstronomicalCoordinates;
-import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.utils.RadiansToPrecision1DegreesConverter;
 import jp.albedo.webapp.utils.RadiansToPrecision6DegreesConverter;
@@ -13,10 +11,10 @@ public class EclipseEvent extends AstronomicalEvent {
     private static final String EVENT_TYPE = "Eclipse";
 
     @JsonProperty
-    private final Ephemeris sunEphemeris;
+    private final EclipseBodyInfo sun;
 
     @JsonProperty
-    private final Ephemeris moonEphemeris;
+    private final EclipseBodyInfo moon;
 
     @JsonProperty
     @JsonSerialize(converter = RadiansToPrecision6DegreesConverter.class)
@@ -26,10 +24,10 @@ public class EclipseEvent extends AstronomicalEvent {
     @JsonSerialize(converter = RadiansToPrecision1DegreesConverter.class)
     private final double positionAngle;
 
-    public EclipseEvent(double jde, Ephemeris sunEphemeris, Ephemeris moonEphemeris, double separation, double positionAngle) {
+    public EclipseEvent(double jde, EclipseBodyInfo sun, EclipseBodyInfo moon, double separation, double positionAngle) {
         super(jde, EVENT_TYPE, -1);
-        this.sunEphemeris = sunEphemeris;
-        this.moonEphemeris = moonEphemeris;
+        this.sun = sun;
+        this.moon = moon;
         this.separation = separation;
         this.positionAngle = positionAngle;
     }

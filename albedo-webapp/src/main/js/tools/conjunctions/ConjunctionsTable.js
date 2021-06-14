@@ -10,6 +10,14 @@ import { formatDegrees, formatArcSeconds } from '../../utils/Angles';
 import { BodyChip, CatalogueEntryChip, LocalDateTimeChip } from '../../components/Chips';
 
 const useStyles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+    width: '800px',
+  },
+  table: {
+    //width: '100%',
+  },
   objectCell: {
     display: 'flex',
     flexDirection: 'column',
@@ -21,14 +29,6 @@ const useStyles = makeStyles(theme => ({
     '& > *': {
       margin: theme.spacing(0.5),
     },
-  },
-  paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
-    width: '800px',
-  },
-  table: {
-    width: '100%',
   },
 }));
 

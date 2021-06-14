@@ -11,10 +11,7 @@ import { formatDegrees } from '../../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
   paper: {
-//    width: '800px',
-  },
-  table: {
-    width: '100%',
+    display: 'inline-flex'
   },
 }));
 
@@ -25,13 +22,12 @@ export default function EclipsesTable(props) {
   const classes = useStyles();
 
   const selectEvent = (event) => () => {
-      console.log(event);
       setSelectedEvent(event);
     }
 
   return (
     <Paper className={classes.paper}>
-      <Table className={classes.table} size="small">
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Local Time</TableCell>
