@@ -73,17 +73,10 @@ function CatalogueEntryCell(props) {
 
 export function ConjunctionTableRow(props) {
 
-  const { conjunction, onClick } = props;
-
-  const [selected, setSelected] = React.useState(false);
-
-  function handleClick() {
-    onClick(!selected ? conjunction : null, setSelected);
-    setSelected(!selected);
-  }
+  const { conjunction, selected, onClick } = props;
 
   return (
-    <TableRow key={conjunction.index} hover role="checkbox" selected={selected} onClick={handleClick}>
+    <TableRow key={conjunction.index} hover role="checkbox" selected={selected} onClick={onClick(conjunction)}>
       <TableCell component="th" scope="row">
         <LocalDateTimeChip time={conjunction.localTime} jd={conjunction.jde} />
       </TableCell>
@@ -104,18 +97,14 @@ export function ConjunctionTableRow(props) {
   );
 }
 
-let setSelectedForPreviousSelection = () => null;
-
 export default function ConjunctionsTable(props) {
 
-  const { rows, onConjunctionSelected } = props;
+  const { conjuctionEvents, selectedConjunction, setSelectedConjunction } = props;
 
-  function updateRowSelection(conjunction, setSelected) {
-    setSelectedForPreviousSelection(false);
-    onConjunctionSelected(conjunction);
-    setSelectedForPreviousSelection = setSelected;
+  const selectEvent = (event) => () => {
+    setSelectedConjunction(event);
   }
-
+  
   const classes = useStyles();
 
   return (
@@ -131,8 +120,8 @@ export default function ConjunctionsTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(conjunction => 
-            <ConjunctionTableRow key={conjunction.id} conjunction={conjunction} onClick={updateRowSelection} />
+          {conjuctionEvents.map(conjunction => 
+            <ConjunctionTableRow key={conjunction.id} conjunction={conjunction} selected={selectedConjunction && conjunction.id === selectedConjunction.id} onClick={selectEvent} />
           )}
         </TableBody>
       </Table>

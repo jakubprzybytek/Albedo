@@ -16,10 +16,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function ConjunctionsPanel() {
 
-  const [rows, setRows] = React.useState([]);
-  const [conjunction, setConjunction] = React.useState(null);
+  const [conjunctionEvents, setConjunctionEvents] = React.useState([]);
+  const [selectedConjunction, setSelectedConjunction] = React.useState(null);
 
-  const jsonConnection = useJsonConnection(setRows);
+  const jsonConnection = useJsonConnection(setConjunctionEvents);
 
   const classes = useStyles();
 
@@ -27,19 +27,19 @@ export default function ConjunctionsPanel() {
     <Grid container spacing={2}>
       <Grid item xs={9}>
         <ConjunctionsForm jsonConnection={jsonConnection} />
-        <ConjunctionsTable rows={rows} onConjunctionSelected={setConjunction} />
+        <ConjunctionsTable conjuctionEvents={conjunctionEvents} selectedConjunction={selectedConjunction} setSelectedConjunction={setSelectedConjunction} />
       </Grid>
       <Grid item xs={3}>
-        {conjunction && <div>
+        {selectedConjunction && <div>
           <div className={classes.card}>
-            <ConjunctionCard conjunction={conjunction} />
+            <ConjunctionCard conjunction={selectedConjunction} />
           </div>
           <div className={classes.card}>
-            {conjunction.firstObjectType === "Body" && conjunction.first && <BodyCard bodyInfo={conjunction.first} />}
+            {selectedConjunction.firstObjectType === "Body" && selectedConjunction.first && <BodyCard bodyInfo={selectedConjunction.first} />}
           </div>
           <div className={classes.card}>
-            {conjunction.secondObjectType === "Body" && conjunction.second && <BodyCard bodyInfo={conjunction.second} />}
-            {conjunction.secondObjectType === "CatalogueEntry" && conjunction.second && <CatalogueEntryCard catalogueEntry={conjunction.second} />}
+            {selectedConjunction.secondObjectType === "Body" && selectedConjunction.second && <BodyCard bodyInfo={selectedConjunction.second} />}
+            {selectedConjunction.secondObjectType === "CatalogueEntry" && selectedConjunction.second && <CatalogueEntryCard catalogueEntry={selectedConjunction.second} />}
           </div>
         </div>}
       </Grid>
