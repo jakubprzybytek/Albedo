@@ -1,11 +1,10 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
-import { addDays, format } from 'date-fns';
+import { format } from 'date-fns';
 import SubmitBar from '../../components/SubmitBar';
 
 const useStyles = makeStyles(theme => ({
@@ -43,7 +42,7 @@ export default function RiseTransitSetForm(props) {
   return (
     <Paper className={classes.root}>
       <Typography component="h3">
-        Sun and Moon eclises:
+        Sun and Moon eclipses:
       </Typography>
       <form className={classes.container} noValidate autoComplete="off">
         <div>

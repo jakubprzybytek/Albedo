@@ -20,13 +20,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class JplEphemerisCalculator {
 
     private static final Log LOG = LogFactory.getLog(JplEphemerisCalculator.class);
 
+    private static final List<JplBody> SUPPORTED_BODIES = Arrays.asList(JplBody.Sun, JplBody.Moon);
+
     private static final List<JplBody> SUPPORTED_PLANETS = Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
+
+    private static final List<JplBody> ALL_SUPPORTED_OBJECTS = Stream.concat(SUPPORTED_BODIES.stream(), SUPPORTED_PLANETS.stream())
+            .collect(Collectors.toList());
 
     @Autowired
     private JplKernelsService jplKernelsService;
@@ -38,7 +45,7 @@ public class JplEphemerisCalculator {
      * @return JplBody if parsed successfully.
      */
     public Optional<JplBody> parseBody(String bodyName) {
-        return SUPPORTED_PLANETS.stream()
+        return ALL_SUPPORTED_OBJECTS.stream()
                 .filter(jplBody -> jplBody.name().equals(bodyName))
                 .findFirst();
     }
