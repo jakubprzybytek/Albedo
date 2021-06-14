@@ -27,19 +27,21 @@ public class ConjunctionFinder {
      * Finds conjunctions between pairs of ephemerides by looking for smallest separation.
      *
      * @param pairOfBodies
+     * @param maxSeparation Maximal separation that would constitute for a conjunctions. Encounters separated more than that will be ignored.
      * @return List of conjunctions.
      */
-    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(Pair<ComputedEphemeris, ComputedEphemeris> pairOfBodies) {
-        return forTwoBodies(Collections.singletonList(pairOfBodies));
+    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(Pair<ComputedEphemeris, ComputedEphemeris> pairOfBodies, double maxSeparation) {
+        return forTwoBodies(Collections.singletonList(pairOfBodies), maxSeparation);
     }
 
     /**
      * Finds conjunctions between pairs of ephemerides by looking for smallest separation.
      *
      * @param pairOfBodies
+     * @param maxSeparation Maximal separation that would constitute for a conjunctions. Encounters separated more than that will be ignored.
      * @return List of conjunctions.
      */
-    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(List<Pair<ComputedEphemeris, ComputedEphemeris>> pairOfBodies) {
+    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(List<Pair<ComputedEphemeris, ComputedEphemeris>> pairOfBodies, double maxSeparation) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d body pairs", pairOfBodies.size()));
@@ -51,7 +53,7 @@ public class ConjunctionFinder {
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = pairOfBodies.parallelStream()
                 .map(ConjunctionFinder::findConjunctionsBetweenTwoBodies)
                 .flatMap(List<Conjunction<BodyDetails, BodyDetails>>::stream)
-                .filter(bodiesPair -> bodiesPair.separation < Math.toRadians(1.00))
+                .filter(bodiesPair -> bodiesPair.separation < maxSeparation)
                 .peek(conjunction -> {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug(String.format("Separation between %s and %s on %.1fTD: %.4f°",
@@ -69,9 +71,10 @@ public class ConjunctionFinder {
      * Finds conjunctions between body and catalogue entries by looking for smallest separation.
      *
      * @param pairToCompare
+     * @param maxSeparation Maximal separation that would constitute for a conjunctions. Encounters separated more than that will be ignored.
      * @return List of conjunctions.
      */
-    public static List<Conjunction<BodyDetails, CatalogueEntry>> forBodyAndCatalogueEntry(List<Pair<ComputedEphemeris, CatalogueEntry>> pairToCompare) {
+    public static List<Conjunction<BodyDetails, CatalogueEntry>> forBodyAndCatalogueEntry(List<Pair<ComputedEphemeris, CatalogueEntry>> pairToCompare, double maxSeparation) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d pairs of objects", pairToCompare.size()));
@@ -83,7 +86,7 @@ public class ConjunctionFinder {
         List<Conjunction<BodyDetails, CatalogueEntry>> conjunctions = pairToCompare.parallelStream()
                 .map(ConjunctionFinder::findConjunctionsBetweenBodyAndCatalogueEntry)
                 .flatMap(List<Conjunction<BodyDetails, CatalogueEntry>>::stream)
-                .filter(bodiesPair -> bodiesPair.separation < Math.toRadians(1.00))
+                .filter(bodiesPair -> bodiesPair.separation < maxSeparation)
                 .peek(conjunction -> {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug(String.format("Separation between %s and %s on %.1fTD: %.4f°",

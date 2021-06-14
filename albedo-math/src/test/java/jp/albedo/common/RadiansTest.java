@@ -87,6 +87,11 @@ class RadiansTest {
                 AstronomicalCoordinates.fromDegrees(90.0, 0.0)
         )), 0.00000000000001);
 
+        assertEquals(90.0, Math.toDegrees(Radians.positionAngle(
+                AstronomicalCoordinates.fromDegrees(5.0, 0.0),
+                AstronomicalCoordinates.fromDegrees(355.0, 0.0)
+        )), 0.00000000000001);
+
         assertEquals(180.0, Math.toDegrees(Radians.positionAngle(
                 AstronomicalCoordinates.fromDegrees(100.0, 55.0),
                 AstronomicalCoordinates.fromDegrees(100.0, 65.0)

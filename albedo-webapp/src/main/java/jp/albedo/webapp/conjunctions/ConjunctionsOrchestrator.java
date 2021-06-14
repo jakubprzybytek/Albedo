@@ -36,6 +36,8 @@ public class ConjunctionsOrchestrator {
 
     private static final double DETAILED_INTERVAL = 1.0 / 24.0 / 6.0; // 10 mins
 
+    private static final double MAX_SEPARATION = Math.toRadians(1.0);
+
     @Autowired
     private EphemeridesOrchestrator ephemeridesOrchestrator;
 
@@ -78,12 +80,12 @@ public class ConjunctionsOrchestrator {
         final List<ComputedEphemeris> secondaryObjectsEphemerides = getEphemeridesByBodyType(secondaryBodyTypes, fromDate, toDate, observerLocation);
 
         final List<Pair<ComputedEphemeris, ComputedEphemeris>> bodyPairs = generateBodiesPairs(primaryObjectsEphemerides, secondaryObjectsEphemerides);
-        final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = ConjunctionFinder.forTwoBodies(bodyPairs);
+        final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = ConjunctionFinder.forTwoBodies(bodyPairs, MAX_SEPARATION);
 
         final List<Pair<ComputedEphemeris, ComputedEphemeris>> closeEncounters = getDetailedBodiesEphemerides(preliminaryConjunctions, observerLocation);
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
 
-        final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = ConjunctionFinder.forTwoBodies(closeEncounters);
+        final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = ConjunctionFinder.forTwoBodies(closeEncounters, MAX_SEPARATION);
         LOG.info(String.format("Found %d conjunctions in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
 
         return detailedConjunctions;
@@ -125,12 +127,12 @@ public class ConjunctionsOrchestrator {
         final List<CatalogueEntry> catalogueEntries = getCatalogueEntries(catalogueNames);
 
         final List<Pair<ComputedEphemeris, CatalogueEntry>> pairsToCompare = generatePairs(primaryObjectsEphemerides, catalogueEntries);
-        final List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions = ConjunctionFinder.forBodyAndCatalogueEntry(pairsToCompare);
+        final List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions = ConjunctionFinder.forBodyAndCatalogueEntry(pairsToCompare, MAX_SEPARATION);
 
         final List<Pair<ComputedEphemeris, CatalogueEntry>> closeEncounters = getDetailedEphemerides(preliminaryConjunctions, observerLocation);
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size(), closeEncounters.size()));
 
-        final List<Conjunction<BodyDetails, CatalogueEntry>> detailedConjunctions = ConjunctionFinder.forBodyAndCatalogueEntry(closeEncounters);
+        final List<Conjunction<BodyDetails, CatalogueEntry>> detailedConjunctions = ConjunctionFinder.forBodyAndCatalogueEntry(closeEncounters, MAX_SEPARATION);
         LOG.info(String.format("Found %d conjunctions in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
 
         return detailedConjunctions;

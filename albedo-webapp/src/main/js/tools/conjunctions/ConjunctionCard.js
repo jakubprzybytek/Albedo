@@ -55,7 +55,7 @@ export default function ConjunctionCard(props) {
 
   return (
     <Card className={classes.card}>
-      <CardHeader className={classes.cardHeader} title="Conjunction" subheader={conjunction.time && format(Date.parse(conjunction.time), "yyyy-MM-dd HH:mm:ss") + " (TDE)"} />
+      <CardHeader className={classes.cardHeader} title="Conjunction" subheader={conjunction.localTime && format(Date.parse(conjunction.localTime), "yyyy-MM-dd HH:mm:ss") + " (TDE)"} />
       <CardContent>
         <RelativeDistanceInformation />
         <Typography>

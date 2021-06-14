@@ -4,6 +4,7 @@ import useJsonConnection from '../../api/JsonConnection';
 import Grid from '@material-ui/core/Grid';
 import EclipsesForm from './EclipsesForm';
 import EclipsesTable from './EclipsesTable';
+import EclipseCard from './EclipseCard';
 import BodyCard from '../../components/BodyCard';
 
 const useStyles = makeStyles(theme => ({
@@ -16,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function RiseTransitSetPanel() {
+export default function EclipsesPanel() {
   
   const [eclipseEvents, setEclipseEvents] = React.useState([]);
   const [selectedEvent, setSelectedEvent] = React.useState();
@@ -41,6 +42,7 @@ export default function RiseTransitSetPanel() {
       <Grid item xs={3}>
         {selectedEvent && <div>
           <div className={classes.card}>
+            <EclipseCard eclipse={selectedEvent} />
           </div>
           <div className={classes.card}>
             <BodyCard bodyInfo={selectedEvent.sun} />

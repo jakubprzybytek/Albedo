@@ -33,6 +33,8 @@ public class EclipsesOrchestrator {
 
     private static final double DETAILED_INTERVAL = 1.0 / 24.0 / 60.0; // 1 min
 
+    private static final double MAX_SEPARATION = Math.toRadians(0.6);
+
     @Autowired
     private EphemeridesOrchestrator ephemeridesOrchestrator;
 
@@ -52,12 +54,12 @@ public class EclipsesOrchestrator {
         ComputedEphemeris moonEphemeris = this.ephemeridesOrchestrator.compute(BodyInformation.Moon.name(), fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation);
 
         Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(sunEphemeris, moonEphemeris);
-        final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = ConjunctionFinder.forTwoBodies(pair);
+        final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = ConjunctionFinder.forTwoBodies(pair, MAX_SEPARATION * 1.2);
 
         final List<Pair<ComputedEphemeris, ComputedEphemeris>> closeEncounters = getDetailedBodiesEphemerides(preliminaryConjunctions, observerLocation);
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
 
-        final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = ConjunctionFinder.forTwoBodies(closeEncounters);
+        final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = ConjunctionFinder.forTwoBodies(closeEncounters, MAX_SEPARATION);
         LOG.info(String.format("Found %d eclipses in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
 
         return detailedConjunctions.stream()

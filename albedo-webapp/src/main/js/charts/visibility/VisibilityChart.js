@@ -75,7 +75,7 @@ export default function VisibilityChart(props) {
           lastDateString={visibilityChartData.sunSets[visibilityChartData.sunSets.length - 1]}
           sunSetsMap={sunSetsMap}
           scale={scale} />
-      </React.Fragment>)}}
+      </React.Fragment>)}
     </svg>
   );
 }
