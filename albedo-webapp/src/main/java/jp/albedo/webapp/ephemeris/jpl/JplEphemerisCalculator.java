@@ -24,7 +24,9 @@ import java.util.Optional;
 @Component
 public class JplEphemerisCalculator {
 
-    private static Log LOG = LogFactory.getLog(JplEphemerisCalculator.class);
+    private static final Log LOG = LogFactory.getLog(JplEphemerisCalculator.class);
+
+    private static final List<JplBody> SUPPORTED_PLANETS = Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
 
     @Autowired
     private JplKernelsService jplKernelsService;
@@ -36,7 +38,9 @@ public class JplEphemerisCalculator {
      * @return JplBody if parsed successfully.
      */
     public Optional<JplBody> parseBody(String bodyName) {
-        return Optional.ofNullable(EnumUtils.getEnum(JplBody.class, bodyName));
+        return SUPPORTED_PLANETS.stream()
+                .filter(jplBody -> jplBody.name().equals(bodyName))
+                .findFirst();
     }
 
     /**
@@ -47,7 +51,7 @@ public class JplEphemerisCalculator {
      */
     public List<JplBody> getSupportedBodiesByType(BodyType bodyType) {
         if (bodyType == BodyType.Planet) {
-            return Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Neptune, JplBody.Uranus);
+            return SUPPORTED_PLANETS;
         }
 
         return Collections.emptyList();
