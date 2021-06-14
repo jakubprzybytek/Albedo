@@ -20,9 +20,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function EclipsesTable(props) {
 
-  const { eclipsesEvents } = props;
+  const { eclipseEvents, selectedEvent, setSelectedEvent } = props;
   
   const classes = useStyles();
+
+  const selectEvent = (event) => () => {
+      console.log(event);
+      setSelectedEvent(event);
+    }
 
   return (
     <Paper className={classes.paper}>
@@ -32,11 +37,12 @@ export default function EclipsesTable(props) {
             <TableCell>Local Time</TableCell>
             <TableCell align="center">Type</TableCell>
             <TableCell align="center">Separation</TableCell>
+            <TableCell align="right">Position angle</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {eclipsesEvents.map(event => (
-            <TableRow key={event.id}>
+          {eclipseEvents.map(event => (
+            <TableRow key={event.id} selected={selectedEvent && event.id === selectedEvent.id} onClick={selectEvent(event)}>
               <TableCell component="th" scope="row">
                 <LocalDateTimeChip time={event.localTime} jd={event.jde} />
               </TableCell>
@@ -45,6 +51,9 @@ export default function EclipsesTable(props) {
               </TableCell>
               <TableCell component="th" scope="row" align="center">
                 {formatDegrees(event.separation)}
+              </TableCell>
+              <TableCell component="th" scope="row" align="right">
+                {event.positionAngle.toFixed(1)}°
               </TableCell>
             </TableRow>
           ))}

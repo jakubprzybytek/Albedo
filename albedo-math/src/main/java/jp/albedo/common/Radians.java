@@ -32,7 +32,7 @@ public class Radians {
     /**
      * Angular separation over great circle.
      *
-     * @param first First coords.
+     * @param first  First coords.
      * @param second Second coords.
      * @return Separation in radians.
      */
@@ -54,6 +54,25 @@ public class Radians {
      */
     public static double between(RectangularCoordinates first, RectangularCoordinates second) {
         return Math.acos((first.x * second.x + first.y * second.y + first.z * second.z) / (first.getDistance() * second.getDistance()));
+    }
+
+    /**
+     * Returns Position Angle of a body (RA1, Dec1) with respect to another body (RA2, Dec2)
+     * <p>
+     * Based on Jean Meeus: Astronomical Algorithms, chapter 'Angular Separation'
+     *
+     * @param first  Astronomical coordinates of first body.
+     * @param second Astronomical coordinates of second body.
+     * @return Position Angle in radians.
+     */
+    public static double positionAngle(AstronomicalCoordinates first, AstronomicalCoordinates second) {
+//        final double tan = Math.sin(first.rightAscension - second.rightAscension) /
+//              (Math.cos(second.declination) * Math.tan(first.declination) - Math.sin(second.declination) * Math.cos(first.rightAscension - second.rightAscension));
+//        return Math.atan(tan);
+
+        return Math.atan2(
+                Math.sin(first.rightAscension - second.rightAscension),
+                Math.cos(second.declination) * Math.tan(first.declination) - Math.sin(second.declination) * Math.cos(first.rightAscension - second.rightAscension));
     }
 
 }

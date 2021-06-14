@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RadiansTest {
 
@@ -72,5 +73,28 @@ class RadiansTest {
         assertEquals(135.0, Math.toDegrees(Radians.between(new RectangularCoordinates(-1.0, -1.0, 0.0), second)));
         assertEquals(90.0, Math.toDegrees(Radians.between(new RectangularCoordinates(0.0, -1.0, 0.0), second)));
         assertEquals(45.0, Math.toDegrees(Radians.between(new RectangularCoordinates(1.0, -1.0, 0.0), second)), 0.00000000000001);
+    }
+
+    @Test
+    void positionAngle() {
+        assertEquals(0.0, Math.toDegrees(Radians.positionAngle(
+                AstronomicalCoordinates.fromDegrees(100.0, 55.0),
+                AstronomicalCoordinates.fromDegrees(100.0, 45.0)
+        )), 0.00000000000001);
+
+        assertEquals(90.0, Math.toDegrees(Radians.positionAngle(
+                AstronomicalCoordinates.fromDegrees(100.0, 0.0),
+                AstronomicalCoordinates.fromDegrees(90.0, 0.0)
+        )), 0.00000000000001);
+
+        assertEquals(180.0, Math.toDegrees(Radians.positionAngle(
+                AstronomicalCoordinates.fromDegrees(100.0, 55.0),
+                AstronomicalCoordinates.fromDegrees(100.0, 65.0)
+        )), 0.00000000000001);
+
+        assertEquals(-90.0, Math.toDegrees(Radians.positionAngle(
+                AstronomicalCoordinates.fromDegrees(100.0, 0.0),
+                AstronomicalCoordinates.fromDegrees(110.0, 0.0)
+        )), 0.00000000000001);
     }
 }

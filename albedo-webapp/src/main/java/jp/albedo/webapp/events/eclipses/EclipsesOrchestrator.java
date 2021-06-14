@@ -1,19 +1,15 @@
 package jp.albedo.webapp.events.eclipses;
 
-import jp.albedo.catalogue.CatalogueEntry;
-import jp.albedo.catalogue.CatalogueName;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyInformation;
-import jp.albedo.common.BodyType;
+import jp.albedo.common.Radians;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.utils.FunctionUtils;
-import jp.albedo.utils.MixListSupplier;
-import jp.albedo.utils.MixTwoListsSupplier;
-import jp.albedo.webapp.catalogue.DsoCatalogueRepository;
 import jp.albedo.webapp.conjunctions.Conjunction;
 import jp.albedo.webapp.conjunctions.ConjunctionFinder;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
+import jp.albedo.webapp.events.eclipses.rest.EclipseEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.util.Pair;
@@ -22,11 +18,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class EclipsesOrchestrator {
@@ -43,13 +36,12 @@ public class EclipsesOrchestrator {
     private EphemeridesOrchestrator ephemeridesOrchestrator;
 
     /**
-     *
-     * @param fromDate           Start instant of the period over which conjunctions should be looked for.
-     * @param toDate             End of that period.
-     * @param observerLocation   Location (of the Earth) of the observer for which parallax correction should be made to the ephemerides.
+     * @param fromDate         Start instant of the period over which conjunctions should be looked for.
+     * @param toDate           End of that period.
+     * @param observerLocation Location (of the Earth) of the observer for which parallax correction should be made to the ephemerides.
      * @return List of conjunctions.
      */
-    public List<Conjunction<BodyDetails, BodyDetails>> compute(Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
+    public List<EclipseEvent> compute(Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
 
         LOG.info(String.format("Computing eclipses for Sun and Moon, params: [from=%s, to=%s]", fromDate, toDate));
 
@@ -67,7 +59,9 @@ public class EclipsesOrchestrator {
         final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = ConjunctionFinder.forTwoBodies(closeEncounters);
         LOG.info(String.format("Found %d eclipses in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
 
-        return detailedConjunctions;
+        return detailedConjunctions.stream()
+                .map(this::mapToEclipseEvent)
+                .collect(Collectors.toList());
     }
 
     private List<Pair<ComputedEphemeris, ComputedEphemeris>> getDetailedBodiesEphemerides(List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions, ObserverLocation observerLocation) {
@@ -80,6 +74,11 @@ public class EclipsesOrchestrator {
                                 conjunction.jde - DETAILED_SPAN / 2.0, conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL,
                                 observerLocation))))
                 .collect(Collectors.toList());
+    }
+
+    private EclipseEvent mapToEclipseEvent(Conjunction<BodyDetails, BodyDetails> conjunction) {
+        double positionAngle = Radians.positionAngle(conjunction.firstObjectEphemeris.coordinates, conjunction.secondObjectEphemeris.coordinates);
+        return new EclipseEvent(conjunction.jde, conjunction.firstObjectEphemeris, conjunction.secondObjectEphemeris, conjunction.separation, positionAngle);
     }
 
 }
