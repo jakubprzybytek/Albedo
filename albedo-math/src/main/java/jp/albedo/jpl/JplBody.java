@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Source: https://www.imcce.fr/content/medias/recherche/equipes/asd/calceph/html/c/calceph.naifid.html
+ */
 public enum JplBody {
 
     SolarSystemBarycenter(0, BodyType.Barycenter),
@@ -31,9 +34,9 @@ public enum JplBody {
     Moon(301, BodyType.NaturalSatellite),
     Earth(399, BodyType.Planet),
 
-    Mars(499, BodyType.Planet),
     Phobos(401, BodyType.NaturalSatellite),
     Deimos(402, BodyType.NaturalSatellite),
+    Mars(499, BodyType.Planet),
 
     Io(501, BodyType.NaturalSatellite),
     Europa(502, BodyType.NaturalSatellite),
@@ -45,7 +48,35 @@ public enum JplBody {
     Metis(516, BodyType.NaturalSatellite),
     Jupiter(599, BodyType.Planet),
 
+    Mimas(601, BodyType.NaturalSatellite),
+    Enceladus(602, BodyType.NaturalSatellite),
+    Tethys(603, BodyType.NaturalSatellite),
+    Dione(604, BodyType.NaturalSatellite),
+    Rhea(605, BodyType.NaturalSatellite),
+    Titan(606, BodyType.NaturalSatellite),
+    Hyperion(607, BodyType.NaturalSatellite),
+    Iapetus(608, BodyType.NaturalSatellite),
+    Phoebe(609, BodyType.NaturalSatellite),
+    Helene(612, BodyType.NaturalSatellite),
+    Telesto(613, BodyType.NaturalSatellite),
+    Calypso(614, BodyType.NaturalSatellite),
+    Methone(632, BodyType.NaturalSatellite),
+    Polydeuces(634, BodyType.NaturalSatellite),
     Saturn(699, BodyType.Planet),
+
+    Cordelia(706, BodyType.Planet),
+    Ophelia(707, BodyType.Planet),
+    Bianca(708, BodyType.Planet),
+    Cressida(709, BodyType.Planet),
+    Desdemona(710, BodyType.Planet),
+    Juliet(711, BodyType.Planet),
+    Portia(712, BodyType.Planet),
+    Rosalind(713, BodyType.Planet),
+    Belinda(714, BodyType.Planet),
+    Puck(715, BodyType.Planet),
+    Perdita(725, BodyType.Planet),
+    Mab(726, BodyType.Planet),
+    Cupid(727, BodyType.Planet),
     Uranus(799, BodyType.Planet),
     Neptune(899, BodyType.Planet),
     Pluto(999, BodyType.Asteroid),

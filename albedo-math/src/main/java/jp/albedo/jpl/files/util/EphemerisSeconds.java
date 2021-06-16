@@ -10,4 +10,8 @@ public class EphemerisSeconds {
         return (jde - J2000_EPOCH) * SECONDS_PER_JULIAN_DAY;
     }
 
+    public static double toJde(double ephemerisSeconds) {
+        return ephemerisSeconds / SECONDS_PER_JULIAN_DAY + J2000_EPOCH;
+    }
+
 }

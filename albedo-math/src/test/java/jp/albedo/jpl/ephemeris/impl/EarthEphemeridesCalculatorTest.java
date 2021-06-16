@@ -24,14 +24,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
  * Tests based on: https://wgc.jpl.nasa.gov:8443/webgeocalc/#StateVector
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SimpleEphemeridesCalculatorTest {
+class EarthEphemeridesCalculatorTest {
 
     private static final SpkKernelRepository kernel = TestData.KERNEL;
 
     @ParameterizedTest
     @MethodSource
     void test(JplBody target, double jde, AstronomicalCoordinates expectedCoords, double expectedElongation) throws JplException {
-        SimpleEphemeridesCalculator ephemeridesCalculator = new SimpleEphemeridesCalculator(kernel, target);
+        EarthEphemeridesCalculator ephemeridesCalculator = new EarthEphemeridesCalculator(kernel, target);
 
         Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
         System.out.printf("%s ephemeris: %s%n", target, ephemeris.toStringHighPrecision());

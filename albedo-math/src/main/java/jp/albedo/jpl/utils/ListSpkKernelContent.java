@@ -1,8 +1,10 @@
 package jp.albedo.jpl.utils;
 
+import jp.albedo.common.JulianDay;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.binary.SpkFileArrayInformation;
 import jp.albedo.jpl.files.binary.SpkFileReader;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,14 +21,17 @@ public class ListSpkKernelContent {
         listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/mar097.bsp"));
         listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/jup357.bsp"));
         listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/jup365.bsp"));
+        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/sat427.bsp"));
+        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/ura115.bsp"));
     }
 
     static void listSpkKernelContent(File file) throws JplException {
         System.out.printf("File: %s\n", file);
 
         for (SpkFileArrayInformation arrayInformation : loadArrayInformation(file)) {
-            System.out.printf("%s w.r.t %s, from %.1f to %.1f in %s reference frame as %s\n",
-                    arrayInformation.getBody(), arrayInformation.getCenterBody(), arrayInformation.getStartDate(), arrayInformation.getEndDate(),
+            System.out.printf("%s(%d) w.r.t %s, from %s [TDB] to %s [TDB] in %s reference frame as %s\n",
+                    arrayInformation.getBody(), arrayInformation.getBody().id, arrayInformation.getCenterBody(),
+                    JulianDay.toDateTime(EphemerisSeconds.toJde(arrayInformation.getStartDate())), JulianDay.toDateTime(EphemerisSeconds.toJde(arrayInformation.getEndDate())),
                     arrayInformation.getReferenceFrame(), arrayInformation.getDataType());
         }
 
