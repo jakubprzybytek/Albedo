@@ -21,6 +21,8 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
+      - echo Restarting ECS service
+      - aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --force-new-deployment
 artifacts:
   files:
     - albedo-webapp/target/albedo-webapp-1.0-SNAPSHOT.jar
