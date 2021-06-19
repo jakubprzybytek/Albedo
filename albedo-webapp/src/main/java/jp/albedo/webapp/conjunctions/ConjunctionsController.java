@@ -35,6 +35,7 @@ public class ConjunctionsController {
                                                              @RequestParam(value = "primary", defaultValue = "") Set<String> primaryTypeStrings,
                                                              @RequestParam(value = "secondary", defaultValue = "") Set<String> secondaryTypeStrings,
                                                              @RequestParam(value = "catalogues", defaultValue = "") Set<String> catalogueTypeStrings,
+                                                             @RequestParam(value = "separationFactorLimit", defaultValue = "2000") double separationFactorLimit,
                                                              @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                              @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                                              @RequestParam("longitude") double observerLongitude,
@@ -53,8 +54,10 @@ public class ConjunctionsController {
 
         return Stream.concat(
                 this.conjunctionsOrchestrator.computeForTwoMovingBodies(primaryBodyNames, primaryBodyTypes, secondaryBodyTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
+                        .filter(conjunction -> conjunction.separationFactor <= separationFactorLimit)
                         .map(ConjunctionEvent::fromTwoBodies),
                 this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(primaryBodyNames, primaryBodyTypes, catalogueNames, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
+                        .filter(conjunction -> conjunction.separationFactor <= separationFactorLimit)
                         .map(ConjunctionEvent::fromBodyAndCatalogueEntry))
                 .sorted(Comparator.comparingDouble(AstronomicalEvent::getJde))
                 .map(event -> new WrappedEvent<>(

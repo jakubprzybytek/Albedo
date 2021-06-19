@@ -5,6 +5,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import Slider from '@material-ui/core/Slider';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import { addWeeks } from 'date-fns';
@@ -41,6 +42,8 @@ export default function ConjunctionsForm(props) {
   const [ngcChecked, setNgcChecked] = React.useState(true);
   const [icChecked, setIcChecked] = React.useState(false);
 
+  const [separationFactorLimit, setSeparationFactorLimit] = React.useState(2000);
+
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(addWeeks(new Date(), 1));
 
@@ -69,6 +72,7 @@ export default function ConjunctionsForm(props) {
         primary: primaryBodyTypes.join(','),
         secondary: secondaryBodyTypes.join(','),
         catalogues: catalogues.join(','),
+        separationFactorLimit: separationFactorLimit,
         from: format(fromDate, "yyyy-MM-dd"),
         to: format(toDate, "yyyy-MM-dd")
       }
@@ -76,6 +80,9 @@ export default function ConjunctionsForm(props) {
   }
 
   const classes = useStyles();
+
+  const marks = [ { value: 200, label: 200 }, { value: 400, label: 400 }, { value: 600, label: 600 }, { value: 800, label: 800 }, { value: 1000, label: 1000 },
+    { value: 1200, label: 1200 }, { value: 1400, label: 1400 }, { value: 1600, label: 1600 }, { value: 1800, label: 1800 }, { value: 2000, label: 2000 } ];
 
   return (
     <Paper className={classes.root}>
@@ -130,6 +137,16 @@ export default function ConjunctionsForm(props) {
               <Switch checked={icChecked} onChange={event => setIcChecked(event.target.checked)} color="secondary" />
             }/>
         </FormGroup>
+        <Typography variant="body2" component="span">
+          Separation Factor limit:
+        </Typography>
+        <Slider
+          defaultValue={separationFactorLimit}
+          min={1}
+          max={2000}
+          marks={marks}
+          valueLabelDisplay="auto"
+          onChange={(event, newValue) => setSeparationFactorLimit(newValue)}/>
         <SubmitBar jsonConnection={jsonConnection} />
       </form>
     </Paper>

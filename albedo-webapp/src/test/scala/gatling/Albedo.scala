@@ -25,8 +25,8 @@ class Albedo extends Simulation {
 
   val httpProtocol = http
     // Here is the root for all relative URLs
-//    .baseUrl("http://54.77.248.5")
-    .baseUrl("http://albedo-lb-manual-1708348403.eu-west-1.elb.amazonaws.com")
+    .baseUrl("http://54.77.248.5")
+//    .baseUrl("http://albedo-lb-manual-1708348403.eu-west-1.elb.amazonaws.com")
     // Here are the common headers
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
     .doNotTrackHeader("1")

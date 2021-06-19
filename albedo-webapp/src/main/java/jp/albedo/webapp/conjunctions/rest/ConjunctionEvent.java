@@ -54,7 +54,8 @@ public class ConjunctionEvent extends AstronomicalEvent {
     }
 
     public static ConjunctionEvent fromBodyAndCatalogueEntry(Conjunction<BodyDetails, CatalogueEntry> conjunction) {
-        return new ConjunctionEvent(conjunction.jde,
+        return new ConjunctionEvent(
+                conjunction.jde,
                 AstronomicalObjectTypes.Body, new ConjunctionBodyInfo(conjunction.firstObject, conjunction.firstObjectEphemeris),
                 AstronomicalObjectTypes.CatalogueEntry, conjunction.secondObject,
                 conjunction.separation,
