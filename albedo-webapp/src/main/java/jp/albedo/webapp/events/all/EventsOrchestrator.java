@@ -9,6 +9,8 @@ import jp.albedo.webapp.conjunctions.ConjunctionsOrchestrator;
 import jp.albedo.webapp.conjunctions.rest.ConjunctionEvent;
 import jp.albedo.webapp.events.all.parameters.ConjunctionsParameters;
 import jp.albedo.webapp.events.all.parameters.RtsParameters;
+import jp.albedo.webapp.events.eclipses.EclipsesOrchestrator;
+import jp.albedo.webapp.events.eclipses.rest.EclipseEvent;
 import jp.albedo.webapp.events.risetransitset.RiseTransitSetOrchestrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,6 +35,9 @@ public class EventsOrchestrator {
 
     @Autowired
     private ConjunctionsOrchestrator conjunctionsOrchestrator;
+
+    @Autowired
+    private EclipsesOrchestrator eclipsesOrchestrator;
 
     List<AstronomicalEvent> compute(Double fromDate, Double toDate, ObserverLocation observerLocation, RtsParameters rtsParameters, ConjunctionsParameters conjunctionsParameters) throws Exception {
 
@@ -93,11 +98,17 @@ public class EventsOrchestrator {
                     .collect(Collectors.toList()));
         }
 
+        astronomicalEvents.addAll(getEclipses(fromDate, toDate, observerLocation));
+
         astronomicalEvents.sort(Comparator.comparingDouble(AstronomicalEvent::getJde));
 
         LOG.info(String.format("Calculated %d events in %s", astronomicalEvents.size(), Duration.between(start, Instant.now())));
 
         return astronomicalEvents;
+    }
+
+    private List<EclipseEvent> getEclipses(double from, double to, ObserverLocation observerLocation) throws Exception {
+        return this.eclipsesOrchestrator.compute(from, to, observerLocation);
     }
 
 }

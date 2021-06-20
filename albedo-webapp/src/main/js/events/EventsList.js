@@ -18,6 +18,8 @@ import {
   buildFutureEventsListToggleEventAction
 } from './actions/EventsListActions';
 
+import Typography from '@material-ui/core/Typography';
+
 const useStyles = makeStyles(theme => ({
   paper: {
     margin: theme.spacing(1),
@@ -103,6 +105,7 @@ function EventsList(props) {
       <ListItem className={clsx(classes.listRow, classes[event.type], !sectionExpanded && classes.hidden)}>
         {event.type === "RiseTransitSet" && <RiseTransitSetEventListItem event={event} />}
         {event.type === "Conjunction" && <ConjunctionEventListItem event={event} eventSelect={eventSelectFunction} eventSelected={eventSelected} />}
+        {event.type === "Eclipse" && <Typography>Eclipse</Typography>}
       </ListItem>
     );
   }

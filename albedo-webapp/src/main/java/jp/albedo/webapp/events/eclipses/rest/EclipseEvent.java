@@ -25,7 +25,7 @@ public class EclipseEvent extends AstronomicalEvent {
     private final double positionAngle;
 
     public EclipseEvent(double jde, EclipseBodyInfo sun, EclipseBodyInfo moon, double separation, double positionAngle) {
-        super(jde, EVENT_TYPE, -1);
+        super(jde, EVENT_TYPE, 10);
         this.sun = sun;
         this.moon = moon;
         this.separation = separation;
