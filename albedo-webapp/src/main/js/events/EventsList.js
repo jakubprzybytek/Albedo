@@ -11,14 +11,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { grey, blue, red } from '@material-ui/core/colors';
 import RiseTransitSetEventListItem from './riseTransitSet/RiseTransitSetEventListItem';
 import ConjunctionEventListItem from './conjunctions/ConjunctionEventListItem';
+import EclipseEventListItem from './eclipses/EclipseEventListItem';
 import {
   buildEventsListToggleDaySectionAction,
   buildFutureEventsListToggleDaySectionAction,
   buildEventsListToggleEventAction,
   buildFutureEventsListToggleEventAction
 } from './actions/EventsListActions';
-
-import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -105,7 +104,7 @@ function EventsList(props) {
       <ListItem className={clsx(classes.listRow, classes[event.type], !sectionExpanded && classes.hidden)}>
         {event.type === "RiseTransitSet" && <RiseTransitSetEventListItem event={event} />}
         {event.type === "Conjunction" && <ConjunctionEventListItem event={event} eventSelect={eventSelectFunction} eventSelected={eventSelected} />}
-        {event.type === "Eclipse" && <Typography>Eclipse</Typography>}
+        {event.type === "Eclipse" && <EclipseEventListItem event={event} />}
       </ListItem>
     );
   }
