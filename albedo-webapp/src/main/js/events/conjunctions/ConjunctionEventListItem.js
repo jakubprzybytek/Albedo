@@ -90,7 +90,7 @@ export default function ConjunctionEventListItem(props) {
 
   return (
     <div className={classes.top}>
-      <div className={classes.header} onClick={eventSelect(event.id)}>
+      <div className={classes.header} onClick={eventSelect}>
         <Typography component="span" variant="body2" className={classes.timeField}>
           <LocalTimeChip time={event.localTime} jd={event.jde} />
         </Typography>
