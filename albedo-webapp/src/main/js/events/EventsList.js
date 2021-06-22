@@ -85,13 +85,13 @@ function EventsList(props) {
 
   function EventSelect(props) {
 
-    const { event, eventSelectFunction, eventSelected, sectionExpanded } = props;
+    const { event, eventSelected, eventToggleHandler, sectionExpanded } = props;
 
     return (
       <ListItem className={clsx(classes.listRow, classes[event.type], !sectionExpanded && classes.hidden)}>
         {event.type === "RiseTransitSet" && <RiseTransitSetEventListItem event={event} />}
-        {event.type === "Conjunction" && <ConjunctionEventListItem event={event} eventSelect={eventSelectFunction} eventSelected={eventSelected} />}
-        {event.type === "Eclipse" && <EclipseEventListItem event={event} toggleHandler={eventSelectFunction} expanded={eventSelected} />}
+        {event.type === "Conjunction" && <ConjunctionEventListItem event={event} toggleHandler={eventToggleHandler} expanded={eventSelected} />}
+        {event.type === "Eclipse" && <EclipseEventListItem event={event} toggleHandler={eventToggleHandler} expanded={eventSelected} />}
       </ListItem>
     );
   }
@@ -113,8 +113,8 @@ function EventsList(props) {
                 <EventSelect key={event.id}
                   event={event}
                   sectionExpanded={eventsGroups[daySection].expanded}
-                  eventSelectFunction={() => toggleEvent(event.id)}
-                  eventSelected={eventProps[event.id].expanded} />
+                  eventSelected={eventProps[event.id].expanded}
+                  eventToggleHandler={() => toggleEvent(event.id)} />
               ))}
             </ul>
           </li>
@@ -135,8 +135,8 @@ function EventsList(props) {
                 <EventSelect key={event.id}
                   event={event}
                   sectionExpanded={futureEventsGroups[daySection].expanded}
-                  eventSelectFunction={() => toggleFutureEvent(event.id)}
-                  eventSelected={futureEventProps[event.id].expanded} />
+                  eventSelected={futureEventProps[event.id].expanded}
+                  eventToggleHandler={() => toggleFutureEvent(event.id)} />
               ))}
             </ul>
           </li>

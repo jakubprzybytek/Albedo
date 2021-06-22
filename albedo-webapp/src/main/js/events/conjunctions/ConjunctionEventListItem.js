@@ -1,42 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { BodyChip, CatalogueEntryChip, LocalTimeChip, ElongationChip } from '../../components/Chips';
+import ExpandableEventListItem from '../ExpandableEventListItem';
+import { BodyChip, CatalogueEntryChip, ElongationChip } from '../../components/Chips';
 import BodyCard from '../../components/BodyCard';
 import CatalogueEntryCard from '../../components/CatalogueEntryCard';
 import { formatDegrees, formatArcSeconds } from '../../utils/Angles';
 
 const useStyles = makeStyles(theme => ({
-  top: {
-    display: 'flex',
-    width: '100%',
-    flexDirection: 'column',
-    alignItems: 'start',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    height: 32,
-    alignItems: 'center',
-    cursor: 'pointer'
-  },
-  timeField: {
-    width: 80,
-    display: 'flex',
-  },
-  inline: {
-    display: 'flex',
-    flexGrow: 1,
-  },
-  scoreField: {
-    width: 12,
-    display: 'flex',
-  },
-  detailsBanner: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
   card: {
     margin: theme.spacing(1, 1, 0.5, 1),
   }
@@ -84,32 +54,25 @@ function ConjunctionEventCopy(props) {
 
 export default function ConjunctionEventListItem(props) {
 
-  const { event, eventSelect, eventSelected } = props;
+  const { event, expanded, toggleHandler } = props;
 
   const classes = useStyles();
+  
+  const expandedPanel = (
+    <React.Fragment>
+      <div className={classes.card}>
+        <BodyCard bodyInfo={event.first} />
+      </div>
+      <div className={classes.card}>
+        {event.secondObjectType === 'Body' && <BodyCard bodyInfo={event.second} />}
+        {event.secondObjectType === 'CatalogueEntry' && <CatalogueEntryCard catalogueEntry={event.second} />}
+      </div>
+    </React.Fragment>
+  );
 
   return (
-    <div className={classes.top}>
-      <div className={classes.header} onClick={eventSelect}>
-        <Typography component="span" variant="body2" className={classes.timeField}>
-          <LocalTimeChip time={event.localTime} jd={event.jde} />
-        </Typography>
-        <Typography component="span" variant="body2" className={classes.inline}>
-          <ConjunctionEventCopy conjunction={event} />
-        </Typography>
-        <Typography component="span" variant="body2" className={classes.scoreField}>
-          {event.score}
-        </Typography>
-      </div>
-      {eventSelected && <div className={classes.detailsBanner}>
-        <div className={classes.card}>
-          <BodyCard bodyInfo={event.first} />
-        </div>
-        <div className={classes.card}>
-          {event.secondObjectType === 'Body' && <BodyCard bodyInfo={event.second} />}
-          {event.secondObjectType === 'CatalogueEntry' && <CatalogueEntryCard catalogueEntry={event.second} />}
-        </div>
-      </div>}
-    </div>
+    <ExpandableEventListItem event={event} expanded={expanded} toggleHandler={toggleHandler} expandedPanel={expandedPanel}>
+      <ConjunctionEventCopy conjunction={event} />
+    </ExpandableEventListItem>
   );
 }
