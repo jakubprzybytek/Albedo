@@ -42,10 +42,8 @@ export function* fetchEvents() {
   console.log('Fetch events');
 
   const params = yield select(store => buildEventsListRequestParams(
- //   format(new Date(), "yyyy-MM-dd"),
- //   format(addDays(new Date(), 2), "yyyy-MM-dd"),
-    "2021-06-10",
-    "2021-06-12",
+    format(new Date(), "yyyy-MM-dd"),
+    format(addDays(new Date(), 2), "yyyy-MM-dd"),
     store.eventsList.settings.rts,
     store.eventsList.settings.conjunctions,
     store.eventsList.settings.eclipses,
