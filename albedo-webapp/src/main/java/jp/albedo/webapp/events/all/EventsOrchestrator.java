@@ -8,6 +8,7 @@ import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.conjunctions.ConjunctionsOrchestrator;
 import jp.albedo.webapp.conjunctions.rest.ConjunctionEvent;
 import jp.albedo.webapp.events.all.parameters.ConjunctionsParameters;
+import jp.albedo.webapp.events.all.parameters.EclipsesParameters;
 import jp.albedo.webapp.events.all.parameters.RtsParameters;
 import jp.albedo.webapp.events.eclipses.EclipsesOrchestrator;
 import jp.albedo.webapp.events.eclipses.rest.EclipseEvent;
@@ -39,7 +40,8 @@ public class EventsOrchestrator {
     @Autowired
     private EclipsesOrchestrator eclipsesOrchestrator;
 
-    List<AstronomicalEvent> compute(Double fromDate, Double toDate, ObserverLocation observerLocation, RtsParameters rtsParameters, ConjunctionsParameters conjunctionsParameters) throws Exception {
+    List<AstronomicalEvent> compute(Double fromDate, Double toDate, ObserverLocation observerLocation,
+                                    RtsParameters rtsParameters, ConjunctionsParameters conjunctionsParameters, EclipsesParameters eclipsesParameters) throws Exception {
 
         LOG.info(String.format("Computing events, params: [from=%s, to=%s, rtsParams=%s, conjunctionsParams=%s], observer location: %s", fromDate, toDate, rtsParameters, conjunctionsParameters, observerLocation));
         final Instant start = Instant.now();
@@ -98,7 +100,9 @@ public class EventsOrchestrator {
                     .collect(Collectors.toList()));
         }
 
-        astronomicalEvents.addAll(getEclipses(fromDate, toDate, observerLocation));
+        if (eclipsesParameters.isEnabled()) {
+            astronomicalEvents.addAll(getEclipses(fromDate, toDate, observerLocation));
+        }
 
         astronomicalEvents.sort(Comparator.comparingDouble(AstronomicalEvent::getJde));
 

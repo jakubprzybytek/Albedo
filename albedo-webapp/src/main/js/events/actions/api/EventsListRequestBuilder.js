@@ -1,4 +1,6 @@
-export function buildEventsListRequestParams(fromDate, toDate, rtsSettings, conjunctionsSettings, observerLocation, timeZone) {
+import { EclipseEventsSettingsDrawer } from "../../eclipses/EclipseEventsSettingsDrawer";
+
+export function buildEventsListRequestParams(fromDate, toDate, rtsSettings, conjunctionsSettings, eclipsesSettings, observerLocation, timeZone) {
     return {
         from: fromDate,
         to: toDate,
@@ -13,5 +15,6 @@ export function buildEventsListRequestParams(fromDate, toDate, rtsSettings, conj
         conjunctionsAsteroidsEnabled: conjunctionsSettings.enabled && conjunctionsSettings.asteroidsEnabled,
         conjunctionsCataloguesDSEnabled: conjunctionsSettings.enabled && conjunctionsSettings.cataloguesDSEnabled,
         cFilterBlindedBySun: conjunctionsSettings.enabled && conjunctionsSettings.filterBlindedBySun,
+        eclipsesEnabled: eclipsesSettings.enabled
     };
 }

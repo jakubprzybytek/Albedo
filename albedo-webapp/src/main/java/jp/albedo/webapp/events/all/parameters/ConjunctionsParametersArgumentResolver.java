@@ -1,5 +1,6 @@
 package jp.albedo.webapp.events.all.parameters;
 
+import jp.albedo.webapp.controllers.HttpParameter;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

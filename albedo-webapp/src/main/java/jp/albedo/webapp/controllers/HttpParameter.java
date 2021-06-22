@@ -1,4 +1,4 @@
-package jp.albedo.webapp.events.all.parameters;
+package jp.albedo.webapp.controllers;
 
 import org.springframework.web.context.request.NativeWebRequest;
 

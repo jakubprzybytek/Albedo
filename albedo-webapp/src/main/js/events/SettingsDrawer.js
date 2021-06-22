@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import RtsSettingsDrawer from './riseTransitSet/settings/RtsSettingsDrawer';
 import ConjunctionsSettingsDrawer from './conjunctions/ConjunctionsSettingsDrawer';
+import EclipseEventsSettingsDrawer from './eclipses/EclipseEventsSettingsDrawer';
 
 const drawerWidth = 240;
 
@@ -42,6 +43,7 @@ export default function SettingsDrawer(props) {
       <Divider />
       <RtsSettingsDrawer />
       <ConjunctionsSettingsDrawer />
+      <EclipseEventsSettingsDrawer />
     </Drawer>
   );
 }

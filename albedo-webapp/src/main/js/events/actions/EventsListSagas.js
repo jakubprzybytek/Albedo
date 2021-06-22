@@ -48,6 +48,7 @@ export function* fetchEvents() {
     "2021-06-12",
     store.eventsList.settings.rts,
     store.eventsList.settings.conjunctions,
+    store.eventsList.settings.eclipses,
     store.observerLocation,
     store.timeZone)
   );
@@ -77,6 +78,7 @@ export function* fetchFutureEvents() {
       enabled: true,
       planetsEnabled: true
     },
+    { enabled: false },
     store.observerLocation,
     store.timeZone)
   );

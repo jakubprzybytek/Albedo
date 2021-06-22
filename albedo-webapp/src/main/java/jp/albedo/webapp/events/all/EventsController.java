@@ -4,6 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.events.all.parameters.ConjunctionsParameters;
+import jp.albedo.webapp.events.all.parameters.EclipsesParameters;
 import jp.albedo.webapp.events.all.parameters.RtsParameters;
 import jp.albedo.webapp.rest.WrappedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,14 @@ public class EventsController {
                                                         ObserverLocation observerLocation,
                                                         @RequestParam("timeZone") String timeZone,
                                                         RtsParameters rtsParameters,
-                                                        ConjunctionsParameters conjunctionsParameters) throws Exception {
+                                                        ConjunctionsParameters conjunctionsParameters,
+                                                        EclipsesParameters eclipsesParameters) throws Exception {
 
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         final AtomicInteger id = new AtomicInteger();
 
-        return this.eventsOrchestrator.compute(JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, rtsParameters, conjunctionsParameters).stream()
+        return this.eventsOrchestrator.compute(JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, rtsParameters, conjunctionsParameters, eclipsesParameters).stream()
                 .map(event -> new WrappedEvent<>(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),

@@ -25,6 +25,9 @@ const initialState = {
       asteroidsEnabled: true,
       cataloguesDSEnabled: true,
       filterBlindedBySun: true,
+    },
+    eclipses: {
+      enabled: true
     }
   },
   events: [],
