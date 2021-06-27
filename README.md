@@ -64,8 +64,8 @@ docker run --rm -i -v=albedo-data:/usr/data busybox mkdir /usr/data/mpc
 docker cp ./misc/mpc/MPCORB.DAT volumeSetup:/usr/data/mpc
 docker cp ./misc/mpc/CometEls.txt volumeSetup:/usr/data/mpc
 docker run --rm -i -v=albedo-data:/usr/data busybox mkdir /usr/data/de438
-docker cp ./misc/de438/header.438 volumeSetup:/usr/data/de438
-docker cp ./misc/de438/ascp01950.438 volumeSetup:/usr/data/de438
+docker cp ./misc/de438-ascii/header.438 volumeSetup:/usr/data/de438
+docker cp ./misc/de438-ascii/ascp01950.438 volumeSetup:/usr/data/de438
 docker run --rm -i -v=albedo-data:/usr/data busybox mkdir /usr/data/OpenNGC
 docker cp ./misc/OpenNGC/NGC.csv volumeSetup:/usr/data/OpenNGC
 docker cp ./misc/OpenNGC/addendum/addendum.csv volumeSetup:/usr/data/OpenNGC

@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import TuneIcon from '@material-ui/icons/Tune';
 import PersonIcon from '@material-ui/icons/Person';
 import TabPanel from './common/TabPanel';
-import EventsList from './events/EventsList';
+import EventsListPanel from './events/EventsListPanel';
 import ChartTabs from './charts/ChartTabs';
 import ToolTabs from './tools/ToolTabs';
 import CataloguesPanel from './catalogues/CataloguesPanel';
@@ -105,7 +105,7 @@ export default function PersistentDrawerLeft() {
       <main className={clsx(classes.content, { [classes.contentShift]: settingsDrawerOpened, })} >
         <div className={classes.drawerHeader} />
         <TabPanel value={tabValue} index={0}>
-          <EventsList />
+          <EventsListPanel />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
           <ChartTabs />

@@ -12,17 +12,8 @@ import { grey, blue, red } from '@material-ui/core/colors';
 import RiseTransitSetEventListItem from './riseTransitSet/RiseTransitSetEventListItem';
 import ConjunctionEventListItem from './conjunctions/ConjunctionEventListItem';
 import EclipseEventListItem from './eclipses/EclipseEventListItem';
-import {
-  buildEventsListToggleDaySectionAction,
-  buildFutureEventsListToggleDaySectionAction,
-  buildEventsListToggleEventAction,
-  buildFutureEventsListToggleEventAction
-} from './actions/EventsListActions';
 
 const useStyles = makeStyles(theme => ({
-  paper: {
-    margin: theme.spacing(1),
-  },
   list: {
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
@@ -74,91 +65,64 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function EventsList(props) {
+export default function EventsListPanel(props) {
 
-  const {
-    eventsGroups, eventProps, toggleDaySection, toggleEvent,
-    futureEventsGroups, futureEventProps, toggleFutureDaySection, toggleFutureEvent
-  } = props;
+  const { groupedEvents, children } = props;
+
+  const [eventsGroupsExpanded, setEventsGroupsExpanded] = React.useState({});
+  const [eventsExpanded, setEventsExpanded] = React.useState({});
 
   const classes = useStyles();
-
+ 
   function EventSelect(props) {
 
-    const { event, eventSelected, eventToggleHandler, sectionExpanded } = props;
+    const { event, expanded, toggleHandler } = props;
 
     return (
-      <ListItem className={clsx(classes.listRow, classes[event.type], !sectionExpanded && classes.hidden)}>
+      <ListItem className={clsx(classes.listRow, classes[event.type])}>
         {event.type === "RiseTransitSet" && <RiseTransitSetEventListItem event={event} />}
-        {event.type === "Conjunction" && <ConjunctionEventListItem event={event} toggleHandler={eventToggleHandler} expanded={eventSelected} />}
-        {event.type === "Eclipse" && <EclipseEventListItem event={event} toggleHandler={eventToggleHandler} expanded={eventSelected} />}
+        {event.type === "Conjunction" && <ConjunctionEventListItem event={event} expanded={expanded} toggleHandler={toggleHandler} />}
+        {event.type === "Eclipse" && <EclipseEventListItem event={event} expanded={expanded} toggleHandler={toggleHandler} />}
       </ListItem>
     );
   }
 
+  function toggleEvent(eventId) {
+    setEventsExpanded({...eventsExpanded, [eventId]: eventId in eventsExpanded ? !eventsExpanded[eventId] : true });
+  }
+
+  function eventExpanded(eventId) {
+    return eventsExpanded[eventId] === true;
+  }
+  function toggleEventsGroup(eventsGroupName) {
+    setEventsGroupsExpanded({...eventsGroupsExpanded, [eventsGroupName]: eventsGroupName in eventsGroupsExpanded ? !eventsGroupsExpanded[eventsGroupName] : false });
+  }
+
+  function eventsGroupExpanded(eventsGroupName) {
+    return eventsGroupsExpanded[eventsGroupName] !== false;
+  }
+
   return (
-    <Paper className={classes.paper}>
-      <List dense={true} className={classes.list}>
-        <ListSubheader className={classes.listHeader}>
-          Now
-        </ListSubheader>
-        {Object.keys(eventsGroups).map(daySection => (
-          <li key={daySection} className={classes.listSection}>
-            <ul className={classes.ul}>
-              <ListSubheader className={clsx(classes.subheader, !eventsGroups[daySection].expanded && classes.collapsed)} onClick={() => toggleDaySection(daySection)}>
-                {daySection}
-                {eventsGroups[daySection].expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </ListSubheader>
-              {eventsGroups[daySection].events.map(event => (
-                <EventSelect key={event.id}
-                  event={event}
-                  sectionExpanded={eventsGroups[daySection].expanded}
-                  eventSelected={eventProps[event.id].expanded}
-                  eventToggleHandler={() => toggleEvent(event.id)} />
-              ))}
-            </ul>
-          </li>
-        ))}
-      </List>
-      <List dense={true} className={classes.list}>
-        <ListSubheader className={classes.listHeader}>
-          Later
-        </ListSubheader>
-        {Object.keys(futureEventsGroups || {}).map(daySection => (
-          <li key={daySection} className={classes.listSection}>
-            <ul className={classes.ul}>
-              <ListSubheader className={clsx(classes.subheader, !futureEventsGroups[daySection].expanded && classes.collapsed)} onClick={() => toggleFutureDaySection(daySection)}>
-                {daySection}
-                {futureEventsGroups[daySection].expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </ListSubheader>
-              {futureEventsGroups[daySection].events.map(event => (
-                <EventSelect key={event.id}
-                  event={event}
-                  sectionExpanded={futureEventsGroups[daySection].expanded}
-                  eventSelected={futureEventProps[event.id].expanded}
-                  eventToggleHandler={() => toggleFutureEvent(event.id)} />
-              ))}
-            </ul>
-          </li>
-        ))}
-      </List>
-    </Paper>
+    <List dense={true} className={classes.list}>
+      <ListSubheader className={classes.listHeader}>
+        {children}
+      </ListSubheader>
+      {Object.keys(groupedEvents).map(eventsGroupName => (
+        <li key={eventsGroupName} className={classes.listSection}>
+          <ul className={classes.ul}>
+            <ListSubheader className={clsx(classes.subheader, !eventsGroupExpanded(eventsGroupName) && classes.collapsed)} onClick={() => { toggleEventsGroup(eventsGroupName) } }>
+              {eventsGroupName}
+              {eventsGroupExpanded(eventsGroupName) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </ListSubheader>
+            {eventsGroupExpanded(eventsGroupName) && groupedEvents[eventsGroupName].events.map(event => (
+              <EventSelect key={event.id}
+                event={event}
+                expanded={eventExpanded(event.id)}
+                toggleHandler={() => toggleEvent(event.id) } />
+            ))}
+          </ul>
+        </li>
+      ))}
+    </List>
   );
 }
-
-const StateAwareEventsList = connect(
-  state => ({
-    eventsGroups: state.eventsList.events,
-    eventProps: state.eventsList.eventProps,
-    futureEventsGroups: state.eventsList.futureEvents,
-    futureEventProps: state.eventsList.futureEventProps,
-  }),
-  dispatch => ({
-    toggleDaySection: (daySection) => dispatch(buildEventsListToggleDaySectionAction(daySection)),
-    toggleFutureDaySection: (daySection) => dispatch(buildFutureEventsListToggleDaySectionAction(daySection)),
-    toggleEvent: (eventId) => dispatch(buildEventsListToggleEventAction(eventId)),
-    toggleFutureEvent: (eventId) => dispatch(buildFutureEventsListToggleEventAction(eventId)),
-  })
-)(EventsList);
-
-export default StateAwareEventsList;
