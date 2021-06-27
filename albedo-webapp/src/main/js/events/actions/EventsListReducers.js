@@ -2,11 +2,7 @@ import update from 'immutability-helper';
 import {
   UPDATE_EVENTS_LIST_SETTINGS_SECTION,
   STORE_EVENTS_LIST,
-  EVENTS_LIST_TOGGLE_DAY_SECTION,
-  EVENTS_LIST_TOGGLE_EVENT,
   STORE_FUTURE_EVENTS_LIST,
-  FUTURE_EVENTS_LIST_TOGGLE_DAY_SECTION,
-  FUTURE_EVENTS_LIST_TOGGLE_EVENT
 } from './EventsListActions';
 
 const initialState = {
@@ -31,8 +27,6 @@ const initialState = {
     }
   },
   events: [],
-  eventProps: [],
-  futureEventProps: []
 }
 
 function groupByDay(flatEventsList) {
@@ -69,38 +63,6 @@ export function eventsListReducer(state = initialState, action) {
         futureEvents: groupByDay(action.eventsList),
         futureEventProps: initEventProps(action.eventsList)
       };
-    case EVENTS_LIST_TOGGLE_DAY_SECTION:
-      return update(state, {
-        events: {
-          [action.daySection]: {
-            expanded: { $set: !state.events[action.daySection].expanded }
-          }
-        }
-      });
-    case FUTURE_EVENTS_LIST_TOGGLE_DAY_SECTION:
-      return update(state, {
-        futureEvents: {
-          [action.daySection]: {
-            expanded: { $set: !state.futureEvents[action.daySection].expanded }
-          }
-        }
-      });
-    case EVENTS_LIST_TOGGLE_EVENT:
-      return update(state, {
-        eventProps: {
-          [action.eventId]: {
-            expanded: { $set: !state.eventProps[action.eventId].expanded }
-          }
-        }
-      });
-    case FUTURE_EVENTS_LIST_TOGGLE_EVENT:
-      return update(state, {
-        futureEventProps: {
-          [action.eventId]: {
-            expanded: { $set: !state.futureEventProps[action.eventId].expanded }
-          }
-        }
-      });
   }
 
   return state;

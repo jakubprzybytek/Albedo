@@ -87,19 +87,20 @@ export default function EventsListPanel(props) {
     );
   }
 
-  function toggleEvent(eventId) {
-    setEventsExpanded({...eventsExpanded, [eventId]: eventId in eventsExpanded ? !eventsExpanded[eventId] : true });
-  }
-
-  function eventExpanded(eventId) {
-    return eventsExpanded[eventId] === true;
-  }
   function toggleEventsGroup(eventsGroupName) {
     setEventsGroupsExpanded({...eventsGroupsExpanded, [eventsGroupName]: eventsGroupName in eventsGroupsExpanded ? !eventsGroupsExpanded[eventsGroupName] : false });
   }
 
   function eventsGroupExpanded(eventsGroupName) {
     return eventsGroupsExpanded[eventsGroupName] !== false;
+  }
+
+  function toggleEvent(eventId) {
+    setEventsExpanded({...eventsExpanded, [eventId]: eventId in eventsExpanded ? !eventsExpanded[eventId] : true });
+  }
+
+  function eventExpanded(eventId) {
+    return eventsExpanded[eventId] === true;
   }
 
   return (
