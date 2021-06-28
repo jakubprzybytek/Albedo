@@ -1,7 +1,7 @@
 package jp.albedo.jpl.files.ascii;
 
 import jp.albedo.jpl.JplConstantEnum;
-import jp.albedo.jpl.kernel.ChebyshevRecord;
+import jp.albedo.jpl.kernel.PositionChebyshevRecord;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.kernel.XYZCoefficients;
 import org.apache.commons.logging.Log;
@@ -26,7 +26,7 @@ public class AsciiFileReader {
 
     protected List<AsciiFileBodyCoefficientDescriptor> contentDescriptor;
 
-    protected Map<Integer, List<ChebyshevRecord>> coefficientsMap = new HashMap<>();
+    protected Map<Integer, List<PositionChebyshevRecord>> coefficientsMap = new HashMap<>();
 
     public AsciiFileReader(List<AsciiFileBodyCoefficientDescriptor> contentDescriptor) {
         this.contentDescriptor = contentDescriptor;
@@ -71,7 +71,7 @@ public class AsciiFileReader {
                             }
 
                             this.coefficientsMap.get(bodyIndex).add(
-                                    new ChebyshevRecord(timeSpan, coefficients));
+                                    new PositionChebyshevRecord(timeSpan, coefficients));
                         } else {
                             // body 12 has two coefficients. ignoring for now
                             doublesReader.read(coefficientDescriptor.getCoefficientNumber());
@@ -86,7 +86,7 @@ public class AsciiFileReader {
         LOG.info(String.format("Loaded %d blocks of coefficients for %d bodies from %s in %s", blocksRead, this.coefficientsMap.size(), file.getPath(), Duration.between(start, Instant.now())));
     }
 
-    public List<ChebyshevRecord> getCoefficientsMapForIndex(int index) {
+    public List<PositionChebyshevRecord> getCoefficientsMapForIndex(int index) {
         return coefficientsMap.get(index);
     }
 

@@ -3,7 +3,7 @@ package jp.albedo.jpl.state.impl;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.binary.ReferenceFrame;
-import jp.albedo.jpl.kernel.ChebyshevRecord;
+import jp.albedo.jpl.kernel.PositionChebyshevRecord;
 import jp.albedo.jpl.kernel.SpkKernelRecord;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.jpl.state.Correction;
@@ -22,11 +22,11 @@ import static org.mockito.Mockito.when;
 
 public class StateSolverFactoryTest_AberrationCorrecting {
 
-    private final static List<ChebyshevRecord> firstChebyshevList = new ArrayList<>();
+    private final static List<PositionChebyshevRecord> firstChebyshevList = new ArrayList<>();
 
-    private final static List<ChebyshevRecord> secondChebyshevList = new ArrayList<>();
+    private final static List<PositionChebyshevRecord> secondChebyshevList = new ArrayList<>();
 
-    private final static List<ChebyshevRecord> thirdChebyshevList = new ArrayList<>();
+    private final static List<PositionChebyshevRecord> thirdChebyshevList = new ArrayList<>();
 
     private static SpkKernelRepository spkKernel;
 
@@ -56,8 +56,8 @@ public class StateSolverFactoryTest_AberrationCorrecting {
                 () -> assertThat(stStateSolver.observerStateSolver).isInstanceOf(DirectStateSolver.class),
                 () -> assertThat(stStateSolver.observerStateSolver.negate).isFalse(),
                 () -> assertThat(stStateSolver.observerStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(stStateSolver.observerStateSolver.positionCalculators.get(0).chebyshevRecords).isSameAs(firstChebyshevList),
-                () -> assertThat(stStateSolver.observerStateSolver.positionCalculators.get(1).chebyshevRecords).isSameAs(secondChebyshevList));
+                () -> assertThat(stStateSolver.observerStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(firstChebyshevList),
+                () -> assertThat(stStateSolver.observerStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(secondChebyshevList));
 
         assertThat(stStateSolver.targetStateSolver).isInstanceOf(LightTimeCorrectingStateSolver.class);
         LightTimeCorrectingStateSolver targetStateSolver = (LightTimeCorrectingStateSolver) stStateSolver.targetStateSolver;
@@ -66,13 +66,13 @@ public class StateSolverFactoryTest_AberrationCorrecting {
                 () -> assertThat(targetStateSolver.targetStateSolver).isInstanceOf(DirectStateSolver.class),
                 () -> assertThat(targetStateSolver.targetStateSolver.negate).isFalse(),
                 () -> assertThat(targetStateSolver.targetStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(targetStateSolver.targetStateSolver.positionCalculators.get(0).chebyshevRecords).isSameAs(firstChebyshevList),
-                () -> assertThat(targetStateSolver.targetStateSolver.positionCalculators.get(1).chebyshevRecords).isSameAs(thirdChebyshevList),
+                () -> assertThat(targetStateSolver.targetStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(firstChebyshevList),
+                () -> assertThat(targetStateSolver.targetStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(thirdChebyshevList),
                 () -> assertThat(targetStateSolver.observerStateSolver).isInstanceOf(DirectStateSolver.class),
                 () -> assertThat(targetStateSolver.observerStateSolver.negate).isFalse(),
                 () -> assertThat(targetStateSolver.observerStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(targetStateSolver.observerStateSolver.positionCalculators.get(0).chebyshevRecords).isSameAs(firstChebyshevList),
-                () -> assertThat(targetStateSolver.observerStateSolver.positionCalculators.get(1).chebyshevRecords).isSameAs(secondChebyshevList));
+                () -> assertThat(targetStateSolver.observerStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(firstChebyshevList),
+                () -> assertThat(targetStateSolver.observerStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(secondChebyshevList));
     }
 
 }

@@ -16,7 +16,7 @@ public class SPKernel {
 
     final private Map<JplConstantEnum, Double> constants = new HashMap<>();
 
-    final private Map<JplBody, List<ChebyshevRecord>> coefficientsMap = new HashMap<>();
+    final private Map<JplBody, List<PositionChebyshevRecord>> coefficientsMap = new HashMap<>();
 
     public void addConstants(Map<JplConstantEnum, Double> newConstants) {
         this.constants.putAll(newConstants);
@@ -26,14 +26,14 @@ public class SPKernel {
         return this.constants.get(constant);
     }
 
-    public void registerBodyCoefficients(JplBody body, List<ChebyshevRecord> chebyshevRecords) {
+    public void registerBodyCoefficients(JplBody body, List<PositionChebyshevRecord> positionChebyshevRecords) {
         if (!coefficientsMap.containsKey(body)) {
             this.coefficientsMap.put(body, new ArrayList<>());
         }
-        this.coefficientsMap.get(body).addAll(chebyshevRecords);
+        this.coefficientsMap.get(body).addAll(positionChebyshevRecords);
     }
 
-    Optional<List<ChebyshevRecord>> getCoefficientsForBody(JplBody body) {
+    Optional<List<PositionChebyshevRecord>> getCoefficientsForBody(JplBody body) {
         return Optional.ofNullable(this.coefficientsMap.get(body));
     }
 
@@ -45,10 +45,10 @@ public class SPKernel {
      * @throws JplException
      */
     public PositionCalculator getPositionCalculatorFor(JplBody body) throws JplException {
-        final List<ChebyshevRecord> chebyshevRecords = getCoefficientsForBody(body)
+        final List<PositionChebyshevRecord> positionChebyshevRecords = getCoefficientsForBody(body)
                 .orElseThrow(() -> new JplException(String.format("No coefficients for %s found in SPKernel", body)));
 
-        return new PositionCalculator(chebyshevRecords);
+        return new PositionCalculator(positionChebyshevRecords);
     }
 
 }

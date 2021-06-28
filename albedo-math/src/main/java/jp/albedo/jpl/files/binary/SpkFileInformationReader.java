@@ -3,7 +3,7 @@ package jp.albedo.jpl.files.binary;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.util.LittleEndianByteBufferReader;
-import jp.albedo.jpl.kernel.ChebyshevRecord;
+import jp.albedo.jpl.kernel.PositionChebyshevRecord;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.kernel.XYZCoefficients;
 
@@ -14,13 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SpkFileReader {
-
-    private static final int FILE_BLOCK_SIZE = 1024;
-
-    private static final int DOUBLE_SIZE = 8;
-
-    private static final int FILE_DESCRIPTOR_SIZE = 88;
+public class SpkFileInformationReader {
 
     private final FileChannel fileChannel;
 
@@ -28,7 +22,7 @@ public class SpkFileReader {
 
     private List<SpkFileArrayInformation> arrayInformationList;
 
-    public SpkFileReader(FileChannel fileChannel) {
+    public SpkFileInformationReader(FileChannel fileChannel) {
         this.fileChannel = fileChannel;
     }
 
@@ -39,7 +33,7 @@ public class SpkFileReader {
      * @return List of record information.
      * @throws JplException If the file cannot be read properly.
      */
-    public List<SpkFileArrayInformation> getArraysInformation() throws JplException {
+    public List<SpkFileArrayInformation> readArraysInformation() throws JplException {
         try {
             if (descriptor == null) {
                 lookupFileContent();
@@ -60,7 +54,7 @@ public class SpkFileReader {
      * @return List of Chebyshev records.
      * @throws JplException if cannot read from file.
      */
-    public List<ChebyshevRecord> getChebyshevArray(SpkFileArrayInformation arrayInfo, double startEt, double endEt) throws JplException {
+    public List<PositionChebyshevRecord> getChebyshevArray(SpkFileArrayInformation arrayInfo, double startEt, double endEt) throws JplException {
 
         if (arrayInfo.getDataType() != DataType.ChebyshevPosition) {
             throw new UnsupportedOperationException("Unsupported data type id: " + arrayInfo.getDataType());
@@ -71,34 +65,34 @@ public class SpkFileReader {
         }
 
         try {
-            final int position = arrayInfo.getStartIndex() * DOUBLE_SIZE;
-            final int bufferSize = (arrayInfo.getEndIndex() - arrayInfo.getStartIndex() + 1) * DOUBLE_SIZE;
+            final int position = arrayInfo.getStartIndex() * SpkFileConsts.DOUBLE_SIZE;
+            final int bufferSize = (arrayInfo.getEndIndex() - arrayInfo.getStartIndex() + 1) * SpkFileConsts.DOUBLE_SIZE;
 
             MappedByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, position, bufferSize);
             LittleEndianByteBufferReader leByteBuffer = new LittleEndianByteBufferReader(byteBuffer);
 
             // lookup array details - they are at the end
-            byteBuffer.position(bufferSize - 2 * DOUBLE_SIZE);
+            byteBuffer.position(bufferSize - 2 * SpkFileConsts.DOUBLE_SIZE);
             final int chebyshevRecordSize = (int) leByteBuffer.getDouble();
             final int chebyshevRecordNumber = (int) leByteBuffer.getDouble();
 
             final int coefficientsNumber = (chebyshevRecordSize - 2) / 3;
-            final List<ChebyshevRecord> chebyshevRecords = new ArrayList<>();
+            final List<PositionChebyshevRecord> positionChebyshevRecords = new ArrayList<>();
 
             // get back to beginning of the array
             byteBuffer.position(0);
 
             for (int i = 0; i < chebyshevRecordNumber; i++) {
-                ChebyshevRecord chebyshevRecord = getChebyshevRecord(leByteBuffer, coefficientsNumber);
+                PositionChebyshevRecord positionChebyshevRecord = getChebyshevRecord(leByteBuffer, coefficientsNumber);
 
                 // check if record overlaps with requested time period
                 // TODO: make the test inside getChebyshevRecord method so no unnecessary objects are created
-                if (startEt <= chebyshevRecord.getTimeSpan().getTo() && endEt >= chebyshevRecord.getTimeSpan().getFrom()) {
-                    chebyshevRecords.add(chebyshevRecord);
+                if (startEt <= positionChebyshevRecord.getTimeSpan().getTo() && endEt >= positionChebyshevRecord.getTimeSpan().getFrom()) {
+                    positionChebyshevRecords.add(positionChebyshevRecord);
                 }
             }
 
-            return chebyshevRecords;
+            return positionChebyshevRecords;
         } catch (IOException e) {
             throw new JplException("Cannot read SPK file!", e);
         }
@@ -118,7 +112,7 @@ public class SpkFileReader {
      * @param coefficientsNumber number of coefficients per position vector (n).
      * @return Parsed Chebyshev record.
      */
-    private static ChebyshevRecord getChebyshevRecord(LittleEndianByteBufferReader byteBuffer, int coefficientsNumber) {
+    private static PositionChebyshevRecord getChebyshevRecord(LittleEndianByteBufferReader byteBuffer, int coefficientsNumber) {
         final double dateMidPoint = byteBuffer.getDouble();
         final double dateRadius = byteBuffer.getDouble();
 
@@ -128,11 +122,11 @@ public class SpkFileReader {
         coefficients.z = byteBuffer.readDoubles(coefficientsNumber);
 
         TimeSpan timeSpan = new TimeSpan(dateMidPoint - dateRadius, dateMidPoint + dateRadius);
-        return new ChebyshevRecord(timeSpan, coefficients);
+        return new PositionChebyshevRecord(timeSpan, coefficients);
     }
 
     private void lookupFileContent() throws IOException, JplException {
-        MappedByteBuffer descriptorByteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, FILE_DESCRIPTOR_SIZE);
+        MappedByteBuffer descriptorByteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, SpkFileConsts.FILE_DESCRIPTOR_SIZE);
         LittleEndianByteBufferReader leDescriptorByteBuffer = new LittleEndianByteBufferReader(descriptorByteBuffer);
 
         descriptor = readFileDescriptor(leDescriptorByteBuffer);
@@ -150,11 +144,11 @@ public class SpkFileReader {
         }
 
         // go to first array information record
-        final int arrayInformationPosition = descriptor.getFirstArrayInformationBlockIndex() * FILE_BLOCK_SIZE;
-        MappedByteBuffer arrayInformationByteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, arrayInformationPosition, FILE_BLOCK_SIZE);
+        final int arrayInformationPosition = descriptor.getFirstArrayInformationBlockIndex() * SpkFileConsts.FILE_BLOCK_SIZE;
+        MappedByteBuffer arrayInformationByteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, arrayInformationPosition, SpkFileConsts.FILE_BLOCK_SIZE);
         LittleEndianByteBufferReader leArrayInformationByteBuffer = new LittleEndianByteBufferReader(arrayInformationByteBuffer);
 
-        arrayInformationByteBuffer.position(2 * DOUBLE_SIZE); // skip first and last index
+        arrayInformationByteBuffer.position(2 * SpkFileConsts.DOUBLE_SIZE); // skip first and last index
         final int numberOfRecords = (int) leArrayInformationByteBuffer.getDouble();
 
         arrayInformationList = new ArrayList<>();

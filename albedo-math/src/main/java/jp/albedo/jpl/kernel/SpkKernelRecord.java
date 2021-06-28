@@ -17,17 +17,17 @@ public class SpkKernelRecord {
 
     private final ReferenceFrame referenceFrame;
 
-    private final List<ChebyshevRecord> chebyshevRecords;
+    private final List<PositionChebyshevRecord> positionChebyshevRecords;
 
-    public SpkKernelRecord(JplBody body, JplBody centerBody, ReferenceFrame referenceFrame, List<ChebyshevRecord> chebyshevRecords) {
+    public SpkKernelRecord(JplBody body, JplBody centerBody, ReferenceFrame referenceFrame, List<PositionChebyshevRecord> positionChebyshevRecords) {
         this.body = body;
         this.centerBody = centerBody;
         this.referenceFrame = referenceFrame;
-        this.chebyshevRecords = chebyshevRecords;
+        this.positionChebyshevRecords = positionChebyshevRecords;
     }
 
-    public static SpkKernelRecord fromArrayInformation(SpkFileArrayInformation arrayInfo, List<ChebyshevRecord> chebyshevRecords) {
-        return new SpkKernelRecord(arrayInfo.getBody(), arrayInfo.getCenterBody(), arrayInfo.getReferenceFrame(), chebyshevRecords);
+    public static SpkKernelRecord fromArrayInformation(SpkFileArrayInformation arrayInfo, List<PositionChebyshevRecord> positionChebyshevRecords) {
+        return new SpkKernelRecord(arrayInfo.getBody(), arrayInfo.getCenterBody(), arrayInfo.getReferenceFrame(), positionChebyshevRecords);
     }
 
     public JplBody getBody() {
@@ -42,8 +42,8 @@ public class SpkKernelRecord {
         return referenceFrame;
     }
 
-    public List<ChebyshevRecord> getChebyshevRecords() {
-        return chebyshevRecords;
+    public List<PositionChebyshevRecord> getChebyshevRecords() {
+        return positionChebyshevRecords;
     }
 
     public void merge(SpkKernelRecord newData) {
@@ -51,8 +51,8 @@ public class SpkKernelRecord {
             throw new IllegalArgumentException("Cannot merge data for different bodies or/and reference frame!");
         }
 
-        chebyshevRecords.addAll(newData.getChebyshevRecords());
-        chebyshevRecords.sort(Comparator.comparingDouble(record -> record.getTimeSpan().getTo()));
+        positionChebyshevRecords.addAll(newData.getChebyshevRecords());
+        positionChebyshevRecords.sort(Comparator.comparingDouble(record -> record.getTimeSpan().getTo()));
     }
 
     @Override

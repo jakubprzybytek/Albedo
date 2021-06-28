@@ -2,7 +2,7 @@ package jp.albedo.jpl;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
-import jp.albedo.jpl.kernel.ChebyshevRecord;
+import jp.albedo.jpl.kernel.PositionChebyshevRecord;
 import jp.albedo.jpl.kernel.SpkKernelLoader;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 
@@ -17,7 +17,7 @@ public class TestDataSpkGenerator {
                 .forDateRange(JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25))
                 .load(new File("d:/Workspace/Java/Albedo/misc/de438/jup365.bsp"))
                 .load(new File("d:/Workspace/Java/Albedo/misc/de438/de438t.bsp"))
-//                .load(new File("d:/Workspace/Java/Albedo/misc/de438/mar097.bsp"))
+                .load(new File("d:/Workspace/Java/Albedo/misc/de438/mar097.bsp"))
                 .kernel();
 
         System.out.printf("public class TestDataSpk {%n%n");
@@ -53,6 +53,16 @@ public class TestDataSpkGenerator {
                 JulianDay.fromDate(2019, 10, 9));
 
         generateSingleSpkKernelRecord(
+                "MARS_BARYCENTER_FOR_2019_10_09",
+                kernel, JplBody.MarsBarycenter, JplBody.SolarSystemBarycenter,
+                JulianDay.fromDate(2019, 10, 9));
+
+        generateSingleSpkKernelRecord(
+                "MARS_FOR_2019_10_09",
+                kernel, JplBody.Mars, JplBody.MarsBarycenter,
+                JulianDay.fromDate(2019, 10, 9));
+
+        generateSingleSpkKernelRecord(
                 "JUPITER_BARYCENTER_FOR_2019_10_09",
                 kernel, JplBody.JupiterBarycenter, JplBody.SolarSystemBarycenter,
                 JulianDay.fromDate(2019, 10, 9));
@@ -66,7 +76,7 @@ public class TestDataSpkGenerator {
     }
 
     private static void generateSingleSpkKernelRecord(String spkRecordName, SpkKernelRepository kernel, JplBody target, JplBody observer, double jde) throws JplException {
-        ChebyshevRecord record = kernel.getSpkKernelRecord(target, observer).getChebyshevRecords().stream()
+        PositionChebyshevRecord record = kernel.getSpkKernelRecord(target, observer).getChebyshevRecords().stream()
                 .filter(r -> r.getTimeSpan().inside(EphemerisSeconds.fromJde(jde)))
                 .reduce((a, b) -> b)
                 .orElseThrow();
@@ -77,13 +87,13 @@ public class TestDataSpkGenerator {
                 record.getTimeSpan().getFrom(), record.getTimeSpan().getTo());
         System.out.println("\t\tXYZCoefficients coefficients = new XYZCoefficients();");
         System.out.printf("\t\tcoefficients.x = new double[]{%s};%n\t\tcoefficients.y = new double[]{%s};%n\t\tcoefficients.z = new double[]{%s};%n",
-                Arrays.stream(record.getCoefficients().x)
+                Arrays.stream(record.getPositionCoefficients().x)
                         .mapToObj(String::valueOf)
                         .collect(Collectors.joining(", ")),
-                Arrays.stream(record.getCoefficients().y)
+                Arrays.stream(record.getPositionCoefficients().y)
                         .mapToObj(String::valueOf)
                         .collect(Collectors.joining(", ")),
-                Arrays.stream(record.getCoefficients().z)
+                Arrays.stream(record.getPositionCoefficients().z)
                         .mapToObj(String::valueOf)
                         .collect(Collectors.joining(", "))
         );

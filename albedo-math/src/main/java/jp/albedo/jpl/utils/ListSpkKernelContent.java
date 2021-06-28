@@ -3,7 +3,7 @@ package jp.albedo.jpl.utils;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.binary.SpkFileArrayInformation;
-import jp.albedo.jpl.files.binary.SpkFileReader;
+import jp.albedo.jpl.files.binary.SpkFileInformationReader;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
 
 import java.io.File;
@@ -41,8 +41,8 @@ public class ListSpkKernelContent {
     static List<SpkFileArrayInformation> loadArrayInformation(File file) throws JplException {
         try (FileChannel fileChannel = (FileChannel) Files.newByteChannel(file.toPath(), StandardOpenOption.READ)) {
 
-            SpkFileReader reader = new SpkFileReader(fileChannel);
-            return reader.getArraysInformation();
+            SpkFileInformationReader reader = new SpkFileInformationReader(fileChannel);
+            return reader.readArraysInformation();
 
         } catch (IOException e) {
             throw new JplException("Cannot read spk file!", e);

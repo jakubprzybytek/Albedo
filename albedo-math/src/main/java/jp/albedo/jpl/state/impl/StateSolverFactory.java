@@ -21,7 +21,7 @@ public class StateSolverFactory {
 
     private JplBody observerBody;
 
-    private Set<Correction> corrections = new HashSet<>();
+    private final Set<Correction> corrections = new HashSet<>();
 
     public StateSolverFactory(SpkKernelRepository spkKernel) {
         this.spkKernel = spkKernel;
