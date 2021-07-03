@@ -8,7 +8,9 @@ import jp.albedo.jpl.state.Correction;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.jpl.testdata.de440.TestData_de440;
 import jp.albedo.jpl.utils.JdeFromDateStringConverter;
+import jp.albedo.jpl.utils.OffsetFromStringConverter;
 import jp.albedo.jpl.utils.RectangularCoordinatesFromStringConverter;
+import org.assertj.core.data.Offset;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -38,7 +40,8 @@ public class StateSolverTest {
     public void testCorrected_de440(JplBody target,
                                     JplBody observer,
                                     @ConvertWith(JdeFromDateStringConverter.class) double jde,
-                                    @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected) throws JplException {
+                                    @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
+                                    @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
 
         StateSolver stateSolver = TestData_de440.SPK_KERNEL.stateSolver()
                 .target(target)
@@ -46,7 +49,7 @@ public class StateSolverTest {
                 .corrections(Correction.LightTime, Correction.StarAberration)
                 .build();
 
-        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, within(0.0008));
+        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, offset);
     }
 
 }
