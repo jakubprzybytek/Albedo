@@ -3,7 +3,7 @@ package jp.albedo.jpl.kernel;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplConstantEnum;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.state.impl.PositionCalculator;
+import jp.albedo.jpl.state.impl.chebyshev.PositionCalculator;
 
 import java.util.ArrayList;
 import java.util.HashMap;

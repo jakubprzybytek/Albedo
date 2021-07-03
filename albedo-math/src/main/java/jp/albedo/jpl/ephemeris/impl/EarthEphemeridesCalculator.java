@@ -63,9 +63,9 @@ public class EarthEphemeridesCalculator implements EphemeridesCalculator {
         final List<Ephemeris> ephemerides = new ArrayList<>(jdes.size());
 
         for (double jde : jdes) {
-            final RectangularCoordinates earthToBodyCoordsKm = earthToBodyStateSolver.forDate(jde);
-            final RectangularCoordinates earthToSunCoordsKm = earthToSunStateSolver.forDate(jde);
-            final RectangularCoordinates sunToBodyCoordsKm = sunToBodyStateSolver.forDate(jde);
+            final RectangularCoordinates earthToBodyCoordsKm = earthToBodyStateSolver.positionForDate(jde);
+            final RectangularCoordinates earthToSunCoordsKm = earthToSunStateSolver.positionForDate(jde);
+            final RectangularCoordinates sunToBodyCoordsKm = sunToBodyStateSolver.positionForDate(jde);
 
             final RectangularCoordinates earthToBodyCoordsAu = earthToBodyCoordsKm.divideBy(JplConstant.AU);
             final RectangularCoordinates sunToBodyCoordsAu = sunToBodyCoordsKm.divideBy(JplConstant.AU);

@@ -41,7 +41,7 @@ public class SpkKernelLoader {
         return this;
     }
 
-    public SpkKernelLoader load(Stream<SpkKernelRecord> spkRecords) {
+    public SpkKernelLoader load(Stream<SpkKernelCollection> spkRecords) {
         spkRecords.forEach(kernel::registerSpkKernelRecord);
         return this;
     }

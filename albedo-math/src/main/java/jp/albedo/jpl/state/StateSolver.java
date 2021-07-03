@@ -4,6 +4,8 @@ import jp.albedo.common.RectangularCoordinates;
 
 public interface StateSolver {
 
-    RectangularCoordinates forDate(double jde);
+    RectangularCoordinates positionForDate(double jde);
+
+    RectangularCoordinates velocityForDate(double jde);
 
 }

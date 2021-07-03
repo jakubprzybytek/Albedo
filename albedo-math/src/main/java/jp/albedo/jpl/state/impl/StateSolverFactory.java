@@ -2,7 +2,7 @@ package jp.albedo.jpl.state.impl;
 
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.kernel.SpkKernelRecord;
+import jp.albedo.jpl.kernel.SpkKernelCollection;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.jpl.state.Correction;
 import jp.albedo.jpl.state.StateSolver;
@@ -55,10 +55,10 @@ public class StateSolverFactory {
     }
 
     private StateSolver buildUncorrected() throws JplException {
-        List<SpkKernelRecord> spkRecordsForTarget = spkKernel.getAllTransientSpkKernelRecords(targetBody);
+        List<SpkKernelCollection> spkRecordsForTarget = spkKernel.getAllTransientSpkKernelCollections(targetBody);
 
         // check if observer is on the spkRecords for target
-        List<SpkKernelRecord> directSpkRecordsToTarget = spkRecordsForTarget.stream()
+        List<SpkKernelCollection> directSpkRecordsToTarget = spkRecordsForTarget.stream()
                 .collect(Collectors.sublistWithStartingCondition(
                         record -> record.getCenterBody() == observerBody
                 ));
@@ -67,10 +67,10 @@ public class StateSolverFactory {
             return new DirectStateSolver(directSpkRecordsToTarget, false);
         }
 
-        List<SpkKernelRecord> spkRecordsForObserver = spkKernel.getAllTransientSpkKernelRecords(observerBody);
+        List<SpkKernelCollection> spkRecordsForObserver = spkKernel.getAllTransientSpkKernelCollections(observerBody);
 
         // check if target is on the spkRecords for observer
-        List<SpkKernelRecord> directSpkRecordsToObserver = spkRecordsForObserver.stream()
+        List<SpkKernelCollection> directSpkRecordsToObserver = spkRecordsForObserver.stream()
                 .collect(Collectors.sublistWithStartingCondition(
                         record -> record.getCenterBody() == targetBody
                 ));
@@ -80,10 +80,10 @@ public class StateSolverFactory {
         }
 
         // try to find common center body and drop duplicated records
-        List<SpkKernelRecord> relativeSpkRecordsForTarget = spkRecordsForTarget.stream()
+        List<SpkKernelCollection> relativeSpkRecordsForTarget = spkRecordsForTarget.stream()
                 .filter(record -> !spkRecordsForObserver.contains(record))
                 .collect(java.util.stream.Collectors.toList());
-        List<SpkKernelRecord> relativeSpkRecordsForObserver = spkRecordsForObserver.stream()
+        List<SpkKernelCollection> relativeSpkRecordsForObserver = spkRecordsForObserver.stream()
                 .filter(record -> !spkRecordsForTarget.contains(record))
                 .collect(java.util.stream.Collectors.toList());
 
@@ -96,8 +96,8 @@ public class StateSolverFactory {
     }
 
     private StateSolver buildCorrected() throws JplException {
-        List<SpkKernelRecord> spkRecordsForTarget = spkKernel.getAllTransientSpkKernelRecords(targetBody);
-        List<SpkKernelRecord> spkRecordsForObserver = spkKernel.getAllTransientSpkKernelRecords(observerBody);
+        List<SpkKernelCollection> spkRecordsForTarget = spkKernel.getAllTransientSpkKernelCollections(targetBody);
+        List<SpkKernelCollection> spkRecordsForObserver = spkKernel.getAllTransientSpkKernelCollections(observerBody);
 
         if (spkRecordsForTarget.get(0).getCenterBody() != spkRecordsForObserver.get(0).getCenterBody()) {
             throw new JplException("Cannot set up state solver for bodies that don't the same ancestor SPK record.");

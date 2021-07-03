@@ -1,14 +1,16 @@
-package jp.albedo.jpl.state.impl;
+package jp.albedo.jpl.state.impl.chebyshev;
 
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.PositionChebyshevRecord;
+import jp.albedo.jpl.state.impl.chebyshev.ChebyshevPolynomialExpander;
 
 import java.util.List;
 
 public class PositionCalculator {
 
-    final List<PositionChebyshevRecord> positionChebyshevRecords;
+    // FixMe: public just for tests
+    public final List<PositionChebyshevRecord> positionChebyshevRecords;
 
     private PositionChebyshevRecord cachedPositionChebyshevRecord;
 
@@ -21,7 +23,7 @@ public class PositionCalculator {
         if (cachedPositionChebyshevRecord == null || !cachedPositionChebyshevRecord.getTimeSpan().inside(jde)) {
             cachedPositionChebyshevRecord = positionChebyshevRecords.stream()
                     .filter(record -> record.getTimeSpan().inside(jde))
-                    .reduce((a, b) -> b) // find last
+                    .reduce((a, b) -> b) // FixMe: 'find last' requires traversing through entire collection
                     .orElseThrow(() -> new JplException(String.format("Couldn't find coefficients for T=%f", jde)));
         }
 

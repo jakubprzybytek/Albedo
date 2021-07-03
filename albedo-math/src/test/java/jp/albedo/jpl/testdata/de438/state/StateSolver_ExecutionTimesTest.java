@@ -1,10 +1,12 @@
-package jp.albedo.jpl.state;
+package jp.albedo.jpl.testdata.de438.state;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.TestData;
+import jp.albedo.jpl.state.Correction;
+import jp.albedo.jpl.state.StateSolver;
+import jp.albedo.jpl.testdata.de438.TestData_de438;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,7 @@ import java.time.Instant;
 @Disabled
 public class StateSolver_ExecutionTimesTest {
 
-    private static final SpkKernelRepository kernel = TestData.KERNEL;
+    private static final SpkKernelRepository kernel = TestData_de438.SPK_KERNEL;
 
     @Test
     public void test() throws JplException {
@@ -56,7 +58,7 @@ public class StateSolver_ExecutionTimesTest {
 
         for (int i = 0; i < maxIterations; i++) {
             final double jde = startDate + (endDate - startDate) * i / maxIterations;
-            RectangularCoordinates coords = stateSolver.forDate(jde);
+            RectangularCoordinates coords = stateSolver.positionForDate(jde);
         }
 
         return Duration.between(start, Instant.now());

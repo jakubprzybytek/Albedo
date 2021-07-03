@@ -1,12 +1,13 @@
-package jp.albedo.jpl.state;
+package jp.albedo.jpl.testdata.de438.state;
 
 import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.TestData;
+import jp.albedo.jpl.testdata.de438.TestData_de438;
 import jp.albedo.jpl.WebGeocalc;
-import jp.albedo.jpl.kernel.SpkKernelRepository;
+import jp.albedo.jpl.state.Correction;
+import jp.albedo.jpl.state.StateSolver;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,18 +19,15 @@ import static org.assertj.core.api.Assertions.within;
 
 public class StateSolverTest {
 
-    private static final SpkKernelRepository kernel = TestData.KERNEL;
-
     @ParameterizedTest
     @MethodSource
     public void testUncorrected(JplBody target, JplBody observer, double jde, RectangularCoordinates expected) throws JplException {
-        RectangularCoordinates coordinates = kernel.stateSolver()
+        StateSolver stateSolver = TestData_de438.SPK_KERNEL.stateSolver()
                 .target(target)
                 .observer(observer)
-                .build()
-                .forDate(jde);
+                .build();
 
-        assertThat(coordinates).isEqualTo(expected, WebGeocalc.WEB_GEOCALC_OFFSET);
+        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, WebGeocalc.WEB_GEOCALC_OFFSET);
     }
 
     private static Stream<Arguments> testUncorrected() {
@@ -40,17 +38,17 @@ public class StateSolverTest {
         );
     }
 
+
     @ParameterizedTest
     @MethodSource
     public void testCorrected(JplBody target, JplBody observer, double jde, RectangularCoordinates expected) throws JplException {
-        RectangularCoordinates coordinates = kernel.stateSolver()
+        StateSolver stateSolver = TestData_de438.SPK_KERNEL.stateSolver()
                 .target(target)
                 .observer(observer)
                 .corrections(Correction.LightTime, Correction.StarAberration)
-                .build()
-                .forDate(jde);
+                .build();
 
-        assertThat(coordinates).isEqualTo(expected, within(0.0004));
+        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, within(0.0004));
     }
 
     private static Stream<Arguments> testCorrected() {

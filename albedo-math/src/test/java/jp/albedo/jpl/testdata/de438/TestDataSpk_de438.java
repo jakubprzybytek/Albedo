@@ -1,17 +1,19 @@
-package jp.albedo.jpl;
+package jp.albedo.jpl.testdata.de438;
 
+import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.files.binary.ReferenceFrame;
+import jp.albedo.jpl.kernel.PositionAndVelocityChebyshevRecord;
 import jp.albedo.jpl.kernel.PositionChebyshevRecord;
-import jp.albedo.jpl.kernel.SpkKernelRecord;
+import jp.albedo.jpl.kernel.SpkKernelCollection;
 import jp.albedo.jpl.kernel.TimeSpan;
 import jp.albedo.jpl.kernel.XYZCoefficients;
 
 import java.util.Collections;
 import java.util.List;
 
-public class TestDataSpk {
+public class TestDataSpk_de438 {
 
-    public static SpkKernelRecord SUN_FOR_2019_10_09;
+    public static SpkKernelCollection SUN_FOR_2019_10_09;
 
     static {
         TimeSpan timeSpan = new TimeSpan(6.22728E8, 6.241104E8);
@@ -21,10 +23,10 @@ public class TestDataSpk {
         coefficients.z = new double[]{451001.28497513244, -215.0019379509757, -11.226174278559911, -0.03109578949732903, 0.0012350005356794543, 1.0431233160300685E-5, 2.5899518757836785E-6, 2.6549954658194798E-8, 1.302207541828127E-8, 3.5734938024976557E-10, 2.2588224191907733E-11};
 
         List<PositionChebyshevRecord> positionChebyshevRecords = Collections.singletonList(new PositionChebyshevRecord(timeSpan, coefficients));
-        SUN_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Sun, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, positionChebyshevRecords);
+        SUN_FOR_2019_10_09 = new SpkKernelCollection(JplBody.Sun, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, positionChebyshevRecords, Collections.emptyList());
     }
 
-    public static SpkKernelRecord EARTH_MOON_BARYCENTER_FOR_2019_10_09;
+    public static SpkKernelCollection EARTH_MOON_BARYCENTER_FOR_2019_10_09;
 
     static {
         TimeSpan timeSpan = new TimeSpan(6.22728E8, 6.241104E8);
@@ -34,10 +36,10 @@ public class TestDataSpk {
         coefficients.z = new double[]{1.0953952944021957E7, 8009319.6051462935, -49855.41597184457, -6374.59856315225, 8.645923720436818, 1.5351405548197503, 0.006103310320018878, -2.1220785588716188E-4, -2.378787005248201E-5, 4.565427491061808E-6, 9.528283646581848E-8, -2.8141222995618126E-7, 6.40398951745763E-8};
 
         List<PositionChebyshevRecord> positionChebyshevRecords = Collections.singletonList(new PositionChebyshevRecord(timeSpan, coefficients));
-        EARTH_MOON_BARYCENTER_FOR_2019_10_09 = new SpkKernelRecord(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, positionChebyshevRecords);
+        EARTH_MOON_BARYCENTER_FOR_2019_10_09 = new SpkKernelCollection(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, positionChebyshevRecords, Collections.emptyList());
     }
 
-    public static SpkKernelRecord EARTH_FOR_2019_10_09;
+    public static SpkKernelCollection EARTH_FOR_2019_10_09;
 
     static {
         TimeSpan timeSpan = new TimeSpan(6.237648E8, 6.241104E8);
@@ -47,10 +49,10 @@ public class TestDataSpk {
         coefficients.z = new double[]{1122.7811445836603, -604.1183133720834, -53.14083786532613, 4.718012250356397, 0.15992639739195338, -0.005626723709082821, -6.467047513375947E-5, -2.271406261921008E-5, 6.537986621252292E-7, 5.321983808943225E-8, -2.045573802419618E-9, 2.4379197722320234E-11, -1.3063165198224266E-11};
 
         List<PositionChebyshevRecord> positionChebyshevRecords = Collections.singletonList(new PositionChebyshevRecord(timeSpan, coefficients));
-        EARTH_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, positionChebyshevRecords);
+        EARTH_FOR_2019_10_09 = new SpkKernelCollection(JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, positionChebyshevRecords, Collections.emptyList());
     }
 
-    public static SpkKernelRecord MOON_FOR_2019_10_09;
+    public static SpkKernelCollection MOON_FOR_2019_10_09;
 
     static {
         TimeSpan timeSpan = new TimeSpan(6.237648E8, 6.241104E8);
@@ -60,10 +62,10 @@ public class TestDataSpk {
         coefficients.z = new double[]{-91282.7451740271, 49115.16222064411, 4320.380320417298, -383.5770773804004, -13.002107000241056, 0.4574558354302617, 0.005257746383073818, 0.0018466662002104503, -5.315420280951311E-5, -4.326803083535969E-6, 1.6630631271437637E-7, -1.982042630453135E-9, 1.062042754910972E-9};
 
         List<PositionChebyshevRecord> positionChebyshevRecords = Collections.singletonList(new PositionChebyshevRecord(timeSpan, coefficients));
-        MOON_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Moon, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, positionChebyshevRecords);
+        MOON_FOR_2019_10_09 = new SpkKernelCollection(JplBody.Moon, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, positionChebyshevRecords, Collections.emptyList());
     }
 
-    public static SpkKernelRecord VENUS_BARYCENTER_FOR_2019_10_09;
+    public static SpkKernelCollection VENUS_BARYCENTER_FOR_2019_10_09;
 
     static {
         TimeSpan timeSpan = new TimeSpan(6.22728E8, 6.241104E8);
@@ -73,10 +75,10 @@ public class TestDataSpk {
         coefficients.z = new double[]{-2.528866897302557E7, -8129417.506267378, 324512.05905360094, 16753.906111217228, -357.4917806725975, -9.845784818905384, 0.17931554766072877, 0.002110691361240645, -6.495324291902742E-5, 2.8586507221580395E-7};
 
         List<PositionChebyshevRecord> positionChebyshevRecords = Collections.singletonList(new PositionChebyshevRecord(timeSpan, coefficients));
-        VENUS_BARYCENTER_FOR_2019_10_09 = new SpkKernelRecord(JplBody.VenusBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, positionChebyshevRecords);
+        VENUS_BARYCENTER_FOR_2019_10_09 = new SpkKernelCollection(JplBody.VenusBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, positionChebyshevRecords, Collections.emptyList());
     }
 
-    public static SpkKernelRecord VENUS_FOR_2019_10_09;
+    public static SpkKernelCollection VENUS_FOR_2019_10_09;
 
     static {
         TimeSpan timeSpan = new TimeSpan(-1.42007472E10, 2.05140816E10);
@@ -86,10 +88,40 @@ public class TestDataSpk {
         coefficients.z = new double[]{0.0, 0.0};
 
         List<PositionChebyshevRecord> positionChebyshevRecords = Collections.singletonList(new PositionChebyshevRecord(timeSpan, coefficients));
-        VENUS_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Venus, JplBody.VenusBarycenter, ReferenceFrame.J2000, positionChebyshevRecords);
+        VENUS_FOR_2019_10_09 = new SpkKernelCollection(JplBody.Venus, JplBody.VenusBarycenter, ReferenceFrame.J2000, positionChebyshevRecords, Collections.emptyList());
     }
 
-    public static SpkKernelRecord JUPITER_BARYCENTER_FOR_2019_10_09;
+    public static SpkKernelCollection MARS_BARYCENTER_FOR_2019_10_09;
+
+    static {
+        TimeSpan timeSpan = new TimeSpan(6.213456E8, 6.241104E8);
+        XYZCoefficients coefficients = new XYZCoefficients();
+        coefficients.x = new double[]{-2.4389203983678585E8, -4725707.863236613, 1008755.2153124659, 4732.163153996068, -243.62882279471765, -1.2245770175118367, -0.04454216803792031, -1.7284534315709142E-4, 3.5968228517495496E-6, 1.5933150997024639E-9, 7.531061809956475E-8};
+        coefficients.y = new double[]{3.874630790139368E7, -2.7353380536617234E7, -156144.4860850069, 18633.77364670876, 80.48318674834425, -0.46919059419678016, -0.006255528156292305, -8.51440805518615E-4, -7.902504663766167E-6, 2.9866666884030083E-7, -5.32722018211137E-8};
+        coefficients.z = new double[]{2.4315966561205428E7, -1.2418660372821888E7, -98841.0922082362, 8419.147638954117, 43.4919764548341, -0.18210009250071155, -0.0016820041472421546, -3.842378952615709E-4, -3.792907083528404E-6, 1.1796403869956372E-7, -2.0005013065959306E-8};
+
+        List<PositionChebyshevRecord> positionChebyshevRecords = Collections.singletonList(new PositionChebyshevRecord(timeSpan, coefficients));
+        MARS_BARYCENTER_FOR_2019_10_09 = new SpkKernelCollection(JplBody.MarsBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, positionChebyshevRecords, Collections.emptyList());
+    }
+
+    public static SpkKernelCollection MARS_FOR_2019_10_09;
+
+    static {
+        TimeSpan timeSpan = new TimeSpan(6.238512E8, 6.238728E8);
+        XYZCoefficients coefficients = new XYZCoefficients();
+        coefficients.x = new double[]{3.790848175400122E-5, 1.5513497167787398E-4, -2.7934244033505684E-5, -5.716979885141319E-5, 4.380560908500653E-6, 4.576511350063638E-6, -3.3289725773641767E-7, -1.1284933319556733E-7};
+        coefficients.y = new double[]{-1.2647619428198803E-5, 8.402362902042362E-5, 1.1483085771881849E-4, -2.4806100611456747E-5, -1.7315234174900736E-5, 2.3096194214415637E-6, 7.638139107475543E-7, -1.1405708028967929E-7};
+        coefficients.z = new double[]{-2.6653075807322358E-5, -3.897019738945714E-5, 7.526690404903104E-5, 1.7879837957914282E-5, -1.144735187372097E-5, -1.2624404786928192E-6, 5.804644700918358E-7, 1.1887923194903306E-9};
+        XYZCoefficients velocityCoefficients = new XYZCoefficients();
+        velocityCoefficients.x = new double[]{5.294617168132972E-10, -7.471042218412456E-9, -2.7669775025238955E-8, 2.8749740902933533E-9, 4.091224336657262E-9, -3.6988584192935295E-10, -1.462861726609206E-10, 0.0};
+        velocityCoefficients.y = new double[]{1.884724512151245E-9, 3.0552530037503586E-8, -1.1790482275775958E-8, -1.197741726576252E-8, 1.9906847305889002E-9, 8.486821230528381E-10, -1.4785177074588056E-10, 0.0};
+        velocityCoefficients.z = new double[]{7.745773738016709E-10, 2.0042071745135037E-8, 8.765857967873182E-9, -7.834559384135715E-9, -1.167385342079197E-9, 6.44960522324262E-10, 1.5410270808207988E-12, 0.0};
+
+        List<PositionAndVelocityChebyshevRecord> positionAndVelocityChebyshevRecords = Collections.singletonList(new PositionAndVelocityChebyshevRecord(timeSpan, coefficients, velocityCoefficients));
+        MARS_FOR_2019_10_09 = new SpkKernelCollection(JplBody.Mars, JplBody.MarsBarycenter, ReferenceFrame.J2000, Collections.emptyList(), positionAndVelocityChebyshevRecords);
+    }
+
+    public static SpkKernelCollection JUPITER_BARYCENTER_FOR_2019_10_09;
 
     static {
         TimeSpan timeSpan = new TimeSpan(6.213456E8, 6.241104E8);
@@ -99,10 +131,10 @@ public class TestDataSpk {
         coefficients.z = new double[]{-3.0883385751621664E8, -296963.4080659916, 40187.64528305724, 28.003213301211996, -0.40124108111204737, -7.091210106373594E-4, 7.889984977384743E-8, 3.641035557095296E-8};
 
         List<PositionChebyshevRecord> positionChebyshevRecords = Collections.singletonList(new PositionChebyshevRecord(timeSpan, coefficients));
-        JUPITER_BARYCENTER_FOR_2019_10_09 = new SpkKernelRecord(JplBody.JupiterBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, positionChebyshevRecords);
+        JUPITER_BARYCENTER_FOR_2019_10_09 = new SpkKernelCollection(JplBody.JupiterBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, positionChebyshevRecords, Collections.emptyList());
     }
 
-    public static SpkKernelRecord JUPITER_FOR_2019_10_09;
+    public static SpkKernelCollection JUPITER_FOR_2019_10_09;
 
     static {
         TimeSpan timeSpan = new TimeSpan(6.237864E8, 6.239808E8);
@@ -112,7 +144,7 @@ public class TestDataSpk {
         coefficients.z = new double[]{42.48098738703517, -47.89752959706809, -12.202159311173482, -1.8907514678082953, 3.776647724903956, 1.3723191361858733, -0.6277506829627639, -0.15741199173715525, 0.052547867301783846, 0.006202855033568877, -0.0028573413651540314, 4.3954798103884585E-4, 1.7532421594168568E-4, -7.809864857399873E-5, -5.538239458946492E-5, -4.887679158738223E-6};
 
         List<PositionChebyshevRecord> positionChebyshevRecords = Collections.singletonList(new PositionChebyshevRecord(timeSpan, coefficients));
-        JUPITER_FOR_2019_10_09 = new SpkKernelRecord(JplBody.Jupiter, JplBody.JupiterBarycenter, ReferenceFrame.J2000, positionChebyshevRecords);
+        JUPITER_FOR_2019_10_09 = new SpkKernelCollection(JplBody.Jupiter, JplBody.JupiterBarycenter, ReferenceFrame.J2000, positionChebyshevRecords, Collections.emptyList());
     }
 
 }

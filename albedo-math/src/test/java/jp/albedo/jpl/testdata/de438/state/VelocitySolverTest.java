@@ -1,4 +1,4 @@
-package jp.albedo.jpl.state;
+package jp.albedo.jpl.testdata.de438.state;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.JulianDay;
@@ -6,7 +6,8 @@ import jp.albedo.common.Radians;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.TestData;
+import jp.albedo.jpl.state.StateSolver;
+import jp.albedo.jpl.testdata.de438.TestData_de438;
 import jp.albedo.jpl.WebGeocalc;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.testutils.AlbedoAssertions;
@@ -18,7 +19,7 @@ import static org.assertj.core.api.Assertions.within;
 
 public class VelocitySolverTest {
 
-    private static final SpkKernelRepository kernel = TestData.KERNEL;
+    private static final SpkKernelRepository kernel = TestData_de438.SPK_KERNEL;
 
     @Test
     void test() throws JplException {
@@ -36,7 +37,7 @@ public class VelocitySolverTest {
         final double jde = JulianDay.fromDate(2019, 10, 9);
         final double h = 20.0 / 24.0 / 60.0;
 
-        final RectangularCoordinates earthCoords = earthStateSolver.forDate(jde);
+        final RectangularCoordinates earthCoords = earthStateSolver.positionForDate(jde);
         final RectangularCoordinates earthVeocity = solveForVelocity(earthStateSolver, jde, h);
 
         AlbedoAssertions.assertThat(earthCoords)
@@ -50,7 +51,7 @@ public class VelocitySolverTest {
         System.out.println(earthCoords);
         System.out.printf("Velocity [%f, %f, %f]%n", earthVeocity.x, earthVeocity.y, earthVeocity.z);
 
-        final RectangularCoordinates venusCoords = venusStateSolver.forDate(jde);
+        final RectangularCoordinates venusCoords = venusStateSolver.positionForDate(jde);
         AlbedoAssertions.assertThat(venusCoords)
                 .isEqualTo(new RectangularCoordinates(-68662675.63881429, -77239788.61925617, -30455268.59037707), WebGeocalc.WEB_GEOCALC_OFFSET);
 
@@ -64,7 +65,7 @@ public class VelocitySolverTest {
         double correctedJde = jde - lightTime / (24.0 * 60.0 * 60.0);
         System.out.println("Corrected jde: " + correctedJde);
 
-        final RectangularCoordinates correctedVenusCoords = venusStateSolver.forDate(correctedJde);
+        final RectangularCoordinates correctedVenusCoords = venusStateSolver.positionForDate(correctedJde);
         AlbedoAssertions.assertThat(correctedVenusCoords)
                 .isEqualTo(new RectangularCoordinates(-68684745.81877930, -77223690.37511934, -30446628.31928106), WebGeocalc.WEB_GEOCALC_OFFSET);
 
@@ -90,8 +91,8 @@ public class VelocitySolverTest {
     }
 
     private RectangularCoordinates solveForVelocity(StateSolver stateSolver, double jde, double h) {
-        RectangularCoordinates coordsMinus = stateSolver.forDate(jde - h);
-        RectangularCoordinates coordsPlus = stateSolver.forDate(jde + h);
+        RectangularCoordinates coordsMinus = stateSolver.positionForDate(jde - h);
+        RectangularCoordinates coordsPlus = stateSolver.positionForDate(jde + h);
 
         return new RectangularCoordinates(
                 (coordsPlus.x - coordsMinus.x) / (2 * h) / (24.0 * 60.0 * 60.0),
@@ -100,10 +101,10 @@ public class VelocitySolverTest {
     }
 
     private RectangularCoordinates solveForVelocity2(StateSolver stateSolver, double jde, double h) {
-        RectangularCoordinates coordsMinus2 = stateSolver.forDate(jde - 2.0 * h);
-        RectangularCoordinates coordsMinus = stateSolver.forDate(jde - h);
-        RectangularCoordinates coordsPlus = stateSolver.forDate(jde + h);
-        RectangularCoordinates coordsPlus2 = stateSolver.forDate(jde + 2.0 * h);
+        RectangularCoordinates coordsMinus2 = stateSolver.positionForDate(jde - 2.0 * h);
+        RectangularCoordinates coordsMinus = stateSolver.positionForDate(jde - h);
+        RectangularCoordinates coordsPlus = stateSolver.positionForDate(jde + h);
+        RectangularCoordinates coordsPlus2 = stateSolver.positionForDate(jde + 2.0 * h);
 
         return new RectangularCoordinates(
                 (-coordsPlus2.x + 8.0 * coordsPlus.x - 8.0 * coordsMinus.x + coordsMinus2.x) / (12.0 * h) / (24.0 * 60.0 * 60.0),

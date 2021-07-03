@@ -29,6 +29,10 @@ public class TimeSpan {
         return jd >= this.from && jd <= this.to;
     }
 
+    public boolean overlaps(TimeSpan timeSpan) {
+        return this.from <= timeSpan.to && timeSpan.from <= this.to;
+    }
+
     public double normalizeFor(double jd) throws JplException {
 
         if (jd < this.from || jd > this.to) {

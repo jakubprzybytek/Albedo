@@ -8,7 +8,7 @@ import jp.albedo.jpl.files.binary.datatypes.SpkFilePositionAndVelocityChebyshevP
 import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.PositionAndVelocityChebyshevRecord;
 import jp.albedo.jpl.kernel.PositionChebyshevRecord;
-import jp.albedo.jpl.kernel.SpkKernelRecord;
+import jp.albedo.jpl.kernel.SpkKernelCollection;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class SpkFileLoader {
         this.file = file;
     }
 
-    public List<SpkKernelRecord> loadAll(double startJde, double endJde) throws JplException {
+    public List<SpkKernelCollection> loadAll(double startJde, double endJde) throws JplException {
 
         final double startEt = EphemerisSeconds.fromJde(startJde);
         final double endEt = EphemerisSeconds.fromJde(endJde);
@@ -36,21 +36,20 @@ public class SpkFileLoader {
             SpkFileInformationReader infoReader = new SpkFileInformationReader(fileChannel);
             SpkFileDataReader dataReader = new SpkFileDataReader(fileChannel);
 
-            final List<SpkKernelRecord> spkData = new ArrayList<>();
+            final List<SpkKernelCollection> spkData = new ArrayList<>();
 
             for (SpkFileArrayInformation arrayInfo : infoReader.readArraysInformation()) {
 
                 switch (arrayInfo.getDataType()) {
                     case ChebyshevPosition:
                         List<PositionChebyshevRecord> positionChebyshevRecords = dataReader.readChebyshevArray(arrayInfo, startEt, endEt);
-                        spkData.add(SpkKernelRecord.fromArrayInformation(arrayInfo, positionChebyshevRecords));
+                        spkData.add(SpkKernelCollection.fromArrayInformationAndPosition(arrayInfo, positionChebyshevRecords));
                         break;
 
                     case ChebyshevPositionAndVelocity:
                         List<PositionAndVelocityChebyshevRecord> positionAndVelocityChebyshevRecords =
                                 new SpkFilePositionAndVelocityChebyshevPolynomialsReader(fileChannel).readChebyshevArray(arrayInfo, startEt, endEt);
-                        System.out.println(positionAndVelocityChebyshevRecords.toString());
-                        //spkData.add(SpkKernelRecord.fromArrayInformation(arrayInfo, positionChebyshevRecords));
+                        spkData.add(SpkKernelCollection.fromArrayInformationAndPositionAndVelocity(arrayInfo, positionAndVelocityChebyshevRecords));
                         break;
                 }
             }

@@ -4,15 +4,17 @@ import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.binary.ReferenceFrame;
 import jp.albedo.jpl.kernel.PositionChebyshevRecord;
-import jp.albedo.jpl.kernel.SpkKernelRecord;
+import jp.albedo.jpl.kernel.SpkKernelCollection;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.jpl.state.StateSolver;
+import jp.albedo.jpl.state.impl.chebyshev.PositionAndVelocitySolvingCalculator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,13 +33,13 @@ public class StateSolverFactoryTest_DirectSolver {
 
     @BeforeAll
     private static void setup() throws JplException {
-        final SpkKernelRecord first = new SpkKernelRecord(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, firstChebyshevList);
-        final SpkKernelRecord second = new SpkKernelRecord(JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, secondChebyshevList);
-        final SpkKernelRecord third = new SpkKernelRecord(JplBody.Pluto, JplBody.Earth, ReferenceFrame.J2000, thirdChebyshevList);
+        final SpkKernelCollection first = new SpkKernelCollection(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, firstChebyshevList, Collections.emptyList());
+        final SpkKernelCollection second = new SpkKernelCollection(JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, secondChebyshevList, Collections.emptyList());
+        final SpkKernelCollection third = new SpkKernelCollection(JplBody.Pluto, JplBody.Earth, ReferenceFrame.J2000, thirdChebyshevList, Collections.emptyList());
 
         spkKernel = mock(SpkKernelRepository.class);
-        when(spkKernel.getAllTransientSpkKernelRecords(JplBody.Pluto)).thenReturn(Arrays.asList(first, second, third));
-        when(spkKernel.getAllTransientSpkKernelRecords(JplBody.Earth)).thenReturn(Arrays.asList(first, second));
+        when(spkKernel.getAllTransientSpkKernelCollections(JplBody.Pluto)).thenReturn(Arrays.asList(first, second, third));
+        when(spkKernel.getAllTransientSpkKernelCollections(JplBody.Earth)).thenReturn(Arrays.asList(first, second));
     }
 
     @Test
@@ -52,10 +54,22 @@ public class StateSolverFactoryTest_DirectSolver {
         DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
         Assertions.assertAll(
                 () -> assertThat(directStateSolver.negate).isFalse(),
-                () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(3),
-                () -> assertThat(directStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(firstChebyshevList),
-                () -> assertThat(directStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(secondChebyshevList),
-                () -> assertThat(directStateSolver.positionCalculators.get(2).positionChebyshevRecords).isSameAs(thirdChebyshevList)
+                () -> assertThat(directStateSolver.calculators.size()).isEqualTo(3),
+                () -> {
+                    assertThat(directStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(firstChebyshevList);
+                },
+                () -> {
+                    assertThat(directStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(secondChebyshevList);
+                },
+                () -> {
+                    assertThat(directStateSolver.calculators.get(2)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(2);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(thirdChebyshevList);
+                }
         );
     }
 
@@ -71,10 +85,22 @@ public class StateSolverFactoryTest_DirectSolver {
         DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
         Assertions.assertAll(
                 () -> assertThat(directStateSolver.negate).isTrue(),
-                () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(3),
-                () -> assertThat(directStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(firstChebyshevList),
-                () -> assertThat(directStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(secondChebyshevList),
-                () -> assertThat(directStateSolver.positionCalculators.get(2).positionChebyshevRecords).isSameAs(thirdChebyshevList)
+                () -> assertThat(directStateSolver.calculators.size()).isEqualTo(3),
+                () -> {
+                    assertThat(directStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(firstChebyshevList);
+                },
+                () -> {
+                    assertThat(directStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(secondChebyshevList);
+                },
+                () -> {
+                    assertThat(directStateSolver.calculators.get(2)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(2);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(thirdChebyshevList);
+                }
         );
     }
 
@@ -90,9 +116,17 @@ public class StateSolverFactoryTest_DirectSolver {
         DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
         Assertions.assertAll(
                 () -> assertThat(directStateSolver.negate).isFalse(),
-                () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(directStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(firstChebyshevList),
-                () -> assertThat(directStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(secondChebyshevList)
+                () -> assertThat(directStateSolver.calculators.size()).isEqualTo(2),
+                () -> {
+                    assertThat(directStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(firstChebyshevList);
+                },
+                () -> {
+                    assertThat(directStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(secondChebyshevList);
+                }
         );
     }
 
@@ -108,9 +142,17 @@ public class StateSolverFactoryTest_DirectSolver {
         DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
         Assertions.assertAll(
                 () -> assertThat(directStateSolver.negate).isTrue(),
-                () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(directStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(firstChebyshevList),
-                () -> assertThat(directStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(secondChebyshevList)
+                () -> assertThat(directStateSolver.calculators.size()).isEqualTo(2),
+                () -> {
+                    assertThat(directStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(firstChebyshevList);
+                },
+                () -> {
+                    assertThat(directStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(secondChebyshevList);
+                }
         );
     }
 
@@ -126,9 +168,17 @@ public class StateSolverFactoryTest_DirectSolver {
         DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
         Assertions.assertAll(
                 () -> assertThat(directStateSolver.negate).isFalse(),
-                () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(directStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(secondChebyshevList),
-                () -> assertThat(directStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(thirdChebyshevList)
+                () -> assertThat(directStateSolver.calculators.size()).isEqualTo(2),
+                () -> {
+                    assertThat(directStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(secondChebyshevList);
+                },
+                () -> {
+                    assertThat(directStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(thirdChebyshevList);
+                }
         );
     }
 
@@ -144,9 +194,18 @@ public class StateSolverFactoryTest_DirectSolver {
         DirectStateSolver directStateSolver = ((DirectStateSolver) stateSolver);
         Assertions.assertAll(
                 () -> assertThat(directStateSolver.negate).isTrue(),
-                () -> assertThat(directStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(directStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(secondChebyshevList),
-                () -> assertThat(directStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(thirdChebyshevList)
+                () -> assertThat(directStateSolver.calculators.size()).isEqualTo(2),
+                () -> {
+                    assertThat(directStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(secondChebyshevList);
+                },
+                () -> {
+                    assertThat(directStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) directStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(thirdChebyshevList);
+                }
+
         );
     }
 

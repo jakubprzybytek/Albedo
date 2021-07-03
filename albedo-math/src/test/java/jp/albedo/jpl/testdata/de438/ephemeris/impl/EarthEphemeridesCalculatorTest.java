@@ -1,11 +1,12 @@
-package jp.albedo.jpl.ephemeris.impl;
+package jp.albedo.jpl.testdata.de438.ephemeris.impl;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.JulianDay;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.TestData;
+import jp.albedo.jpl.ephemeris.impl.EarthEphemeridesCalculator;
+import jp.albedo.jpl.testdata.de438.TestData_de438;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.testutils.AlbedoAssertions;
 import org.assertj.core.data.Offset;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class EarthEphemeridesCalculatorTest {
 
-    private static final SpkKernelRepository kernel = TestData.KERNEL;
+    private static final SpkKernelRepository kernel = TestData_de438.SPK_KERNEL;
 
     @ParameterizedTest
     @MethodSource

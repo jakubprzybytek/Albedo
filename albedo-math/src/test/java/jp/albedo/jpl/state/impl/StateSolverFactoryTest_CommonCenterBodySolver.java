@@ -4,15 +4,17 @@ import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.binary.ReferenceFrame;
 import jp.albedo.jpl.kernel.PositionChebyshevRecord;
-import jp.albedo.jpl.kernel.SpkKernelRecord;
+import jp.albedo.jpl.kernel.SpkKernelCollection;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.jpl.state.StateSolver;
+import jp.albedo.jpl.state.impl.chebyshev.PositionAndVelocitySolvingCalculator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,14 +36,14 @@ public class StateSolverFactoryTest_CommonCenterBodySolver {
 
     @BeforeAll
     private static void setup() throws JplException {
-        final SpkKernelRecord first = new SpkKernelRecord(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, firstChebyshevList);
-        final SpkKernelRecord second = new SpkKernelRecord(JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, secondChebyshevList);
-        final SpkKernelRecord third = new SpkKernelRecord(JplBody.JupiterBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, thirdChebyshevList);
-        final SpkKernelRecord fourth = new SpkKernelRecord(JplBody.Jupiter, JplBody.JupiterBarycenter, ReferenceFrame.J2000, fourthChebyshevList);
+        final SpkKernelCollection first = new SpkKernelCollection(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, firstChebyshevList, Collections.emptyList());
+        final SpkKernelCollection second = new SpkKernelCollection(JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, secondChebyshevList, Collections.emptyList());
+        final SpkKernelCollection third = new SpkKernelCollection(JplBody.JupiterBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, thirdChebyshevList, Collections.emptyList());
+        final SpkKernelCollection fourth = new SpkKernelCollection(JplBody.Jupiter, JplBody.JupiterBarycenter, ReferenceFrame.J2000, fourthChebyshevList, Collections.emptyList());
 
         spkKernel = mock(SpkKernelRepository.class);
-        when(spkKernel.getAllTransientSpkKernelRecords(JplBody.Earth)).thenReturn(Arrays.asList(first, second));
-        when(spkKernel.getAllTransientSpkKernelRecords(JplBody.Jupiter)).thenReturn(Arrays.asList(third, fourth));
+        when(spkKernel.getAllTransientSpkKernelCollections(JplBody.Earth)).thenReturn(Arrays.asList(first, second));
+        when(spkKernel.getAllTransientSpkKernelCollections(JplBody.Jupiter)).thenReturn(Arrays.asList(third, fourth));
     }
 
     @Test
@@ -65,13 +67,29 @@ public class StateSolverFactoryTest_CommonCenterBodySolver {
         CommonCenterBodyStateSolver commonCenterBodyStateSolver = ((CommonCenterBodyStateSolver) stateSolver);
         Assertions.assertAll(
                 () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.negate).isFalse(),
-                () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(thirdChebyshevList),
-                () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(fourthChebyshevList),
+                () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.calculators.size()).isEqualTo(2),
+                () -> {
+                    assertThat(commonCenterBodyStateSolver.targetStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) commonCenterBodyStateSolver.targetStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(thirdChebyshevList);
+                },
+                () -> {
+                    assertThat(commonCenterBodyStateSolver.targetStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) commonCenterBodyStateSolver.targetStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(fourthChebyshevList);
+                },
                 () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.negate).isFalse(),
-                () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(firstChebyshevList),
-                () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(secondChebyshevList)
+                () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.calculators.size()).isEqualTo(2),
+                () -> {
+                    assertThat(commonCenterBodyStateSolver.observerStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) commonCenterBodyStateSolver.observerStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(firstChebyshevList);
+                },
+                () -> {
+                    assertThat(commonCenterBodyStateSolver.observerStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) commonCenterBodyStateSolver.observerStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(secondChebyshevList);
+                }
         );
     }
 
@@ -87,13 +105,29 @@ public class StateSolverFactoryTest_CommonCenterBodySolver {
         CommonCenterBodyStateSolver commonCenterBodyStateSolver = ((CommonCenterBodyStateSolver) stateSolver);
         Assertions.assertAll(
                 () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.negate).isFalse(),
-                () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(firstChebyshevList),
-                () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(secondChebyshevList),
+                () -> assertThat(commonCenterBodyStateSolver.targetStateSolver.calculators.size()).isEqualTo(2),
+                () -> {
+                    assertThat(commonCenterBodyStateSolver.targetStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) commonCenterBodyStateSolver.targetStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(firstChebyshevList);
+                },
+                () -> {
+                    assertThat(commonCenterBodyStateSolver.targetStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) commonCenterBodyStateSolver.targetStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(secondChebyshevList);
+                },
                 () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.negate).isFalse(),
-                () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.positionCalculators.size()).isEqualTo(2),
-                () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.positionCalculators.get(0).positionChebyshevRecords).isSameAs(thirdChebyshevList),
-                () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.positionCalculators.get(1).positionChebyshevRecords).isSameAs(fourthChebyshevList)
+                () -> assertThat(commonCenterBodyStateSolver.observerStateSolver.calculators.size()).isEqualTo(2),
+                () -> {
+                    assertThat(commonCenterBodyStateSolver.observerStateSolver.calculators.get(0)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) commonCenterBodyStateSolver.observerStateSolver.calculators.get(0);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(thirdChebyshevList);
+                },
+                () -> {
+                    assertThat(commonCenterBodyStateSolver.observerStateSolver.calculators.get(1)).isInstanceOf(PositionAndVelocitySolvingCalculator.class);
+                    PositionAndVelocitySolvingCalculator calculator = (PositionAndVelocitySolvingCalculator) commonCenterBodyStateSolver.observerStateSolver.calculators.get(1);
+                    assertThat(calculator.positionChebyshevRecords).isSameAs(fourthChebyshevList);
+                }
         );
     }
 

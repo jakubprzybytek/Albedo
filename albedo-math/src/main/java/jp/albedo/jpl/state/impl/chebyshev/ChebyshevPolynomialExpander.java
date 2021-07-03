@@ -1,4 +1,4 @@
-package jp.albedo.jpl.state.impl;
+package jp.albedo.jpl.state.impl.chebyshev;
 
 public class ChebyshevPolynomialExpander {
 

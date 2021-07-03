@@ -1,7 +1,6 @@
 package jp.albedo.jpl.kernel;
 
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.kernel.TimeSpan;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,6 +26,18 @@ class TimeSpanTest {
         assertTrue(timeSpan.inside(150.0));
         assertTrue(timeSpan.inside(200.0));
         assertFalse(timeSpan.inside(200.01));
+    }
+
+    @Test
+    void ovelaps() {
+        assertTrue(timeSpan.overlaps(new TimeSpan(120.0, 180.0)));
+        assertTrue(timeSpan.overlaps(new TimeSpan(50.0, 250.0)));
+        assertTrue(timeSpan.overlaps(new TimeSpan(50.0, 100.0)));
+        assertTrue(timeSpan.overlaps(new TimeSpan(50.0, 150.0)));
+        assertTrue(timeSpan.overlaps(new TimeSpan(150.0, 250.0)));
+        assertTrue(timeSpan.overlaps(new TimeSpan(200.0, 250.0)));
+        assertFalse(timeSpan.overlaps(new TimeSpan(300.0, 350.0)));
+        assertFalse(timeSpan.overlaps(new TimeSpan(50.0, 80.0)));
     }
 
     @Test
