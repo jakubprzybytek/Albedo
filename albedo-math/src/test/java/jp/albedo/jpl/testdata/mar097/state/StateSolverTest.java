@@ -35,6 +35,22 @@ public class StateSolverTest {
     }
 
     @ParameterizedTest
+    @CsvFileSource(resources = "/WebGeocalc/mar097/lightTravelCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
+    public void testLightTravelCorrected_de440(JplBody target,
+                                    JplBody observer,
+                                    @ConvertWith(JdeFromDateStringConverter.class) double jde,
+                                    @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
+                                    @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
+
+        StateSolver stateSolver = TestData_mar097.SPK_KERNEL.stateSolver()
+                .target(target)
+                .observer(observer)
+                .corrections(Correction.LightTime)
+                .build();
+
+        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, offset);
+    }
+    @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/mar097/corrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testCorrected_de440(JplBody target,
                                     JplBody observer,

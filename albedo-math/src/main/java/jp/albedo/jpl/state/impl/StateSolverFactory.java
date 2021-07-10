@@ -55,10 +55,10 @@ public class StateSolverFactory {
     }
 
     private StateSolver buildUncorrected() throws JplException {
-        List<SpkKernelCollection> spkRecordsForTarget = spkKernel.getAllTransientSpkKernelCollections(targetBody);
+        final List<SpkKernelCollection> spkForTarget = spkKernel.getAllTransientSpkKernelCollections(targetBody);
 
         // check if observer is on the spkRecords for target
-        List<SpkKernelCollection> directSpkRecordsToTarget = spkRecordsForTarget.stream()
+        final List<SpkKernelCollection> directSpkRecordsToTarget = spkForTarget.stream()
                 .collect(Collectors.sublistWithStartingCondition(
                         record -> record.getCenterBody() == observerBody
                 ));
@@ -67,10 +67,10 @@ public class StateSolverFactory {
             return new DirectStateSolver(directSpkRecordsToTarget, false);
         }
 
-        List<SpkKernelCollection> spkRecordsForObserver = spkKernel.getAllTransientSpkKernelCollections(observerBody);
+        final List<SpkKernelCollection> spkForObserver = spkKernel.getAllTransientSpkKernelCollections(observerBody);
 
         // check if target is on the spkRecords for observer
-        List<SpkKernelCollection> directSpkRecordsToObserver = spkRecordsForObserver.stream()
+        final List<SpkKernelCollection> directSpkRecordsToObserver = spkForObserver.stream()
                 .collect(Collectors.sublistWithStartingCondition(
                         record -> record.getCenterBody() == targetBody
                 ));
@@ -80,11 +80,11 @@ public class StateSolverFactory {
         }
 
         // try to find common center body and drop duplicated records
-        List<SpkKernelCollection> relativeSpkRecordsForTarget = spkRecordsForTarget.stream()
-                .filter(record -> !spkRecordsForObserver.contains(record))
+        final List<SpkKernelCollection> relativeSpkRecordsForTarget = spkForTarget.stream()
+                .filter(record -> !spkForObserver.contains(record))
                 .collect(java.util.stream.Collectors.toList());
-        List<SpkKernelCollection> relativeSpkRecordsForObserver = spkRecordsForObserver.stream()
-                .filter(record -> !spkRecordsForTarget.contains(record))
+        final List<SpkKernelCollection> relativeSpkRecordsForObserver = spkForObserver.stream()
+                .filter(record -> !spkForTarget.contains(record))
                 .collect(java.util.stream.Collectors.toList());
 
         if (!relativeSpkRecordsForTarget.isEmpty() && !relativeSpkRecordsForObserver.isEmpty()
@@ -96,20 +96,19 @@ public class StateSolverFactory {
     }
 
     private StateSolver buildCorrected() throws JplException {
-        List<SpkKernelCollection> spkRecordsForTarget = spkKernel.getAllTransientSpkKernelCollections(targetBody);
-        List<SpkKernelCollection> spkRecordsForObserver = spkKernel.getAllTransientSpkKernelCollections(observerBody);
+        final List<SpkKernelCollection> spkForTarget = spkKernel.getAllTransientSpkKernelCollections(targetBody);
+        final List<SpkKernelCollection> spkForObserver = spkKernel.getAllTransientSpkKernelCollections(observerBody);
 
-        if (spkRecordsForTarget.get(0).getCenterBody() != spkRecordsForObserver.get(0).getCenterBody()) {
-            throw new JplException("Cannot set up state solver for bodies that don't the same ancestor SPK record.");
+        if (spkForTarget.get(0).getCenterBody() != spkForObserver.get(0).getCenterBody()) {
+            throw new JplException("Cannot set up state solver for bodies that don't have the same ancestor in SPK kernel.");
         }
 
         if (corrections.containsAll(Arrays.asList(Correction.LightTime, Correction.StarAberration))) {
-            final StateSolver lightTimeCorrectingStateSolverForTarget = new LightTimeCorrectingStateSolver(spkRecordsForTarget, spkRecordsForObserver);
-            return new StarAberrationCorrectingStateSolver(lightTimeCorrectingStateSolverForTarget, spkRecordsForObserver);
+            final StateSolver lightTimeCorrectingStateSolverForTarget = new LightTimeCorrectingStateSolver(spkForTarget, spkForObserver);
+            return new StarAberrationCorrectingStateSolver(lightTimeCorrectingStateSolverForTarget, spkForObserver);
 
         } else if (corrections.contains(Correction.LightTime)) {
-
-            return new LightTimeCorrectingStateSolver(spkRecordsForTarget, spkRecordsForObserver);
+            return new LightTimeCorrectingStateSolver(spkForTarget, spkForObserver);
         }
 
         throw new JplException("Cannot set up state solver for corrections: " + corrections);

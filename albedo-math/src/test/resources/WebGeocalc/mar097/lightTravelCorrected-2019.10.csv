@@ -1,0 +1,7 @@
+Target;         Observer;           Date;       Rectangular Coordinates;                                      Offset
+Mars;           MarsBarycenter;     2019-10-9;  [-8.83936882E-05, 2.42181122E-05, 6.00982457E-05];            0.0
+Phobos;         MarsBarycenter;     2019-10-9;  [6370.20689654, -3852.66605044, -5463.79267672];              0.0003
+Deimos;         MarsBarycenter;     2019-10-9;  [-7577.05348027, 17616.24793402, 13507.54791374];             0.0004; To observer
+Deimos;         MarsBarycenter;     2019-10-9;  [-7577.05346879, 17616.24804291, 13507.54796071];             0.0003; To observer, cornverged newtonian
+Deimos;         MarsBarycenter;     2019-10-9;  [-7577.39460814, 17612.99964002, 13506.14690173];             4.0; From observer
+MarsBarycenter; EarthMoonBarycenter;2019-10-9;  [-391223684.80939984, -20361541.86032661, -1772747.16336980]; 0.0004

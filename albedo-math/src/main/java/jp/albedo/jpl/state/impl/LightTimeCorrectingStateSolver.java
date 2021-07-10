@@ -27,11 +27,13 @@ public class LightTimeCorrectingStateSolver implements StateSolver {
         final RectangularCoordinates observerCoords = observerStateSolver.positionForDate(jde);
 
         final RectangularCoordinates observerToTargetCoords = targetCoords.subtract(observerCoords);
-
         final double lightTime = observerToTargetCoords.getDistance() / JplConstant.SPEED_OF_LIGHT;
-        final double correctedJde = jde - lightTime / SECONDS_IN_DAY;
 
+        final double correctedJde = jde - lightTime / SECONDS_IN_DAY;
         final RectangularCoordinates correctedTargetCoords = targetStateSolver.positionForDate(correctedJde);
+
+        //final RectangularCoordinates observerToTargetCoords2 = correctedTargetCoords.subtract(observerCoords);
+        //final double lightTime2 = observerToTargetCoords2.getDistance() / JplConstant.SPEED_OF_LIGHT;
 
         return correctedTargetCoords.subtract(observerCoords);
     }
