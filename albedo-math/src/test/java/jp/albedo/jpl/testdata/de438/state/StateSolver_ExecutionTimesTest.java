@@ -58,7 +58,7 @@ public class StateSolver_ExecutionTimesTest {
 
         for (int i = 0; i < maxIterations; i++) {
             final double jde = startDate + (endDate - startDate) * i / maxIterations;
-            RectangularCoordinates coords = stateSolver.positionForDate(jde);
+            RectangularCoordinates coords = stateSolver.positionFor(jde);
         }
 
         return Duration.between(start, Instant.now());

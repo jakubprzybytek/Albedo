@@ -1,7 +1,6 @@
 package jp.albedo.jpl.state.impl;
 
 import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.SpkKernelCollection;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.jpl.state.impl.chebyshev.PositionAndTrueVelocityCalculator;
@@ -35,17 +34,17 @@ public class DirectStateSolver implements StateSolver {
                 new PositionAndVelocitySolvingCalculator(spkKernelCollection.getPositionData());
     }
 
-    public RectangularCoordinates positionForDate(double jde) {
+    public RectangularCoordinates positionFor(double ephemerisSeconds) {
         final RectangularCoordinates computed = calculators.stream()
-                .map(FunctionUtils.wrap(calculator -> calculator.positionFor(EphemerisSeconds.fromJde(jde))))
+                .map(FunctionUtils.wrap(calculator -> calculator.positionFor(ephemerisSeconds)))
                 .reduce(RectangularCoordinates.ZERO, RectangularCoordinates::add);
         return negate ? computed.negate() : computed;
     }
 
     @Override
-    public RectangularCoordinates velocityForDate(double jde) {
+    public RectangularCoordinates velocityFor(double ephemerisSeconds) {
         final RectangularCoordinates computed = calculators.stream()
-                .map(FunctionUtils.wrap(calculator -> calculator.velocityFor(EphemerisSeconds.fromJde(jde))))
+                .map(FunctionUtils.wrap(calculator -> calculator.velocityFor(ephemerisSeconds)))
                 .reduce(RectangularCoordinates.ZERO, RectangularCoordinates::add);
         return negate ? computed.negate() : computed;
     }

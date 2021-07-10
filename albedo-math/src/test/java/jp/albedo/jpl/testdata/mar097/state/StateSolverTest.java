@@ -4,6 +4,7 @@ import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.WebGeocalc;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.state.Correction;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.jpl.testdata.mar097.TestData_mar097;
@@ -31,7 +32,7 @@ public class StateSolverTest {
                 .observer(observer)
                 .build();
 
-        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, WebGeocalc.WEB_GEOCALC_OFFSET);
+        assertThat(stateSolver.positionFor(EphemerisSeconds.fromJde(jde))).isEqualTo(expected, WebGeocalc.WEB_GEOCALC_OFFSET);
     }
 
     @ParameterizedTest
@@ -48,11 +49,11 @@ public class StateSolverTest {
                 .corrections(Correction.LightTime)
                 .build();
 
-        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, offset);
+        assertThat(stateSolver.positionFor(EphemerisSeconds.fromJde(jde))).isEqualTo(expected, offset);
     }
     @ParameterizedTest
-    @CsvFileSource(resources = "/WebGeocalc/mar097/corrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
-    public void testCorrected_de440(JplBody target,
+    @CsvFileSource(resources = "/WebGeocalc/mar097/lightTravelAndStarAbberationCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
+    public void testLightTravelStarAbberationCorrected_de440(JplBody target,
                                     JplBody observer,
                                     @ConvertWith(JdeFromDateStringConverter.class) double jde,
                                     @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
@@ -64,7 +65,7 @@ public class StateSolverTest {
                 .corrections(Correction.LightTime, Correction.StarAberration)
                 .build();
 
-        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, offset);
+        assertThat(stateSolver.positionFor(EphemerisSeconds.fromJde(jde))).isEqualTo(expected, offset);
     }
 
 }

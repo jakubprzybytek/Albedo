@@ -2,6 +2,7 @@ package jp.albedo.jpl.state.impl.chebyshev;
 
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplException;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.PositionChebyshevRecord;
 
 import java.util.List;
@@ -41,12 +42,12 @@ public class PositionAndVelocitySolvingCalculator implements PositionAndVelocity
                 (coordsPlusStep.z - coordsMinusStep.z) / (2 * DERIVATIVE_STEP_SIZE));
     }
 
-    private PositionChebyshevRecord findPositionChebyshevRecord(double jde) throws JplException {
-        if (cachedPositionChebyshevRecord == null || !cachedPositionChebyshevRecord.getTimeSpan().inside(jde)) {
+    private PositionChebyshevRecord findPositionChebyshevRecord(double ephemerisSeconds) throws JplException {
+        if (cachedPositionChebyshevRecord == null || !cachedPositionChebyshevRecord.getTimeSpan().inside(ephemerisSeconds)) {
             cachedPositionChebyshevRecord = positionChebyshevRecords.stream()
-                    .filter(record -> record.getTimeSpan().inside(jde))
+                    .filter(record -> record.getTimeSpan().inside(ephemerisSeconds))
                     .reduce((a, b) -> b) // FixMe: 'find last' requires traversing through entire collection
-                    .orElseThrow(() -> new JplException(String.format("Couldn't find coefficients for T=%f", jde)));
+                    .orElseThrow(() -> new JplException(String.format("Couldn't find coefficients for T=%f (%f)", EphemerisSeconds.toJde(ephemerisSeconds), ephemerisSeconds)));
         }
         return cachedPositionChebyshevRecord;
     }

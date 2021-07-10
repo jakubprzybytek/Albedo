@@ -2,6 +2,7 @@ package jp.albedo.jpl.state.impl.chebyshev;
 
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplException;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.PositionAndVelocityChebyshevRecord;
 
 import java.util.List;
@@ -17,10 +18,10 @@ public class PositionAndTrueVelocityCalculator implements PositionAndVelocityCal
         this.positionAndVelocityChebyshevRecords = positionAndVelocityChebyshevRecords;
     }
 
-    public RectangularCoordinates positionFor(double jde) throws JplException {
+    public RectangularCoordinates positionFor(double ephemerisSeconds) throws JplException {
 
-        final PositionAndVelocityChebyshevRecord record = findPositionAndVelocityChebyshevRecord(jde);
-        final double normalizedTime = record.getTimeSpan().normalizeFor(jde);
+        final PositionAndVelocityChebyshevRecord record = findPositionAndVelocityChebyshevRecord(ephemerisSeconds);
+        final double normalizedTime = record.getTimeSpan().normalizeFor(ephemerisSeconds);
 
         return new RectangularCoordinates(
                 new ChebyshevPolynomialExpander(record.getPositionCoefficients().x).computeFor(normalizedTime),
@@ -30,10 +31,10 @@ public class PositionAndTrueVelocityCalculator implements PositionAndVelocityCal
     }
 
     @Override
-    public RectangularCoordinates velocityFor(double jde) throws JplException {
+    public RectangularCoordinates velocityFor(double ephemerisSeconds) throws JplException {
 
-        final PositionAndVelocityChebyshevRecord record = findPositionAndVelocityChebyshevRecord(jde);
-        final double normalizedTime = record.getTimeSpan().normalizeFor(jde);
+        final PositionAndVelocityChebyshevRecord record = findPositionAndVelocityChebyshevRecord(ephemerisSeconds);
+        final double normalizedTime = record.getTimeSpan().normalizeFor(ephemerisSeconds);
 
         return new RectangularCoordinates(
                 new ChebyshevPolynomialExpander(record.getVelocityCoefficients().x).computeFor(normalizedTime),
@@ -42,12 +43,12 @@ public class PositionAndTrueVelocityCalculator implements PositionAndVelocityCal
         );
     }
 
-    private PositionAndVelocityChebyshevRecord findPositionAndVelocityChebyshevRecord(double jde) throws JplException {
-        if (cachedPositionAndVelocityChebyshevRecord == null || !cachedPositionAndVelocityChebyshevRecord.getTimeSpan().inside(jde)) {
+    private PositionAndVelocityChebyshevRecord findPositionAndVelocityChebyshevRecord(double ephemerisSeconds) throws JplException {
+        if (cachedPositionAndVelocityChebyshevRecord == null || !cachedPositionAndVelocityChebyshevRecord.getTimeSpan().inside(ephemerisSeconds)) {
             cachedPositionAndVelocityChebyshevRecord = positionAndVelocityChebyshevRecords.stream()
-                    .filter(record -> record.getTimeSpan().inside(jde))
+                    .filter(record -> record.getTimeSpan().inside(ephemerisSeconds))
                     .reduce((a, b) -> b) // FixMe: 'find last' requires traversing through entire collection
-                    .orElseThrow(() -> new JplException(String.format("Couldn't find coefficients for T=%f", jde)));
+                    .orElseThrow(() -> new JplException(String.format("Couldn't find coefficients for T=%f (%f)", EphemerisSeconds.toJde(ephemerisSeconds), ephemerisSeconds)));
         }
         return cachedPositionAndVelocityChebyshevRecord;
     }

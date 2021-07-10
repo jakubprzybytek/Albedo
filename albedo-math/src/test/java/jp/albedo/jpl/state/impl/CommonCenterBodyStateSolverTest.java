@@ -1,11 +1,11 @@
 package jp.albedo.jpl.state.impl;
 
-import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
+import jp.albedo.jpl.WebGeocalc;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.SpkKernelCollection;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.jpl.testdata.de438.TestDataSpk_de438;
-import jp.albedo.jpl.WebGeocalc;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -29,7 +29,7 @@ public class CommonCenterBodyStateSolverTest {
     @Test
     public void testEarthToMoon() {
         StateSolver solver = new CommonCenterBodyStateSolver(MOON_SPK_RECORDS, EARTH_SPK_RECORDS);
-        final RectangularCoordinates coordinates = solver.positionForDate(JulianDay.fromDate(2019, 10, 9));
+        final RectangularCoordinates coordinates = solver.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
                 .isEqualTo(new RectangularCoordinates(317255.79347754, -220341.79908000, -119833.86836880), WebGeocalc.WEB_GEOCALC_OFFSET);
@@ -38,7 +38,7 @@ public class CommonCenterBodyStateSolverTest {
     @Test
     public void testMoonToEarth() {
         StateSolver solver = new CommonCenterBodyStateSolver(EARTH_SPK_RECORDS, MOON_SPK_RECORDS);
-        final RectangularCoordinates coordinates = solver.positionForDate(JulianDay.fromDate(2019, 10, 9));
+        final RectangularCoordinates coordinates = solver.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
                 .isEqualTo(new RectangularCoordinates(-317255.79347754, 220341.79908000, 119833.86836880), WebGeocalc.WEB_GEOCALC_OFFSET);

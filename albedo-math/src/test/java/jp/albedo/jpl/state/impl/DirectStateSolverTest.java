@@ -1,11 +1,11 @@
 package jp.albedo.jpl.state.impl;
 
-import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
+import jp.albedo.jpl.WebGeocalc;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.SpkKernelCollection;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.jpl.testdata.de438.TestDataSpk_de438;
-import jp.albedo.jpl.WebGeocalc;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -29,7 +29,7 @@ public class DirectStateSolverTest {
     @Test
     public void testSolarSystemBarycenterToEarth() {
         final StateSolver solver = new DirectStateSolver(EARTH_SPK_RECORDS, false);
-        final RectangularCoordinates coordinates = solver.positionForDate(JulianDay.fromDate(2019, 10, 9));
+        final RectangularCoordinates coordinates = solver.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
                 .isEqualTo(new RectangularCoordinates(143811431.38536263, 36856636.26047815, 15977858.62839704), WebGeocalc.WEB_GEOCALC_OFFSET);
@@ -38,7 +38,7 @@ public class DirectStateSolverTest {
     @Test
     public void testEarthToSolarSystemBarycenter() {
         final StateSolver solver = new DirectStateSolver(EARTH_SPK_RECORDS, true);
-        final RectangularCoordinates coordinates = solver.positionForDate(JulianDay.fromDate(2019, 10, 9));
+        final RectangularCoordinates coordinates = solver.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
                 .isEqualTo(new RectangularCoordinates(-143811431.38536263, -36856636.26047815, -15977858.62839704), WebGeocalc.WEB_GEOCALC_OFFSET);
@@ -47,7 +47,7 @@ public class DirectStateSolverTest {
     @Test
     public void testSolarSystemBarycenterToMoon() {
         final StateSolver solver = new DirectStateSolver(MOON_SPK_RECORDS, false);
-        final RectangularCoordinates coordinates = solver.positionForDate(JulianDay.fromDate(2019, 10, 9));
+        final RectangularCoordinates coordinates = solver.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
                 .isEqualTo(new RectangularCoordinates(144128687.17884016, 36636294.46139815, 15858024.76002824), WebGeocalc.WEB_GEOCALC_OFFSET);
@@ -56,7 +56,7 @@ public class DirectStateSolverTest {
     @Test
     public void testMoonToSolarSystemBarycenter() {
         final StateSolver solver = new DirectStateSolver(MOON_SPK_RECORDS, true);
-        final RectangularCoordinates coordinates = solver.positionForDate(JulianDay.fromDate(2019, 10, 9));
+        final RectangularCoordinates coordinates = solver.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
                 .isEqualTo(new RectangularCoordinates(-144128687.17884016, -36636294.46139815, -15858024.76002824), WebGeocalc.WEB_GEOCALC_OFFSET);

@@ -12,6 +12,7 @@ import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.ephemeris.MagnitudeCalculatorFactory;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.jpl.state.Correction;
 import jp.albedo.jpl.state.StateSolver;
@@ -63,9 +64,11 @@ public class EarthEphemeridesCalculator implements EphemeridesCalculator {
         final List<Ephemeris> ephemerides = new ArrayList<>(jdes.size());
 
         for (double jde : jdes) {
-            final RectangularCoordinates earthToBodyCoordsKm = earthToBodyStateSolver.positionForDate(jde);
-            final RectangularCoordinates earthToSunCoordsKm = earthToSunStateSolver.positionForDate(jde);
-            final RectangularCoordinates sunToBodyCoordsKm = sunToBodyStateSolver.positionForDate(jde);
+            double ephemerisSeconds = EphemerisSeconds.fromJde(jde);
+
+            final RectangularCoordinates earthToBodyCoordsKm = earthToBodyStateSolver.positionFor(ephemerisSeconds);
+            final RectangularCoordinates earthToSunCoordsKm = earthToSunStateSolver.positionFor(ephemerisSeconds);
+            final RectangularCoordinates sunToBodyCoordsKm = sunToBodyStateSolver.positionFor(ephemerisSeconds);
 
             final RectangularCoordinates earthToBodyCoordsAu = earthToBodyCoordsKm.divideBy(JplConstant.AU);
             final RectangularCoordinates sunToBodyCoordsAu = sunToBodyCoordsKm.divideBy(JplConstant.AU);

@@ -19,12 +19,12 @@ public class CommonCenterBodyStateSolver implements StateSolver {
     }
 
     @Override
-    public RectangularCoordinates positionForDate(double jde) {
-        return targetStateSolver.positionForDate(jde).subtract(observerStateSolver.positionForDate(jde));
+    public RectangularCoordinates positionFor(double ephemerisSeconds) {
+        return targetStateSolver.positionFor(ephemerisSeconds).subtract(observerStateSolver.positionFor(ephemerisSeconds));
     }
 
     @Override
-    public RectangularCoordinates velocityForDate(double jde) {
+    public RectangularCoordinates velocityFor(double ephemerisSeconds) {
         throw new NotImplementedException("Velocity solving routine not implemented yet!");
     }
 

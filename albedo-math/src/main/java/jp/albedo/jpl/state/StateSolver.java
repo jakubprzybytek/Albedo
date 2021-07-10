@@ -4,8 +4,18 @@ import jp.albedo.common.RectangularCoordinates;
 
 public interface StateSolver {
 
-    RectangularCoordinates positionForDate(double jde);
+    /**
+     * Computes X, Y, Z position coordinates for given time provided as Ephemeris Seconds.
+     * @param ephemerisSeconds Time in Ephemeris Seconds.
+     * @return Rectangular coordinates for position.
+     */
+    RectangularCoordinates positionFor(double ephemerisSeconds);
 
-    RectangularCoordinates velocityForDate(double jde);
+    /**
+     * Computes velocity as X, Y, Z coordinates for given time provided as Ephemeris Seconds.
+     * @param ephemerisSeconds Time in Ephemeris Seconds.
+     * @return Rectangular coordinates for velocity.
+     */
+    RectangularCoordinates velocityFor(double ephemerisSeconds);
 
 }

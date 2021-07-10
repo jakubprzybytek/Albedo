@@ -26,9 +26,9 @@ public class StarAberrationCorrectingStateSolver implements StateSolver {
     }
 
     @Override
-    public RectangularCoordinates positionForDate(double jde) {
-        final RectangularCoordinates targetCoords = targetStateSolver.positionForDate(jde);
-        final RectangularCoordinates observerVelocity = observerStateSolver.velocityForDate(jde);
+    public RectangularCoordinates positionFor(double jde) {
+        final RectangularCoordinates targetCoords = targetStateSolver.positionFor(jde);
+        final RectangularCoordinates observerVelocity = observerStateSolver.velocityFor(jde);
 
         final double angle = Radians.between(observerVelocity, targetCoords);
         final double aberrationAngle = Math.asin(observerVelocity.getDistance() * Math.sin(angle) / JplConstant.SPEED_OF_LIGHT);
@@ -39,7 +39,7 @@ public class StarAberrationCorrectingStateSolver implements StateSolver {
     }
 
     @Override
-    public RectangularCoordinates velocityForDate(double jde) {
+    public RectangularCoordinates velocityFor(double jde) {
         throw new NotImplementedException("Velocity solving routine not implemented yet!");
     }
 

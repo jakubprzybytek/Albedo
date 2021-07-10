@@ -1,7 +1,7 @@
 package jp.albedo.jpl.state.impl;
 
-import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.SpkKernelCollection;
 import jp.albedo.jpl.state.StateSolver;
 import jp.albedo.jpl.testdata.de438.TestDataSpk_de438;
@@ -33,7 +33,7 @@ public class LightTimeCorrectingStateSolverTest {
     @Test
     public void testForMoon() {
         final StateSolver solver = new LightTimeCorrectingStateSolver(MOON_SPK_RECORDS, EARTH_SPK_RECORDS);
-        final RectangularCoordinates coordinates = solver.positionForDate(JulianDay.fromDate(2019, 10, 9));
+        final RectangularCoordinates coordinates = solver.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
                 .isEqualTo(new RectangularCoordinates(317266.14970616, -220378.20030437, -119849.55153195), within(0.0003));
@@ -42,7 +42,7 @@ public class LightTimeCorrectingStateSolverTest {
     @Test
     public void testForVenus() {
         final StateSolver solver = new LightTimeCorrectingStateSolver(VENUS_SPK_RECORDS, EARTH_SPK_RECORDS);
-        final RectangularCoordinates coordinates = solver.positionForDate(JulianDay.fromDate(2019, 10, 9));
+        final RectangularCoordinates coordinates = solver.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
 
         assertThat(coordinates)
                 .isEqualTo(new RectangularCoordinates(-212496177.20393000, -114080326.63575213, -46424486.94776109), within(0.0003));

@@ -4,6 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
+import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.testdata.de438.TestData_de438;
 import jp.albedo.jpl.WebGeocalc;
 import jp.albedo.jpl.state.Correction;
@@ -27,7 +28,7 @@ public class StateSolverTest {
                 .observer(observer)
                 .build();
 
-        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, WebGeocalc.WEB_GEOCALC_OFFSET);
+        assertThat(stateSolver.positionFor(EphemerisSeconds.fromJde(jde))).isEqualTo(expected, WebGeocalc.WEB_GEOCALC_OFFSET);
     }
 
     private static Stream<Arguments> testUncorrected() {
@@ -48,7 +49,7 @@ public class StateSolverTest {
                 .corrections(Correction.LightTime, Correction.StarAberration)
                 .build();
 
-        assertThat(stateSolver.positionForDate(jde)).isEqualTo(expected, within(0.0004));
+        assertThat(stateSolver.positionFor(EphemerisSeconds.fromJde(jde))).isEqualTo(expected, within(0.0004));
     }
 
     private static Stream<Arguments> testCorrected() {

@@ -5,8 +5,8 @@ import jp.albedo.jpl.JplException;
 
 public interface PositionAndVelocityCalculator {
 
-    RectangularCoordinates positionFor(double jde) throws JplException;
+    RectangularCoordinates positionFor(double ephemerisSeconds) throws JplException;
 
-    RectangularCoordinates velocityFor(double jde) throws JplException;
+    RectangularCoordinates velocityFor(double ephemerisSeconds) throws JplException;
 
 }
