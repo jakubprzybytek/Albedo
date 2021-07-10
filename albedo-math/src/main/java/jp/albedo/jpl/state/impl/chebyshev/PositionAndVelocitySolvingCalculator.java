@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PositionAndVelocitySolvingCalculator implements PositionAndVelocityCalculator {
 
-    private static final double DERIVATIVE_STEP_SIZE = 60.0 * 20.0; // 20 minutes
+    private static final double DERIVATIVE_STEP_SIZE = 30.0; // seconds
 
     // FixMe: public just for tests
     public final List<PositionChebyshevRecord> positionChebyshevRecords;

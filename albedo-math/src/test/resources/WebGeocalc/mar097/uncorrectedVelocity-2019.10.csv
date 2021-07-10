@@ -1,5 +1,8 @@
-Target;     Observer;               Date;       Position;                                             Offset
-Mars;       MarsBarycenter;         2019-10-9;  [-1.82294000E-08, -2.74863083E-08, -4.47769288E-09];  0.0
-Phobos;     MarsBarycenter;         2019-10-9;  [1.25749626, 1.75212666, 0.23910559];                 0.00002
-Deimos;     MarsBarycenter;         2019-10-9;  [-1.14930776, -0.67204228, 0.23198786];               0.000005
-Mars;       SolarSystemBarycenter;  2019-10-9;  [-1.03258631, -20.08732962, -9.18559941];             0.002
+Target;             Observer;               Date;       Position;                                             Offset
+Mars;               MarsBarycenter;         2019-10-9;  [-1.82294000E-08, -2.74863083E-08, -4.47769288E-09];  0.0
+Phobos;             MarsBarycenter;         2019-10-9;  [1.25748564, 1.75213342, 0.23911489];                 0.0
+Deimos;             MarsBarycenter;         2019-10-9;  [-1.14930562, -0.67204687, 0.23198434];               0.0
+Mars;               SolarSystemBarycenter;  2019-10-9;  [-1.03079928, -20.08738570, -9.18567336];             0.0
+MarsBarycenter;     SolarSystemBarycenter;  2019-10-9;  [-1.03079927, -20.08738567, -9.18567336];             0.0
+EarthMoonBarycenter;SolarSystemBarycenter;  2019-10-9;  [-8.28057397, 26.27730691, 11.39163108];              0.0
+Earth;              SolarSystemBarycenter;  2019-10-9;  [-8.28800013, 26.26862275, 11.38875395];              0.0
