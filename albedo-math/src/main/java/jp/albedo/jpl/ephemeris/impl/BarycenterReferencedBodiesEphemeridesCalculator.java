@@ -66,7 +66,7 @@ public class BarycenterReferencedBodiesEphemeridesCalculator implements Ephemeri
             final RectangularCoordinates bodyGeocentricCoordsKm = bodyHeliocentricCoordsKm.subtract(earthHeliocentricCoordsKm);
 
             // light time correction
-            final double lightTime = bodyGeocentricCoordsKm.getDistance() / this.speedOfLight;
+            final double lightTime = bodyGeocentricCoordsKm.length() / this.speedOfLight;
             final double correctedJde = jde - lightTime / (24.0 * 60.0 * 60.0);
 
             final RectangularCoordinates correctedBodyHeliocentricCoordsKm = this.bodyStateCalculator.compute(correctedJde);
@@ -80,13 +80,13 @@ public class BarycenterReferencedBodiesEphemeridesCalculator implements Ephemeri
             ephemerides.add(new Ephemeris(
                     jde,
                     correctedBodyGeocentricAstroCoords,
-                    correctedBodyHeliocentricCoordsAu.getDistance(),
-                    correctedBodyGeocentricCoordsAu.getDistance(),
+                    correctedBodyHeliocentricCoordsAu.length(),
+                    correctedBodyGeocentricCoordsAu.length(),
                     Elongation.between(
                             AstronomicalCoordinates.fromRectangular(earthHeliocentricCoordsKm.negate()),
                             correctedBodyGeocentricAstroCoords),
                     this.magnitudeCalculator.compute(correctedBodyHeliocentricCoordsAu, correctedBodyGeocentricCoordsAu),
-                    AngularSize.fromRadiusAndDistance(this.bodyEquatorialRadius, correctedBodyGeocentricCoordsKm.getDistance())
+                    AngularSize.fromRadiusAndDistance(this.bodyEquatorialRadius, correctedBodyGeocentricCoordsKm.length())
             ));
         }
 

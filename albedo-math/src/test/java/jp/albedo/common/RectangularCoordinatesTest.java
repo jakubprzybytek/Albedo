@@ -44,7 +44,7 @@ class RectangularCoordinatesTest {
         RectangularCoordinates normalized = first.normalize();
 
         Assertions.assertAll(
-                () -> assertThat(normalized.getDistance()).isEqualTo(1.0, within(0.0000000000000002)),
+                () -> assertThat(normalized.length()).isEqualTo(1.0, within(0.0000000000000002)),
                 () -> assertThat(normalized.x).isEqualTo(0.4242640687119285),
                 () -> assertThat(normalized.y).isEqualTo(0.565685424949238),
                 () -> assertThat(normalized.z).isEqualTo(0.7071067811865475)
@@ -81,7 +81,7 @@ class RectangularCoordinatesTest {
     public void distance() {
         RectangularCoordinates first = new RectangularCoordinates(1.0, 2.0, 3.0);
 
-        assertEquals(3.7416573867739413, first.getDistance());
+        assertEquals(3.7416573867739413, first.length());
     }
 
     @Test

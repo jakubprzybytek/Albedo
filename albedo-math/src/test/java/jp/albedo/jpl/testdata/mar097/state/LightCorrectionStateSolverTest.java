@@ -85,7 +85,7 @@ public class LightCorrectionStateSolverTest {
         System.out.printf("Difference:         %s%n", marsFromEarthCoords);
         System.out.printf("Difference W:       %s%n", webGeocalcCoords);
 
-        double distanceToMars = marsFromEarthCoords.getDistance();
+        double distanceToMars = marsFromEarthCoords.length();
         double distanceToMarsW = 391759970.31118220;
 
         System.out.printf("%nDistance  :       %s%n", distanceToMars);
@@ -121,7 +121,7 @@ public class LightCorrectionStateSolverTest {
             RectangularCoordinates tickedMarsFromEarthCoords = tickedMarsBarycenterCoords.subtract(earthBarycenterCoords);
 
             RectangularCoordinates diff = correctedMarsFromEarthCoordsW.subtract(tickedMarsFromEarthCoords);
-            System.out.printf("Tick %s \t %s \t %s%n", jdeTick, diff, diff.getDistance());
+            System.out.printf("Tick %s \t %s \t %s%n", jdeTick, diff, diff.length());
         }
 
     }

@@ -36,8 +36,8 @@ public class EarthStateCalculator {
     public RectangularCoordinates compute(double jde) throws JplException {
         final RectangularCoordinates moonGeocentricCoordsKm = this.moonPositionCalculator.compute(jde);
         final RectangularCoordinates earthBarycenterHeliocentricCoordsKm = this.earthBarycenterPositionCalculator.compute(jde);
-        final double earthToEarthMoonBarycenterDistance = moonGeocentricCoordsKm.getDistance() / (1.0 + this.earthMoonMassRatio);
-        final RectangularCoordinates earthMoonBarycenterGeocentricCoords = moonGeocentricCoordsKm.multiplyBy(earthToEarthMoonBarycenterDistance / moonGeocentricCoordsKm.getDistance());
+        final double earthToEarthMoonBarycenterDistance = moonGeocentricCoordsKm.length() / (1.0 + this.earthMoonMassRatio);
+        final RectangularCoordinates earthMoonBarycenterGeocentricCoords = moonGeocentricCoordsKm.multiplyBy(earthToEarthMoonBarycenterDistance / moonGeocentricCoordsKm.length());
         return earthBarycenterHeliocentricCoordsKm.subtract(earthMoonBarycenterGeocentricCoords);
     }
 

@@ -60,7 +60,7 @@ public class EllipticMotion {
             final RectangularCoordinates bodyGeocentricEquatorialCoords = sunGeocentricEquatorialCoords.add(bodyHeliocentricEquatorialCoords);
 
             // correction for light travel
-            final double distanceFromEarth = bodyGeocentricEquatorialCoords.getDistance();
+            final double distanceFromEarth = bodyGeocentricEquatorialCoords.length();
             final RectangularCoordinates correctedBodyHeliocentricEquatorialCoords = orbitCalculator.computeForDay(day - LightTime.fromDistance(distanceFromEarth));
 
             final RectangularCoordinates correctedBodyGeocentricEquatorialCoords = sunGeocentricEquatorialCoords.add(correctedBodyHeliocentricEquatorialCoords);
@@ -69,7 +69,7 @@ public class EllipticMotion {
             ephemerisList.add(new Ephemeris(
                     day,
                     correctedBodyGeocentricEquatorialAstroCoords,
-                    correctedBodyHeliocentricEquatorialCoords.getDistance(),
+                    correctedBodyHeliocentricEquatorialCoords.length(),
                     distanceFromEarth,
                     Elongation.between(
                             AstronomicalCoordinates.fromRectangular(sunGeocentricEquatorialCoords),

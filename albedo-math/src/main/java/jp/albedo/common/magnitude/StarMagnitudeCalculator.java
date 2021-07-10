@@ -29,6 +29,6 @@ public class StarMagnitudeCalculator implements ApparentMagnitudeCalculator {
      */
     @Override
     public double compute(RectangularCoordinates heliocentricCoords, RectangularCoordinates geocentricCoords) {
-        return Precision.round(absoluteMagnitude - 5.0 + 5.0 * Math.log10(Parsec.fromAU(geocentricCoords.getDistance())), 2);
+        return Precision.round(absoluteMagnitude - 5.0 + 5.0 * Math.log10(Parsec.fromAU(geocentricCoords.length())), 2);
     }
 }

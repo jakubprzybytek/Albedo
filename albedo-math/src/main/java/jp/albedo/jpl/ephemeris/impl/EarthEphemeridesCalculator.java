@@ -78,13 +78,13 @@ public class EarthEphemeridesCalculator implements EphemeridesCalculator {
             ephemerides.add(new Ephemeris(
                     jde,
                     earthToBodyAstroCoords,
-                    sunToBodyCoordsAu.getDistance(),
-                    earthToBodyCoordsAu.getDistance(),
+                    sunToBodyCoordsAu.length(),
+                    earthToBodyCoordsAu.length(),
                     Elongation.between(
                             AstronomicalCoordinates.fromRectangular(earthToSunCoordsKm),
                             earthToBodyAstroCoords),
                     0.0 /*this.magnitudeCalculator.compute(sunToBodyCoordsAu, earthToBodyCoordsAu)*/,
-                    AngularSize.fromRadiusAndDistance(this.bodyEquatorialRadius, earthToBodyCoordsKm.getDistance())
+                    AngularSize.fromRadiusAndDistance(this.bodyEquatorialRadius, earthToBodyCoordsKm.length())
             ));
         }
 

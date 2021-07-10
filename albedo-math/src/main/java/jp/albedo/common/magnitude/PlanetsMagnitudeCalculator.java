@@ -21,7 +21,7 @@ public class PlanetsMagnitudeCalculator implements ApparentMagnitudeCalculator {
 
     public double compute(RectangularCoordinates heliocentricCoords, RectangularCoordinates geocentricCoords) {
 
-        final double distancesProduct = heliocentricCoords.getDistance() * geocentricCoords.getDistance();
+        final double distancesProduct = heliocentricCoords.length() * geocentricCoords.length();
 
         final double phaseAngleDegrees = Math.toDegrees(MathUtils.normalizeAngle(Math.acos(
                 (geocentricCoords.x * heliocentricCoords.x

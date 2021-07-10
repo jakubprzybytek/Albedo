@@ -1,7 +1,5 @@
 package jp.albedo.common;
 
-import org.apache.commons.math3.util.MathUtils;
-
 public class Radians {
 
     /**
@@ -53,7 +51,7 @@ public class Radians {
      * @return Angle between two vectors in radians.
      */
     public static double between(RectangularCoordinates first, RectangularCoordinates second) {
-        return Math.acos((first.x * second.x + first.y * second.y + first.z * second.z) / (first.getDistance() * second.getDistance()));
+        return Math.acos((first.x * second.x + first.y * second.y + first.z * second.z) / (first.length() * second.length()));
     }
 
     /**

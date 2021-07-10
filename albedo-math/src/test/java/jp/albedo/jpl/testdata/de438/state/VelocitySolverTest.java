@@ -61,7 +61,7 @@ public class VelocitySolverTest {
         AlbedoAssertions.assertThat(earthToVenusCoors)
                 .isEqualTo(new RectangularCoordinates(-212474107.02417690, -114096424.87973432, -46433127.21877411), WebGeocalc.WEB_GEOCALC_OFFSET);
 
-        double lightTime = earthToVenusCoors.getDistance() / 299792.457999999984;
+        double lightTime = earthToVenusCoors.length() / 299792.457999999984;
         assertThat(lightTime).isEqualTo(819.23284486, within(0.00000001));
 
         double correctedJde = jde - lightTime / (24.0 * 60.0 * 60.0);
@@ -76,7 +76,7 @@ public class VelocitySolverTest {
                 .isEqualTo(new RectangularCoordinates(-212496177.20393000, -114080326.63575213, -46424486.94776109), within(0.0003));
 
         final double w = Radians.between(earthVeocity, correctedEarthToVenusCoors);
-        final double phi = Math.asin(earthVeocity.getDistance() * Math.sin(w) / 299792.457999999984);
+        final double phi = Math.asin(earthVeocity.length() * Math.sin(w) / 299792.457999999984);
 
         assertThat(Math.toDegrees(w)).isEqualTo(103.94531687918045);
         assertThat(Math.toDegrees(phi)).isEqualTo(0.005528687737315572);

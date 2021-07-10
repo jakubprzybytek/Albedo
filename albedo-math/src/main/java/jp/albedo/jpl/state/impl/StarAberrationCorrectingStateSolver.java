@@ -31,7 +31,7 @@ public class StarAberrationCorrectingStateSolver implements StateSolver {
         final RectangularCoordinates observerVelocity = observerStateSolver.velocityFor(jde);
 
         final double angle = Radians.between(observerVelocity, targetCoords);
-        final double aberrationAngle = Math.asin(observerVelocity.getDistance() * Math.sin(angle) / JplConstant.SPEED_OF_LIGHT);
+        final double aberrationAngle = Math.asin(observerVelocity.length() * Math.sin(angle) / JplConstant.SPEED_OF_LIGHT);
 
         final RectangularCoordinates rotationVector = targetCoords.crossProduct(observerVelocity);
 

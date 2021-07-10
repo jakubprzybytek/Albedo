@@ -45,7 +45,7 @@ class EarthStateCalculatorTest {
         System.out.printf("T [JDE]: %.1f%n", jde);
 
         final RectangularCoordinates earthHeliocentricCoordsKm = this.stateCalculator.compute(jde);
-        System.out.printf("Earth coords: %s, distance=%f%n", earthHeliocentricCoordsKm, earthHeliocentricCoordsKm.getDistance());
+        System.out.printf("Earth coords: %s, distance=%f%n", earthHeliocentricCoordsKm, earthHeliocentricCoordsKm.length());
 
         assertEquals(143811431.38536263, earthHeliocentricCoordsKm.x, 0.0000001);
         assertEquals(36856636.26047815, earthHeliocentricCoordsKm.y, 0.00000001);

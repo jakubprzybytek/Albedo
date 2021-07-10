@@ -61,7 +61,7 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
             final RectangularCoordinates earthHeliocentricCoords = this.earthStateCalculator.compute(jde);
 
             // light time correction
-            final double lightTime = moonGeocentricCoordsKm.getDistance() / this.speedOfLight;
+            final double lightTime = moonGeocentricCoordsKm.length() / this.speedOfLight;
             final double correctedJde = jde - lightTime / (24.0 * 60.0 * 60.0);
 
             final RectangularCoordinates pastMoonGeocentricCoordsKm = this.moonStateCalculator.compute(correctedJde);
@@ -76,10 +76,10 @@ public class MoonEphemeridesCalculator implements EphemeridesCalculator {
                     jde,
                     AstronomicalCoordinates.fromRectangular(correctedMoonGeocentricCooddsAu),
                     0.0,
-                    correctedMoonGeocentricCooddsAu.getDistance(),
+                    correctedMoonGeocentricCooddsAu.length(),
                     0.0,
                     0.0,
-                    AngularSize.fromRadiusAndDistance(this.moonEquatorialRadius, correctedMoonGeocentricCoordsKm.getDistance())
+                    AngularSize.fromRadiusAndDistance(this.moonEquatorialRadius, correctedMoonGeocentricCoordsKm.length())
             ));
         }
 

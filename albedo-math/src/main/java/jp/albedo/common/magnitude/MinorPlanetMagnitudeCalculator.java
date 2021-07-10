@@ -18,7 +18,7 @@ public class MinorPlanetMagnitudeCalculator implements ApparentMagnitudeCalculat
 
     public double compute(RectangularCoordinates heliocentricCoords, RectangularCoordinates geocentricCoords) {
 
-        final double distancesProduct = heliocentricCoords.getDistance() * geocentricCoords.getDistance();
+        final double distancesProduct = heliocentricCoords.length() * geocentricCoords.length();
 
         // Body apparent magnitude
         final double phaseAngle = MathUtils.normalizeAngle(Math.acos(

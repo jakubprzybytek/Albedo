@@ -31,7 +31,7 @@ public class RectangularCoordinates {
     }
 
     public RectangularCoordinates normalize() {
-        final double d = getDistance();
+        final double d = length();
         return new RectangularCoordinates(x / d, y / d, z / d);
     }
 
@@ -67,7 +67,7 @@ public class RectangularCoordinates {
         );
     }
 
-    public double getDistance() {
+    public double length() {
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 

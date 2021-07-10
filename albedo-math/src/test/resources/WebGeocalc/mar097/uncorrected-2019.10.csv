@@ -1,4 +1,4 @@
-Target; Observer;       Date;       Rectangular Coordinates
+Target; Observer;       Date;       Position
 Mars;   MarsBarycenter; 2019-10-9;  [-8.84069335E-05, 2.42187273E-05, 6.00985520E-05]
 Phobos; MarsBarycenter; 2019-10-9;  [6370.21387962, -3853.23085472, -5464.06826912]
 Deimos; MarsBarycenter; 2019-10-9;  [-7577.22404429, 17614.62378720, 13506.84740787]
