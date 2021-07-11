@@ -23,9 +23,9 @@ public class StateSolverTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/mar097/uncorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testUncorrected(JplBody target,
-                                      JplBody observer,
-                                      @ConvertWith(JdeFromDateStringConverter.class) double jde,
-                                      @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected) throws JplException {
+                                JplBody observer,
+                                @ConvertWith(JdeFromDateStringConverter.class) double jde,
+                                @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected) throws JplException {
 
         StateSolver stateSolver = TestData_mar097.SPK_KERNEL.stateSolver()
                 .target(target)
@@ -38,10 +38,10 @@ public class StateSolverTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/mar097/lightTravelCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testLightTravelCorrected(JplBody target,
-                                               JplBody observer,
-                                               @ConvertWith(JdeFromDateStringConverter.class) double jde,
-                                               @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
-                                               @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
+                                         JplBody observer,
+                                         @ConvertWith(JdeFromDateStringConverter.class) double jde,
+                                         @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
+                                         @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
 
         StateSolver stateSolver = TestData_mar097.SPK_KERNEL.stateSolver()
                 .target(target)
@@ -55,10 +55,10 @@ public class StateSolverTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/mar097/lightTravelAndStarAbberationCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testLightTravelStarAbberationCorrected(JplBody target,
-                                                             JplBody observer,
-                                                             @ConvertWith(JdeFromDateStringConverter.class) double jde,
-                                                             @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
-                                                             @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
+                                                       JplBody observer,
+                                                       @ConvertWith(JdeFromDateStringConverter.class) double jde,
+                                                       @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
+                                                       @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
 
         StateSolver stateSolver = TestData_mar097.SPK_KERNEL.stateSolver()
                 .target(target)
@@ -72,10 +72,10 @@ public class StateSolverTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/mar097/uncorrectedVelocity-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testVelocityUncorrected(JplBody target,
-                                              JplBody observer,
-                                              @ConvertWith(JdeFromDateStringConverter.class) double jde,
-                                              @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
-                                              @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
+                                        JplBody observer,
+                                        @ConvertWith(JdeFromDateStringConverter.class) double jde,
+                                        @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
+                                        @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
 
         StateSolver stateSolver = TestData_mar097.SPK_KERNEL.stateSolver()
                 .target(target)

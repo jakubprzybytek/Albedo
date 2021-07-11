@@ -39,10 +39,10 @@ public class StateSolverTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/de440/lightTravelCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testLTCorrected_de440(JplBody target,
-                                    JplBody observer,
-                                    @ConvertWith(JdeFromDateStringConverter.class) double jde,
-                                    @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
-                                    @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
+                                      JplBody observer,
+                                      @ConvertWith(JdeFromDateStringConverter.class) double jde,
+                                      @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
+                                      @ConvertWith(OffsetFromStringConverter.class) Offset<Double> offset) throws JplException {
 
         StateSolver stateSolver = TestData_de440.SPK_KERNEL.stateSolver()
                 .target(target)
