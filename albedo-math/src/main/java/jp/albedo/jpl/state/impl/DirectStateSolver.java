@@ -13,10 +13,6 @@ import java.util.stream.Collectors;
 
 public class DirectStateSolver implements StateSolver {
 
-    private static final double SECONDS_IN_DAY = 24.0 * 60.0 * 60.0;
-
-    private static final double DERIVATIVE_STEP_SIZE = 20.0 / 24.0 / 60.0; // 20 minutes
-
     final List<PositionAndVelocityCalculator> calculators;
 
     final boolean negate;
@@ -48,16 +44,5 @@ public class DirectStateSolver implements StateSolver {
                 .reduce(RectangularCoordinates.ZERO, RectangularCoordinates::add);
         return negate ? computed.negate() : computed;
     }
-
-//    @Override
-//    public RectangularCoordinates velocityForDate(double jde) {
-//        RectangularCoordinates coordsMinusStep = positionForDate(jde - DERIVATIVE_STEP_SIZE);
-//        RectangularCoordinates coordsPlusStep = positionForDate(jde + DERIVATIVE_STEP_SIZE);
-//
-//        return new RectangularCoordinates(
-//                (coordsPlusStep.x - coordsMinusStep.x) / (2 * DERIVATIVE_STEP_SIZE) / SECONDS_IN_DAY,
-//                (coordsPlusStep.y - coordsMinusStep.y) / (2 * DERIVATIVE_STEP_SIZE) / SECONDS_IN_DAY,
-//                (coordsPlusStep.z - coordsMinusStep.z) / (2 * DERIVATIVE_STEP_SIZE) / SECONDS_IN_DAY);
-//    }
 
 }

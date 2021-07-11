@@ -22,7 +22,7 @@ public class StateSolverTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/mar097/uncorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
-    public void testUncorrected_de440(JplBody target,
+    public void testUncorrected(JplBody target,
                                       JplBody observer,
                                       @ConvertWith(JdeFromDateStringConverter.class) double jde,
                                       @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected) throws JplException {
@@ -37,7 +37,7 @@ public class StateSolverTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/mar097/lightTravelCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
-    public void testLightTravelCorrected_de440(JplBody target,
+    public void testLightTravelCorrected(JplBody target,
                                                JplBody observer,
                                                @ConvertWith(JdeFromDateStringConverter.class) double jde,
                                                @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
@@ -54,7 +54,7 @@ public class StateSolverTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/mar097/lightTravelAndStarAbberationCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
-    public void testLightTravelStarAbberationCorrected_de440(JplBody target,
+    public void testLightTravelStarAbberationCorrected(JplBody target,
                                                              JplBody observer,
                                                              @ConvertWith(JdeFromDateStringConverter.class) double jde,
                                                              @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
@@ -71,7 +71,7 @@ public class StateSolverTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/WebGeocalc/mar097/uncorrectedVelocity-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
-    public void testVelocityUncorrected_de440(JplBody target,
+    public void testVelocityUncorrected(JplBody target,
                                               JplBody observer,
                                               @ConvertWith(JdeFromDateStringConverter.class) double jde,
                                               @ConvertWith(RectangularCoordinatesFromStringConverter.class) RectangularCoordinates expected,
