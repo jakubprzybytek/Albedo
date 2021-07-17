@@ -15,6 +15,7 @@ import EventsListPanel from './events/EventsListPanel';
 import ChartTabs from './charts/ChartTabs';
 import ToolTabs from './tools/ToolTabs';
 import CataloguesPanel from './catalogues/CataloguesPanel';
+import AdminPanel from './admin/AdminPanel';
 import UserDrawer from './userSettings/UserDrawer';
 import SettingsDrawer from './events/SettingsDrawer';
 
@@ -94,6 +95,7 @@ export default function PersistentDrawerLeft() {
           <Tab label="Charts" />
           <Tab label="Tools" />
           <Tab label="Catalogues" />
+          <Tab label="Admin" />
         </Tabs>
         <Toolbar className={classes.toolBar}>
           <IconButton color="inherit" onClick={() => setUserDrawerOpened(true)} edge="end">
@@ -115,6 +117,9 @@ export default function PersistentDrawerLeft() {
         </TabPanel>
         <TabPanel value={tabValue} index={3}>
           <CataloguesPanel />
+        </TabPanel>
+        <TabPanel value={tabValue} index={4}>
+          <AdminPanel />
         </TabPanel>
       </main>
       <UserDrawer opened={userDrawerOpened} setOpened={setUserDrawerOpened} />
