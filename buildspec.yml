@@ -16,13 +16,14 @@ phases:
       - echo Building the Docker image $IMAGE_REPO_NAME:1.0-$CODEBUILD_BUILD_NUMBER ...
       - docker build -f albedo-webapp/src/main/docker/Dockerfile -t $IMAGE_REPO_NAME:$IMAGE_TAG -t $IMAGE_REPO_NAME:1.0-$CODEBUILD_BUILD_NUMBER .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:1.0-$CODEBUILD_BUILD_NUMBER
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
       - echo Restarting ECS service
-      - aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --force-new-deployment
+      - echo Disabled: aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --force-new-deployment
 artifacts:
   files:
     - albedo-webapp/target/albedo-webapp-1.0-SNAPSHOT.jar
