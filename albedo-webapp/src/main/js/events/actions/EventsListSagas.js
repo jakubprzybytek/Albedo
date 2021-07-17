@@ -48,7 +48,8 @@ export function* fetchEvents() {
     store.eventsList.settings.conjunctions,
     store.eventsList.settings.eclipses,
     store.observerLocation,
-    store.timeZone)
+    store.timeZone,
+    store.engineSettings)
   );
 
   try {

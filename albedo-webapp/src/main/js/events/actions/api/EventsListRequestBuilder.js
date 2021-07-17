@@ -1,11 +1,10 @@
-import { EclipseEventsSettingsDrawer } from "../../eclipses/EclipseEventsSettingsDrawer";
-
-export function buildEventsListRequestParams(fromDate, toDate, rtsSettings, conjunctionsSettings, eclipsesSettings, observerLocation, timeZone) {
+export function buildEventsListRequestParams(fromDate, toDate, rtsSettings, conjunctionsSettings, eclipsesSettings, observerLocation, timeZone, engineSettings) {
     return {
         from: fromDate,
         to: toDate,
         ...observerLocation,
         timeZone: timeZone,
+        ...engineSettings,
         rtsSunEnabled: rtsSettings.enabled && rtsSettings.sunEnabled,
         rtsMoonEnabled: rtsSettings.enabled && rtsSettings.moonEnabled,
         conjunctionsSunEnabled: conjunctionsSettings.enabled && conjunctionsSettings.sunEnabled,
