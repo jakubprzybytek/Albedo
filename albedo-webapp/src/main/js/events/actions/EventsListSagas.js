@@ -79,7 +79,8 @@ export function* fetchFutureEvents() {
     },
     { enabled: false },
     store.observerLocation,
-    store.timeZone)
+    store.timeZone,
+    store.engineSettings)
   );
 
   try {
