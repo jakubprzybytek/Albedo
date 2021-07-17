@@ -19,7 +19,7 @@ import java.time.ZoneId;
 @RestController
 public class EphemeridesController {
 
-    private static Log LOG = LogFactory.getLog(EphemeridesController.class);
+    private static final Log LOG = LogFactory.getLog(EphemeridesController.class);
 
     @Autowired
     private EphemeridesOrchestrator ephemeridesOrchestrator;
@@ -29,17 +29,16 @@ public class EphemeridesController {
                                          @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                          @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                          @RequestParam("interval") double interval,
-                                         @RequestParam("longitude") double observerLongitude,
-                                         @RequestParam("latitude") double observerLatitude,
-                                         @RequestParam("height") double observerHeight,
-                                         @RequestParam("timeZone") String timeZone) throws Exception {
+                                         ObserverLocation observerLocation,
+                                         @RequestParam("timeZone") String timeZone,
+                                         String ephemerisMethodPreference) throws Exception {
 
-        final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
 
-        LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s", bodyName, fromDate, toDate, interval, observerLocation));
+        LOG.info(String.format("Request to compute ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s, ephemeris method preference: %s",
+                bodyName, fromDate, toDate, interval, observerLocation, ephemerisMethodPreference));
 
-        final ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval, observerLocation);
+        final ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval, observerLocation, ephemerisMethodPreference);
 
         return new EphemeridesResponse(computedEphemeris, zoneId);
     }

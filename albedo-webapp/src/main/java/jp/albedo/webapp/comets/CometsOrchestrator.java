@@ -5,6 +5,7 @@ import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.utils.FunctionUtils;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
+import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
 import jp.albedo.webapp.ephemeris.ParallaxCorrection;
 import jp.albedo.webapp.ephemeris.orbitbased.OrbitBasedEphemerisCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class CometsOrchestrator {
                     final List<Ephemeris> ephemerisList = this.orbitBasedEphemerisCalculator.compute(cometRecord, jde, jde, 0.0).stream()
                             .map(ParallaxCorrection.correctFor(observerLocation))
                             .collect(Collectors.toList());
-                    return new ComputedEphemeris(cometRecord.getBodyDetails(), ephemerisList, cometRecord.getOrbitElements(), cometRecord.getMagnitudeParameters());
+                    return new ComputedEphemeris(cometRecord.getBodyDetails(), ephemerisList, cometRecord.getOrbitElements(), cometRecord.getMagnitudeParameters(), EphemeridesOrchestrator.EphemerisMethod.JeanMeeus.description);
                 }))
                 .filter(computedEphemerides -> computedEphemerides.getEphemerisList().get(0).apparentMagnitude <= magnitudeLimit)
                 .collect(Collectors.toList());

@@ -2,19 +2,26 @@ package jp.albedo.jpl.kernel;
 
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.files.binary.DataType;
 import jp.albedo.jpl.kernel.tree.Forest;
 import jp.albedo.jpl.state.impl.StateSolverFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class SpkKernelRepository {
 
+    private static Log LOG = LogFactory.getLog(SpkKernelRepository.class);
+
     private final Forest<JplBody, SpkKernelCollection> spkKernelRoot = new Forest<>();
 
     void registerSpkKernelRecord(SpkKernelCollection newRecord) {
+
+        LOG.info(String.format("%s w.r.t %s in %s reference frame",
+                newRecord.getBody(), newRecord.getCenterBody(),
+                newRecord.getReferenceFrame()));
+
         Optional<SpkKernelCollection> existingRecord = spkKernelRoot.getEdge(newRecord.getCenterBody(), newRecord.getBody());
         if (existingRecord.isPresent()) {
             existingRecord.get().merge(newRecord);

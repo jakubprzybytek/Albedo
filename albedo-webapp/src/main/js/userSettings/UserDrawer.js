@@ -6,6 +6,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
 import LocationForm from './observerlocation/LocationForm';
 import TimeZoneForm from './timezone/TimeZoneForm';
+import EngineSettingsForm from './engineSettings/EngineSettingsForm';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -40,6 +41,7 @@ export default function UserDrawer (props ) {
       <LocationForm />
       <Divider />
       <TimeZoneForm />
+      <EngineSettingsForm />
     </Drawer>
   );
 }

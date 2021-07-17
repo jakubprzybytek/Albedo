@@ -33,13 +33,14 @@ public class EventsController {
                                                         @RequestParam("timeZone") String timeZone,
                                                         RtsParameters rtsParameters,
                                                         ConjunctionsParameters conjunctionsParameters,
-                                                        EclipsesParameters eclipsesParameters) throws Exception {
+                                                        EclipsesParameters eclipsesParameters,
+                                                        String ephemerisMethodPreference) throws Exception {
 
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         final AtomicInteger id = new AtomicInteger();
 
-        return this.eventsOrchestrator.compute(JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, rtsParameters, conjunctionsParameters, eclipsesParameters).stream()
+        return this.eventsOrchestrator.compute(JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, rtsParameters, conjunctionsParameters, eclipsesParameters, ephemerisMethodPreference).stream()
                 .map(event -> new WrappedEvent<>(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),

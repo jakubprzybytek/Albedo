@@ -25,14 +25,14 @@ public class SeparationOrchestrator {
     @Autowired
     private EphemeridesOrchestrator ephemeridesOrchestrator;
 
-    public List<Separation> compute(String firstBody, String secondBody, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws Exception {
+    public List<Separation> compute(String firstBody, String secondBody, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
         LOG.info(String.format("Computing separation between two bodies, params: [firstBody=%s, secondBody=%s, from=%s, to=%s, interval=%f]", firstBody, secondBody, fromDate, toDate, interval));
 
         final Instant start = Instant.now();
 
-        ComputedEphemeris firstBodyEphemerides = this.ephemeridesOrchestrator.compute(firstBody, fromDate, toDate, interval, observerLocation);
-        ComputedEphemeris secondBodyEphemerides = this.ephemeridesOrchestrator.compute(secondBody, fromDate, toDate, interval, observerLocation);
+        ComputedEphemeris firstBodyEphemerides = this.ephemeridesOrchestrator.compute(firstBody, fromDate, toDate, interval, observerLocation, ephemerisMethodPreference);
+        ComputedEphemeris secondBodyEphemerides = this.ephemeridesOrchestrator.compute(secondBody, fromDate, toDate, interval, observerLocation, ephemerisMethodPreference);
 
         List<Separation> separations = StreamUtils.zip(
                 firstBodyEphemerides.getEphemerisList().stream(),

@@ -25,11 +25,12 @@ public class AltitudeController {
     public AltitudeResponseWrapper events(@RequestParam(value = "bodies", defaultValue = "Mercury") String[] bodyNames,
                                           @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                           ObserverLocation observerLocation,
-                                          @RequestParam("timeZone") String timeZone) throws Exception {
+                                          @RequestParam("timeZone") String timeZone,
+                                          String ephemerisMethodPreference) throws Exception {
 
         final ZoneId zoneId = ZoneId.of(timeZone);
 
-        final AltitudeResponse altitudeResponse = this.altitudeOrchestrator.compute(Arrays.asList(bodyNames), JulianDay.fromDate(date), observerLocation);
+        final AltitudeResponse altitudeResponse = this.altitudeOrchestrator.compute(Arrays.asList(bodyNames), JulianDay.fromDate(date), observerLocation, ephemerisMethodPreference);
         return AltitudeResponseWrapper.wrap(altitudeResponse, zoneId);
     }
 

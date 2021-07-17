@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.within;
 public class StateSolverTest {
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/WebGeocalc/de440/uncorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
+    @CsvFileSource(resources = "/WebGeocalc/de440/statePositionUncorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testUncorrected_de440(JplBody target,
                                       JplBody observer,
                                       @ConvertWith(JdeFromDateStringConverter.class) double jde,
@@ -37,7 +37,7 @@ public class StateSolverTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/WebGeocalc/de440/lightTravelCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
+    @CsvFileSource(resources = "/WebGeocalc/de440/statePositionLightTravelCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testLTCorrected_de440(JplBody target,
                                       JplBody observer,
                                       @ConvertWith(JdeFromDateStringConverter.class) double jde,
@@ -54,7 +54,7 @@ public class StateSolverTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/WebGeocalc/de440/lightTravelAndStarAbberationCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
+    @CsvFileSource(resources = "/WebGeocalc/de440/statePositionLightTravelAndStarAbberationCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testCorrected_de440(JplBody target,
                                     JplBody observer,
                                     @ConvertWith(JdeFromDateStringConverter.class) double jde,

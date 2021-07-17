@@ -29,7 +29,8 @@ public class VisibilityChartController {
                                                  @RequestParam("longitude") double observerLongitude,
                                                  @RequestParam("latitude") double observerLatitude,
                                                  @RequestParam("height") double observerHeight,
-                                                 @RequestParam("timeZone") String timeZone) throws Exception {
+                                                 @RequestParam("timeZone") String timeZone,
+                                                 String ephemerisMethodPreference) throws Exception {
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
@@ -39,7 +40,8 @@ public class VisibilityChartController {
                 JulianDay.fromDate(fromDate),
                 JulianDay.fromDate(toDate),
                 interval,
-                observerLocation);
+                observerLocation,
+                ephemerisMethodPreference);
 
         return VisibilityChartResponseWrapper.wrap(visibilityChartResponse, zoneId);
     }

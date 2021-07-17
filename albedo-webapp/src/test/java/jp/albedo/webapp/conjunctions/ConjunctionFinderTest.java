@@ -33,8 +33,8 @@ class ConjunctionFinderTest {
         );
 
         Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(
-                new ComputedEphemeris(null, ephemeris1),
-                new ComputedEphemeris(null, ephemeris2));
+                new ComputedEphemeris(null, ephemeris1, "test"),
+                new ComputedEphemeris(null, ephemeris2, "test"));
 
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = ConjunctionFinder.findConjunctionsBetweenTwoBodies(pair);
 
@@ -64,8 +64,8 @@ class ConjunctionFinderTest {
         );
 
         Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(
-                new ComputedEphemeris(null, ephemeris1),
-                new ComputedEphemeris(null, ephemeris2));
+                new ComputedEphemeris(null, ephemeris1, "test"),
+                new ComputedEphemeris(null, ephemeris2, "test"));
 
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = ConjunctionFinder.findConjunctionsBetweenTwoBodies(pair);
 
@@ -90,7 +90,7 @@ class ConjunctionFinderTest {
         final AstronomicalCoordinates catalogueEntryCoords = coords(2.0, 2.0);
 
         Pair<ComputedEphemeris, CatalogueEntry> pair = new Pair<>(
-                new ComputedEphemeris(null, ephemeris1),
+                new ComputedEphemeris(null, ephemeris1, "test"),
                 new CatalogueEntry(null, null, catalogueEntryCoords, 0.0, 0.0, 0.0, 0.0, null));
 
         List<Conjunction<BodyDetails, CatalogueEntry>> conjunctions = ConjunctionFinder.findConjunctionsBetweenBodyAndCatalogueEntry(pair);

@@ -31,13 +31,14 @@ public class RiseTransitSetController {
                                                           @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                           @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                                           ObserverLocation observerLocation,
-                                                          @RequestParam("timeZone") String timeZone) throws Exception {
+                                                          @RequestParam("timeZone") String timeZone,
+                                                          String ephemerisMethodPreference) throws Exception {
 
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         final AtomicInteger id = new AtomicInteger();
 
-        return this.riseTransitSetOrchestrator.computeEvents(Arrays.asList(bodyNames), JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
+        return this.riseTransitSetOrchestrator.computeEvents(Arrays.asList(bodyNames), JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, ephemerisMethodPreference).stream()
                 .map(EventWrapper.wrap(id, zoneId))
                 .collect(Collectors.toList());
     }
@@ -47,12 +48,13 @@ public class RiseTransitSetController {
                                           @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                           @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                           ObserverLocation observerLocation,
-                                          @RequestParam("timeZone") String timeZone) throws Exception {
+                                          @RequestParam("timeZone") String timeZone,
+                                          String ephemerisMethodPreference) throws Exception {
 
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         return TransitsResponseWrapper.wrap(
-                this.riseTransitSetOrchestrator.computeRecords(Arrays.asList(bodyNames), JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation),
+                this.riseTransitSetOrchestrator.computeRecords(Arrays.asList(bodyNames), JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, ephemerisMethodPreference),
                 zoneId
         );
     }

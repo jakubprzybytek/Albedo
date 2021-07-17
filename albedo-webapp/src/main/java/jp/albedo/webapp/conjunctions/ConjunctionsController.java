@@ -38,25 +38,23 @@ public class ConjunctionsController {
                                                              @RequestParam(value = "separationFactorLimit", defaultValue = "2000") double separationFactorLimit,
                                                              @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                              @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
-                                                             @RequestParam("longitude") double observerLongitude,
-                                                             @RequestParam("latitude") double observerLatitude,
-                                                             @RequestParam("height") double observerHeight,
-                                                             @RequestParam("timeZone") String timeZone) {
+                                                             ObserverLocation observerLocation,
+                                                             @RequestParam("timeZone") String timeZone,
+                                                             String ephemerisMethodPreference) {
 
         final Set<BodyType> primaryBodyTypes = BodyType.parse(primaryTypeStrings);
         final Set<BodyType> secondaryBodyTypes = BodyType.parse(secondaryTypeStrings);
         final Set<CatalogueName> catalogueNames = CatalogueName.parse(catalogueTypeStrings);
 
-        final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         final AtomicInteger id = new AtomicInteger();
 
         return Stream.concat(
-                this.conjunctionsOrchestrator.computeForTwoMovingBodies(primaryBodyNames, primaryBodyTypes, secondaryBodyTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
+                this.conjunctionsOrchestrator.computeForTwoMovingBodies(primaryBodyNames, primaryBodyTypes, secondaryBodyTypes, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, ephemerisMethodPreference).stream()
                         .filter(conjunction -> conjunction.separationFactor <= separationFactorLimit)
                         .map(ConjunctionEvent::fromTwoBodies),
-                this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(primaryBodyNames, primaryBodyTypes, catalogueNames, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation).stream()
+                this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(primaryBodyNames, primaryBodyTypes, catalogueNames, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, ephemerisMethodPreference).stream()
                         .filter(conjunction -> conjunction.separationFactor <= separationFactorLimit)
                         .map(ConjunctionEvent::fromBodyAndCatalogueEntry))
                 .sorted(Comparator.comparingDouble(AstronomicalEvent::getJde))

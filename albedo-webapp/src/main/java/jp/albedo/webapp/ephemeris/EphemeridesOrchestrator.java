@@ -4,7 +4,10 @@ import jp.albedo.common.BodyType;
 import jp.albedo.common.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.JplException;
 import jp.albedo.utils.FunctionUtils;
+import jp.albedo.vsop87.VSOPException;
+import jp.albedo.webapp.ephemeris.jpl.JplBinaryKernelEphemerisCalculator;
 import jp.albedo.webapp.ephemeris.jpl.JplEphemerisCalculator;
 import jp.albedo.webapp.ephemeris.orbitbased.OrbitBasedEphemerisCalculator;
 import jp.albedo.webapp.ephemeris.orbitbased.OrbitingBodyRecord;
@@ -24,10 +27,13 @@ import java.util.stream.Collectors;
 @Component
 public class EphemeridesOrchestrator {
 
-    private static Log LOG = LogFactory.getLog(EphemeridesOrchestrator.class);
+    private static final Log LOG = LogFactory.getLog(EphemeridesOrchestrator.class);
 
     @Autowired
     private JplEphemerisCalculator jplEphemerisCalculator;
+
+    @Autowired
+    private JplBinaryKernelEphemerisCalculator jplBinaryKernelEphemerisCalculator;
 
     @Autowired
     private OrbitBasedEphemerisCalculator orbitBasedEphemerisCalculator;
@@ -42,33 +48,42 @@ public class EphemeridesOrchestrator {
      * @param toDate           End of the time period for which ephemerides should be computed in Julian days.
      * @param interval         Interval for computations in Julian days.
      * @param observerLocation Location of observer for parallax correction.
-     * @return
-     * @throws Exception
      */
-    public ComputedEphemeris compute(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws Exception {
+    public ComputedEphemeris compute(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
+
+        if (EphemerisMethod.binary440.id.equals(ephemerisMethodPreference)) {
+            final Optional<JplBody> jplSupportedBodyForBinarySpk = this.jplBinaryKernelEphemerisCalculator.parseBody(bodyName);
+            if (jplSupportedBodyForBinarySpk.isPresent()) {
+                final JplBody body = jplSupportedBodyForBinarySpk.get();
+
+                LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s, ephemeris method: %s",
+                        body, fromDate, toDate, interval, observerLocation, EphemerisMethod.binary440));
+
+                return computeEphemerisUsingDe440(body, fromDate, toDate, interval, observerLocation);
+            }
+        }
 
         final Optional<JplBody> jplSupportedBody = this.jplEphemerisCalculator.parseBody(bodyName);
         if (jplSupportedBody.isPresent()) {
             final JplBody body = jplSupportedBody.get();
-            final List<Ephemeris> ephemerides = this.jplEphemerisCalculator.compute(body, fromDate, toDate, interval).parallelStream()
-                    .map(ParallaxCorrection.correctFor(observerLocation))
-                    .collect(Collectors.toList());
 
-            return new ComputedEphemeris(body.toBodyDetails(), ephemerides);
+            LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s, ephemeris method: %s",
+                    body, fromDate, toDate, interval, observerLocation, EphemerisMethod.ascii438));
+
+            return computeEphemerisUsingAsciiSPK(body, fromDate, toDate, interval, observerLocation);
         }
 
         final Optional<OrbitingBodyRecord> orbitingBodyRecordOptional = this.orbitBasedEphemerisCalculator.findBody(bodyName);
+        if (orbitingBodyRecordOptional.isPresent()) {
+            final OrbitingBodyRecord orbitingBodyRecord = orbitingBodyRecordOptional.get();
 
-        if (orbitingBodyRecordOptional.isEmpty()) {
-            throw new EphemerisException("Body not found: " + bodyName);
+            LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s, ephemeris method: %s",
+                    orbitingBodyRecord.getBodyDetails().name, fromDate, toDate, interval, observerLocation, EphemerisMethod.JeanMeeus));
+
+            return computeEphemerisUsingJeanMeeus(orbitingBodyRecord, fromDate, toDate, interval, observerLocation);
         }
 
-        final OrbitingBodyRecord orbitingBodyRecord = orbitingBodyRecordOptional.get();
-        final List<Ephemeris> ephemerides = this.orbitBasedEphemerisCalculator.compute(orbitingBodyRecord, fromDate, toDate, interval).parallelStream()
-                .map(ParallaxCorrection.correctFor(observerLocation))
-                .collect(Collectors.toList());
-
-        return new ComputedEphemeris(orbitingBodyRecord.getBodyDetails(), ephemerides, orbitingBodyRecord.getOrbitElements(), orbitingBodyRecord.getMagnitudeParameters());
+        throw new EphemerisException("Body not found: " + bodyName);
     }
 
     /**
@@ -81,31 +96,28 @@ public class EphemeridesOrchestrator {
      * @param observerLocation Location of observer for parallax correction.
      * @return List of computed ephemerides.
      */
-    public List<ComputedEphemeris> computeAllByType(BodyType bodyType, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws IOException {
+    public List<ComputedEphemeris> computeAllByType(BodyType bodyType, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws IOException {
 
-        LOG.info(String.format("Computing ephemerides for multiple bodies, params: [bodyType=%s, from=%s, to=%s, interval=%f]", bodyType, fromDate, toDate, interval));
+        LOG.info(String.format("Computing ephemerides for multiple bodies, params: [bodyType=%s, from=%s, to=%s, interval=%f], ephemeris method preference: %s",
+                bodyType, fromDate, toDate, interval, ephemerisMethodPreference));
 
         final Instant start = Instant.now();
 
         final List<ComputedEphemeris> ephemeridesList = new ArrayList<>();
 
-        this.jplEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
-                .map(FunctionUtils.wrap(body -> {
-                    final List<Ephemeris> ephemerides = this.jplEphemerisCalculator.compute(body, fromDate, toDate, interval).parallelStream()
-                            .map(ParallaxCorrection.correctFor(observerLocation))
-                            .collect(Collectors.toList());
-                    return new ComputedEphemeris(body.toBodyDetails(), ephemerides);
-                }))
-                .forEachOrdered(ephemeridesList::add);
+        if (EphemerisMethod.binary440.id.equals(ephemerisMethodPreference)) {
+            this.jplBinaryKernelEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
+                    .map(FunctionUtils.wrap(body -> computeEphemerisUsingAsciiSPK(body, fromDate, toDate, interval, observerLocation)))
+                    .forEachOrdered(ephemeridesList::add);
+        } else {
+            this.jplEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
+                    .map(FunctionUtils.wrap(body -> computeEphemerisUsingAsciiSPK(body, fromDate, toDate, interval, observerLocation)))
+                    .forEachOrdered(ephemeridesList::add);
+        }
 
         this.orbitBasedEphemerisCalculator.getSupportedBodiesByType(bodyType).parallelStream()
                 .filter(orbitingBodyRecord -> orbitingBodyRecord.getOrbitElements().isOrbitElliptic())
-                .map(FunctionUtils.wrap(orbitingBodyRecord -> {
-                    final List<Ephemeris> ephemerisList = this.orbitBasedEphemerisCalculator.compute(orbitingBodyRecord, fromDate, toDate, interval).parallelStream()
-                            .map(ParallaxCorrection.correctFor(observerLocation))
-                            .collect(Collectors.toList());
-                    return new ComputedEphemeris(orbitingBodyRecord.getBodyDetails(), ephemerisList);
-                }))
+                .map(FunctionUtils.wrap(orbitingBodyRecord -> computeEphemerisUsingJeanMeeus(orbitingBodyRecord, fromDate, toDate, interval, observerLocation)))
                 .forEachOrdered(ephemeridesList::add);
 
         LOG.info(String.format("Computed %d ephemerides in %s", ephemeridesList.size(), Duration.between(start, Instant.now())));
@@ -113,4 +125,43 @@ public class EphemeridesOrchestrator {
         return ephemeridesList;
     }
 
+    private ComputedEphemeris computeEphemerisUsingAsciiSPK(JplBody body, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws IOException, JplException {
+        final List<Ephemeris> ephemeris = this.jplEphemerisCalculator.compute(body, fromDate, toDate, interval).parallelStream()
+                .map(ParallaxCorrection.correctFor(observerLocation))
+                .collect(Collectors.toList());
+
+        return new ComputedEphemeris(body.toBodyDetails(), ephemeris, EphemerisMethod.ascii438.description);
+    }
+
+    private ComputedEphemeris computeEphemerisUsingDe440(JplBody body, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws IOException, JplException {
+        final List<Ephemeris> ephemeris = this.jplBinaryKernelEphemerisCalculator.compute(body, fromDate, toDate, interval).parallelStream()
+                .map(ParallaxCorrection.correctFor(observerLocation))
+                .collect(Collectors.toList());
+
+        return new ComputedEphemeris(body.toBodyDetails(), ephemeris, EphemerisMethod.binary440.description);
+    }
+
+    private ComputedEphemeris computeEphemerisUsingJeanMeeus(OrbitingBodyRecord orbitingBodyRecord, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws VSOPException {
+        final List<Ephemeris> ephemeris = this.orbitBasedEphemerisCalculator.compute(orbitingBodyRecord, fromDate, toDate, interval).parallelStream()
+                .map(ParallaxCorrection.correctFor(observerLocation))
+                .collect(Collectors.toList());
+        return new ComputedEphemeris(orbitingBodyRecord.getBodyDetails(), ephemeris, orbitingBodyRecord.getOrbitElements(), orbitingBodyRecord.getMagnitudeParameters(), EphemerisMethod.JeanMeeus.description);
+        //return new ComputedEphemeris(orbitingBodyRecord.getBodyDetails(), ephemerisList, ENGINE_JEAN_MEEUS);
+    }
+
+    public enum EphemerisMethod {
+
+        JeanMeeus("Jean Meeus", ""),
+        ascii438("ASCII SPK: DE438", ""),
+        binary440("Binary SPK: DE440", "de440");
+
+        public final String description;
+
+        public final String id;
+
+        EphemerisMethod(String description, String id) {
+            this.description = description;
+            this.id = id;
+        }
+    }
 }

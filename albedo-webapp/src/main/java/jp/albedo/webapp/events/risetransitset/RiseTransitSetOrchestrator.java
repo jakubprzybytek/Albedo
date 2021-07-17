@@ -31,7 +31,7 @@ public class RiseTransitSetOrchestrator {
     @Autowired
     private RiseTransitSetCalculator riseTransitSetCalculator;
 
-    public List<RiseTransitSetEvent> computeEvents(List<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
+    public List<RiseTransitSetEvent> computeEvents(List<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
         LOG.info(String.format("Computing times of rising, transit and setting, params: [bodies:%s, from=%s, to=%s], observer location: %s", bodyNames, fromDate, toDate, observerLocation));
 
@@ -40,7 +40,7 @@ public class RiseTransitSetOrchestrator {
         final List<RiseTransitSetEvent> riseTransitSetList = new ArrayList<>();
 
         for (String bodyName : bodyNames) {
-            ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation);
+            ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation, ephemerisMethodPreference);
             riseTransitSetList.addAll(this.riseTransitSetCalculator.computeEvents(bodyName, computedEphemeris, observerLocation.coords));
         }
 
@@ -51,7 +51,7 @@ public class RiseTransitSetOrchestrator {
         return riseTransitSetList;
     }
 
-    public TransitsResponse computeRecords(List<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
+    public TransitsResponse computeRecords(List<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
         LOG.info(String.format("Computing transits, params: [bodies:%s, from=%s, to=%s], observer location: %s", bodyNames, fromDate, toDate, observerLocation));
 
@@ -60,7 +60,7 @@ public class RiseTransitSetOrchestrator {
         final List<TransitSeries> transitsList = new ArrayList<>();
 
         for (String bodyName : bodyNames) {
-            ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation);
+            ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation, ephemerisMethodPreference);
             transitsList.add(new TransitSeries(
                     computedEphemeris.getBodyDetails(),
                     this.riseTransitSetCalculator.computeRecords(bodyName, computedEphemeris, observerLocation.coords).stream()

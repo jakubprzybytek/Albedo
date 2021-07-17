@@ -87,3 +87,6 @@ docker run --rm -i -v=albedo-data:/usr/data busybox ls /usr/data
 * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/spk.html
 * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/time.html#The%20Leapseconds%20Kernel%20(LSK) 
 * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/pck.html
+
+### Data validation
+* https://wgc.jpl.nasa.gov:8443/webgeocalc/#StateVector

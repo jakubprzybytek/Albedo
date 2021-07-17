@@ -15,6 +15,7 @@ export default function useJsonConnection(responseHandler) {
 
   const observerLocation = useSelector(state => state.observerLocation);
   const timeZone = useSelector(state => state.timeZone);
+  const engineSettings = useSelector(state => state.engineSettings);
 
   var buildRequestUrl;
 
@@ -27,7 +28,8 @@ export default function useJsonConnection(responseHandler) {
         params: {
           ...requestUrl.params,
           ...observerLocation,
-          timeZone: timeZone
+          timeZone: timeZone,
+          ...engineSettings
         }
       })
       .then(res => {

@@ -41,7 +41,8 @@ public class EventsOrchestrator {
     private EclipsesOrchestrator eclipsesOrchestrator;
 
     List<AstronomicalEvent> compute(Double fromDate, Double toDate, ObserverLocation observerLocation,
-                                    RtsParameters rtsParameters, ConjunctionsParameters conjunctionsParameters, EclipsesParameters eclipsesParameters) throws Exception {
+                                    RtsParameters rtsParameters, ConjunctionsParameters conjunctionsParameters, EclipsesParameters eclipsesParameters,
+                                    String ephemerisMethodPreference) throws Exception {
 
         LOG.info(String.format("Computing events, params: [from=%s, to=%s, rtsParams=%s, conjunctionsParams=%s], observer location: %s", fromDate, toDate, rtsParameters, conjunctionsParameters, observerLocation));
         final Instant start = Instant.now();
@@ -52,7 +53,7 @@ public class EventsOrchestrator {
             List<String> rtsBodies = StreamUtils.collectPresent(
                     Optional.ofNullable(rtsParameters.isSunEnabled() ? "Sun" : null),
                     Optional.ofNullable(rtsParameters.isMoonEnabled() ? "Moon" : null));
-            astronomicalEvents.addAll(this.riseTransitSetOrchestrator.computeEvents(rtsBodies, fromDate, toDate, observerLocation));
+            astronomicalEvents.addAll(this.riseTransitSetOrchestrator.computeEvents(rtsBodies, fromDate, toDate, observerLocation, ephemerisMethodPreference));
         }
 
         List<String> conjunctionBodyNames = StreamUtils.collectPresent(
@@ -78,7 +79,8 @@ public class EventsOrchestrator {
                     conjunctionSecondaryBodyTypes,
                     fromDate,
                     toDate + 1.0,
-                    observerLocation)
+                    observerLocation,
+                    ephemerisMethodPreference)
                     .stream()
                     .filter(conjunction -> conjunction.jde > fromDate) // FixMe
                     .filter(conjunctionTwoBodyEventsFilter)
@@ -92,7 +94,8 @@ public class EventsOrchestrator {
                     conjunctionCatalogues,
                     fromDate,
                     toDate + 1.0,
-                    observerLocation)
+                    observerLocation,
+                    ephemerisMethodPreference)
                     .stream()
                     .filter(conjunction -> conjunction.jde > fromDate) // FixMe
                     .filter(conjunctionBodyAndCatalogueEventsFilter)
@@ -101,7 +104,7 @@ public class EventsOrchestrator {
         }
 
         if (eclipsesParameters.isEnabled()) {
-            astronomicalEvents.addAll(getEclipses(fromDate, toDate, observerLocation));
+            astronomicalEvents.addAll(getEclipses(fromDate, toDate, observerLocation, ephemerisMethodPreference));
         }
 
         astronomicalEvents.sort(Comparator.comparingDouble(AstronomicalEvent::getJde));
@@ -111,8 +114,8 @@ public class EventsOrchestrator {
         return astronomicalEvents;
     }
 
-    private List<EclipseEvent> getEclipses(double from, double to, ObserverLocation observerLocation) throws Exception {
-        return this.eclipsesOrchestrator.compute(from, to, observerLocation);
+    private List<EclipseEvent> getEclipses(double from, double to, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
+        return this.eclipsesOrchestrator.compute(from, to, observerLocation, ephemerisMethodPreference);
     }
 
 }

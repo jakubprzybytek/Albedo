@@ -33,14 +33,15 @@ public class SeparationController {
                                                      @RequestParam("longitude") double observerLongitude,
                                                      @RequestParam("latitude") double observerLatitude,
                                                      @RequestParam("height") double observerHeight,
-                                                     @RequestParam("timeZone") String timeZone) throws Exception {
+                                                     @RequestParam("timeZone") String timeZone,
+                                                     String ephemerisMethodPreference) throws Exception {
 
         final ObserverLocation observerLocation = new ObserverLocation(GeographicCoordinates.fromDegrees(observerLongitude, observerLatitude), observerHeight);
         final ZoneId zoneId = ZoneId.of(timeZone);
 
         final AtomicInteger id = new AtomicInteger();
 
-        return this.separationOrchestrator.compute(firstBody, secondBody, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval, observerLocation).stream()
+        return this.separationOrchestrator.compute(firstBody, secondBody, JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), interval, observerLocation, ephemerisMethodPreference).stream()
                 .map(separation -> new WrappedEvent<>(
                         id.getAndIncrement(),
                         JulianDay.toDateTime(separation.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),

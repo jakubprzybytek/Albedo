@@ -8,6 +8,7 @@ import { all } from 'redux-saga/effects';
 import Dashboard from './Dashboard';
 import locationReducer from './userSettings/observerlocation/LocationReducer';
 import timeZoneReducer from './userSettings/timezone/TimeZoneReducer';
+import engineSettingsReducer from './userSettings/engineSettings/EngineSettingsReducer';
 import { eventsListReducer } from './events/actions/EventsListReducers';
 import { watchEventsListSagas, fetchEvents, fetchFutureEvents } from './events/actions/EventsListSagas';
 
@@ -15,6 +16,7 @@ const albedoReducer = combineReducers({
   observerLocation: locationReducer,
   timeZone: timeZoneReducer,
   eventsList: eventsListReducer,
+  engineSettings: engineSettingsReducer
 });
 
 const sagaMiddleware = createSagaMiddleware();

@@ -34,13 +34,13 @@ public class VisibilityChartOrchestrator {
     @Autowired
     private AltitudeCalculator altitudeCalculator;
 
-    VisibilityChartResponse compute(List<String> bodyNames, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws Exception {
+    VisibilityChartResponse compute(List<String> bodyNames, double fromDate, double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
         LOG.info(String.format("Computing visibility chart data, params: [bodies:%s, from=%s, to=%s, interval=%s], observer location: %s", bodyNames, fromDate, toDate, interval, observerLocation));
 
         final Instant start = Instant.now();
 
-        final ComputedEphemeris computedEphemerisForSun = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), fromDate, toDate, interval, observerLocation);
+        final ComputedEphemeris computedEphemerisForSun = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), fromDate, toDate, interval, observerLocation, ephemerisMethodPreference);
         final List<RiseTransitSetEvent> sunRiseTransitSetEvents = this.riseTransitSetCalculator.computeEvents(BodyInformation.Sun.name(), computedEphemerisForSun, observerLocation.coords);
 
         final double firstSunSet = sunRiseTransitSetEvents.stream()
@@ -96,7 +96,7 @@ public class VisibilityChartOrchestrator {
                 });
 
         List<BodyVisibility> bodiesVisibilityList = bodyNames.stream()
-                .map(FunctionUtils.wrap(bodyName -> computeForBody(bodyName, fromDate, toDate, interval, observerLocation)))
+                .map(FunctionUtils.wrap(bodyName -> computeForBody(bodyName, fromDate, toDate, interval, observerLocation, ephemerisMethodPreference)))
                 .collect(Collectors.toList());
 
         LOG.info(String.format("Calculated %d events in %s", sunRiseTransitSetEvents.size(), Duration.between(start, Instant.now())));
@@ -105,8 +105,8 @@ public class VisibilityChartOrchestrator {
                 sunSets, sunCivilDusks, sunNauticalDusks, sunAstronomicalDusks, sunAstronomicalDawns, sunNauticalDawns, sunCivilDawns, sunRises, bodiesVisibilityList);
     }
 
-    private BodyVisibility computeForBody(String bodyName, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws Exception {
-        final ComputedEphemeris computedEphemerisForBody = this.ephemeridesOrchestrator.compute(bodyName, fromDate, toDate, interval, observerLocation);
+    private BodyVisibility computeForBody(String bodyName, double fromDate, double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
+        final ComputedEphemeris computedEphemerisForBody = this.ephemeridesOrchestrator.compute(bodyName, fromDate, toDate, interval, observerLocation, ephemerisMethodPreference);
         final List<RiseTransitSetEvent> bodyRiseTransitSetEvents = this.riseTransitSetCalculator.computeEvents(bodyName, computedEphemerisForBody, observerLocation.coords);
 
         final List<Double> bodyRises = new LinkedList<>();

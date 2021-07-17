@@ -21,7 +21,7 @@ import static jp.albedo.testutils.AlbedoAssertions.assertThat;
 public class StateSolverTest {
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/WebGeocalc/mar097/uncorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
+    @CsvFileSource(resources = "/WebGeocalc/mar097/statePositionUncorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testUncorrected(JplBody target,
                                 JplBody observer,
                                 @ConvertWith(JdeFromDateStringConverter.class) double jde,
@@ -36,7 +36,7 @@ public class StateSolverTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/WebGeocalc/mar097/lightTravelCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
+    @CsvFileSource(resources = "/WebGeocalc/mar097/statePositionLightTravelCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testLightTravelCorrected(JplBody target,
                                          JplBody observer,
                                          @ConvertWith(JdeFromDateStringConverter.class) double jde,
@@ -53,7 +53,7 @@ public class StateSolverTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/WebGeocalc/mar097/lightTravelAndStarAbberationCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
+    @CsvFileSource(resources = "/WebGeocalc/mar097/statePositionLightTravelAndStarAbberationCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testLightTravelStarAbberationCorrected(JplBody target,
                                                        JplBody observer,
                                                        @ConvertWith(JdeFromDateStringConverter.class) double jde,
@@ -70,7 +70,7 @@ public class StateSolverTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/WebGeocalc/mar097/uncorrectedVelocity-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
+    @CsvFileSource(resources = "/WebGeocalc/mar097/stateVelocityUncorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     public void testVelocityUncorrected(JplBody target,
                                         JplBody observer,
                                         @ConvertWith(JdeFromDateStringConverter.class) double jde,

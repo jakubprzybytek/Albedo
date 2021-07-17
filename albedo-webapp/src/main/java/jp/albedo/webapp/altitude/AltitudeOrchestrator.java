@@ -40,13 +40,13 @@ public class AltitudeOrchestrator {
     @Autowired
     private AltitudeCalculator altitudeCalculator;
 
-    AltitudeResponse compute(List<String> bodyNames, double jde, ObserverLocation observerLocation) throws Exception {
+    AltitudeResponse compute(List<String> bodyNames, double jde, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
         LOG.info(String.format("Computing altitudes, params: [bodies:%s, date=%s], observer location: %s", bodyNames, jde, observerLocation));
 
         final Instant start = Instant.now();
 
-        final ComputedEphemeris computedEphemerisForSun = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), jde - DAY_INTERVAL, jde + 2 * DAY_INTERVAL, DAY_INTERVAL, observerLocation);
+        final ComputedEphemeris computedEphemerisForSun = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), jde - DAY_INTERVAL, jde + 2 * DAY_INTERVAL, DAY_INTERVAL, observerLocation, ephemerisMethodPreference);
         final List<RiseTransitSetEvent> sunRiseTransitSetEvents = this.riseTransitSetCalculator.computeEvents(BodyInformation.Sun.name(), computedEphemerisForSun, observerLocation.coords);
 
         final RiseTransitSetEvent settingEvent = sunRiseTransitSetEvents.stream()
@@ -71,7 +71,7 @@ public class AltitudeOrchestrator {
         final List<AltitudeSeries> altitudeSeriesList = new ArrayList<>();
 
         for (String bodyName : bodyNames) {
-            ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, startTime, endTime, INTERDAY_INTERVAL, observerLocation);
+            ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, startTime, endTime, INTERDAY_INTERVAL, observerLocation, ephemerisMethodPreference);
             altitudeSeriesList.add(new AltitudeSeries(
                     computedEphemeris.getBodyDetails(),
                     this.altitudeCalculator.compute(computedEphemeris.getEphemerisList(), observerLocation.coords)));

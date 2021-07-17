@@ -2,11 +2,15 @@ package jp.albedo.jpl.kernel;
 
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.files.SpkFileLoader;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.util.stream.Stream;
 
 public class SpkKernelLoader {
+
+    private static Log LOG = LogFactory.getLog(SpkKernelLoader.class);
 
     private final SpkKernelRepository kernel = new SpkKernelRepository();
 
@@ -35,6 +39,9 @@ public class SpkKernelLoader {
      * @throws JplException If any error during file load occur.
      */
     public SpkKernelLoader load(File file) throws JplException {
+
+        LOG.info(String.format("Loading binary SPK kernel from file: '%s'", file));
+
         final SpkFileLoader loader = new SpkFileLoader(file);
         loader.loadAll(startJde, endJde)
                 .forEach(kernel::registerSpkKernelRecord);

@@ -44,19 +44,19 @@ public class EclipsesOrchestrator {
      * @param observerLocation Location (of the Earth) of the observer for which parallax correction should be made to the ephemerides.
      * @return List of conjunctions.
      */
-    public List<EclipseEvent> compute(Double fromDate, Double toDate, ObserverLocation observerLocation) throws Exception {
+    public List<EclipseEvent> compute(Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
         LOG.info(String.format("Computing eclipses for Sun and Moon, params: [from=%s, to=%s]", fromDate, toDate));
 
         final Instant start = Instant.now();
 
-        ComputedEphemeris sunEphemeris = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation);
-        ComputedEphemeris moonEphemeris = this.ephemeridesOrchestrator.compute(BodyInformation.Moon.name(), fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation);
+        ComputedEphemeris sunEphemeris = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation, ephemerisMethodPreference);
+        ComputedEphemeris moonEphemeris = this.ephemeridesOrchestrator.compute(BodyInformation.Moon.name(), fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation, ephemerisMethodPreference);
 
         Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(sunEphemeris, moonEphemeris);
         final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = ConjunctionFinder.forTwoBodies(pair, MAX_SEPARATION * 1.2);
 
-        final List<Pair<ComputedEphemeris, ComputedEphemeris>> closeEncounters = getDetailedBodiesEphemerides(preliminaryConjunctions, observerLocation);
+        final List<Pair<ComputedEphemeris, ComputedEphemeris>> closeEncounters = getDetailedBodiesEphemerides(preliminaryConjunctions, observerLocation, ephemerisMethodPreference);
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
 
         final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = ConjunctionFinder.forTwoBodies(closeEncounters, MAX_SEPARATION);
@@ -67,15 +67,15 @@ public class EclipsesOrchestrator {
                 .collect(Collectors.toList());
     }
 
-    private List<Pair<ComputedEphemeris, ComputedEphemeris>> getDetailedBodiesEphemerides(List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions, ObserverLocation observerLocation) {
+    private List<Pair<ComputedEphemeris, ComputedEphemeris>> getDetailedBodiesEphemerides(List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions, ObserverLocation observerLocation, String ephemerisMethodPreference) {
         return preliminaryConjunctions.parallelStream()
                 .map(FunctionUtils.wrap(conjunction -> new Pair<>(
                         this.ephemeridesOrchestrator.compute(conjunction.firstObject.name,
                                 conjunction.jde - DETAILED_SPAN / 2.0, conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL,
-                                observerLocation),
+                                observerLocation, ephemerisMethodPreference),
                         this.ephemeridesOrchestrator.compute(conjunction.secondObject.name,
                                 conjunction.jde - DETAILED_SPAN / 2.0, conjunction.jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL,
-                                observerLocation))))
+                                observerLocation, ephemerisMethodPreference))))
                 .collect(Collectors.toList());
     }
 

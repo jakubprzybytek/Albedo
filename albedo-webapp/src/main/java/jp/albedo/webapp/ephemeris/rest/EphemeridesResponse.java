@@ -14,13 +14,17 @@ import java.util.stream.Collectors;
 public class EphemeridesResponse {
 
     @JsonProperty
-    final private BodyInfo bodyInfo;
+    private final BodyInfo bodyInfo;
 
     @JsonProperty
-    final private List<WrappedEvent<Ephemeris>> ephemerisList;
+    private final List<WrappedEvent<Ephemeris>> ephemerisList;
+
+    @JsonProperty
+    private final String engine;
 
     public EphemeridesResponse(ComputedEphemeris computedEphemeris, ZoneId zoneId) {
         this.bodyInfo = new BodyInfo(computedEphemeris.getBodyDetails(), computedEphemeris.getOrbitElements(), computedEphemeris.getMagnitudeParameters());
+        this.engine = computedEphemeris.getEngine();
 
         final AtomicInteger id = new AtomicInteger();
 
@@ -30,7 +34,6 @@ public class EphemeridesResponse {
                         JulianDay.toDateTime(ephemeris.jde).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
                         ephemeris))
                 .collect(Collectors.toList());
-        ;
     }
 
 }
