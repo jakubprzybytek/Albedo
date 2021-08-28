@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import useJsonConnection from '../../api/JsonConnection';
 import SystemInfoForm from './SystemInfoForm';
 import SystemInfoCard from './SystemInfoCard';
 
@@ -14,14 +13,12 @@ export default function SystemInfoPanel() {
 
   const [systemInfo, setSystemInfo] = React.useState({});
 
-  const jsonConnection = useJsonConnection(setSystemInfo);
-
   const classes = useStyles();
 
   return (
     <React.Fragment>
       <div className={classes.area}>
-        <SystemInfoForm jsonConnection={jsonConnection} />
+        <SystemInfoForm setSystemInfo={setSystemInfo} />
       </div>
       <SystemInfoCard systemInfo={systemInfo} />
     </React.Fragment>

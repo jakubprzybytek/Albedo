@@ -2,6 +2,7 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import useJsonConnection from '../../api/JsonConnection';
 import SubmitBar from '../../components/SubmitBar';
 
 const useStyles = makeStyles(theme => ({
@@ -18,7 +19,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function SystemInfoForm(props) {
 
-  const { jsonConnection } = props;
+  const { setSystemInfo } = props;
+
+  const jsonConnection = useJsonConnection(setSystemInfo);
   jsonConnection.registerRequestUriBuilder(buildRequestUrl);
 
   function buildRequestUrl() {

@@ -1,9 +1,11 @@
 import React from 'react';
+import { useStateWithLocalStorageInt } from '../utils/LocalStorage';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TabPanel from '../common/TabPanel';
 import SystemInfoPanel from './systemAdmin/SystemInfoPanel';
+import JplRepositoriesPanel from './jplRepositories/JplRepositoriesPanel';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,21 +25,21 @@ const useStyles = makeStyles(theme => ({
 
 export default function AdminPanel() {
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useStateWithLocalStorageInt('adminTabs.currentTab', 0);
 
   const classes = useStyles();
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   return (
     <div className={classes.root}>
-      <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} className={classes.tabs}>
+      <Tabs orientation="vertical" variant="scrollable" value={value} onChange={(event, newValue) => setValue(newValue)} className={classes.tabs}>
         <Tab label="System Info" />
+        <Tab label="JPL Repos" />
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
         <SystemInfoPanel />
+      </TabPanel>
+      <TabPanel className={classes.tabPanel} value={value} index={1}>
+        <JplRepositoriesPanel />
       </TabPanel>
     </div>
   );
