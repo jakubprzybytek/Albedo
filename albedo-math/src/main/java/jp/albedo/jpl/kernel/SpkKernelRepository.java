@@ -3,16 +3,18 @@ package jp.albedo.jpl.kernel;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.tree.Forest;
+import jp.albedo.jpl.kernel.tree.ForestEdgeVisitor;
 import jp.albedo.jpl.state.impl.StateSolverFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class SpkKernelRepository {
 
-    private static Log LOG = LogFactory.getLog(SpkKernelRepository.class);
+    private static final Log LOG = LogFactory.getLog(SpkKernelRepository.class);
 
     private final Forest<JplBody, SpkKernelCollection> spkKernelRoot = new Forest<>();
 
@@ -63,6 +65,10 @@ public class SpkKernelRepository {
      */
     public StateSolverFactory stateSolver() {
         return new StateSolverFactory(this);
+    }
+
+    public <ReturnType> ForestEdgeVisitor<JplBody, SpkKernelCollection, ReturnType> edgeVisitor(Function<SpkKernelCollection, ReturnType> visitFunction) {
+        return new ForestEdgeVisitor<>(spkKernelRoot, visitFunction);
     }
 
 }

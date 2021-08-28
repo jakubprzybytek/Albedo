@@ -42,6 +42,10 @@ public class TreeNode<NodeType, EdgeType> {
         return children.containsKey(nodeValue);
     }
 
+    public Map<NodeType, TreeNode<NodeType, EdgeType>> getChildren() {
+        return Collections.unmodifiableMap(children);
+    }
+
     public Optional<TreeNode<NodeType, EdgeType>> getChild(NodeType child) {
         return Optional.ofNullable(children.get(child));
     }

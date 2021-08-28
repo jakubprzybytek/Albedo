@@ -42,7 +42,7 @@ export default function SubmitBar(props) {
   }
 
   return (
-    <Grid container direction="row" justify="space-between">
+    <Grid container direction="row" justifyContent="space-between">
       <Grid item className={classes.wrapper}>
         {!jsonConnection.loading && <div className={classes.status}>
           {jsonConnection.lastCall && <Typography className={classes.status}>Data received at {jsonConnection.lastCall} in {jsonConnection.duration}ms.</Typography>}

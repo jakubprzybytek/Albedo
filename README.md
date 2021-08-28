@@ -32,7 +32,7 @@ Run `jp.albedo.webapp.AlbedoApplication` in IDE with `-Dserver.port=8090` as VM 
 
 #### Frontend
 
-`npm run start`
+`npm run dev`
 
 Unit tests:
 `npm run test:watch`

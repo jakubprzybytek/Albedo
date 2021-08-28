@@ -18,18 +18,16 @@ public class JplBinaryKernelsService {
 
     private SpkKernelRepository spKernel;
 
-    private synchronized SpkKernelRepository loadSPKernel() throws IOException, JplException {
+    private synchronized SpkKernelRepository loadSPKernel() throws JplException {
 
         if (this.spKernel != null) {
             return this.spKernel;
         }
 
-        SpkKernelRepository kernel = new SpkKernelLoader()
+        return new SpkKernelLoader()
                 .forDateRange(JulianDay.fromDate(1950, 12, 31), JulianDay.fromDate(2100, 1, 25))
                 .load(new File(binarySpkKernelFileName))
                 .kernel();
-
-        return kernel;
     }
 
     public SpkKernelRepository getSpKernel() throws IOException, JplException {

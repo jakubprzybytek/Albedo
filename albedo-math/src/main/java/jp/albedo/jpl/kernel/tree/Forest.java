@@ -1,5 +1,6 @@
 package jp.albedo.jpl.kernel.tree;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +64,10 @@ public class Forest<NodeType, EdgeType> {
                 .collect(Collectors.toList()));
 
         return edges.isPresent() && edges.get().size() == 0 ? Optional.empty() : edges;
+    }
+
+    Map<NodeType, TreeNode<NodeType, EdgeType>> getTrees() {
+        return Collections.unmodifiableMap(trees);
     }
 
     private Optional<TreeNode<NodeType, EdgeType>> findNode(NodeType toFind) {
