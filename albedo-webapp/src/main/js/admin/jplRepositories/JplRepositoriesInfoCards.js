@@ -28,12 +28,6 @@ export function JplRepositoriesKernelInfo(props) {
       <SlimCardContent>
         <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Details</Typography>
         <Typography variant="body2" className={classes.smallFont}>
-          <span>Kernel File Name: </span>
-          <Typography component="span" variant="body2" color="textSecondary">
-            {kernelInfo.kernelFileName}
-          </Typography>
-        </Typography>
-        <Typography variant="body2" className={classes.smallFont}>
           <span>Observer: </span>
           <Typography component="span" variant="body2" color="textSecondary">
             {kernelInfo.observerBody}
@@ -51,6 +45,18 @@ export function JplRepositoriesKernelInfo(props) {
             {kernelInfo.referenceFrame}
           </Typography>
         </Typography>
+      </SlimCardContent>
+      <SlimCardContent>
+        <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Kernel File</Typography>
+        <Typography variant="body2" className={classes.smallFont}>
+          <span>Kernel File Name: </span>
+          <Typography component="span" variant="body2" color="textSecondary">
+            {kernelInfo.kernelFileName}
+          </Typography>
+        </Typography>
+      </SlimCardContent>
+      <SlimCardContent>
+        <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Data</Typography>
         <Typography variant="body2" className={classes.smallFont}>
           <span>Position Chebyshev Records: </span>
           <Typography component="span" variant="body2" color="textSecondary">
@@ -63,47 +69,6 @@ export function JplRepositoriesKernelInfo(props) {
             {kernelInfo.positionAndVelocityChebyshevRecords}
           </Typography>
         </Typography>
-      </SlimCardContent>
-    </Card>
-  );
-}
-
-export function JplRepositoriesBodyInfo(props) {
-
-  const { bodyName, parentBodyName, childBodyNames } = props;
-
-  const classes = useStyles();
-
-  return (
-    <Card>
-      <SlimCardHeader title={'Body Info'} />
-      <SlimCardContent>
-        <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Selected</Typography>
-        <Typography variant="body2" className={classes.smallFont}>
-          <span>Selected: </span>
-          <Typography component="span" variant="body2" color="textSecondary">
-            {bodyName}
-          </Typography>
-        </Typography>
-        <Typography variant="body2" className={classes.smallFont}>
-          <span>Parent: </span>
-          <Typography component="span" variant="body2" color="textSecondary">
-            {parentBodyName ? parentBodyName : 'n/a'}
-          </Typography>
-        </Typography>
-        <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Children</Typography>
-        {childBodyNames.map(childNodyName => (
-          <Typography key={childNodyName} variant="body2" className={classes.smallFont}>
-            <Typography component="span" variant="body2" color="textSecondary">
-              {childNodyName}
-            </Typography>
-          </Typography>
-        ))}
-        {childBodyNames.length == 0 &&
-          <Typography variant="body2" className={classes.smallFont}>
-            <span>n/a</span>
-          </Typography>
-        }
       </SlimCardContent>
     </Card>
   );
