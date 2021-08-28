@@ -22,8 +22,11 @@ public class SpkFileLoader {
 
     private final File file;
 
+    private final String fileName;
+
     public SpkFileLoader(File file) {
         this.file = file;
+        this.fileName = file.getName();
     }
 
     public List<SpkKernelCollection> loadAll(double startJde, double endJde) throws JplException {
@@ -43,13 +46,13 @@ public class SpkFileLoader {
                 switch (arrayInfo.getDataType()) {
                     case ChebyshevPosition:
                         List<PositionChebyshevRecord> positionChebyshevRecords = dataReader.readChebyshevArray(arrayInfo, startEt, endEt);
-                        spkData.add(SpkKernelCollection.fromArrayInformationAndPosition(arrayInfo, positionChebyshevRecords));
+                        spkData.add(SpkKernelCollection.fromPositionData(fileName, arrayInfo, positionChebyshevRecords));
                         break;
 
                     case ChebyshevPositionAndVelocity:
                         List<PositionAndVelocityChebyshevRecord> positionAndVelocityChebyshevRecords =
                                 new SpkFilePositionAndVelocityChebyshevPolynomialsReader(fileChannel).readChebyshevArray(arrayInfo, startEt, endEt);
-                        spkData.add(SpkKernelCollection.fromArrayInformationAndPositionAndVelocity(arrayInfo, positionAndVelocityChebyshevRecords));
+                        spkData.add(SpkKernelCollection.fromPositionAndVelocityData(fileName, arrayInfo, positionAndVelocityChebyshevRecords));
                         break;
                 }
             }

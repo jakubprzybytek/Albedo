@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public class SpkKernelLoader {
 
-    private static Log LOG = LogFactory.getLog(SpkKernelLoader.class);
+    private static final Log LOG = LogFactory.getLog(SpkKernelLoader.class);
 
     private final SpkKernelRepository kernel = new SpkKernelRepository();
 

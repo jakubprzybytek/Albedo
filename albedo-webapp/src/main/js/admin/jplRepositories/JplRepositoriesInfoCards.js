@@ -28,6 +28,12 @@ export function JplRepositoriesKernelInfo(props) {
       <SlimCardContent>
         <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Details</Typography>
         <Typography variant="body2" className={classes.smallFont}>
+          <span>Kernel File Name: </span>
+          <Typography component="span" variant="body2" color="textSecondary">
+            {kernelInfo.kernelFileName}
+          </Typography>
+        </Typography>
+        <Typography variant="body2" className={classes.smallFont}>
           <span>Observer: </span>
           <Typography component="span" variant="body2" color="textSecondary">
             {kernelInfo.observerBody}

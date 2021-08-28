@@ -12,6 +12,8 @@ import java.util.List;
 
 public class SpkKernelCollection {
 
+    private final String kernelFileName;
+
     private final JplBody body;
 
     private final JplBody centerBody;
@@ -22,9 +24,10 @@ public class SpkKernelCollection {
 
     private final List<PositionAndVelocityChebyshevRecord> positionAndVelocityData;
 
-    public SpkKernelCollection(JplBody body, JplBody centerBody, ReferenceFrame referenceFrame,
+    public SpkKernelCollection(String kernelFileName, JplBody body, JplBody centerBody, ReferenceFrame referenceFrame,
                                List<PositionChebyshevRecord> positionData,
                                List<PositionAndVelocityChebyshevRecord> positionAndVelocityData) {
+        this.kernelFileName = kernelFileName;
         this.body = body;
         this.centerBody = centerBody;
         this.referenceFrame = referenceFrame;
@@ -32,12 +35,16 @@ public class SpkKernelCollection {
         this.positionAndVelocityData = positionAndVelocityData;
     }
 
-    public static SpkKernelCollection fromArrayInformationAndPosition(SpkFileArrayInformation arrayInfo, List<PositionChebyshevRecord> data) {
-        return new SpkKernelCollection(arrayInfo.getBody(), arrayInfo.getCenterBody(), arrayInfo.getReferenceFrame(), data, new ArrayList<>());
+    public static SpkKernelCollection fromPositionData(String kernelFileName, SpkFileArrayInformation arrayInfo, List<PositionChebyshevRecord> data) {
+        return new SpkKernelCollection(kernelFileName, arrayInfo.getBody(), arrayInfo.getCenterBody(), arrayInfo.getReferenceFrame(), data, new ArrayList<>());
     }
 
-    public static SpkKernelCollection fromArrayInformationAndPositionAndVelocity(SpkFileArrayInformation arrayInfo, List<PositionAndVelocityChebyshevRecord> data) {
-        return new SpkKernelCollection(arrayInfo.getBody(), arrayInfo.getCenterBody(), arrayInfo.getReferenceFrame(), new ArrayList<>(), data);
+    public static SpkKernelCollection fromPositionAndVelocityData(String kernelFileName, SpkFileArrayInformation arrayInfo, List<PositionAndVelocityChebyshevRecord> data) {
+        return new SpkKernelCollection(kernelFileName, arrayInfo.getBody(), arrayInfo.getCenterBody(), arrayInfo.getReferenceFrame(), new ArrayList<>(), data);
+    }
+
+    public String getKernelFileName() {
+        return kernelFileName;
     }
 
     public JplBody getBody() {

@@ -7,8 +7,6 @@ import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.jpl.kernel.tree.ForestEdgeVisitor;
 import jp.albedo.webapp.ephemeris.admin.rest.KernelInfo;
 import jp.albedo.webapp.ephemeris.jpl.JplBinaryKernelsService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +16,6 @@ import java.util.Optional;
 
 @Component
 public class EphemeridesAdminOrchestrator {
-
-    private static final Log LOG = LogFactory.getLog(EphemeridesAdminOrchestrator.class);
 
     @Autowired
     private JplBinaryKernelsService jplBinaryKernelsService;
@@ -40,7 +36,8 @@ public class EphemeridesAdminOrchestrator {
     }
 
     private KernelInfo describeSpkKernelCollection(SpkKernelCollection spkKernelCollection) {
-        return new KernelInfo(spkKernelCollection.getBody(),
+        return new KernelInfo(spkKernelCollection.getKernelFileName(),
+                spkKernelCollection.getBody(),
                 spkKernelCollection.getCenterBody(),
                 spkKernelCollection.getReferenceFrame(),
                 spkKernelCollection.getPositionData().size(),

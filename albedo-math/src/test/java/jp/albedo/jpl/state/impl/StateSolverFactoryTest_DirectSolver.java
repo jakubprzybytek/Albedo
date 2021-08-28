@@ -33,9 +33,9 @@ public class StateSolverFactoryTest_DirectSolver {
 
     @BeforeAll
     private static void setup() throws JplException {
-        final SpkKernelCollection first = new SpkKernelCollection(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, firstChebyshevList, Collections.emptyList());
-        final SpkKernelCollection second = new SpkKernelCollection(JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, secondChebyshevList, Collections.emptyList());
-        final SpkKernelCollection third = new SpkKernelCollection(JplBody.Pluto, JplBody.Earth, ReferenceFrame.J2000, thirdChebyshevList, Collections.emptyList());
+        final SpkKernelCollection first = new SpkKernelCollection("Test", JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, firstChebyshevList, Collections.emptyList());
+        final SpkKernelCollection second = new SpkKernelCollection("Test", JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, secondChebyshevList, Collections.emptyList());
+        final SpkKernelCollection third = new SpkKernelCollection("Test", JplBody.Pluto, JplBody.Earth, ReferenceFrame.J2000, thirdChebyshevList, Collections.emptyList());
 
         spkKernel = mock(SpkKernelRepository.class);
         when(spkKernel.getAllTransientSpkKernelCollections(JplBody.Pluto)).thenReturn(Arrays.asList(first, second, third));

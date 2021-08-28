@@ -36,10 +36,10 @@ public class StateSolverFactoryTest_CommonCenterBodySolver {
 
     @BeforeAll
     private static void setup() throws JplException {
-        final SpkKernelCollection first = new SpkKernelCollection(JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, firstChebyshevList, Collections.emptyList());
-        final SpkKernelCollection second = new SpkKernelCollection(JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, secondChebyshevList, Collections.emptyList());
-        final SpkKernelCollection third = new SpkKernelCollection(JplBody.JupiterBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, thirdChebyshevList, Collections.emptyList());
-        final SpkKernelCollection fourth = new SpkKernelCollection(JplBody.Jupiter, JplBody.JupiterBarycenter, ReferenceFrame.J2000, fourthChebyshevList, Collections.emptyList());
+        final SpkKernelCollection first = new SpkKernelCollection("Test", JplBody.EarthMoonBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, firstChebyshevList, Collections.emptyList());
+        final SpkKernelCollection second = new SpkKernelCollection("Test", JplBody.Earth, JplBody.EarthMoonBarycenter, ReferenceFrame.J2000, secondChebyshevList, Collections.emptyList());
+        final SpkKernelCollection third = new SpkKernelCollection("Test", JplBody.JupiterBarycenter, JplBody.SolarSystemBarycenter, ReferenceFrame.J2000, thirdChebyshevList, Collections.emptyList());
+        final SpkKernelCollection fourth = new SpkKernelCollection("Test", JplBody.Jupiter, JplBody.JupiterBarycenter, ReferenceFrame.J2000, fourthChebyshevList, Collections.emptyList());
 
         spkKernel = mock(SpkKernelRepository.class);
         when(spkKernel.getAllTransientSpkKernelCollections(JplBody.Earth)).thenReturn(Arrays.asList(first, second));

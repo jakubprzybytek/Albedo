@@ -7,6 +7,9 @@ import jp.albedo.jpl.files.binary.ReferenceFrame;
 public class KernelInfo {
 
     @JsonProperty
+    private final String kernelFileName;
+
+    @JsonProperty
     private final JplBody targetBody;
 
     @JsonProperty
@@ -21,7 +24,8 @@ public class KernelInfo {
     @JsonProperty
     private final int positionAndVelocityChebyshevRecords;
 
-    public KernelInfo(JplBody targetBody, JplBody observerBody, ReferenceFrame referenceFrame, int positionChebyshevRecords, int positionAndVelocityChebyshevRecords) {
+    public KernelInfo(String kernelFileName, JplBody targetBody, JplBody observerBody, ReferenceFrame referenceFrame, int positionChebyshevRecords, int positionAndVelocityChebyshevRecords) {
+        this.kernelFileName = kernelFileName;
         this.targetBody = targetBody;
         this.observerBody = observerBody;
         this.referenceFrame = referenceFrame;

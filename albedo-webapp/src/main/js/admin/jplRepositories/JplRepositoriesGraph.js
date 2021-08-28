@@ -52,7 +52,7 @@ function parseKernelInfos(kernelInfos) {
     links.push({
       source: kernelInfo.observerBody,
       target: kernelInfo.targetBody,
-      label: "Position records: " + kernelInfo.positionChebyshevRecords
+      label: kernelInfo.kernelFileName
     })
   });
 
