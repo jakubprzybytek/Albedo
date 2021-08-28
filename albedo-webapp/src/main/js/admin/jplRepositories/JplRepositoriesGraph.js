@@ -11,6 +11,7 @@ const myConfig = {
   maxZoom: 3,
   minZoom: 1,
   initialZoom: 2,
+  directed: true,
   node: {
     color: "lightgreen",
     size: 300,

@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import JplRepositoriesForm from './JplRepositoriesForm';
 import JplRepositoriesGraph from './JplRepositoriesGraph';
+import JplRepositoriesTree from './JplRepositoriesTree';
+import JplRepositoriesTree2 from './JplRepositoriesTree2';
 import { JplRepositoriesKernelInfo, JplRepositoriesBodyInfo } from './JplRepositoriesInfoCards';
 
 const useStyles = makeStyles(theme => ({
@@ -42,7 +44,9 @@ export default function JplRepositoriesPanel() {
       </div>
       <Grid container alignItems="flex-start">
         <div className={classes.sectionColumn}>
+          <JplRepositoriesTree2 ephemerisAdminInfo={ephemerisAdminInfo} />
           <JplRepositoriesGraph ephemerisAdminInfo={ephemerisAdminInfo} setSelectedGraphLink={setSelectedGraphLink} setSelectedNode={setSelectedNode} />
+          <JplRepositoriesTree ephemerisAdminInfo={ephemerisAdminInfo} />
         </div>
         <Grid container item direction="column" className={classes.infoCards}>
           {kernelInfo && <div className={classes.columnSectionItem}>

@@ -28,7 +28,7 @@ public class JplBinaryKernelEphemerisCalculator {
 
     private static final List<JplBody> SUPPORTED_BODIES = Arrays.asList(/*JplBody.Sun, */JplBody.Moon);
 
-    private static final List<JplBody> SUPPORTED_PLANETS = Arrays.asList(JplBody.Mercury, JplBody.Venus);
+    private static final List<JplBody> SUPPORTED_PLANETS = Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter);
 
     private static final List<JplBody> ALL_SUPPORTED_OBJECTS = Stream.concat(SUPPORTED_BODIES.stream(), SUPPORTED_PLANETS.stream())
             .collect(Collectors.toList());
