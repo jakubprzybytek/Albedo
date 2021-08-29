@@ -56,17 +56,44 @@ export function JplRepositoriesKernelInfo(props) {
         </Typography>
       </SlimCardContent>
       <SlimCardContent>
-        <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Data</Typography>
+        <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Position Chebyshev Data</Typography>
         <Typography variant="body2" className={classes.smallFont}>
-          <span>Position Chebyshev Records: </span>
+          <span>Records: </span>
           <Typography component="span" variant="body2" color="textSecondary">
             {kernelInfo.positionChebyshevRecords}
           </Typography>
         </Typography>
         <Typography variant="body2" className={classes.smallFont}>
-          <span>Position and Velocity Chebyshev Records: </span>
+          <span>Time Span Start: </span>
+          <Typography component="span" variant="body2" color="textSecondary">
+            {kernelInfo.positionChebyshevRecordsStartDate}
+          </Typography>
+        </Typography>
+        <Typography variant="body2" className={classes.smallFont}>
+          <span>Time Span End: </span>
+          <Typography component="span" variant="body2" color="textSecondary">
+            {kernelInfo.positionChebyshevRecordsEndDate}
+          </Typography>
+        </Typography>
+      </SlimCardContent>
+      <SlimCardContent>
+        <Typography className={classes.sectionTitle} variant="subtitle2" gutterBottom>Position and Velocity Chebyshev Data</Typography>
+        <Typography variant="body2" className={classes.smallFont}>
+          <span>Records: </span>
           <Typography component="span" variant="body2" color="textSecondary">
             {kernelInfo.positionAndVelocityChebyshevRecords}
+          </Typography>
+        </Typography>
+        <Typography variant="body2" className={classes.smallFont}>
+          <span>Time Span Start: </span>
+          <Typography component="span" variant="body2" color="textSecondary">
+            {kernelInfo.positionndVelocityChebyshevRecordsStartDate}
+          </Typography>
+        </Typography>
+        <Typography variant="body2" className={classes.smallFont}>
+          <span>Time Span End: </span>
+          <Typography component="span" variant="body2" color="textSecondary">
+            {kernelInfo.positionndVelocityChebyshevRecordsEndDate}
           </Typography>
         </Typography>
       </SlimCardContent>
