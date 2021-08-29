@@ -19,6 +19,7 @@ import jp.albedo.jpl.state.StateSolver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * JPL's Kernel based ephemerides calculator for main Solar System objects .
@@ -33,7 +34,7 @@ public class EarthEphemeridesCalculator implements EphemeridesCalculator {
 
     private final StateSolver sunToBodyStateSolver;
 
-    private final ApparentMagnitudeCalculator magnitudeCalculator;
+    private final Optional<ApparentMagnitudeCalculator> magnitudeCalculator;
 
     public EarthEphemeridesCalculator(SpkKernelRepository kernel, JplBody body) throws JplException {
         this.earthToBodyStateSolver = kernel.stateSolver()
@@ -83,7 +84,7 @@ public class EarthEphemeridesCalculator implements EphemeridesCalculator {
                     Elongation.between(
                             AstronomicalCoordinates.fromRectangular(earthToSunCoordsKm),
                             earthToBodyAstroCoords),
-                    this.magnitudeCalculator.compute(sunToBodyCoordsAu, earthToBodyCoordsAu),
+                    magnitudeCalculator.map(calculator -> calculator.compute(sunToBodyCoordsAu, earthToBodyCoordsAu)).orElse(0.0),
                     AngularSize.fromRadiusAndDistance(this.bodyEquatorialRadius, earthToBodyCoordsKm.length())
             ));
         }

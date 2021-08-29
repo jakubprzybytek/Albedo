@@ -2,22 +2,23 @@ package jp.albedo.jpl.ephemeris.impl;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyInformation;
+import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.common.ephemeris.Elongation;
 import jp.albedo.common.ephemeris.Ephemeris;
-import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
-import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.jpl.JplConstantEnum;
-import jp.albedo.jpl.JplBody;
-import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.kernel.SPKernel;
 import jp.albedo.common.magnitude.ApparentMagnitudeCalculator;
+import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
+import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.JplConstantEnum;
+import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.ephemeris.MagnitudeCalculatorFactory;
+import jp.albedo.jpl.kernel.SPKernel;
 import jp.albedo.jpl.state.EarthStateCalculator;
 import jp.albedo.jpl.state.StateCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * JPL's Kernel based ephemerides calculator for main Solar System objects.
@@ -35,7 +36,7 @@ public class BarycenterReferencedBodiesEphemeridesCalculator implements Ephemeri
 
     private final EarthStateCalculator earthStateCalculator;
 
-    private final ApparentMagnitudeCalculator magnitudeCalculator;
+    private final Optional<ApparentMagnitudeCalculator> magnitudeCalculator;
 
     public BarycenterReferencedBodiesEphemeridesCalculator(JplBody body, SPKernel spKernel) throws JplException {
         this.speedOfLight = spKernel.getConstant(JplConstantEnum.SpeedOfLight);
@@ -85,7 +86,7 @@ public class BarycenterReferencedBodiesEphemeridesCalculator implements Ephemeri
                     Elongation.between(
                             AstronomicalCoordinates.fromRectangular(earthHeliocentricCoordsKm.negate()),
                             correctedBodyGeocentricAstroCoords),
-                    this.magnitudeCalculator.compute(correctedBodyHeliocentricCoordsAu, correctedBodyGeocentricCoordsAu),
+                    magnitudeCalculator.map(calculator -> calculator.compute(correctedBodyHeliocentricCoordsAu, correctedBodyGeocentricCoordsAu)).orElse(0.0),
                     AngularSize.fromRadiusAndDistance(this.bodyEquatorialRadius, correctedBodyGeocentricCoordsKm.length())
             ));
         }

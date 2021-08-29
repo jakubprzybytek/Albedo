@@ -8,16 +8,21 @@ import jp.albedo.common.magnitude.PlanetsMagnitudeCalculator;
 import jp.albedo.common.magnitude.StarMagnitudeCalculator;
 import jp.albedo.jpl.JplBody;
 
+import java.util.Optional;
+
 public class MagnitudeCalculatorFactory {
 
-    public static ApparentMagnitudeCalculator getFor(JplBody body) {
+    public static Optional<ApparentMagnitudeCalculator> getFor(JplBody body) {
         if (JplBody.Sun == body) {
-            return new StarMagnitudeCalculator(BodyInformation.Sun.absoluteMagnitude);
+            return Optional.of(new StarMagnitudeCalculator(BodyInformation.Sun.absoluteMagnitude));
+        }
+        if (JplBody.Moon == body) {
+            return Optional.empty();
         }
         if (JplBody.Pluto == body) {
-            return new MinorPlanetMagnitudeCalculator(new MagnitudeParameters(-4.45, 0.15));
+            return Optional.of(new MinorPlanetMagnitudeCalculator(new MagnitudeParameters(-4.45, 0.15)));
         } else {
-            return new PlanetsMagnitudeCalculator(body);
+            return Optional.of(new PlanetsMagnitudeCalculator(body));
         }
     }
 
