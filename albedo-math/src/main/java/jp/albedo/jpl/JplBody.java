@@ -78,7 +78,23 @@ public enum JplBody {
     Mab(726, BodyType.Planet),
     Cupid(727, BodyType.Planet),
     Uranus(799, BodyType.Planet),
+
+    Triton(801, BodyType.NaturalSatellite),
+    Nereid(802, BodyType.NaturalSatellite),
+    Naid(803, BodyType.NaturalSatellite),
+    Thalassa(804, BodyType.NaturalSatellite),
+    Despina(805, BodyType.NaturalSatellite),
+    Galatea(806, BodyType.NaturalSatellite),
+    Larissa(807, BodyType.NaturalSatellite),
+    Proteus(808, BodyType.NaturalSatellite),
+    Hippocamp(814, BodyType.NaturalSatellite),
     Neptune(899, BodyType.Planet),
+
+    Charon(901, BodyType.NaturalSatellite),
+    Nix(902, BodyType.NaturalSatellite),
+    Hydra(903, BodyType.NaturalSatellite),
+    Keberos(904, BodyType.NaturalSatellite),
+    Stys(905, BodyType.NaturalSatellite),
     Pluto(999, BodyType.Asteroid),
 
     T1000000000(1000000000, BodyType.TimeType),

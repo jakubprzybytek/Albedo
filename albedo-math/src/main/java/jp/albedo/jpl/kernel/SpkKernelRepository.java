@@ -26,11 +26,15 @@ public class SpkKernelRepository {
 
         Optional<SpkKernelCollection> existingRecord = spkKernelRoot.getEdge(newRecord.getCenterBody(), newRecord.getBody());
         if (existingRecord.isPresent()) {
-            LOG.info(String.format("Records already registered for %s w.r.t %s in %s reference frame from file: %s, skipping.",
-                    newRecord.getBody(), newRecord.getCenterBody(),
-                    newRecord.getReferenceFrame(),
-                    existingRecord.get().getKernelFileName()));
-            //existingRecord.get().merge(newRecord);
+            SpkKernelCollection spkKernelCollection = existingRecord.get();
+            if (spkKernelCollection.getKernelFileName().equals(newRecord.getKernelFileName())) {
+                existingRecord.get().merge(newRecord);
+            } else {
+                LOG.info(String.format("Records already registered for %s w.r.t %s in %s reference frame from file: %s, skipping.",
+                        newRecord.getBody(), newRecord.getCenterBody(),
+                        newRecord.getReferenceFrame(),
+                        existingRecord.get().getKernelFileName()));
+            }
         } else {
             spkKernelRoot.addEdge(newRecord.getCenterBody(), newRecord.getBody(), newRecord);
         }

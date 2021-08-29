@@ -37,7 +37,7 @@ public class SpkFileLoader {
         try (FileChannel fileChannel = (FileChannel) Files.newByteChannel(file.toPath(), StandardOpenOption.READ)) {
 
             SpkFileInformationReader infoReader = new SpkFileInformationReader(fileChannel);
-            SpkFileDataReader dataReader = new SpkFileDataReader(fileChannel);
+
 
             final List<SpkKernelCollection> spkData = new ArrayList<>();
 
@@ -45,14 +45,19 @@ public class SpkFileLoader {
 
                 switch (arrayInfo.getDataType()) {
                     case ChebyshevPosition:
-                        List<PositionChebyshevRecord> positionChebyshevRecords = dataReader.readChebyshevArray(arrayInfo, startEt, endEt);
-                        spkData.add(SpkKernelCollection.fromPositionData(fileName, arrayInfo, positionChebyshevRecords));
+                        final SpkFileDataReader positionDataReader = new SpkFileDataReader(fileChannel);
+                        final List<PositionChebyshevRecord> positionChebyshevRecords = positionDataReader.readChebyshevArray(arrayInfo, startEt, endEt);
+                        if (!positionChebyshevRecords.isEmpty()) {
+                            spkData.add(SpkKernelCollection.fromPositionData(fileName, arrayInfo, positionChebyshevRecords));
+                        }
                         break;
 
                     case ChebyshevPositionAndVelocity:
-                        List<PositionAndVelocityChebyshevRecord> positionAndVelocityChebyshevRecords =
-                                new SpkFilePositionAndVelocityChebyshevPolynomialsReader(fileChannel).readChebyshevArray(arrayInfo, startEt, endEt);
-                        spkData.add(SpkKernelCollection.fromPositionAndVelocityData(fileName, arrayInfo, positionAndVelocityChebyshevRecords));
+                        final SpkFilePositionAndVelocityChebyshevPolynomialsReader positionAndVelocityDataReader = new SpkFilePositionAndVelocityChebyshevPolynomialsReader(fileChannel);
+                        final List<PositionAndVelocityChebyshevRecord> positionAndVelocityChebyshevRecords = positionAndVelocityDataReader.readChebyshevArray(arrayInfo, startEt, endEt);
+                        if (!positionAndVelocityChebyshevRecords.isEmpty()) {
+                            spkData.add(SpkKernelCollection.fromPositionAndVelocityData(fileName, arrayInfo, positionAndVelocityChebyshevRecords));
+                        }
                         break;
                 }
             }

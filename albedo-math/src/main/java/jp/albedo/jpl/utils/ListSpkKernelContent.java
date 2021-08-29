@@ -15,14 +15,16 @@ import java.util.List;
 
 public class ListSpkKernelContent {
     public static void main(String[] args) throws Exception {
-        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/de438t.bsp"));
-        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de440/de440.bsp"));
-        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de440/de440s.bsp"));
-        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/mar097.bsp"));
-        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/jup357.bsp"));
-        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/jup365.bsp"));
-        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/sat427.bsp"));
-        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/ura115.bsp"));
+//        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/de438t.bsp"));
+//        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de440/de440.bsp"));
+//        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de440/de440s.bsp"));
+//        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/mar097.bsp"));
+//        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/jup357.bsp"));
+//        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/jpl-kernels/jup365.bsp"));
+//        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/sat427.bsp"));
+//        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/de438/ura115.bsp"));
+//        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/jpl-kernels/nep095.bsp"));
+        listSpkKernelContent(new File("d:/Workspace/Java/Albedo/misc/jpl-kernels/plu058.bsp"));
     }
 
     static void listSpkKernelContent(File file) throws JplException {

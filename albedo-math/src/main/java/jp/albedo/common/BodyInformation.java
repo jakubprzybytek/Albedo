@@ -11,7 +11,8 @@ public enum BodyInformation {
     Jupiter(71492.0, 66854.0),
     Saturn(60268.0, 54364.0),
     Neptune(24764.0, 24341.0),
-    Uranus(25559, 24973.0);
+    Uranus(25559, 24973.0),
+    Pluto(1188.3, 1188.3);
 
     public final double equatorialRadius;
 
