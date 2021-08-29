@@ -64,7 +64,7 @@ public class EarthEphemeridesCalculator implements EphemeridesCalculator {
         final List<Ephemeris> ephemerides = new ArrayList<>(jdes.size());
 
         for (double jde : jdes) {
-            double ephemerisSeconds = EphemerisSeconds.fromJde(jde);
+            final double ephemerisSeconds = EphemerisSeconds.fromJde(jde);
 
             final RectangularCoordinates earthToBodyCoordsKm = earthToBodyStateSolver.positionFor(ephemerisSeconds);
             final RectangularCoordinates earthToSunCoordsKm = earthToSunStateSolver.positionFor(ephemerisSeconds);
@@ -83,7 +83,7 @@ public class EarthEphemeridesCalculator implements EphemeridesCalculator {
                     Elongation.between(
                             AstronomicalCoordinates.fromRectangular(earthToSunCoordsKm),
                             earthToBodyAstroCoords),
-                    0.0 /*this.magnitudeCalculator.compute(sunToBodyCoordsAu, earthToBodyCoordsAu)*/,
+                    this.magnitudeCalculator.compute(sunToBodyCoordsAu, earthToBodyCoordsAu),
                     AngularSize.fromRadiusAndDistance(this.bodyEquatorialRadius, earthToBodyCoordsKm.length())
             ));
         }
