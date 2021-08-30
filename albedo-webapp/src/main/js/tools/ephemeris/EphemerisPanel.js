@@ -12,11 +12,15 @@ import EphemerisCharts from './EphemerisCharts';
 import EphemerisStarMap from './EphemerisStarMap';
 import EphemerisOrbitSimulator from './EphemerisOrbitSimulator';
 import BodyCard from '../../components/BodyCard';
+import EphemerisSourceInfoCard from './EphemerisSourceInfoCard';
 
 const useStyles = makeStyles(theme => ({
-  area: {
+  rowSection: {
     marginBottom: theme.spacing(2),
     backgroundColor: '0',
+  },
+  columnSectionItem: {
+    paddingBottom: theme.spacing(1)
   },
   tabPanel: {
     marginTop: theme.spacing(1),
@@ -28,10 +32,12 @@ export default function EphemerisPanel() {
   const [ephemerisList, setEphemerisList] = React.useState([]);
   const [bodyInfo, setBodyInfo] = React.useState();
   const [selectedTab, setSelectedTab] = useStateWithLocalStorageInt('ephemeris.currentTab', 0);
+  const [engineInfo, setEngineInfo] = React.useState();
 
   function onSubmitResponse(data) {
     setEphemerisList(data.ephemerisList);
     setBodyInfo(data.bodyInfo);
+    setEngineInfo(data.engine);
   }
 
   const classes = useStyles();
@@ -39,7 +45,7 @@ export default function EphemerisPanel() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={9}>
-        <div className={classes.area}>
+        <div className={classes.rowSection}>
           <EphemerisForm setEphemerisData={(data) => onSubmitResponse(data)} />
         </div>
         <AppBar position="static" color="default">
@@ -64,7 +70,10 @@ export default function EphemerisPanel() {
         </TabPanel>
       </Grid>
       <Grid item xs={3}>
-        <BodyCard bodyInfo={bodyInfo} />
+        <div className={classes.columnSectionItem}>
+          <BodyCard bodyInfo={bodyInfo} />
+        </div>
+        <EphemerisSourceInfoCard engineInfo={engineInfo} />
       </Grid>
     </Grid>
   );

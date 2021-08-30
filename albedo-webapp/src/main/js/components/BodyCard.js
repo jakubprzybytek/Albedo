@@ -23,7 +23,7 @@ import { ElongationChip } from '../components/Chips';
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 345,
+    //maxWidth: 345,
   },
   alwaysVisible: {
     position: 'relative',
