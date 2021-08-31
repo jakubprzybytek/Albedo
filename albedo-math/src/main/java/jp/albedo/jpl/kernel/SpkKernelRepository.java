@@ -3,14 +3,18 @@ package jp.albedo.jpl.kernel;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.tree.Forest;
-import jp.albedo.jpl.kernel.tree.ForestEdgeVisitor;
+import jp.albedo.jpl.kernel.tree.ForestEdgesIterator;
+import jp.albedo.jpl.kernel.tree.ForestNodesIterator;
 import jp.albedo.jpl.state.impl.StateSolverFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class SpkKernelRepository {
 
@@ -75,8 +79,14 @@ public class SpkKernelRepository {
         return new StateSolverFactory(this);
     }
 
-    public <ReturnType> ForestEdgeVisitor<JplBody, SpkKernelCollection, ReturnType> edgeVisitor(Function<SpkKernelCollection, ReturnType> visitFunction) {
-        return new ForestEdgeVisitor<>(spkKernelRoot, visitFunction);
+    public Stream<JplBody> registeredBodiesStream() {
+        ForestNodesIterator<JplBody, SpkKernelCollection> iterator = new ForestNodesIterator<>(spkKernelRoot);
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.DISTINCT), false);
+    }
+
+    public Stream<SpkKernelCollection> registeredKernelsStream() {
+        ForestEdgesIterator<JplBody, SpkKernelCollection> iterator = new ForestEdgesIterator<>(spkKernelRoot);
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.DISTINCT), false);
     }
 
 }

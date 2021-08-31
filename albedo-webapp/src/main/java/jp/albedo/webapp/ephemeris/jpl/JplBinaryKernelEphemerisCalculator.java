@@ -26,7 +26,7 @@ public class JplBinaryKernelEphemerisCalculator {
 
     private static final Log LOG = LogFactory.getLog(JplBinaryKernelEphemerisCalculator.class);
 
-    private static final List<JplBody> SUPPORTED_BODIES = Arrays.asList(/*JplBody.Sun, */JplBody.Moon);
+    private static final List<JplBody> SUPPORTED_BODIES = Arrays.asList(JplBody.Sun, JplBody.Moon);
 
     private static final List<JplBody> SUPPORTED_PLANETS = Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Uranus, JplBody.Neptune, JplBody.Pluto);
 
@@ -43,6 +43,8 @@ public class JplBinaryKernelEphemerisCalculator {
      * @return JplBody if parsed successfully.
      */
     public Optional<JplBody> parseBody(String bodyName) {
+        //jplBinaryKernelsService.getSpKernel().nodesStream()
+
         return ALL_SUPPORTED_OBJECTS.stream()
                 .filter(jplBody -> jplBody.name().equals(bodyName))
                 .findFirst();
@@ -81,7 +83,10 @@ public class JplBinaryKernelEphemerisCalculator {
 
         final Instant start = Instant.now();
 
-        final EarthEphemeridesCalculator ephemeridesCalculator = new EarthEphemeridesCalculator(this.jplBinaryKernelsService.getSpKernel(), body);
+        jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
+                .forEach(System.out::println);
+
+        final EarthEphemeridesCalculator ephemeridesCalculator = new EarthEphemeridesCalculator(jplBinaryKernelsService.getSpKernel(), body);
 
         final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
         final List<Ephemeris> ephemeris = ephemeridesCalculator.computeFor(jdes);
