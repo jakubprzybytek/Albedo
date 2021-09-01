@@ -22,7 +22,9 @@ public class EarthEphemerisCalculatorTest {
     @CsvFileSource(resources = "/WebGeocalc/de440/ephemerisLigthTravelStarAbberationCorrected-2019.10.csv", numLinesToSkip = 1, delimiter = ';')
     void test(JplBody target,
               @ConvertWith(JdeFromDateStringConverter.class) double jde,
-              @ConvertWith(AstronomicalCoordinatesFromStringConverter.class) AstronomicalCoordinates expectedCoords) throws JplException {
+              @ConvertWith(AstronomicalCoordinatesFromStringConverter.class) AstronomicalCoordinates expectedCoords,
+              double range,
+              double magnitude) throws JplException {
         EarthEphemeridesCalculator ephemeridesCalculator = new EarthEphemeridesCalculator(TestData_de440.SPK_KERNEL, target);
 
         Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
@@ -32,7 +34,7 @@ public class EarthEphemerisCalculatorTest {
                 () -> assertThat(ephemeris.jde).isEqualTo(jde),
                 () -> AlbedoAssertions.assertThat(ephemeris.coordinates).isEqualTo(expectedCoords),
                 //() -> assertThat(Math.toDegrees(ephemeris.elongation)).isEqualTo(expectedElongation, Offset.offset(0.0001)),
-                () -> assertThat(ephemeris.apparentMagnitude).isEqualTo(0.0)
+                () -> assertThat(ephemeris.apparentMagnitude).isEqualTo(magnitude)
         );
     }
 

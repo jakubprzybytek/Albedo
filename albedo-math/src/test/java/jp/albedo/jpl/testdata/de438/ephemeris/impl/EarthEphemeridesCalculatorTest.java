@@ -31,7 +31,7 @@ class EarthEphemeridesCalculatorTest {
 
     @ParameterizedTest
     @MethodSource
-    void test(JplBody target, double jde, AstronomicalCoordinates expectedCoords, double expectedElongation) throws JplException {
+    void test(JplBody target, double jde, AstronomicalCoordinates expectedCoords, double expectedElongation, double magnitude) throws JplException {
         EarthEphemeridesCalculator ephemeridesCalculator = new EarthEphemeridesCalculator(kernel, target);
 
         Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
@@ -41,15 +41,15 @@ class EarthEphemeridesCalculatorTest {
                 () -> assertThat(ephemeris.jde).isEqualTo(jde),
                 () -> AlbedoAssertions.assertThat(ephemeris.coordinates).isEqualTo(expectedCoords),
                 () -> assertThat(Math.toDegrees(ephemeris.elongation)).isEqualTo(expectedElongation, Offset.offset(0.0001)),
-                () -> assertThat(ephemeris.apparentMagnitude).isEqualTo(0.0)
+                () -> assertThat(ephemeris.apparentMagnitude).isEqualTo(magnitude)
         );
     }
 
     private static Stream<Arguments> test() {
         return Stream.of(
-                Arguments.of(JplBody.Moon, JulianDay.fromDate(2019, 10, 9), fromDegrees(325.21890191, -17.23583637), 126.5750),
-                Arguments.of(JplBody.Venus, JulianDay.fromDate(2019, 10, 9), fromDegrees(208.22422699, -10.89348428), 14.9579),
-                Arguments.of(JplBody.Jupiter, JulianDay.fromDate(2019, 10, 9), fromDegrees(258.14467374, -22.74534376), 63.9376)
+                Arguments.of(JplBody.Moon, JulianDay.fromDate(2019, 10, 9), fromDegrees(325.21890191, -17.23583637), 126.5750, 0.0),
+                Arguments.of(JplBody.Venus, JulianDay.fromDate(2019, 10, 9), fromDegrees(208.22422699, -10.89348428), 14.9579, -3.9),
+                Arguments.of(JplBody.Jupiter, JulianDay.fromDate(2019, 10, 9), fromDegrees(258.14467374, -22.74534376), 63.9376, -2.0)
         );
     }
 }
