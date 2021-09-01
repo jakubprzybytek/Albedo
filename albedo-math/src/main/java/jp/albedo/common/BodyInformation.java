@@ -8,7 +8,13 @@ public enum BodyInformation {
     Earth(6378.1, 6356.8),
     Moon(1738.1, 1736.0),
     Mars(3396.2, 3376.2),
+
     Jupiter(71492.0, 66854.0),
+    Io(1821.6, 1821.6),
+    Europa(1560.8, 1560.8),
+    Ganymede(2634.1, 2634.1),
+    Callisto(2410.3, 2410.3),
+
     Saturn(60268.0, 54364.0),
     Neptune(24764.0, 24341.0),
     Uranus(25559, 24973.0),

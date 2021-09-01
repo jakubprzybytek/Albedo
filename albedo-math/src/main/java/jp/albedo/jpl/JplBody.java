@@ -95,7 +95,7 @@ public enum JplBody {
     Hydra(903, BodyType.NaturalSatellite),
     Keberos(904, BodyType.NaturalSatellite),
     Stys(905, BodyType.NaturalSatellite),
-    Pluto(999, BodyType.Asteroid),
+    Pluto(999, BodyType.Asteroid), // FixMe: should be 'DwarfPlanet'
 
     T1000000000(1000000000, BodyType.TimeType),
     T1000000001(1000000001, BodyType.TimeType);

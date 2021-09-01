@@ -26,12 +26,11 @@ public class JplBinaryKernelEphemerisCalculator {
 
     private static final Log LOG = LogFactory.getLog(JplBinaryKernelEphemerisCalculator.class);
 
-    private static final List<JplBody> SUPPORTED_BODIES = Arrays.asList(JplBody.Sun, JplBody.Moon);
+    private boolean supportedBodiesInitialised = false;
 
-    private static final List<JplBody> SUPPORTED_PLANETS = Arrays.asList(JplBody.Mercury, JplBody.Venus, JplBody.Mars, JplBody.Jupiter, JplBody.Saturn, JplBody.Uranus, JplBody.Neptune, JplBody.Pluto);
+    private List<JplBody> supportedPlanets;
 
-    private static final List<JplBody> ALL_SUPPORTED_OBJECTS = Stream.concat(SUPPORTED_BODIES.stream(), SUPPORTED_PLANETS.stream())
-            .collect(Collectors.toList());
+    private List<JplBody> supportedNaturalSatellites;
 
     @Autowired
     private JplBinaryKernelsService jplBinaryKernelsService;
@@ -42,10 +41,13 @@ public class JplBinaryKernelEphemerisCalculator {
      * @param bodyName Body Name.
      * @return JplBody if parsed successfully.
      */
-    public Optional<JplBody> parseBody(String bodyName) {
-        //jplBinaryKernelsService.getSpKernel().nodesStream()
+    public Optional<JplBody> parseBody(String bodyName) throws IOException, JplException {
 
-        return ALL_SUPPORTED_OBJECTS.stream()
+        if (!supportedBodiesInitialised) {
+            loadSupportedBodies();
+        }
+
+        return Stream.concat(supportedPlanets.stream(), supportedNaturalSatellites.stream())
                 .filter(jplBody -> jplBody.name().equals(bodyName))
                 .findFirst();
     }
@@ -56,9 +58,18 @@ public class JplBinaryKernelEphemerisCalculator {
      * @param bodyType BodyType.
      * @return List of JplBody objects of given type supported by this calculator.
      */
-    public List<JplBody> getSupportedBodiesByType(BodyType bodyType) {
+    public List<JplBody> getSupportedBodiesByType(BodyType bodyType) throws IOException, JplException {
+
+        if (!supportedBodiesInitialised) {
+            loadSupportedBodies();
+        }
+
         if (bodyType == BodyType.Planet) {
-            return SUPPORTED_PLANETS;
+            return supportedPlanets;
+        }
+
+        if (bodyType == BodyType.NaturalSatellite) {
+            return supportedNaturalSatellites;
         }
 
         return Collections.emptyList();
@@ -82,10 +93,6 @@ public class JplBinaryKernelEphemerisCalculator {
         }
 
         final Instant start = Instant.now();
-
-        jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
-                .forEach(System.out::println);
-
         final EarthEphemeridesCalculator ephemeridesCalculator = new EarthEphemeridesCalculator(jplBinaryKernelsService.getSpKernel(), body);
 
         final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
@@ -96,6 +103,18 @@ public class JplBinaryKernelEphemerisCalculator {
         }
 
         return ephemeris;
+    }
+
+    private void loadSupportedBodies() throws IOException, JplException {
+        supportedNaturalSatellites = jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
+                .filter(jplBody -> BodyType.NaturalSatellite == jplBody.bodyType)
+                .collect(Collectors.toList());
+
+        supportedPlanets = jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
+                .filter(jplBody -> BodyType.Planet == jplBody.bodyType)
+                .collect(Collectors.toList());
+
+        supportedBodiesInitialised = true;
     }
 
 }
