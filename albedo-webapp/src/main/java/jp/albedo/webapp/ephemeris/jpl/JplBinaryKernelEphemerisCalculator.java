@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -112,6 +111,7 @@ public class JplBinaryKernelEphemerisCalculator {
 
         supportedPlanets = jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
                 .filter(jplBody -> BodyType.Planet == jplBody.bodyType)
+                .filter(jplBody -> JplBody.Earth != jplBody)
                 .collect(Collectors.toList());
 
         supportedBodiesInitialised = true;
