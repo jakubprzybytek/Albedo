@@ -2,7 +2,7 @@ package jp.albedo.webapp.ephemeris.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.JulianDay;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.webapp.rest.WrappedEvent;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 

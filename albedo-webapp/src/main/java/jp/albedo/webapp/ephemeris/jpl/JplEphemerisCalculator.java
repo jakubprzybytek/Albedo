@@ -2,12 +2,11 @@ package jp.albedo.webapp.ephemeris.jpl;
 
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculatorFactory;
-import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

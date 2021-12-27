@@ -3,7 +3,7 @@ package jp.albedo.webapp.events.eclipses.rest;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.BodyDetails;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 
 public class EclipseBodyInfo {
 

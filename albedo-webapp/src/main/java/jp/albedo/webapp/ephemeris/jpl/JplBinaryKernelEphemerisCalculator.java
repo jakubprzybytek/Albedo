@@ -2,10 +2,10 @@ package jp.albedo.webapp.ephemeris.jpl;
 
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.ephemeris.impl.EarthEphemeridesCalculator;
+import jp.albedo.jpl.ephemeris.impl.EphemeridesForEarthCalculator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +92,7 @@ public class JplBinaryKernelEphemerisCalculator {
         }
 
         final Instant start = Instant.now();
-        final EarthEphemeridesCalculator ephemeridesCalculator = new EarthEphemeridesCalculator(jplBinaryKernelsService.getSpKernel(), body);
+        final EphemeridesForEarthCalculator ephemeridesCalculator = new EphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel(), body);
 
         final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
         final List<Ephemeris> ephemeris = ephemeridesCalculator.computeFor(jdes);

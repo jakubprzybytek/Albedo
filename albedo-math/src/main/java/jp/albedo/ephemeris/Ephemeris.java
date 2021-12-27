@@ -1,4 +1,4 @@
-package jp.albedo.common.ephemeris;
+package jp.albedo.ephemeris;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.albedo.common.AstronomicalCoordinates;
@@ -24,7 +24,7 @@ public class Ephemeris {
     final public double apparentMagnitude;
 
     @JsonSerialize(converter = RadiansToPrecision6DegreesConverter.class)
-    public Double angularSize;
+    final public Double angularSize;
 
     public Ephemeris(double jde, AstronomicalCoordinates coordinates, double distanceFromSun, double distanceFromEarth, double elongation, double apparentMagnitude) {
         this.jde = jde;
@@ -33,6 +33,7 @@ public class Ephemeris {
         this.distanceFromEarth = distanceFromEarth;
         this.elongation = elongation;
         this.apparentMagnitude = apparentMagnitude;
+        this.angularSize = null;
     }
 
     public Ephemeris(double jde, AstronomicalCoordinates coordinates, double distanceFromSun, double distanceFromEarth, double elongation, double apparentMagnitude, Double angularSize) {

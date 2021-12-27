@@ -3,7 +3,7 @@ package jp.albedo.webapp.ephemeris.orbitbased;
 import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.ephemeris.EllipticMotion;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.vsop87.VSOPException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

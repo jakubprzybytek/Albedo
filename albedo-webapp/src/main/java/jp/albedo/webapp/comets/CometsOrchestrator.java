@@ -1,7 +1,7 @@
 package jp.albedo.webapp.comets;
 
 import jp.albedo.common.BodyType;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.utils.FunctionUtils;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;

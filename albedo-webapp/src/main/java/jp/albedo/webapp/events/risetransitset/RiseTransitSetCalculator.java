@@ -3,7 +3,7 @@ package jp.albedo.webapp.events.risetransitset;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyInformation;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.sidereal.SiderealTime;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.RiseSet;
@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 public class RiseTransitSetCalculator {
 
-    public List<RiseTransitSetEvent> computeEvents(String bodyName, ComputedEphemeris computedEphemeris, GeographicCoordinates observerCoords) {
+    public List<RiseTransitSetEvent> computeEvents(String bodyName, ComputedEphemeris<Ephemeris> computedEphemeris, GeographicCoordinates observerCoords) {
 
         final List<RiseTransitSetEvent> riseTransitSetList = new ArrayList<>();
         final BodyDetails bodyDetails = computedEphemeris.getBodyDetails();
@@ -74,7 +74,7 @@ public class RiseTransitSetCalculator {
         return riseTransitSetList;
     }
 
-    public List<Double> computeRecords(String bodyName, ComputedEphemeris computedEphemeris, GeographicCoordinates observerCoords) {
+    public List<Double> computeRecords(String bodyName, ComputedEphemeris<Ephemeris> computedEphemeris, GeographicCoordinates observerCoords) {
 
         final List<Double> transitsList = new ArrayList<>();
         final BodyDetails bodyDetails = computedEphemeris.getBodyDetails();

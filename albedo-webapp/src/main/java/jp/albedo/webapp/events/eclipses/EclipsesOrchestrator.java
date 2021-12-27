@@ -3,11 +3,15 @@ package jp.albedo.webapp.events.eclipses;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyInformation;
 import jp.albedo.common.Radians;
+import jp.albedo.ephemeris.SimpleEphemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
+import jp.albedo.jpl.JplBody;
 import jp.albedo.utils.FunctionUtils;
 import jp.albedo.webapp.conjunctions.Conjunction;
 import jp.albedo.webapp.conjunctions.ConjunctionFinder;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
+import jp.albedo.webapp.ephemeris.EphemeridesCalculator;
+import jp.albedo.webapp.ephemeris.EphemeridesCalculatorProvider;
 import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
 import jp.albedo.webapp.events.eclipses.rest.EclipseBodyInfo;
 import jp.albedo.webapp.events.eclipses.rest.EclipseEvent;
@@ -36,6 +40,9 @@ public class EclipsesOrchestrator {
     private static final double MAX_SEPARATION = Math.toRadians(0.6);
 
     @Autowired
+    private EphemeridesCalculatorProvider ephemeridesCalculatorFactory;
+
+    @Autowired
     private EphemeridesOrchestrator ephemeridesOrchestrator;
 
     /**
@@ -45,6 +52,38 @@ public class EclipsesOrchestrator {
      * @return List of conjunctions.
      */
     public List<EclipseEvent> compute(Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
+
+        LOG.info(String.format("Computing eclipses for Sun and Moon, params: [from=%s, to=%s]", fromDate, toDate));
+
+        final Instant start = Instant.now();
+
+        EphemeridesCalculator ephemeridesCalculator = this.ephemeridesCalculatorFactory.getEphemeridesCalculator();
+        List<SimpleEphemeris> sunEphemeridesList = ephemeridesCalculator.computeSimple(JplBody.Sun, fromDate, toDate, PRELIMINARY_INTERVAL);
+        List<SimpleEphemeris> moonEphemeridesList = ephemeridesCalculator.computeSimple(JplBody.Moon, fromDate, toDate, PRELIMINARY_INTERVAL);
+
+        ComputedEphemeris sunEphemerides = new ComputedEphemeris(JplBody.Sun.toBodyDetails(), sunEphemeridesList, EphemeridesOrchestrator.EphemerisMethod.binary440.description);
+
+        Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(sunEphemeris, moonEphemeris);
+        final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = ConjunctionFinder.forTwoBodies(pair, MAX_SEPARATION * 1.2);
+
+        final List<Pair<ComputedEphemeris, ComputedEphemeris>> closeEncounters = getDetailedBodiesEphemerides(preliminaryConjunctions, observerLocation, ephemerisMethodPreference);
+        LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
+
+        final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = ConjunctionFinder.forTwoBodies(closeEncounters, MAX_SEPARATION);
+        LOG.info(String.format("Found %d eclipses in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
+
+        return detailedConjunctions.stream()
+                .map(this::mapToEclipseEvent)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @param fromDate         Start instant of the period over which conjunctions should be looked for.
+     * @param toDate           End of that period.
+     * @param observerLocation Location (of the Earth) of the observer for which parallax correction should be made to the ephemerides.
+     * @return List of conjunctions.
+     */
+    public List<EclipseEvent> computeOld(Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
         LOG.info(String.format("Computing eclipses for Sun and Moon, params: [from=%s, to=%s]", fromDate, toDate));
 

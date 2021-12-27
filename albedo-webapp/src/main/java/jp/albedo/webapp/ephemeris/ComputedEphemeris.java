@@ -1,18 +1,18 @@
 package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.BodyDetails;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.common.magnitude.MagnitudeParameters;
 import jp.albedo.jeanmeeus.ephemeris.common.OrbitElements;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
 
-public class ComputedEphemeris {
+public class ComputedEphemeris<T> {
 
     private final BodyDetails bodyDetails;
 
-    private final List<Ephemeris> ephemerisList;
+    private final List<T> ephemerisList;
 
     @Nullable
     private OrbitElements orbitElements;
@@ -22,7 +22,7 @@ public class ComputedEphemeris {
 
     private final String engine;
 
-    public ComputedEphemeris(BodyDetails bodyDetails, List<Ephemeris> ephemerisList, OrbitElements orbitElements, MagnitudeParameters magnitudeParameters, String engine) {
+    public ComputedEphemeris(BodyDetails bodyDetails, List<T> ephemerisList, OrbitElements orbitElements, MagnitudeParameters magnitudeParameters, String engine) {
         this.bodyDetails = bodyDetails;
         this.ephemerisList = ephemerisList;
         this.orbitElements = orbitElements;
@@ -30,7 +30,7 @@ public class ComputedEphemeris {
         this.engine = engine;
     }
 
-    public ComputedEphemeris(BodyDetails bodyDetails, List<Ephemeris> ephemerisList, String engine) {
+    public ComputedEphemeris(BodyDetails bodyDetails, List<T> ephemerisList, String engine) {
         this.bodyDetails = bodyDetails;
         this.ephemerisList = ephemerisList;
         this.engine = engine;
@@ -40,7 +40,7 @@ public class ComputedEphemeris {
         return bodyDetails;
     }
 
-    public List<Ephemeris> getEphemerisList() {
+    public List<T> getEphemerisList() {
         return ephemerisList;
     }
 

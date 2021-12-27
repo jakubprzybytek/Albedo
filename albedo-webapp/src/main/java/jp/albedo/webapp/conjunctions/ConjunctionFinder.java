@@ -3,7 +3,7 @@ package jp.albedo.webapp.conjunctions;
 import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.Radians;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.conjunctions.impl.LocalMinimumsFindingCollector;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
