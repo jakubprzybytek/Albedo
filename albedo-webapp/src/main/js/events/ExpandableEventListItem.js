@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     width: '100%',
-    height: 32,
+    minHeight: 32,
     alignItems: 'center',
     cursor: 'pointer'
   },
@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
   mainField: {
     display: 'flex',
+    flexWrap: 'wrap',
     flexGrow: 1,
   },
   scoreField: {

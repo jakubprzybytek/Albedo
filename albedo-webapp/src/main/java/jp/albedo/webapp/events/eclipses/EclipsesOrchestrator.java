@@ -50,10 +50,10 @@ public class EclipsesOrchestrator {
 
         final Instant start = Instant.now();
 
-        ComputedEphemeris sunEphemeris = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation, ephemerisMethodPreference);
-        ComputedEphemeris moonEphemeris = this.ephemeridesOrchestrator.compute(BodyInformation.Moon.name(), fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation, ephemerisMethodPreference);
+        final ComputedEphemeris sunEphemeris = this.ephemeridesOrchestrator.compute(BodyInformation.Sun.name(), fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation, ephemerisMethodPreference);
+        final ComputedEphemeris moonEphemeris = this.ephemeridesOrchestrator.compute(BodyInformation.Moon.name(), fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation, ephemerisMethodPreference);
 
-        Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(sunEphemeris, moonEphemeris);
+        final Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(sunEphemeris, moonEphemeris);
         final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = ConjunctionFinder.forTwoBodies(pair, MAX_SEPARATION * 1.2);
 
         final List<Pair<ComputedEphemeris, ComputedEphemeris>> closeEncounters = getDetailedBodiesEphemerides(preliminaryConjunctions, observerLocation, ephemerisMethodPreference);
@@ -63,7 +63,7 @@ public class EclipsesOrchestrator {
         LOG.info(String.format("Found %d eclipses in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
 
         return detailedConjunctions.stream()
-                .map(this::mapToEclipseEvent)
+                .map(this::toEclipseEvent)
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +79,7 @@ public class EclipsesOrchestrator {
                 .collect(Collectors.toList());
     }
 
-    private EclipseEvent mapToEclipseEvent(Conjunction<BodyDetails, BodyDetails> conjunction) {
+    private EclipseEvent toEclipseEvent(Conjunction<BodyDetails, BodyDetails> conjunction) {
         EclipseBodyInfo sunBodyInfo = new EclipseBodyInfo(conjunction.firstObject, conjunction.firstObjectEphemeris);
         EclipseBodyInfo moonBodyInfo = new EclipseBodyInfo(conjunction.secondObject, conjunction.secondObjectEphemeris);
 
