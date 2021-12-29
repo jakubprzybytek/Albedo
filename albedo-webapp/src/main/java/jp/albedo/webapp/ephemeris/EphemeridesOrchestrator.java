@@ -35,7 +35,7 @@ public class EphemeridesOrchestrator {
     private JplEphemerisCalculator jplEphemerisCalculator;
 
     @Autowired
-    private EphemeridesCalculatorProvider ephemeridesCalculatorProvider;
+    private EphemeridesSolverProvider ephemeridesSolverProvider;
 
     @Autowired
     private JplBinaryKernelEphemerisCalculator jplBinaryKernelEphemerisCalculator;
@@ -45,14 +45,14 @@ public class EphemeridesOrchestrator {
 
     public ComputedEphemeris<SimpleEphemeris> computeSimple(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
-        EphemerisBodyParser ephemerisBodyParser = ephemeridesCalculatorProvider.getEphemerisBodyParser(ephemerisMethodPreference);
+        EphemerisBodyParser ephemerisBodyParser = ephemeridesSolverProvider.getEphemerisBodyParser(ephemerisMethodPreference);
         Optional<BodyDetails> bodyDetailsOptional = ephemerisBodyParser.parse(bodyName);
 
         if (bodyDetailsOptional.isPresent()) {
             BodyDetails bodyDetails = bodyDetailsOptional.get();
 
-            EphemeridesCalculator ephemeridesCalculator = ephemeridesCalculatorProvider.getEphemeridesCalculator(ephemerisMethodPreference);
-            List<SimpleEphemeris> ephemerides = ephemeridesCalculator.computeSimple(bodyDetails, fromDate, toDate, interval);
+            EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getEphemeridesCalculator(ephemerisMethodPreference);
+            List<SimpleEphemeris> ephemerides = ephemeridesSolver.computeSimple(bodyDetails, fromDate, toDate, interval, observerLocation);
 
             if (ephemerides.isEmpty()) {
                 throw new EphemerisException("Calculator couldn't compute ephemeris for " + bodyDetails);

@@ -3,7 +3,6 @@ package jp.albedo.webapp.events.eclipses;
 import jp.albedo.common.JulianDay;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.events.eclipses.rest.EclipseEvent;
-import jp.albedo.webapp.events.eclipses.rest.EclipseEventOld;
 import jp.albedo.webapp.rest.WrappedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,25 +24,6 @@ public class EclipsesController {
     EclipsesOrchestrator eclipsesOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/events/eclipses")
-    public List<WrappedEvent<EclipseEventOld>> events(@RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                      @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
-                                                      ObserverLocation observerLocation,
-                                                      @RequestParam("timeZone") String timeZone,
-                                                      String ephemerisMethodPreference) throws Exception {
-
-        final ZoneId zoneId = ZoneId.of(timeZone);
-
-        final AtomicInteger id = new AtomicInteger();
-
-        return this.eclipsesOrchestrator.computeOld(JulianDay.fromDate(fromDate), JulianDay.fromDate(toDate), observerLocation, ephemerisMethodPreference).stream()
-                .map(event -> new WrappedEvent<>(
-                        id.getAndIncrement(),
-                        JulianDay.toDateTime(event.getJde()).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId),
-                        event))
-                .collect(Collectors.toList());
-    }
-
-    @RequestMapping(method = RequestMethod.GET, path = "/api/events/eclipses-new")
     public List<WrappedEvent<EclipseEvent>> eventsNew(@RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                       @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
                                                       ObserverLocation observerLocation,
