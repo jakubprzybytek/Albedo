@@ -2,6 +2,7 @@ package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.SimpleEphemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.jeanmeeus.topocentric.Parallax;
 
@@ -25,4 +26,5 @@ public class ParallaxCorrection implements Function<Ephemeris, Ephemeris> {
         // FixMe: TDE != UT
         return new Ephemeris(ephemeris.jde, correctedCoords, ephemeris.distanceFromSun, ephemeris.distanceFromEarth, ephemeris.elongation, ephemeris.apparentMagnitude, ephemeris.angularSize);
     }
+
 }

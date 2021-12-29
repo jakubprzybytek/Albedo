@@ -4,6 +4,7 @@ import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.catalogue.CatalogueName;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.utils.FunctionUtils;
 import jp.albedo.utils.MixListSupplier;
@@ -74,16 +75,16 @@ public class ConjunctionsOrchestrator {
 
         final Instant start = Instant.now();
 
-        final List<ComputedEphemeris> primaryObjectsEphemerides = new ArrayList<>();
+        final List<ComputedEphemeris<Ephemeris>> primaryObjectsEphemerides = new ArrayList<>();
         primaryObjectsEphemerides.addAll(getEphemeridesByBodyType(primaryBodyTypes, fromDate, toDate, observerLocation, ephemerisMethodPreference));
         primaryObjectsEphemerides.addAll(getEphemeridesByBodyNames(primaryBodyNames, fromDate, toDate, observerLocation, ephemerisMethodPreference));
 
-        final List<ComputedEphemeris> secondaryObjectsEphemerides = getEphemeridesByBodyType(secondaryBodyTypes, fromDate, toDate, observerLocation, ephemerisMethodPreference);
+        final List<ComputedEphemeris<Ephemeris>> secondaryObjectsEphemerides = getEphemeridesByBodyType(secondaryBodyTypes, fromDate, toDate, observerLocation, ephemerisMethodPreference);
 
-        final List<Pair<ComputedEphemeris, ComputedEphemeris>> bodyPairs = generateBodiesPairs(primaryObjectsEphemerides, secondaryObjectsEphemerides);
+        final List<Pair<ComputedEphemeris<Ephemeris>, ComputedEphemeris<Ephemeris>>> bodyPairs = generateBodiesPairs(primaryObjectsEphemerides, secondaryObjectsEphemerides);
         final List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions = ConjunctionFinder.forTwoBodies(bodyPairs, MAX_SEPARATION);
 
-        final List<Pair<ComputedEphemeris, ComputedEphemeris>> closeEncounters = getDetailedBodiesEphemerides(preliminaryConjunctions, observerLocation, ephemerisMethodPreference);
+        final List<Pair<ComputedEphemeris<Ephemeris>, ComputedEphemeris<Ephemeris>>> closeEncounters = getDetailedBodiesEphemerides(preliminaryConjunctions, observerLocation, ephemerisMethodPreference);
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size() * 2, closeEncounters.size()));
 
         final List<Conjunction<BodyDetails, BodyDetails>> detailedConjunctions = ConjunctionFinder.forTwoBodies(closeEncounters, MAX_SEPARATION);
@@ -122,16 +123,16 @@ public class ConjunctionsOrchestrator {
         final Instant start = Instant.now();
 
         // FixMe: those ephemerides are most likely computed twice per request
-        final List<ComputedEphemeris> primaryObjectsEphemerides = new ArrayList<>();
+        final List<ComputedEphemeris<Ephemeris>> primaryObjectsEphemerides = new ArrayList<>();
         primaryObjectsEphemerides.addAll(getEphemeridesByBodyNames(bodyNames, fromDate, toDate, observerLocation, ephemerisMethodPreference));
         primaryObjectsEphemerides.addAll(getEphemeridesByBodyType(bodyTypes, fromDate, toDate, observerLocation, ephemerisMethodPreference));
 
         final List<CatalogueEntry> catalogueEntries = getCatalogueEntries(catalogueNames);
 
-        final List<Pair<ComputedEphemeris, CatalogueEntry>> pairsToCompare = generatePairs(primaryObjectsEphemerides, catalogueEntries);
+        final List<Pair<ComputedEphemeris<Ephemeris>, CatalogueEntry>> pairsToCompare = generatePairs(primaryObjectsEphemerides, catalogueEntries);
         final List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions = ConjunctionFinder.forBodyAndCatalogueEntry(pairsToCompare, MAX_SEPARATION);
 
-        final List<Pair<ComputedEphemeris, CatalogueEntry>> closeEncounters = getDetailedEphemerides(preliminaryConjunctions, observerLocation, ephemerisMethodPreference);
+        final List<Pair<ComputedEphemeris<Ephemeris>, CatalogueEntry>> closeEncounters = getDetailedEphemerides(preliminaryConjunctions, observerLocation, ephemerisMethodPreference);
         LOG.info(String.format("Computed %d ephemerides for %d conjunctions", closeEncounters.size(), closeEncounters.size()));
 
         final List<Conjunction<BodyDetails, CatalogueEntry>> detailedConjunctions = ConjunctionFinder.forBodyAndCatalogueEntry(closeEncounters, MAX_SEPARATION);
@@ -140,13 +141,13 @@ public class ConjunctionsOrchestrator {
         return detailedConjunctions;
     }
 
-    private List<ComputedEphemeris> getEphemeridesByBodyNames(Collection<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) {
+    private List<ComputedEphemeris<Ephemeris>> getEphemeridesByBodyNames(Collection<String> bodyNames, Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) {
         return bodyNames.stream()
                 .map(FunctionUtils.wrap(bodyName -> this.ephemeridesOrchestrator.compute(bodyName, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation, ephemerisMethodPreference)))
                 .collect(Collectors.toList());
     }
 
-    private List<ComputedEphemeris> getEphemeridesByBodyType(Collection<BodyType> bodyTypes, Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) {
+    private List<ComputedEphemeris<Ephemeris>> getEphemeridesByBodyType(Collection<BodyType> bodyTypes, Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) {
         return bodyTypes.stream()
                 .map(FunctionUtils.wrap(bodyType -> this.ephemeridesOrchestrator.computeAllByType(bodyType, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation, ephemerisMethodPreference)))
                 .flatMap(List::stream)
@@ -160,7 +161,7 @@ public class ConjunctionsOrchestrator {
                 .collect(Collectors.toList());
     }
 
-    private List<Pair<ComputedEphemeris, ComputedEphemeris>> generateBodiesPairs(List<ComputedEphemeris> primaryObjectsEphemerides, List<ComputedEphemeris> secondaryObjectsEphemerides) {
+    private List<Pair<ComputedEphemeris<Ephemeris>, ComputedEphemeris<Ephemeris>>> generateBodiesPairs(List<ComputedEphemeris<Ephemeris>> primaryObjectsEphemerides, List<ComputedEphemeris<Ephemeris>> secondaryObjectsEphemerides) {
         return Stream.concat(
                 Stream.generate(new MixListSupplier<>(primaryObjectsEphemerides))
                         .limit((long) primaryObjectsEphemerides.size() * (primaryObjectsEphemerides.size() - 1) / 2),
@@ -169,13 +170,13 @@ public class ConjunctionsOrchestrator {
                 .collect(Collectors.toList());
     }
 
-    private List<Pair<ComputedEphemeris, CatalogueEntry>> generatePairs(List<ComputedEphemeris> primaryObjectsEphemerides, List<CatalogueEntry> catalogueEntries) {
+    private List<Pair<ComputedEphemeris<Ephemeris>, CatalogueEntry>> generatePairs(List<ComputedEphemeris<Ephemeris>> primaryObjectsEphemerides, List<CatalogueEntry> catalogueEntries) {
         return Stream.generate(new MixTwoListsSupplier<>(primaryObjectsEphemerides, catalogueEntries))
                 .limit((long) primaryObjectsEphemerides.size() * catalogueEntries.size())
                 .collect(Collectors.toList());
     }
 
-    private List<Pair<ComputedEphemeris, ComputedEphemeris>> getDetailedBodiesEphemerides(List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions, ObserverLocation observerLocation, String ephemerisMethodPreference) {
+    private List<Pair<ComputedEphemeris<Ephemeris>, ComputedEphemeris<Ephemeris>>> getDetailedBodiesEphemerides(List<Conjunction<BodyDetails, BodyDetails>> preliminaryConjunctions, ObserverLocation observerLocation, String ephemerisMethodPreference) {
         return preliminaryConjunctions.parallelStream()
                 .map(FunctionUtils.wrap(conjunction -> new Pair<>(
                         this.ephemeridesOrchestrator.compute(conjunction.firstObject.name,
@@ -187,7 +188,7 @@ public class ConjunctionsOrchestrator {
                 .collect(Collectors.toList());
     }
 
-    private List<Pair<ComputedEphemeris, CatalogueEntry>> getDetailedEphemerides(List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions, ObserverLocation observerLocation, String ephemerisMethodPreference) {
+    private List<Pair<ComputedEphemeris<Ephemeris>, CatalogueEntry>> getDetailedEphemerides(List<Conjunction<BodyDetails, CatalogueEntry>> preliminaryConjunctions, ObserverLocation observerLocation, String ephemerisMethodPreference) {
         return preliminaryConjunctions.parallelStream()
                 .map(FunctionUtils.wrap(conjunction -> new Pair<>(
                         this.ephemeridesOrchestrator.compute(conjunction.firstObject.name,

@@ -1,5 +1,6 @@
 package jp.albedo.webapp.ephemeris;
 
+import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.ephemeris.SimpleEphemeris;
@@ -44,11 +45,23 @@ public class EphemeridesOrchestrator {
 
     public ComputedEphemeris<SimpleEphemeris> computeSimple(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
-        EphemeridesCalculator ephemeridesCalculator = ephemeridesCalculatorProvider.getEphemeridesCalculator(ephemerisMethodPreference);
-        Optional<List<SimpleEphemeris>> ephemerides = ephemeridesCalculator.computeSimple(bodyName, fromDate, toDate, interval);
+        EphemerisBodyParser ephemerisBodyParser = ephemeridesCalculatorProvider.getEphemerisBodyParser(ephemerisMethodPreference);
+        Optional<BodyDetails> bodyDetailsOptional = ephemerisBodyParser.parse(bodyName);
 
-        if (ephemerides.isPresent()) {
-            return new ComputedEphemeris<>( ephemerides.get();
+        if (bodyDetailsOptional.isPresent()) {
+            BodyDetails bodyDetails = bodyDetailsOptional.get();
+
+            EphemeridesCalculator ephemeridesCalculator = ephemeridesCalculatorProvider.getEphemeridesCalculator(ephemerisMethodPreference);
+            List<SimpleEphemeris> ephemerides = ephemeridesCalculator.computeSimple(bodyDetails, fromDate, toDate, interval);
+
+            if (ephemerides.isEmpty()) {
+                throw new EphemerisException("Calculator couldn't compute ephemeris for " + bodyDetails);
+            }
+
+            return new ComputedEphemeris<>(
+                    bodyDetails,
+                    ephemerides,
+                    EphemerisMethod.binary440.description);
         }
 
         throw new EphemerisException("Body not found: " + bodyName);

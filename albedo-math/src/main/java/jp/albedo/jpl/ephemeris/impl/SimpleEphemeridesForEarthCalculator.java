@@ -4,6 +4,7 @@ import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.RectangularCoordinates;
 import jp.albedo.ephemeris.SimpleEphemeris;
 import jp.albedo.jpl.JplBody;
+import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.ephemeris.SimpleEphemeridesCalculator;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
@@ -47,8 +48,8 @@ public class SimpleEphemeridesForEarthCalculator implements SimpleEphemeridesCal
 
             ephemerides.add(new SimpleEphemeris(
                     jde,
-                    earthToBodyAstroCoords
-            ));
+                    earthToBodyAstroCoords,
+                    earthToBodyCoordsKm.length() / JplConstant.AU));
         }
 
         return ephemerides;

@@ -32,9 +32,9 @@ class ConjunctionFinderTest {
                 new Ephemeris(3.0, coords(3.0, 1.0), 2.0, 1.0, 0.0, 0.0)
         );
 
-        Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(
-                new ComputedEphemeris(null, ephemeris1, "test"),
-                new ComputedEphemeris(null, ephemeris2, "test"));
+        Pair<ComputedEphemeris<Ephemeris>, ComputedEphemeris<Ephemeris>> pair = new Pair<>(
+                new ComputedEphemeris<>(null, ephemeris1, "test"),
+                new ComputedEphemeris<>(null, ephemeris2, "test"));
 
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = ConjunctionFinder.findConjunctionsBetweenTwoBodies(pair);
 
@@ -63,9 +63,9 @@ class ConjunctionFinderTest {
                 new Ephemeris(5.0, coords(5.0, 1.0), 2.0, 1.0, 0.0, 0.0)
         );
 
-        Pair<ComputedEphemeris, ComputedEphemeris> pair = new Pair<>(
-                new ComputedEphemeris(null, ephemeris1, "test"),
-                new ComputedEphemeris(null, ephemeris2, "test"));
+        Pair<ComputedEphemeris<Ephemeris>, ComputedEphemeris<Ephemeris>> pair = new Pair<>(
+                new ComputedEphemeris<>(null, ephemeris1, "test"),
+                new ComputedEphemeris<>(null, ephemeris2, "test"));
 
         List<Conjunction<BodyDetails, BodyDetails>> conjunctions = ConjunctionFinder.findConjunctionsBetweenTwoBodies(pair);
 
@@ -89,8 +89,8 @@ class ConjunctionFinderTest {
 
         final AstronomicalCoordinates catalogueEntryCoords = coords(2.0, 2.0);
 
-        Pair<ComputedEphemeris, CatalogueEntry> pair = new Pair<>(
-                new ComputedEphemeris(null, ephemeris1, "test"),
+        Pair<ComputedEphemeris<Ephemeris>, CatalogueEntry> pair = new Pair<>(
+                new ComputedEphemeris<>(null, ephemeris1, "test"),
                 new CatalogueEntry(null, null, catalogueEntryCoords, 0.0, 0.0, 0.0, 0.0, null));
 
         List<Conjunction<BodyDetails, CatalogueEntry>> conjunctions = ConjunctionFinder.findConjunctionsBetweenBodyAndCatalogueEntry(pair);

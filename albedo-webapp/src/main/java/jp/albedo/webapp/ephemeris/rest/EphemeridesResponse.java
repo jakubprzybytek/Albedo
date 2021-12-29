@@ -22,7 +22,7 @@ public class EphemeridesResponse {
     @JsonProperty
     private final String engine;
 
-    public EphemeridesResponse(ComputedEphemeris computedEphemeris, ZoneId zoneId) {
+    public EphemeridesResponse(ComputedEphemeris<Ephemeris> computedEphemeris, ZoneId zoneId) {
         this.bodyInfo = new BodyInfo(computedEphemeris.getBodyDetails(), computedEphemeris.getOrbitElements(), computedEphemeris.getMagnitudeParameters());
         this.engine = computedEphemeris.getEngine();
 

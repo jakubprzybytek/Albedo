@@ -8,9 +8,12 @@ public class SimpleEphemeris {
 
     final public AstronomicalCoordinates coordinates;
 
-    public SimpleEphemeris(double jde, AstronomicalCoordinates coordinates) {
+    final public double distanceToBody;
+
+    public SimpleEphemeris(double jde, AstronomicalCoordinates coordinates, double distanceToBody) {
         this.jde = jde;
         this.coordinates = coordinates;
+        this.distanceToBody = distanceToBody;
     }
 
     @Override

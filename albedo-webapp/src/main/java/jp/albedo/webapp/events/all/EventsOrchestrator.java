@@ -11,7 +11,7 @@ import jp.albedo.webapp.events.all.parameters.ConjunctionsParameters;
 import jp.albedo.webapp.events.all.parameters.EclipsesParameters;
 import jp.albedo.webapp.events.all.parameters.RtsParameters;
 import jp.albedo.webapp.events.eclipses.EclipsesOrchestrator;
-import jp.albedo.webapp.events.eclipses.rest.EclipseEvent;
+import jp.albedo.webapp.events.eclipses.rest.EclipseEventOld;
 import jp.albedo.webapp.events.risetransitset.RiseTransitSetOrchestrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -114,8 +114,8 @@ public class EventsOrchestrator {
         return astronomicalEvents;
     }
 
-    private List<EclipseEvent> getEclipses(double from, double to, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
-        return this.eclipsesOrchestrator.compute(from, to, observerLocation, ephemerisMethodPreference);
+    private List<EclipseEventOld> getEclipses(double from, double to, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
+        return this.eclipsesOrchestrator.computeOld(from, to, observerLocation, ephemerisMethodPreference);
     }
 
 }

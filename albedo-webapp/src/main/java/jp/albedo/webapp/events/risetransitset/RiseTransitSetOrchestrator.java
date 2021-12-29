@@ -1,6 +1,7 @@
 package jp.albedo.webapp.events.risetransitset;
 
 import jp.albedo.common.JulianDay;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.common.AstronomicalEvent;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
@@ -40,7 +41,7 @@ public class RiseTransitSetOrchestrator {
         final List<RiseTransitSetEvent> riseTransitSetList = new ArrayList<>();
 
         for (String bodyName : bodyNames) {
-            ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation, ephemerisMethodPreference);
+            ComputedEphemeris<Ephemeris> computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation, ephemerisMethodPreference);
             riseTransitSetList.addAll(this.riseTransitSetCalculator.computeEvents(bodyName, computedEphemeris, observerLocation.coords));
         }
 
@@ -60,7 +61,7 @@ public class RiseTransitSetOrchestrator {
         final List<TransitSeries> transitsList = new ArrayList<>();
 
         for (String bodyName : bodyNames) {
-            ComputedEphemeris computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation, ephemerisMethodPreference);
+            ComputedEphemeris<Ephemeris> computedEphemeris = this.ephemeridesOrchestrator.compute(bodyName, fromDate - INTERVAL, toDate + INTERVAL, INTERVAL, observerLocation, ephemerisMethodPreference);
             transitsList.add(new TransitSeries(
                     computedEphemeris.getBodyDetails(),
                     this.riseTransitSetCalculator.computeRecords(bodyName, computedEphemeris, observerLocation.coords).stream()
