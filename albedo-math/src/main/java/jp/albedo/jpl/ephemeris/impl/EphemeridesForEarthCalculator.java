@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * JPL's Kernel based ephemerides calculator for main Solar System objects .
  */
-public class EphemeridesForEarthCalculator implements EphemeridesCalculator {
+public class EphemeridesForEarthCalculator implements EphemeridesCalculator<Ephemeris> {
 
     private final double bodyEquatorialRadius;
 

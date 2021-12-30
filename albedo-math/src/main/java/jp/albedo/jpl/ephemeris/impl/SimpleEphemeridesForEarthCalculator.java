@@ -6,7 +6,7 @@ import jp.albedo.ephemeris.SimpleEphemeris;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplConstant;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.ephemeris.SimpleEphemeridesCalculator;
+import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.jpl.state.Correction;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * JPL's Kernel based ephemerides calculator for main Solar System objects .
  */
-public class SimpleEphemeridesForEarthCalculator implements SimpleEphemeridesCalculator {
+public class SimpleEphemeridesForEarthCalculator implements EphemeridesCalculator<SimpleEphemeris> {
 
     private final StateSolver earthToBodyStateSolver;
 

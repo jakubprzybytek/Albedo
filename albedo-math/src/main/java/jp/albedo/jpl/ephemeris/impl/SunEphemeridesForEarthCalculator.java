@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * JPL's Kernel based ephemerides calculator for Sun observer from Earth.
  */
-public class SunEphemeridesForEarthCalculator implements EphemeridesCalculator {
+public class SunEphemeridesForEarthCalculator implements EphemeridesCalculator<Ephemeris> {
 
     private final StateSolver earthToBodyStateSolver;
 

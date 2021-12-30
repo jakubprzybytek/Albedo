@@ -51,7 +51,7 @@ public class EphemeridesOrchestrator {
         if (bodyDetailsOptional.isPresent()) {
             BodyDetails bodyDetails = bodyDetailsOptional.get();
 
-            EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getEphemeridesCalculator(ephemerisMethodPreference);
+            EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
             List<SimpleEphemeris> ephemerides = ephemeridesSolver.computeSimple(bodyDetails, fromDate, toDate, interval, observerLocation);
 
             if (ephemerides.isEmpty()) {

@@ -24,7 +24,7 @@ import java.util.Optional;
  * JPL's Kernel based ephemerides calculator for main Solar System objects.
  */
 @Deprecated
-public class BarycenterReferencedBodiesEphemeridesCalculator implements EphemeridesCalculator {
+public class BarycenterReferencedBodiesEphemeridesCalculator implements EphemeridesCalculator<Ephemeris> {
 
     private final double speedOfLight;
 

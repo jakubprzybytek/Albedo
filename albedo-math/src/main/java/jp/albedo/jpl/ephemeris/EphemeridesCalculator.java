@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * JPL's Kernel based ephemerides calculator for main Solar System objects.
  */
-public interface EphemeridesCalculator {
+public interface EphemeridesCalculator<T> {
 
     /**
      * Computes Earth based ephemeris for given body and for single time instant.
@@ -18,7 +18,7 @@ public interface EphemeridesCalculator {
      * @return
      * @throws JplException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    default Ephemeris computeFor(double jde) throws JplException {
+    default T computeFor(double jde) throws JplException {
         return computeFor(Collections.singletonList(jde)).get(0);
     }
 
@@ -29,6 +29,6 @@ public interface EphemeridesCalculator {
      * @return
      * @throws JplException when cannot compute due to lack of coefficients or insufficient time coverage.
      */
-    List<Ephemeris> computeFor(List<Double> jdes) throws JplException;
+    List<T> computeFor(List<Double> jdes) throws JplException;
 
 }

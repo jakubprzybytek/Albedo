@@ -20,7 +20,7 @@ import java.util.List;
  * JPL's Kernel based ephemerides calculator for main Solar System objects.
  */
 @Deprecated
-public class MoonEphemeridesCalculator implements EphemeridesCalculator {
+public class MoonEphemeridesCalculator implements EphemeridesCalculator<Ephemeris> {
 
     private final double speedOfLight;
 

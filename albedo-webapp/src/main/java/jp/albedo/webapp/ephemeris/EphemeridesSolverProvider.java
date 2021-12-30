@@ -1,7 +1,8 @@
 package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.jpl.JplException;
-import jp.albedo.webapp.ephemeris.jpl.BinaryKernelEphemeridesSolver;
+import jp.albedo.webapp.ephemeris.jpl.BinaryKernelEphemeridesForEarthSolver;
+import jp.albedo.webapp.ephemeris.jpl.BinaryKernelEphemeridesForSunSolver;
 import jp.albedo.webapp.ephemeris.jpl.BinaryKernelEphemerisBodyParser;
 import jp.albedo.webapp.ephemeris.jpl.JplBinaryKernelsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ public class EphemeridesSolverProvider {
 
     private BinaryKernelEphemerisBodyParser binaryKernelEphemerisBodyParser;
 
-    private BinaryKernelEphemeridesSolver binaryKernelEphemeridesSolver;
+    private BinaryKernelEphemeridesForEarthSolver binaryKernelEphemeridesForEarthSolver;
+
+    private BinaryKernelEphemeridesForSunSolver binaryKernelEphemeridesForSunSolver;
 
     @Autowired
     private JplBinaryKernelsService jplBinaryKernelsService;
@@ -31,16 +34,28 @@ public class EphemeridesSolverProvider {
         return binaryKernelEphemerisBodyParser;
     }
 
-    public EphemeridesSolver getEphemeridesCalculator(String ephemerisMethod) throws EphemerisException {
-        if (binaryKernelEphemeridesSolver == null) {
+    public EphemeridesSolver getEphemeridesForEarthSolver(String ephemerisMethod) throws EphemerisException {
+        if (binaryKernelEphemeridesForEarthSolver == null) {
             try {
-                binaryKernelEphemeridesSolver = new BinaryKernelEphemeridesSolver(jplBinaryKernelsService.getSpKernel());
+                binaryKernelEphemeridesForEarthSolver = new BinaryKernelEphemeridesForEarthSolver(jplBinaryKernelsService.getSpKernel());
             } catch (IOException | JplException e) {
                 throw new EphemerisException("Cannot create ephemeris calculator", e);
             }
         }
 
-        return binaryKernelEphemeridesSolver;
+        return binaryKernelEphemeridesForEarthSolver;
+    }
+
+    public EphemeridesSolver getEphemeridesForSunSolver(String ephemerisMethod) throws EphemerisException {
+        if (binaryKernelEphemeridesForSunSolver == null) {
+            try {
+                binaryKernelEphemeridesForSunSolver = new BinaryKernelEphemeridesForSunSolver(jplBinaryKernelsService.getSpKernel());
+            } catch (IOException | JplException e) {
+                throw new EphemerisException("Cannot create ephemeris calculator", e);
+            }
+        }
+
+        return binaryKernelEphemeridesForSunSolver;
     }
 
 }

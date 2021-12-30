@@ -9,7 +9,6 @@ import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
-import jp.albedo.jpl.ephemeris.SimpleEphemeridesCalculator;
 import jp.albedo.jpl.ephemeris.impl.EphemeridesForEarthCalculator;
 import jp.albedo.jpl.ephemeris.impl.SimpleEphemeridesForEarthCalculator;
 import jp.albedo.jpl.ephemeris.impl.SunEphemeridesForEarthCalculator;
@@ -29,9 +28,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
+public class BinaryKernelEphemeridesForEarthSolver implements EphemeridesSolver {
 
-    private static final Log LOG = LogFactory.getLog(BinaryKernelEphemeridesSolver.class);
+    private static final Log LOG = LogFactory.getLog(BinaryKernelEphemeridesForEarthSolver.class);
 
     private boolean supportedBodiesInitialised = false;
 
@@ -41,27 +40,26 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
 
     private final SpkKernelRepository kernelRepository;
 
-    public BinaryKernelEphemeridesSolver(SpkKernelRepository kernelRepository) {
+    public BinaryKernelEphemeridesForEarthSolver(SpkKernelRepository kernelRepository) {
         this.kernelRepository = kernelRepository;
+    }
+
+    @Override
+    public List<SimpleEphemeris> computeSimple(BodyDetails bodyDetails, double fromDate, double toDate, double interval) throws EphemerisException {
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public List<SimpleEphemeris> computeSimple(BodyDetails bodyDetails, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws EphemerisException {
         try {
-            Optional<JplBody> parsedBody = findBody(bodyDetails);
-
-            if (parsedBody.isEmpty()) {
-                throw new EphemerisException("Cannot find JLP body for " + bodyDetails);
-            }
-
-            JplBody body = parsedBody.get();
+            final JplBody body = findBody(bodyDetails).orElseThrow(() -> new EphemerisException("Cannot find JLP body for " + bodyDetails));
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug(String.format("Starting calculations based on JPL's SPICE Kernels, params: [body: %s, from=%s, to=%s, interval=%.2f]", body.name(), fromDate, toDate, interval));
+                LOG.debug(String.format("Solving ephemerides for observer on Earth, params: [body: %s, from=%s, to=%s, interval=%.2f]", body.name(), fromDate, toDate, interval));
             }
 
             final Instant start = Instant.now();
 
-            final SimpleEphemeridesCalculator ephemeridesCalculator =
+            final EphemeridesCalculator<SimpleEphemeris> ephemeridesCalculator =
                     new SimpleEphemeridesForEarthCalculator(kernelRepository, body);
 
             final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
@@ -82,21 +80,15 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
     @Override
     public Ephemeris compute(BodyDetails bodyDetails, double jde, ObserverLocation observerLocation) throws EphemerisException {
         try {
-            Optional<JplBody> parsedBody = findBody(bodyDetails);
-
-            if (parsedBody.isEmpty()) {
-                throw new EphemerisException("Cannot find JLP body for " + bodyDetails);
-            }
-
-            JplBody body = parsedBody.get();
+            final JplBody body = findBody(bodyDetails).orElseThrow(() -> new EphemerisException("Cannot find JLP body for " + bodyDetails));
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug(String.format("Starting calculations based on JPL's SPICE Kernels, params: [body: %s, jde=%s]", body.name(), jde));
+                LOG.debug(String.format("Solving ephemerides for observer on Earth, params: [body: %s, jde=%s]", body.name(), jde));
             }
 
             final Instant start = Instant.now();
 
-            final EphemeridesCalculator ephemeridesCalculator = JplBody.Sun.equals(body) ?
+            final EphemeridesCalculator<Ephemeris> ephemeridesCalculator = JplBody.Sun.equals(body) ?
                     new SunEphemeridesForEarthCalculator(kernelRepository) :
                     new EphemeridesForEarthCalculator(kernelRepository, body);
 
@@ -116,21 +108,15 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
     @Override
     public List<Ephemeris> compute(BodyDetails bodyDetails, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws EphemerisException {
         try {
-            Optional<JplBody> parsedBody = findBody(bodyDetails);
-
-            if (parsedBody.isEmpty()) {
-                throw new EphemerisException("Cannot find JLP body for " + bodyDetails);
-            }
-
-            JplBody body = parsedBody.get();
+            final JplBody body = findBody(bodyDetails).orElseThrow(() -> new EphemerisException("Cannot find JLP body for " + bodyDetails));
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug(String.format("Starting calculations based on JPL's SPICE Kernels, params: [body: %s, from=%s, to=%s, interval=%.2f]", body.name(), fromDate, toDate, interval));
+                LOG.debug(String.format("Solving ephemerides for observer on Earth, params: [body: %s, from=%s, to=%s, interval=%.2f]", body.name(), fromDate, toDate, interval));
             }
 
             final Instant start = Instant.now();
 
-            final EphemeridesCalculator ephemeridesCalculator =
+            final EphemeridesCalculator<Ephemeris> ephemeridesCalculator =
                     new EphemeridesForEarthCalculator(kernelRepository, body);
 
             final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
@@ -147,7 +133,6 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
             throw new EphemerisException("Cannot compute ephemeris for " + bodyDetails, e);
         }
     }
-
 
     public Optional<JplBody> findBody(BodyDetails body) throws IOException, JplException {
         if (!supportedBodiesInitialised) {

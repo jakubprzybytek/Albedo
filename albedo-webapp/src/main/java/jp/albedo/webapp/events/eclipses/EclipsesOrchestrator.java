@@ -8,9 +8,9 @@ import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.utils.FunctionUtils;
 import jp.albedo.webapp.conjunctions.Conjunction2;
 import jp.albedo.webapp.conjunctions.ConjunctionBetweenTwoBodiesFinder;
+import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
 import jp.albedo.webapp.ephemeris.EphemeridesSolver;
 import jp.albedo.webapp.ephemeris.EphemeridesSolverProvider;
-import jp.albedo.webapp.ephemeris.EphemeridesOrchestrator;
 import jp.albedo.webapp.ephemeris.EphemerisException;
 import jp.albedo.webapp.events.eclipses.rest.EclipseBodyInfo;
 import jp.albedo.webapp.events.eclipses.rest.EclipseEvent;
@@ -23,7 +23,9 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class EclipsesOrchestrator {
@@ -52,9 +54,32 @@ public class EclipsesOrchestrator {
      */
     public List<EclipseEvent> compute(Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
+        final Instant start = Instant.now();
+
+        LOG.info(String.format("Computing Sun and Moon eclipses, params: [from=%s, to=%s]", fromDate, toDate));
+
+        final EphemeridesSolver ephemeridesForEarthSolver = this.ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
+        final EphemeridesSolver ephemeridesForSunSolver = this.ephemeridesSolverProvider.getEphemeridesForSunSolver(ephemerisMethodPreference);
+
+        Stream<Conjunction2> sunEclipseConjunctions = compute(ephemeridesForEarthSolver, BodyDetails.SUN, BodyDetails.MOON, fromDate, toDate, Optional.of(observerLocation));
+        Stream<Conjunction2> moonEclipseConjunctions = compute(ephemeridesForSunSolver, BodyDetails.EARTH, BodyDetails.MOON, fromDate, toDate, Optional.empty());
+
+        Stream.concat(sunEclipseConjunctions, moonEclipseConjunctions)
+                .map(FunctionUtils.wrap(conjunction -> buildEclipseEvent(conjunction, ephemeridesForEarthSolver, observerLocation)))
+                .collect(Collectors.toList());
+
+        LOG.info(String.format("Found %d eclipses in %s", detailedConjunctions.size(), Duration.between(start, Instant.now())));
+
+        return detailedConjunctions.stream()
+                .map(FunctionUtils.wrap(conjunction -> buildEclipseEvent(conjunction, ephemeridesForEarthSolver, observerLocation)))
+                .collect(Collectors.toList());
+    }
+
+    public List<EclipseEvent> computeOld(Double fromDate, Double toDate, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
+
         LOG.info(String.format("Computing Sun eclipses, params: [from=%s, to=%s]", fromDate, toDate));
 
-        final EphemeridesSolver ephemeridesSolver = this.ephemeridesSolverProvider.getEphemeridesCalculator(ephemerisMethodPreference);
+        final EphemeridesSolver ephemeridesSolver = this.ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
 
         final Instant start = Instant.now();
 
@@ -93,6 +118,40 @@ public class EclipsesOrchestrator {
         return detailedConjunctions.stream()
                 .map(FunctionUtils.wrap(conjunction -> buildEclipseEvent(conjunction, ephemeridesSolver, observerLocation)))
                 .collect(Collectors.toList());
+    }
+
+    private Stream<Conjunction2> compute(EphemeridesSolver ephemeridesSolver, BodyDetails firstBody, BodyDetails secondBody, Double fromDate, Double toDate, Optional<ObserverLocation> observerLocation) throws Exception {
+
+        final List<SimpleEphemeris> firstBodyEphemerides = observerLocation.isPresent() ?
+                ephemeridesSolver.computeSimple(firstBody, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation.get()) :
+                ephemeridesSolver.computeSimple(firstBody, fromDate, toDate, PRELIMINARY_INTERVAL);
+        final List<SimpleEphemeris> secondBodyEphemerides = observerLocation.isPresent() ?
+                ephemeridesSolver.computeSimple(secondBody, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation.get()) :
+                ephemeridesSolver.computeSimple(secondBody, fromDate, toDate, PRELIMINARY_INTERVAL);
+
+        LOG.info(String.format("Computed %d ephemerides for %s and %s", firstBodyEphemerides.size() * 2, firstBody.name, secondBody.name));
+
+        final List<Conjunction2> preliminaryConjunctions = ConjunctionBetweenTwoBodiesFinder.findAll(firstBodyEphemerides, secondBodyEphemerides, MAX_SEPARATION * 1.2);
+
+        LOG.info(String.format("Found %d preliminary conjunctions", preliminaryConjunctions.size()));
+
+        final List<Pair<List<SimpleEphemeris>, List<SimpleEphemeris>>> detailedEphemerides = preliminaryConjunctions.stream()
+                .map(conjunction -> conjunction.jde)
+                .map(FunctionUtils.wrap(jde -> new Pair<>(
+                        observerLocation.isPresent() ?
+                                ephemeridesSolver.computeSimple(firstBody, jde - DETAILED_SPAN / 2.0, jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL, observerLocation.get()) :
+                                ephemeridesSolver.computeSimple(firstBody, jde - DETAILED_SPAN / 2.0, jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL),
+                        observerLocation.isPresent() ?
+                                ephemeridesSolver.computeSimple(secondBody, jde - DETAILED_SPAN / 2.0, jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL, observerLocation.get()) :
+                                ephemeridesSolver.computeSimple(secondBody, jde - DETAILED_SPAN / 2.0, jde + DETAILED_SPAN / 2.0, DETAILED_INTERVAL)
+                )))
+                .collect(Collectors.toList());
+
+        LOG.info(String.format("Computed %d detailed ephemerides", detailedEphemerides.size() * detailedEphemerides.get(0).getFirst().size() * 2));
+
+        return detailedEphemerides.stream()
+                .map(ephemeridesPair -> ConjunctionBetweenTwoBodiesFinder.findAll(ephemeridesPair.getFirst(), ephemeridesPair.getSecond(), MAX_SEPARATION))
+                .flatMap(List<Conjunction2>::stream);
     }
 
     private EclipseEvent buildEclipseEvent(Conjunction2 conjunction, EphemeridesSolver ephemeridesSolver, ObserverLocation observerLocation) throws EphemerisException {
