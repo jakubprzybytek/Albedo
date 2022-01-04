@@ -26,14 +26,18 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-flex',
     flexWrap: 'wrap',
   },
+  drawing: {
+    marginTop: theme.spacing(1),
+    backgroundColor: 'lightblue'
+  }
 }));
 
 function EclipseDrawing(props) {
 
   const { eclipse } = props;
 
-  const sunRadius = eclipse.sun.ephemeris.angularSize / 2.0;
-  const moonRadius = eclipse.moon.ephemeris.angularSize / 2.0;
+  const sunRadius = eclipse.eclipsed.ephemeris.angularSize / 2.0;
+  const moonRadius = eclipse.eclipsing.ephemeris.angularSize / 2.0;
   const longestDimention = (sunRadius / 2 + eclipse.separation + moonRadius) * 1.5;
   const scale = 500 / longestDimention;
 
@@ -44,7 +48,7 @@ function EclipseDrawing(props) {
   const classes = useStyles();
 
   return (
-    <svg viewBox="0 0 500 500" style={{ backgroundColor: 'lightblue' }}>
+    <svg viewBox="0 0 500 500" className={classes.drawing}>
       <g>
           <circle cx={250 - x} cy={250 - y} r={sunRadius * scale} stroke="orange" strokeWidth="2" fill='yellow'></circle>
           <circle cx={250 + x} cy={250 + y} r={moonRadius * scale} stroke="grey" strokeWidth="2" fill='#585858'></circle>

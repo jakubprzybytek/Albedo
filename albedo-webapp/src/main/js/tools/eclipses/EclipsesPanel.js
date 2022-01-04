@@ -45,10 +45,10 @@ export default function EclipsesPanel() {
             <EclipseCard eclipse={selectedEvent} />
           </div>
           <div className={classes.card}>
-            <BodyCard bodyInfo={selectedEvent.sun} />
+            <BodyCard bodyInfo={selectedEvent.eclipsed} />
           </div>
           <div className={classes.card}>
-            <BodyCard bodyInfo={selectedEvent.moon} />
+            <BodyCard bodyInfo={selectedEvent.eclipsing} />
           </div>
         </div>}
       </Grid>

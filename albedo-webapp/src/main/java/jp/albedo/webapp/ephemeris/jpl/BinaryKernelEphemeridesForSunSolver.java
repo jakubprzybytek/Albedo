@@ -103,7 +103,7 @@ public class BinaryKernelEphemeridesForSunSolver implements EphemeridesSolver {
 
         supportedPlanets = kernelRepository.registeredBodiesStream()
                 .filter(jplBody -> BodyType.Planet == jplBody.bodyType)
-                .filter(jplBody -> JplBody.Earth != jplBody)
+                .filter(jplBody -> JplBody.Sun != jplBody)
                 .collect(Collectors.toList());
 
         supportedBodiesInitialised = true;

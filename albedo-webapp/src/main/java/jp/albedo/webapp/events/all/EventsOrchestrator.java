@@ -11,7 +11,7 @@ import jp.albedo.webapp.events.all.parameters.ConjunctionsParameters;
 import jp.albedo.webapp.events.all.parameters.EclipsesParameters;
 import jp.albedo.webapp.events.all.parameters.RtsParameters;
 import jp.albedo.webapp.events.eclipses.EclipsesOrchestrator;
-import jp.albedo.webapp.events.eclipses.rest.EclipseEventOld;
+import jp.albedo.webapp.events.eclipses.rest.EclipseEvent;
 import jp.albedo.webapp.events.risetransitset.RiseTransitSetOrchestrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,13 +74,13 @@ public class EventsOrchestrator {
 
         if (!conjunctionBodyNames.isEmpty() || !conjunctionPrimaryBodyTypes.isEmpty()) {
             astronomicalEvents.addAll(this.conjunctionsOrchestrator.computeForTwoMovingBodies(
-                    conjunctionBodyNames,
-                    conjunctionPrimaryBodyTypes,
-                    conjunctionSecondaryBodyTypes,
-                    fromDate,
-                    toDate + 1.0,
-                    observerLocation,
-                    ephemerisMethodPreference)
+                            conjunctionBodyNames,
+                            conjunctionPrimaryBodyTypes,
+                            conjunctionSecondaryBodyTypes,
+                            fromDate,
+                            toDate + 1.0,
+                            observerLocation,
+                            ephemerisMethodPreference)
                     .stream()
                     .filter(conjunction -> conjunction.jde > fromDate) // FixMe
                     .filter(conjunctionTwoBodyEventsFilter)
@@ -89,13 +89,13 @@ public class EventsOrchestrator {
         }
         if ((!conjunctionBodyNames.isEmpty() || !conjunctionPrimaryBodyTypes.isEmpty()) && !conjunctionCatalogues.isEmpty()) {
             astronomicalEvents.addAll(this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(
-                    conjunctionBodyNames,
-                    conjunctionPrimaryBodyTypes,
-                    conjunctionCatalogues,
-                    fromDate,
-                    toDate + 1.0,
-                    observerLocation,
-                    ephemerisMethodPreference)
+                            conjunctionBodyNames,
+                            conjunctionPrimaryBodyTypes,
+                            conjunctionCatalogues,
+                            fromDate,
+                            toDate + 1.0,
+                            observerLocation,
+                            ephemerisMethodPreference)
                     .stream()
                     .filter(conjunction -> conjunction.jde > fromDate) // FixMe
                     .filter(conjunctionBodyAndCatalogueEventsFilter)
@@ -114,8 +114,8 @@ public class EventsOrchestrator {
         return astronomicalEvents;
     }
 
-    private List<EclipseEventOld> getEclipses(double from, double to, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
-        return this.eclipsesOrchestrator.computeOld(from, to, observerLocation, ephemerisMethodPreference);
+    private List<EclipseEvent> getEclipses(double from, double to, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
+        return this.eclipsesOrchestrator.compute(from, to, observerLocation, ephemerisMethodPreference);
     }
 
 }

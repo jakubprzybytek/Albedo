@@ -11,10 +11,10 @@ public class EclipseEvent extends AstronomicalEvent {
     private static final String EVENT_TYPE = "Eclipse";
 
     @JsonProperty
-    private final EclipseBodyInfo sun;
+    private final EclipseBodyInfo eclipsed;
 
     @JsonProperty
-    private final EclipseBodyInfo moon;
+    private final EclipseBodyInfo eclipsing;
 
     @JsonProperty
     @JsonSerialize(converter = RadiansToPrecision6DegreesConverter.class)
@@ -24,10 +24,10 @@ public class EclipseEvent extends AstronomicalEvent {
     @JsonSerialize(converter = RadiansToPrecision1DegreesConverter.class)
     private final double positionAngle;
 
-    public EclipseEvent(double jde, EclipseBodyInfo sun, EclipseBodyInfo moon, double separation, double positionAngle) {
+    public EclipseEvent(double jde, EclipseBodyInfo eclipsedBody, EclipseBodyInfo eclipsingBody, double separation, double positionAngle) {
         super(jde, EVENT_TYPE, 10);
-        this.sun = sun;
-        this.moon = moon;
+        this.eclipsed = eclipsedBody;
+        this.eclipsing = eclipsingBody;
         this.separation = separation;
         this.positionAngle = positionAngle;
     }
