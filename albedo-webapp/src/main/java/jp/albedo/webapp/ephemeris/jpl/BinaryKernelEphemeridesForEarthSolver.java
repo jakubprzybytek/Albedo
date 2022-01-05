@@ -47,6 +47,35 @@ public class BinaryKernelEphemeridesForEarthSolver implements EphemeridesSolver 
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
+    public SimpleEphemeris computeSimple(BodyDetails bodyDetails, double jde, ObserverLocation observerLocation) throws EphemerisException {
+        try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(String.format("Solving ephemerides for observer on Earth, params: [body: %s, jde=%s]", bodyDetails.name, jde));
+            }
+
+            final Instant start = Instant.now();
+
+            final EphemeridesCalculator<SimpleEphemeris> ephemeridesCalculator;
+            if (BodyDetails.EARTH_SHADOW.equals(bodyDetails)) {
+                ephemeridesCalculator = new EarthShadowSimpleEphemeridesForEarthCalculator(kernelRepository);
+            } else {
+                final JplBody body = findBody(bodyDetails).orElseThrow(() -> new EphemerisException("Cannot find JLP body for " + bodyDetails));
+                ephemeridesCalculator = new SimpleEphemeridesForEarthCalculator(kernelRepository, body);
+            }
+
+            final SimpleEphemeris ephemeris = SimpleEphemerisParallaxCorrection.correctFor(observerLocation)
+                    .apply(ephemeridesCalculator.computeFor(jde));
+
+            if (LOG.isDebugEnabled()) {
+                LOG.info(String.format("Calculated ephemeris in %s", Duration.between(start, Instant.now())));
+            }
+
+            return ephemeris;
+        } catch (IOException | JplException e) {
+            throw new EphemerisException("Cannot compute ephemeris for " + bodyDetails, e);
+        }
+    }
+
     public List<SimpleEphemeris> computeSimple(BodyDetails bodyDetails, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws EphemerisException {
         try {
             if (LOG.isDebugEnabled()) {

@@ -76,7 +76,6 @@ class ConjunctionFinderTest {
         assertEquals(Math.toRadians(2.0), conjunctions.get(1).separation, 0.00000000000000001);
     }
 
-
     @Test
     @DisplayName("Find conjunction between moving body and catalogue entry")
     void findConjunctionsForBodyAndCatalogue() {

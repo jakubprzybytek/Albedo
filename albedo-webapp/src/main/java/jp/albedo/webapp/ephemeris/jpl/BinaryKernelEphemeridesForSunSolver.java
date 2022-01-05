@@ -68,6 +68,11 @@ public class BinaryKernelEphemeridesForSunSolver implements EphemeridesSolver {
     }
 
     @Override
+    public SimpleEphemeris computeSimple(BodyDetails body, double jde, ObserverLocation observerLocation) throws EphemerisException {
+        return null;
+    }
+
+    @Override
     public List<SimpleEphemeris> computeSimple(BodyDetails bodyDetails, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws EphemerisException {
         throw new UnsupportedOperationException("Not implemented yet!");
     }

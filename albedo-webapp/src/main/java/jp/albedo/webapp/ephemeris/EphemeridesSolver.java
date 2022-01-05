@@ -11,6 +11,8 @@ public interface EphemeridesSolver {
 
     List<SimpleEphemeris> computeSimple(BodyDetails body, double fromDate, double toDate, double interval) throws EphemerisException;
 
+    SimpleEphemeris computeSimple(BodyDetails body, double jde, ObserverLocation observerLocation) throws EphemerisException;
+
     List<SimpleEphemeris> computeSimple(BodyDetails body, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws EphemerisException;
 
     Ephemeris compute(BodyDetails body, double jde, ObserverLocation observerLocation) throws EphemerisException;
