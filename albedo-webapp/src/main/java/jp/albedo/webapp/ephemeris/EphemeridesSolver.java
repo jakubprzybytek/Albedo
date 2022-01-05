@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface EphemeridesSolver {
 
+    String getName();
+
     List<SimpleEphemeris> computeSimple(BodyDetails body, double fromDate, double toDate, double interval) throws EphemerisException;
 
     SimpleEphemeris computeSimple(BodyDetails body, double jde, ObserverLocation observerLocation) throws EphemerisException;

@@ -43,6 +43,11 @@ public class BinaryKernelEphemeridesForEarthSolver implements EphemeridesSolver 
     }
 
     @Override
+    public String getName() {
+        return "de440";
+    }
+
+    @Override
     public List<SimpleEphemeris> computeSimple(BodyDetails bodyDetails, double fromDate, double toDate, double interval) throws EphemerisException {
         throw new UnsupportedOperationException("Not implemented yet!");
     }

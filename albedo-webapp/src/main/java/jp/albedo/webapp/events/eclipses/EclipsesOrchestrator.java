@@ -64,13 +64,13 @@ public class EclipsesOrchestrator {
         final EphemeridesSolver ephemeridesSolver = this.ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
 
         final List<SimpleEphemeris> sunEphemerides = ephemeridesSolver.computeSimple(BodyDetails.SUN, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation);
-        LOG.info(String.format("Computed %d ephemerides for Sun", sunEphemerides.size()));
+        LOG.info(String.format("Computed %d ephemerides for Sun using %s", sunEphemerides.size(), ephemeridesSolver.getName()));
 
         final List<SimpleEphemeris> moonEphemerides = ephemeridesSolver.computeSimple(BodyDetails.MOON, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation);
-        LOG.info(String.format("Computed %d ephemerides for Moon", moonEphemerides.size()));
+        LOG.info(String.format("Computed %d ephemerides for Moon using %s", moonEphemerides.size(), ephemeridesSolver.getName()));
 
         final List<SimpleEphemeris> earthShadowEphemerides = ephemeridesSolver.computeSimple(BodyDetails.EARTH_SHADOW, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation);
-        LOG.info(String.format("Computed %d ephemerides for Earth Shadow", earthShadowEphemerides.size()));
+        LOG.info(String.format("Computed %d ephemerides for Earth Shadow using %s", earthShadowEphemerides.size(), ephemeridesSolver.getName()));
 
         final Stream<EclipseEvent> sunEclipseConjunctions = compute(BodyDetails.SUN, sunEphemerides, BodyDetails.MOON, moonEphemerides, SUN_ECLIPSE_MAX_SEPARATION,ephemeridesSolver, observerLocation)
                 .map(FunctionUtils.wrap(conjunction -> buildSunEclipseEvent(conjunction, ephemeridesSolver, observerLocation)));
