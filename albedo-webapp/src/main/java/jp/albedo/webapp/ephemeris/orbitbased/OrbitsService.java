@@ -29,11 +29,11 @@ public class OrbitsService {
     @Value("${cometEls.fileName}")
     private String cometElsFileName;
 
-    private LazyLoadedMap<OrbitingBodyRecord> asteroidOrbits = new LazyLoadedMap<>(
+    private final LazyLoadedMap<OrbitingBodyRecord> asteroidOrbits = new LazyLoadedMap<>(
             FunctionUtils.wrapSupplier(this::loadAsteroidOrbits)
     );
 
-    private LazyLoadedMap<OrbitingBodyRecord> cometsOrbits = new LazyLoadedMap<>(
+    private final LazyLoadedMap<OrbitingBodyRecord> cometsOrbits = new LazyLoadedMap<>(
             FunctionUtils.wrapSupplier(this::loadCometOrbits)
     );
 

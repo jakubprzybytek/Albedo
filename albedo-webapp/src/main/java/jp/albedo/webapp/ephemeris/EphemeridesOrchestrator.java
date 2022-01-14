@@ -44,23 +44,13 @@ public class EphemeridesOrchestrator {
     private OrbitBasedEphemerisCalculator orbitBasedEphemerisCalculator;
 
     public ComputedEphemeris<SimpleEphemeris> computeSimple(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
-
         final EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
-        final Optional<BodyDetails> bodyDetailsOptional = ephemeridesSolver.parse(bodyName);
+        final BodyDetails bodyDetails = ephemeridesSolver.parse(bodyName)
+                .orElseThrow(() -> new EphemerisException("Body not found: " + bodyName));
 
-        if (bodyDetailsOptional.isPresent()) {
-            final BodyDetails bodyDetails = bodyDetailsOptional.get();
+        final List<SimpleEphemeris> ephemerides = ephemeridesSolver.computeSimple(bodyDetails, fromDate, toDate, interval, observerLocation);
 
-            final List<SimpleEphemeris> ephemerides = ephemeridesSolver.computeSimple(bodyDetails, fromDate, toDate, interval, observerLocation);
-
-            if (ephemerides.isEmpty()) {
-                throw new EphemerisException("Calculator couldn't compute ephemeris for " + bodyDetails);
-            }
-
-            return new ComputedEphemeris<>(bodyDetails, ephemerides, EphemerisMethod.binary440.description);
-        }
-
-        throw new EphemerisException("Body not found: " + bodyName);
+        return new ComputedEphemeris<>(bodyDetails, ephemerides, ephemeridesSolver.getName());
     }
 
     /**
@@ -75,6 +65,27 @@ public class EphemeridesOrchestrator {
      * @param observerLocation Location of observer for parallax correction.
      */
     public ComputedEphemeris<Ephemeris> compute(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
+        final EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
+        final BodyDetails bodyDetails = ephemeridesSolver.parse(bodyName)
+                .orElseThrow(() -> new EphemerisException("Body not found: " + bodyName));
+
+        final List<Ephemeris> ephemerides = ephemeridesSolver.compute(bodyDetails, fromDate, toDate, interval, observerLocation);
+
+        return new ComputedEphemeris<>(bodyDetails, ephemerides, ephemeridesSolver.getName());
+    }
+
+    /**
+     * Computes ephemerides for a singly body given by name.
+     * <p>
+     * Different backend ephemerides calculators can be chosen depending on which can handle given body.
+     *
+     * @param bodyName         Name of body for which the ephemerides should be computed.
+     * @param fromDate         Start of the time period for which ephemerides should be computed in Julian days.
+     * @param toDate           End of the time period for which ephemerides should be computed in Julian days.
+     * @param interval         Interval for computations in Julian days.
+     * @param observerLocation Location of observer for parallax correction.
+     */
+    public ComputedEphemeris<Ephemeris> computeOld(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
         if (EphemerisMethod.binary440.id.equals(ephemerisMethodPreference)) {
             final Optional<JplBody> jplSupportedBodyForBinarySpk = this.jplBinaryKernelEphemerisCalculator.parseBody(bodyName);

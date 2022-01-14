@@ -28,7 +28,7 @@ public class EllipticMotion {
      * @throws VSOPException
      */
     static public Ephemeris compute(double jde, MagnitudeParameters magnitudeParameters, OrbitElements orbitParams) throws VSOPException {
-        return compute(Arrays.asList(jde), magnitudeParameters, orbitParams).get(0);
+        return compute(List.of(jde), magnitudeParameters, orbitParams).get(0);
     }
 
     /**
