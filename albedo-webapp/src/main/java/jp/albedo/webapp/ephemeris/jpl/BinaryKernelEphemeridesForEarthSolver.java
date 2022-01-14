@@ -48,8 +48,33 @@ public class BinaryKernelEphemeridesForEarthSolver implements EphemeridesSolver 
     }
 
     @Override
-    public List<SimpleEphemeris> computeSimple(BodyDetails bodyDetails, double fromDate, double toDate, double interval) throws EphemerisException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+    public Optional<BodyDetails> parse(String bodyName) {
+        if (BodyDetails.SUN.name.equals(bodyName)) {
+            return Optional.of(BodyDetails.SUN);
+        }
+
+        if (!supportedBodiesInitialised) {
+            loadSupportedBodies();
+        }
+
+        return Stream.concat(supportedPlanets.stream(), supportedNaturalSatellites.stream())
+                .filter(jplBody -> jplBody.name().equals(bodyName))
+                .findFirst()
+                .map(jplBody -> new BodyDetails(jplBody.name(), jplBody.bodyType));
+    }
+
+    private Optional<JplBody> findBody(BodyDetails body) throws IOException, JplException {
+        if (JplBody.Sun.name().equals(body.name)) {
+            return Optional.of(JplBody.Sun);
+        }
+
+        if (!supportedBodiesInitialised) {
+            loadSupportedBodies();
+        }
+
+        return Stream.concat(supportedPlanets.stream(), supportedNaturalSatellites.stream())
+                .filter(jplBody -> jplBody.name().equals(body.name) && jplBody.bodyType.equals(body.bodyType))
+                .findFirst();
     }
 
     public SimpleEphemeris computeSimple(BodyDetails bodyDetails, double jde, ObserverLocation observerLocation) throws EphemerisException {
@@ -173,20 +198,6 @@ public class BinaryKernelEphemeridesForEarthSolver implements EphemeridesSolver 
         } catch (IOException | JplException e) {
             throw new EphemerisException("Cannot compute ephemeris for " + bodyDetails, e);
         }
-    }
-
-    public Optional<JplBody> findBody(BodyDetails body) throws IOException, JplException {
-        if (!supportedBodiesInitialised) {
-            loadSupportedBodies();
-        }
-
-        if (JplBody.Sun.name().equals(body.name)) {
-            return Optional.of(JplBody.Sun);
-        }
-
-        return Stream.concat(supportedPlanets.stream(), supportedNaturalSatellites.stream())
-                .filter(jplBody -> jplBody.name().equals(body.name) && jplBody.bodyType.equals(body.bodyType))
-                .findFirst();
     }
 
     private void loadSupportedBodies() {

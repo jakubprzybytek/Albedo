@@ -45,23 +45,19 @@ public class EphemeridesOrchestrator {
 
     public ComputedEphemeris<SimpleEphemeris> computeSimple(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
 
-        EphemerisBodyParser ephemerisBodyParser = ephemeridesSolverProvider.getEphemerisBodyParser(ephemerisMethodPreference);
-        Optional<BodyDetails> bodyDetailsOptional = ephemerisBodyParser.parse(bodyName);
+        final EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
+        final Optional<BodyDetails> bodyDetailsOptional = ephemeridesSolver.parse(bodyName);
 
         if (bodyDetailsOptional.isPresent()) {
-            BodyDetails bodyDetails = bodyDetailsOptional.get();
+            final BodyDetails bodyDetails = bodyDetailsOptional.get();
 
-            EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
-            List<SimpleEphemeris> ephemerides = ephemeridesSolver.computeSimple(bodyDetails, fromDate, toDate, interval, observerLocation);
+            final List<SimpleEphemeris> ephemerides = ephemeridesSolver.computeSimple(bodyDetails, fromDate, toDate, interval, observerLocation);
 
             if (ephemerides.isEmpty()) {
                 throw new EphemerisException("Calculator couldn't compute ephemeris for " + bodyDetails);
             }
 
-            return new ComputedEphemeris<>(
-                    bodyDetails,
-                    ephemerides,
-                    EphemerisMethod.binary440.description);
+            return new ComputedEphemeris<>(bodyDetails, ephemerides, EphemerisMethod.binary440.description);
         }
 
         throw new EphemerisException("Body not found: " + bodyName);

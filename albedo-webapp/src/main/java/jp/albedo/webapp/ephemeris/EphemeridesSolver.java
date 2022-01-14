@@ -6,12 +6,13 @@ import jp.albedo.ephemeris.SimpleEphemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EphemeridesSolver {
 
     String getName();
 
-    List<SimpleEphemeris> computeSimple(BodyDetails body, double fromDate, double toDate, double interval) throws EphemerisException;
+    Optional<BodyDetails> parse(String bodyName);
 
     SimpleEphemeris computeSimple(BodyDetails body, double jde, ObserverLocation observerLocation) throws EphemerisException;
 
