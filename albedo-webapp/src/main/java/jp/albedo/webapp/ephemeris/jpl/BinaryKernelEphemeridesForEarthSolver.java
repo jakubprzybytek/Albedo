@@ -44,7 +44,7 @@ public class BinaryKernelEphemeridesForEarthSolver implements EphemeridesSolver 
 
     @Override
     public String getName() {
-        return "de440";
+        return "Binary SPK: DE440";
     }
 
     @Override
