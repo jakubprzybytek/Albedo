@@ -61,7 +61,7 @@ public class EclipsesOrchestrator {
 
         LOG.info(String.format("Finding Sun and Moon eclipses, params: [from=%s, to=%s]", fromDate, toDate));
 
-        final EphemeridesSolver ephemeridesSolver = this.ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
+        final EphemeridesSolver ephemeridesSolver = this.ephemeridesSolverProvider.getForBodyName(BodyDetails.SUN.name); // the same solver should work for moon and Earth Shadow
 
         final List<SimpleEphemeris> sunEphemerides = ephemeridesSolver.computeSimple(BodyDetails.SUN, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation);
         LOG.info(String.format("Computed %d ephemerides for Sun using %s", sunEphemerides.size(), ephemeridesSolver.getName()));

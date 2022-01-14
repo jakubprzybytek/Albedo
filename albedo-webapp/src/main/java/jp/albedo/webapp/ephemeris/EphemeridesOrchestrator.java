@@ -23,7 +23,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -43,13 +42,21 @@ public class EphemeridesOrchestrator {
     @Autowired
     private OrbitBasedEphemerisCalculator orbitBasedEphemerisCalculator;
 
-    public ComputedEphemeris<SimpleEphemeris> computeSimple(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
-        final EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
+    public ComputedEphemeris<SimpleEphemeris> computeSimple(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws EphemerisException {
+        if (LOG.isInfoEnabled()) {
+            LOG.info(String.format("Computing simple ephemerides, params: [body: %s, fromDate=%s, toDate=%s, interval=%s, observer=%s]", bodyName, fromDate, toDate, interval, observerLocation));
+        }
+
+        final EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getForBodyName(bodyName);
         final BodyDetails bodyDetails = ephemeridesSolver.parse(bodyName)
                 .orElseThrow(() -> new EphemerisException("Body not found: " + bodyName));
 
         final List<SimpleEphemeris> ephemerides = ephemeridesSolver.computeSimple(bodyDetails, fromDate, toDate, interval, observerLocation);
 
+        if (LOG.isInfoEnabled()) {
+            LOG.info(String.format("Computed %d simple ephemerides using '%s' method", ephemerides.size(), ephemeridesSolver.getName()));
+        }
+
         return new ComputedEphemeris<>(bodyDetails, ephemerides, ephemeridesSolver.getName());
     }
 
@@ -64,62 +71,22 @@ public class EphemeridesOrchestrator {
      * @param interval         Interval for computations in Julian days.
      * @param observerLocation Location of observer for parallax correction.
      */
-    public ComputedEphemeris<Ephemeris> compute(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
-        final EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getEphemeridesForEarthSolver(ephemerisMethodPreference);
+    public ComputedEphemeris<Ephemeris> compute(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws EphemerisException {
+        if (LOG.isInfoEnabled()) {
+            LOG.info(String.format("Computing full ephemerides, params: [body: %s, fromDate=%s, toDate=%s, interval=%s, observer=%s]", bodyName, fromDate, toDate, interval, observerLocation));
+        }
+
+        final EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getForBodyName(bodyName);
         final BodyDetails bodyDetails = ephemeridesSolver.parse(bodyName)
                 .orElseThrow(() -> new EphemerisException("Body not found: " + bodyName));
 
         final List<Ephemeris> ephemerides = ephemeridesSolver.compute(bodyDetails, fromDate, toDate, interval, observerLocation);
 
+        if (LOG.isInfoEnabled()) {
+            LOG.info(String.format("Computed %d full ephemerides using '%s' method", ephemerides.size(), ephemeridesSolver.getName()));
+        }
+
         return new ComputedEphemeris<>(bodyDetails, ephemerides, ephemeridesSolver.getName());
-    }
-
-    /**
-     * Computes ephemerides for a singly body given by name.
-     * <p>
-     * Different backend ephemerides calculators can be chosen depending on which can handle given body.
-     *
-     * @param bodyName         Name of body for which the ephemerides should be computed.
-     * @param fromDate         Start of the time period for which ephemerides should be computed in Julian days.
-     * @param toDate           End of the time period for which ephemerides should be computed in Julian days.
-     * @param interval         Interval for computations in Julian days.
-     * @param observerLocation Location of observer for parallax correction.
-     */
-    public ComputedEphemeris<Ephemeris> computeOld(String bodyName, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws Exception {
-
-        if (EphemerisMethod.binary440.id.equals(ephemerisMethodPreference)) {
-            final Optional<JplBody> jplSupportedBodyForBinarySpk = this.jplBinaryKernelEphemerisCalculator.parseBody(bodyName);
-            if (jplSupportedBodyForBinarySpk.isPresent()) {
-                final JplBody body = jplSupportedBodyForBinarySpk.get();
-
-                LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s, ephemeris method: %s",
-                        body, fromDate, toDate, interval, observerLocation, EphemerisMethod.binary440));
-
-                return computeEphemerisUsingDe440(body, fromDate, toDate, interval, observerLocation);
-            }
-        }
-
-        final Optional<JplBody> jplSupportedBody = this.jplEphemerisCalculator.parseBody(bodyName);
-        if (jplSupportedBody.isPresent()) {
-            final JplBody body = jplSupportedBody.get();
-
-            LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s, ephemeris method: %s",
-                    body, fromDate, toDate, interval, observerLocation, EphemerisMethod.ascii438));
-
-            return computeEphemerisUsingAsciiSPK(body, fromDate, toDate, interval, observerLocation);
-        }
-
-        final Optional<OrbitingBodyRecord> orbitingBodyRecordOptional = this.orbitBasedEphemerisCalculator.findBody(bodyName);
-        if (orbitingBodyRecordOptional.isPresent()) {
-            final OrbitingBodyRecord orbitingBodyRecord = orbitingBodyRecordOptional.get();
-
-            LOG.info(String.format("Computing ephemerides for single body, params: [bodyName=%s, from=%s, to=%s, interval=%f], observer location: %s, ephemeris method: %s",
-                    orbitingBodyRecord.getBodyDetails().name, fromDate, toDate, interval, observerLocation, EphemerisMethod.JeanMeeus));
-
-            return computeEphemerisUsingJeanMeeus(orbitingBodyRecord, fromDate, toDate, interval, observerLocation);
-        }
-
-        throw new EphemerisException("Body not found: " + bodyName);
     }
 
     /**
@@ -167,14 +134,6 @@ public class EphemeridesOrchestrator {
                 .collect(Collectors.toList());
 
         return new ComputedEphemeris<>(body.toBodyDetails(), ephemeris, EphemerisMethod.ascii438.description);
-    }
-
-    private ComputedEphemeris<Ephemeris> computeEphemerisUsingDe440(JplBody body, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws IOException, JplException {
-        final List<Ephemeris> ephemeris = this.jplBinaryKernelEphemerisCalculator.compute(body, fromDate, toDate, interval).parallelStream()
-                .map(ParallaxCorrection.correctFor(observerLocation))
-                .collect(Collectors.toList());
-
-        return new ComputedEphemeris<>(body.toBodyDetails(), ephemeris, EphemerisMethod.binary440.description);
     }
 
     private ComputedEphemeris<Ephemeris> computeEphemerisUsingJeanMeeus(OrbitingBodyRecord orbitingBodyRecord, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation) throws VSOPException {

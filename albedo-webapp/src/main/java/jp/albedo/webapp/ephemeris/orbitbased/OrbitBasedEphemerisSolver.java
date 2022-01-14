@@ -52,8 +52,8 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
 
     @Override
     public Ephemeris compute(BodyDetails bodyDetails, double jde, ObserverLocation observerLocation) throws EphemerisException {
-        if (LOG.isInfoEnabled()) {
-            LOG.info(String.format("Solving ephemerides for observer on Earth based on orbit elements, params: [body: %s, jde=%s]", bodyDetails.name, jde));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(String.format("Solving ephemerides for observer on Earth based on orbit elements, params: [body: %s, jde=%s]", bodyDetails.name, jde));
         }
 
         final Instant start = Instant.now();
@@ -61,15 +61,15 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
         final OrbitingBodyRecord orbitingBodyRecord = this.orbitsService.getByName(bodyDetails.name)
                 .orElseThrow(() -> new EphemerisException("Cannot find orbit parameters for " + bodyDetails));
 
-        if (LOG.isInfoEnabled()) {
-            LOG.info(String.format("Found orbit elements: %s", orbitingBodyRecord));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(String.format("Found orbit elements: %s", orbitingBodyRecord));
         }
 
         try {
             final Ephemeris ephemeris = EllipticMotion.compute(jde, orbitingBodyRecord.getMagnitudeParameters(), orbitingBodyRecord.getOrbitElements());
 
-            if (LOG.isInfoEnabled()) {
-                LOG.info(String.format("Calculated ephemeris in %s", Duration.between(start, Instant.now())));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(String.format("Calculated ephemeris in %s", Duration.between(start, Instant.now())));
             }
 
             return ephemeris;
@@ -80,7 +80,7 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
 
     @Override
     public List<Ephemeris> compute(BodyDetails bodyDetails, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws EphemerisException {
-        if (LOG.isInfoEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Solving ephemerides for observer on Earth based on orbit elements, params: [body: %s, from=%s, to=%s, interval=%.2f]", bodyDetails.name, fromDate, toDate, interval));
         }
 
@@ -89,16 +89,16 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
         final OrbitingBodyRecord orbitingBodyRecord = this.orbitsService.getByName(bodyDetails.name)
                 .orElseThrow(() -> new EphemerisException("Cannot find orbit parameters for " + bodyDetails));
 
-        if (LOG.isInfoEnabled()) {
-            LOG.info(String.format("Found orbit elements: %s", orbitingBodyRecord));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(String.format("Found orbit elements: %s", orbitingBodyRecord));
         }
 
         try {
             final List<Double> JDEs = JulianDay.forRange(fromDate, toDate, interval);
             final List<Ephemeris> ephemerides = EllipticMotion.compute(JDEs, orbitingBodyRecord.getMagnitudeParameters(), orbitingBodyRecord.getOrbitElements());
 
-            if (LOG.isInfoEnabled()) {
-                LOG.info(String.format("Calculated %d ephemerides in %s", ephemerides.size(), Duration.between(start, Instant.now())));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(String.format("Calculated %d ephemerides in %s", ephemerides.size(), Duration.between(start, Instant.now())));
             }
 
             return ephemerides;
