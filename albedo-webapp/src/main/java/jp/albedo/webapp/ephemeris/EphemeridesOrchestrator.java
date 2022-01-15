@@ -47,6 +47,8 @@ public class EphemeridesOrchestrator {
             LOG.info(String.format("Computing simple ephemerides, params: [body: %s, fromDate=%s, toDate=%s, interval=%s, observer=%s]", bodyName, fromDate, toDate, interval, observerLocation));
         }
 
+        final Instant start = Instant.now();
+
         final EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getForBodyName(bodyName);
         final BodyDetails bodyDetails = ephemeridesSolver.parse(bodyName)
                 .orElseThrow(() -> new EphemerisException("Body not found: " + bodyName));
@@ -54,7 +56,7 @@ public class EphemeridesOrchestrator {
         final List<SimpleEphemeris> ephemerides = ephemeridesSolver.computeSimple(bodyDetails, fromDate, toDate, interval, observerLocation);
 
         if (LOG.isInfoEnabled()) {
-            LOG.info(String.format("Computed %d simple ephemerides using '%s' method", ephemerides.size(), ephemeridesSolver.getName()));
+            LOG.info(String.format("Computed %d simple ephemerides using '%s' method in %s", ephemerides.size(), ephemeridesSolver.getName(), Duration.between(start, Instant.now())));
         }
 
         return new ComputedEphemeris<>(bodyDetails, ephemerides, ephemeridesSolver.getName());
@@ -76,6 +78,8 @@ public class EphemeridesOrchestrator {
             LOG.info(String.format("Computing full ephemerides, params: [body: %s, fromDate=%s, toDate=%s, interval=%s, observer=%s]", bodyName, fromDate, toDate, interval, observerLocation));
         }
 
+        final Instant start = Instant.now();
+
         final EphemeridesSolver ephemeridesSolver = ephemeridesSolverProvider.getForBodyName(bodyName);
         final BodyDetails bodyDetails = ephemeridesSolver.parse(bodyName)
                 .orElseThrow(() -> new EphemerisException("Body not found: " + bodyName));
@@ -83,7 +87,7 @@ public class EphemeridesOrchestrator {
         final List<Ephemeris> ephemerides = ephemeridesSolver.compute(bodyDetails, fromDate, toDate, interval, observerLocation);
 
         if (LOG.isInfoEnabled()) {
-            LOG.info(String.format("Computed %d full ephemerides using '%s' method", ephemerides.size(), ephemeridesSolver.getName()));
+            LOG.info(String.format("Computed %d full ephemerides using '%s' method in %s", ephemerides.size(), ephemeridesSolver.getName(), Duration.between(start, Instant.now())));
         }
 
         return new ComputedEphemeris<>(bodyDetails, ephemerides, ephemeridesSolver.getName());
@@ -99,7 +103,39 @@ public class EphemeridesOrchestrator {
      * @param observerLocation Location of observer for parallax correction.
      * @return List of computed ephemerides.
      */
-    public List<ComputedEphemeris<Ephemeris>> computeAllByType(BodyType bodyType, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws IOException, JplException {
+    public List<ComputedEphemeris<Ephemeris>> computeAllByType(BodyType bodyType, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws IOException, JplException, EphemerisException {
+
+        LOG.info(String.format("Computing full ephemerides for multiple bodies, params: [bodyType=%s, from=%s, to=%s, interval=%f]",
+                bodyType, fromDate, toDate, interval));
+
+        final Instant start = Instant.now();
+
+        List<ComputedEphemeris<Ephemeris>> computedEphemerides = ephemeridesSolverProvider.getForBodyType(bodyType).parallelStream()
+                .flatMap(ephemeridesSolver ->
+                        ephemeridesSolver.getBodiesByType(bodyType).parallelStream()
+                                .map(FunctionUtils.wrap(bodyDetails -> {
+                                    List<Ephemeris> ephemerides = ephemeridesSolver.compute(bodyDetails, fromDate, toDate, interval, observerLocation);
+                                    return new ComputedEphemeris<>(bodyDetails, ephemerides, ephemeridesSolver.getName());
+                                }))
+                )
+                .collect(Collectors.toList());
+
+        LOG.info(String.format("Computed %d ephemerides in %s", computedEphemerides.size(), Duration.between(start, Instant.now())));
+
+        return computedEphemerides;
+    }
+
+    /**
+     * Computes ephemerides to all bodies of given type supported by known calculators.
+     *
+     * @param bodyType         Body type that determines for which objects ephemeris will be computed.
+     * @param fromDate         Start of the time period for which ephemerides should be computed in Julian days.
+     * @param toDate           End of the time period for which ephemerides should be computed in Julian days.
+     * @param interval         Interval for computations in Julian days.
+     * @param observerLocation Location of observer for parallax correction.
+     * @return List of computed ephemerides.
+     */
+    public List<ComputedEphemeris<Ephemeris>> computeAllByTypeOld(BodyType bodyType, Double fromDate, Double toDate, double interval, ObserverLocation observerLocation, String ephemerisMethodPreference) throws IOException, JplException {
 
         LOG.info(String.format("Computing ephemerides for multiple bodies, params: [bodyType=%s, from=%s, to=%s, interval=%f], ephemeris method preference: %s",
                 bodyType, fromDate, toDate, interval, ephemerisMethodPreference));
@@ -141,6 +177,5 @@ public class EphemeridesOrchestrator {
                 .map(ParallaxCorrection.correctFor(observerLocation))
                 .collect(Collectors.toList());
         return new ComputedEphemeris<>(orbitingBodyRecord.getBodyDetails(), ephemeris, orbitingBodyRecord.getOrbitElements(), orbitingBodyRecord.getMagnitudeParameters(), EphemerisMethod.JeanMeeus.description);
-        //return new ComputedEphemeris(orbitingBodyRecord.getBodyDetails(), ephemerisList, ENGINE_JEAN_MEEUS);
     }
 }

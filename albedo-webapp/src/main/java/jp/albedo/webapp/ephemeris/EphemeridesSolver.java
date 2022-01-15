@@ -1,6 +1,7 @@
 package jp.albedo.webapp.ephemeris;
 
 import jp.albedo.common.BodyDetails;
+import jp.albedo.common.BodyType;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.ephemeris.SimpleEphemeris;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
@@ -13,6 +14,8 @@ public interface EphemeridesSolver {
     String getName();
 
     Optional<BodyDetails> parse(String bodyName);
+
+    List<BodyDetails> getBodiesByType(BodyType bodyType);
 
     SimpleEphemeris computeSimple(BodyDetails bodyDetails, double jde, ObserverLocation observerLocation) throws EphemerisException;
 

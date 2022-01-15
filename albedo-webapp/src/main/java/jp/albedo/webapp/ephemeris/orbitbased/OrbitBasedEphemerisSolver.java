@@ -1,6 +1,7 @@
 package jp.albedo.webapp.ephemeris.orbitbased;
 
 import jp.albedo.common.BodyDetails;
+import jp.albedo.common.BodyType;
 import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.ephemeris.SimpleEphemeris;
@@ -17,13 +18,28 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
 public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
 
     private static final Log LOG = LogFactory.getLog(OrbitBasedEphemerisSolver.class);
+
+    private boolean supportedBodiesInitialised = false;
+
+    private final Map<String, BodyDetails> byBodyName = new HashMap<>();
+
+    private final Map<BodyDetails, OrbitingBodyRecord> byBodyDetails = new HashMap<>();
+
+    private final Map<BodyType, List<BodyDetails>> byBodyType = Map.of(
+            BodyType.Asteroid, new ArrayList<>(),
+            BodyType.Comet, new ArrayList<>()
+    );
 
     @Autowired
     private OrbitsService orbitsService;
@@ -36,8 +52,28 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
 
     @Override
     public Optional<BodyDetails> parse(String bodyName) {
-        return this.orbitsService.getByName(bodyName)
-                .map(OrbitingBodyRecord::getBodyDetails);
+        if (!supportedBodiesInitialised) {
+            loadSupportedBodyOrbits();
+        }
+
+        return Optional.ofNullable(byBodyName.get(bodyName));
+    }
+
+    @Override
+    public List<BodyDetails> getBodiesByType(BodyType bodyType) {
+        if (!supportedBodiesInitialised) {
+            loadSupportedBodyOrbits();
+        }
+
+        return byBodyType.getOrDefault(bodyType, Collections.emptyList());
+    }
+
+    private Optional<OrbitingBodyRecord> findBody(BodyDetails bodyDetails) {
+        if (!supportedBodiesInitialised) {
+            loadSupportedBodyOrbits();
+        }
+
+        return Optional.ofNullable(byBodyDetails.get(bodyDetails));
     }
 
     @Override
@@ -58,7 +94,7 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
 
         final Instant start = Instant.now();
 
-        final OrbitingBodyRecord orbitingBodyRecord = this.orbitsService.getByName(bodyDetails.name)
+        final OrbitingBodyRecord orbitingBodyRecord = findBody(bodyDetails)
                 .orElseThrow(() -> new EphemerisException("Cannot find orbit parameters for " + bodyDetails));
 
         if (LOG.isDebugEnabled()) {
@@ -86,7 +122,7 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
 
         final Instant start = Instant.now();
 
-        final OrbitingBodyRecord orbitingBodyRecord = this.orbitsService.getByName(bodyDetails.name)
+        final OrbitingBodyRecord orbitingBodyRecord = findBody(bodyDetails)
                 .orElseThrow(() -> new EphemerisException("Cannot find orbit parameters for " + bodyDetails));
 
         if (LOG.isDebugEnabled()) {
@@ -102,8 +138,23 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
             }
 
             return ephemerides;
-        } catch (VSOPException e) {
+        } catch (NullPointerException | VSOPException e) {
             throw new EphemerisException("Cannot compute ephemeris for " + bodyDetails, e);
         }
+    }
+
+    private void loadSupportedBodyOrbits() {
+        List.of(BodyType.Asteroid, BodyType.Comet)
+                .forEach(bodyType ->
+                        orbitsService.getByType(bodyType).stream()
+                                .filter(orbitingBodyRecord -> orbitingBodyRecord.getOrbitElements().isOrbitElliptic())
+                                .forEach(orbitingBodyRecord -> {
+                                    byBodyName.put(orbitingBodyRecord.getBodyDetails().name, orbitingBodyRecord.getBodyDetails());
+                                    byBodyDetails.put(orbitingBodyRecord.getBodyDetails(), orbitingBodyRecord);
+                                    byBodyType.get(bodyType).add(orbitingBodyRecord.getBodyDetails());
+                                })
+                );
+
+        supportedBodiesInitialised = true;
     }
 }

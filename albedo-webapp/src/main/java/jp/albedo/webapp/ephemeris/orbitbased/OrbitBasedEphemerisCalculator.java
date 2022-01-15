@@ -38,9 +38,9 @@ public class OrbitBasedEphemerisCalculator {
     public List<OrbitingBodyRecord> getSupportedBodiesByType(BodyType bodyType) {
         switch (bodyType) {
             case Asteroid:
-                return this.orbitsService.getAll(BodyType.Asteroid);
+                return this.orbitsService.getByType(BodyType.Asteroid);
             case Comet:
-                return this.orbitsService.getAll(BodyType.Comet);
+                return this.orbitsService.getByType(BodyType.Comet);
         }
         return Collections.emptyList();
     }

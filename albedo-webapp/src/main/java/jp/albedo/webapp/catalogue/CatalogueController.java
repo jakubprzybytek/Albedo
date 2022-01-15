@@ -49,7 +49,7 @@ public class CatalogueController {
 
         LOG.info(String.format("Returning comets, params: [nameFilter=\"%s\"]", nameFilter));
 
-        return this.orbitsService.getAll(BodyType.Comet).stream()
+        return this.orbitsService.getByType(BodyType.Comet).stream()
                 .filter(orbitingBodyRecord -> orbitingBodyRecord.getBodyDetails().name.contains(nameFilter))
                 .map(orbitingBodyStateCalculator::calculateState)
                 .collect(Collectors.toList());

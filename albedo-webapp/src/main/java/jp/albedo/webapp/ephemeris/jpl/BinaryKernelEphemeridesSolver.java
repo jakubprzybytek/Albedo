@@ -24,13 +24,15 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
@@ -39,9 +41,14 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
 
     private boolean supportedBodiesInitialised = false;
 
-    private List<JplBody> supportedPlanets;
+    private final Map<String, BodyDetails> byBodyName = new HashMap<>();
 
-    private List<JplBody> supportedNaturalSatellites;
+    private final Map<BodyDetails, JplBody> byBodyDetails = new HashMap<>();
+
+    private final Map<BodyType, List<BodyDetails>> byBodyType = Map.of(
+            BodyType.Planet, new ArrayList<>(),
+            BodyType.NaturalSatellite, new ArrayList<>()
+    );
 
     @Autowired
     private JplBinaryKernelsService jplBinaryKernelsService;
@@ -53,34 +60,31 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
 
     @Override
     public Optional<BodyDetails> parse(String bodyName) {
-        if (BodyDetails.SUN.name.equals(bodyName)) {
-            return Optional.of(BodyDetails.SUN);
-        }
-
         if (!supportedBodiesInitialised) {
             loadSupportedBodies();
         }
 
-        return Stream.concat(supportedPlanets.stream(), supportedNaturalSatellites.stream())
-                .filter(jplBody -> jplBody.name().equals(bodyName))
-                .findFirst()
-                .map(jplBody -> new BodyDetails(jplBody.name(), jplBody.bodyType));
+        return Optional.ofNullable(byBodyName.get(bodyName));
     }
 
-    private Optional<JplBody> findBody(BodyDetails body) throws IOException, JplException {
-        if (JplBody.Sun.name().equals(body.name)) {
-            return Optional.of(JplBody.Sun);
-        }
-
+    @Override
+    public List<BodyDetails> getBodiesByType(BodyType bodyType) {
         if (!supportedBodiesInitialised) {
             loadSupportedBodies();
         }
 
-        return Stream.concat(supportedPlanets.stream(), supportedNaturalSatellites.stream())
-                .filter(jplBody -> jplBody.name().equals(body.name) && jplBody.bodyType.equals(body.bodyType))
-                .findFirst();
+        return byBodyType.getOrDefault(bodyType, Collections.emptyList());
     }
 
+    private Optional<JplBody> findBody(BodyDetails bodyDetails) {
+        if (!supportedBodiesInitialised) {
+            loadSupportedBodies();
+        }
+
+        return Optional.ofNullable(byBodyDetails.get(bodyDetails));
+    }
+
+    @Override
     public SimpleEphemeris computeSimple(BodyDetails bodyDetails, double jde, ObserverLocation observerLocation) throws EphemerisException {
         try {
             if (LOG.isDebugEnabled()) {
@@ -105,11 +109,12 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
             }
 
             return ephemeris;
-        } catch (IOException | JplException e) {
+        } catch (JplException e) {
             throw new EphemerisException("Cannot compute ephemeris for " + bodyDetails, e);
         }
     }
 
+    @Override
     public List<SimpleEphemeris> computeSimple(BodyDetails bodyDetails, double fromDate, double toDate, double interval, ObserverLocation observerLocation) throws EphemerisException {
         try {
             if (LOG.isDebugEnabled()) {
@@ -136,7 +141,7 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
             }
 
             return ephemerides;
-        } catch (IOException | JplException e) {
+        } catch (JplException e) {
             throw new EphemerisException("Cannot compute ephemeris for " + bodyDetails, e);
         }
     }
@@ -168,7 +173,7 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
             }
 
             return ephemeris;
-        } catch (IOException | JplException e) {
+        } catch (JplException e) {
             throw new EphemerisException("Cannot compute ephemeris for " + bodyDetails, e);
         }
 
@@ -203,20 +208,23 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
             }
 
             return ephemerides;
-        } catch (IOException | JplException e) {
+        } catch (JplException e) {
             throw new EphemerisException("Cannot compute ephemeris for " + bodyDetails, e);
         }
     }
 
     private void loadSupportedBodies() {
-        supportedNaturalSatellites = jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
-                .filter(jplBody -> BodyType.NaturalSatellite == jplBody.bodyType)
-                .collect(Collectors.toList());
-
-        supportedPlanets = jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
-                .filter(jplBody -> BodyType.Planet == jplBody.bodyType)
+        jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
+                .filter(jplBody -> BodyType.NaturalSatellite == jplBody.bodyType || BodyType.Planet == jplBody.bodyType)
                 .filter(jplBody -> JplBody.Earth != jplBody)
-                .collect(Collectors.toList());
+                .forEach(jplBody -> {
+                    byBodyName.put(jplBody.name(), jplBody.toBodyDetails());
+                    byBodyDetails.put(jplBody.toBodyDetails(), jplBody);
+                    byBodyType.get(jplBody.bodyType).add(jplBody.toBodyDetails());
+                });
+
+        byBodyName.put(JplBody.Sun.name(), JplBody.Sun.toBodyDetails());
+        byBodyDetails.put(JplBody.Sun.toBodyDetails(), JplBody.Sun);
 
         supportedBodiesInitialised = true;
     }
