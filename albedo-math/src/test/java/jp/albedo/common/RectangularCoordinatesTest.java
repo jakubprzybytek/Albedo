@@ -119,4 +119,5 @@ class RectangularCoordinatesTest {
                 () -> assertThat(rotated.z).isEqualTo(0.0, within(0.0000000000000002))
         );
     }
+
 }
