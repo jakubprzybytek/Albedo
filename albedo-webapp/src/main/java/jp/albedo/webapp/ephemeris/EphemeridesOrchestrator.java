@@ -105,7 +105,10 @@ public class EphemeridesOrchestrator {
                 )
                 .collect(Collectors.toList());
 
-        LOG.info(String.format("Computed %d ephemerides in %s", computedEphemerides.size(), Duration.between(start, Instant.now())));
+        LOG.info(String.format("Computed %d ephemerides for %d bodies in %s",
+                computedEphemerides.size() > 0 ? computedEphemerides.size() * computedEphemerides.get(0).getEphemerisList().size() : 0,
+                computedEphemerides.size(),
+                Duration.between(start, Instant.now())));
 
         return computedEphemerides;
     }
