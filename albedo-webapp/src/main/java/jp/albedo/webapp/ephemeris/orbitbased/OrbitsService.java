@@ -1,5 +1,6 @@
 package jp.albedo.webapp.ephemeris.orbitbased;
 
+import jp.albedo.common.BodyDetails;
 import jp.albedo.common.BodyType;
 import jp.albedo.mpc.CometElsFileLoader;
 import jp.albedo.mpc.MPCORBFileLoader;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,11 +31,11 @@ public class OrbitsService {
     @Value("${cometEls.fileName}")
     private String cometElsFileName;
 
-    private LazyLoadedMap<OrbitingBodyRecord> asteroidOrbits = new LazyLoadedMap<>(
+    private final LazyLoadedMap<OrbitingBodyRecord> asteroidOrbits = new LazyLoadedMap<>(
             FunctionUtils.wrapSupplier(this::loadAsteroidOrbits)
     );
 
-    private LazyLoadedMap<OrbitingBodyRecord> cometsOrbits = new LazyLoadedMap<>(
+    private final LazyLoadedMap<OrbitingBodyRecord> cometsOrbits = new LazyLoadedMap<>(
             FunctionUtils.wrapSupplier(this::loadCometOrbits)
     );
 
@@ -53,7 +55,7 @@ public class OrbitsService {
      *
      * @return List of orbits for all objects that can be loaded by this service.
      */
-    public List<OrbitingBodyRecord> getAll(BodyType bodyType) {
+    public List<OrbitingBodyRecord> getByType(BodyType bodyType) {
         switch (bodyType) {
             case Asteroid:
                 return this.asteroidOrbits.getAll();

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +32,7 @@ public class JplBinaryKernelsService {
 
     private SpkKernelRepository spKernel;
 
-    private synchronized SpkKernelRepository loadSPKernel() throws JplException {
+    private synchronized SpkKernelRepository loadSPKernel() {
 
         if (this.spKernel != null) {
             return this.spKernel;
@@ -63,7 +62,7 @@ public class JplBinaryKernelsService {
         return loader.kernel();
     }
 
-    public SpkKernelRepository getSpKernel() throws IOException, JplException {
+    public SpkKernelRepository getSpKernel() {
         if (this.spKernel == null) {
             this.spKernel = loadSPKernel();
         }

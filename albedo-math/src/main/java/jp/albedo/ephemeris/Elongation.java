@@ -1,4 +1,4 @@
-package jp.albedo.common.ephemeris;
+package jp.albedo.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.Radians;

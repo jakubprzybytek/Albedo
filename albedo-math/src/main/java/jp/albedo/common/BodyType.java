@@ -11,6 +11,7 @@ public enum BodyType {
     NaturalSatellite,
     Asteroid,
     Comet,
+    Shadow,
 
     // Special body types
     Barycenter,

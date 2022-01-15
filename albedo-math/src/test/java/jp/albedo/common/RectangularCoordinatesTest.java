@@ -119,4 +119,19 @@ class RectangularCoordinatesTest {
                 () -> assertThat(rotated.z).isEqualTo(0.0, within(0.0000000000000002))
         );
     }
+
+    @Test
+    public void negateAndProject() {
+        RectangularCoordinates origin = new RectangularCoordinates(-10.0, -10.0, -10.0);
+        RectangularCoordinates nagatedAndProjected = origin
+                .negate()
+                .normalize()
+                .multiplyBy(5.0);
+
+        Assertions.assertAll(
+                () -> assertThat(nagatedAndProjected.x).isEqualTo(5.0),
+                () -> assertThat(nagatedAndProjected.y).isEqualTo(5.0),
+                () -> assertThat(nagatedAndProjected.z).isEqualTo(5.0)
+        );
+    }
 }
