@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CometsOrchestrator {
@@ -19,7 +20,9 @@ public class CometsOrchestrator {
     private EphemeridesOrchestrator ephemeridesOrchestrator;
 
     public List<ComputedEphemeris<Ephemeris>> getBrightComets(Double jde, Double magnitudeLimit, ObserverLocation observerLocation) throws EphemerisException {
-        return ephemeridesOrchestrator.computeAllByType(BodyType.Comet, jde, jde, 0.0, observerLocation, EphemerisMethod.JeanMeeus.id);
+        return ephemeridesOrchestrator.computeAllByType(BodyType.Comet, jde, jde, 0.0, observerLocation, EphemerisMethod.JeanMeeus.id).stream()
+                .filter(computedEphemeris -> computedEphemeris.getEphemerisList().get(0).apparentMagnitude <= magnitudeLimit)
+                .collect(Collectors.toList());
     }
 
 }

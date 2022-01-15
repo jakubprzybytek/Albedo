@@ -63,6 +63,7 @@ public class EclipsesOrchestrator {
 
         final EphemeridesSolver ephemeridesSolver = this.ephemeridesSolverProvider.getForBodyName(BodyDetails.SUN.name); // the same solver should work for moon and Earth Shadow
 
+        // ToDo: make ephemeris computation parallel
         final List<SimpleEphemeris> sunEphemerides = ephemeridesSolver.computeSimple(BodyDetails.SUN, fromDate, toDate, PRELIMINARY_INTERVAL, observerLocation);
         LOG.info(String.format("Computed %d ephemerides for Sun using %s", sunEphemerides.size(), ephemeridesSolver.getName()));
 
