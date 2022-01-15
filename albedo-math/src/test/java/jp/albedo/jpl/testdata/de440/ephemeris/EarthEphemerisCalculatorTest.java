@@ -4,7 +4,7 @@ import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.ephemeris.impl.EphemeridesForEarthCalculator;
+import jp.albedo.jpl.ephemeris.impl.EphemeridesForSolarSystemBodiesCalculator;
 import jp.albedo.jpl.testdata.de440.TestData_de440;
 import jp.albedo.jpl.utils.AstronomicalCoordinatesFromStringConverter;
 import jp.albedo.jpl.utils.JdeFromDateStringConverter;
@@ -25,7 +25,7 @@ public class EarthEphemerisCalculatorTest {
               @ConvertWith(AstronomicalCoordinatesFromStringConverter.class) AstronomicalCoordinates expectedCoords,
               double range,
               double magnitude) throws JplException {
-        EphemeridesForEarthCalculator ephemeridesCalculator = new EphemeridesForEarthCalculator(TestData_de440.SPK_KERNEL, target);
+        EphemeridesForSolarSystemBodiesCalculator ephemeridesCalculator = new EphemeridesForSolarSystemBodiesCalculator(TestData_de440.SPK_KERNEL, target);
 
         Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
         System.out.printf("%s ephemeris: %s%n", target, ephemeris.toStringHighPrecision());

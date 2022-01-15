@@ -9,23 +9,24 @@ import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
 import jp.albedo.jpl.files.util.EphemerisSeconds;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
+import jp.albedo.jpl.state.Correction;
 import jp.albedo.jpl.state.StateSolver;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JPL's Kernel based ephemerides calculator for main Solar System objects but for observer on Sun.
+ * JPL's Kernel based ephemerides calculator for main Solar System objects .
  */
-public class SimpleEphemeridesForSunCalculator implements EphemeridesCalculator<SimpleEphemeris> {
+public class SimpleEphemeridesForSolarSystemBodiesCalculator implements EphemeridesCalculator<SimpleEphemeris> {
 
-    private final StateSolver sunToBodyStateSolver;
+    private final StateSolver earthToBodyStateSolver;
 
-    public SimpleEphemeridesForSunCalculator(SpkKernelRepository kernel, JplBody body) throws JplException {
-        this.sunToBodyStateSolver = kernel.stateSolver()
+    public SimpleEphemeridesForSolarSystemBodiesCalculator(SpkKernelRepository kernel, JplBody body) throws JplException {
+        this.earthToBodyStateSolver = kernel.stateSolver()
                 .target(body)
-                .observer(JplBody.Sun)
-                //.corrections(Correction.LightTime, Correction.StarAberration)
+                .observer(JplBody.Earth)
+                .corrections(Correction.LightTime, Correction.StarAberration)
                 .build();
     }
 
@@ -42,13 +43,13 @@ public class SimpleEphemeridesForSunCalculator implements EphemeridesCalculator<
         for (double jde : jdes) {
             final double ephemerisSeconds = EphemerisSeconds.fromJde(jde);
 
-            final RectangularCoordinates sunToBodyCoordsKm = sunToBodyStateSolver.positionFor(ephemerisSeconds);
-            final AstronomicalCoordinates sunToBodyAstroCoords = AstronomicalCoordinates.fromRectangular(sunToBodyCoordsKm);
+            final RectangularCoordinates earthToBodyCoordsKm = earthToBodyStateSolver.positionFor(ephemerisSeconds);
+            final AstronomicalCoordinates earthToBodyAstroCoords = AstronomicalCoordinates.fromRectangular(earthToBodyCoordsKm);
 
             ephemerides.add(new SimpleEphemeris(
                     jde,
-                    sunToBodyAstroCoords,
-                    sunToBodyCoordsKm.length() / JplConstant.AU));
+                    earthToBodyAstroCoords,
+                    earthToBodyCoordsKm.length() / JplConstant.AU));
         }
 
         return ephemerides;

@@ -18,11 +18,11 @@ import java.util.List;
 /**
  * JPL's Kernel based ephemerides calculator for main Solar System objects .
  */
-public class EarthShadowSimpleEphemeridesForEarthCalculator implements EphemeridesCalculator<SimpleEphemeris> {
+public class SimpleEphemeridesForEarthShadowCalculator implements EphemeridesCalculator<SimpleEphemeris> {
 
     private final StateSolver earthToBodyStateSolver;
 
-    public EarthShadowSimpleEphemeridesForEarthCalculator(SpkKernelRepository kernel) throws JplException {
+    public SimpleEphemeridesForEarthShadowCalculator(SpkKernelRepository kernel) throws JplException {
         this.earthToBodyStateSolver = kernel.stateSolver()
                 .target(JplBody.Sun)
                 .observer(JplBody.Earth)

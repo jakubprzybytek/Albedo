@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * JPL's Kernel based ephemerides calculator for main Solar System objects .
  */
-public class EphemeridesForEarthCalculator implements EphemeridesCalculator<Ephemeris> {
+public class EphemeridesForSolarSystemBodiesCalculator implements EphemeridesCalculator<Ephemeris> {
 
     private final double bodyEquatorialRadius;
 
@@ -36,7 +36,7 @@ public class EphemeridesForEarthCalculator implements EphemeridesCalculator<Ephe
 
     private final Optional<ApparentMagnitudeCalculator> magnitudeCalculator;
 
-    public EphemeridesForEarthCalculator(SpkKernelRepository kernel, JplBody body) throws JplException {
+    public EphemeridesForSolarSystemBodiesCalculator(SpkKernelRepository kernel, JplBody body) throws JplException {
         this.earthToBodyStateSolver = kernel.stateSolver()
                 .target(body)
                 .observer(JplBody.Earth)

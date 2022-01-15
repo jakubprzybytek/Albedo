@@ -9,11 +9,11 @@ import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.ephemeris.EphemeridesCalculator;
-import jp.albedo.jpl.ephemeris.impl.EarthShadowEphemeridesForEarthCalculator;
-import jp.albedo.jpl.ephemeris.impl.EarthShadowSimpleEphemeridesForEarthCalculator;
-import jp.albedo.jpl.ephemeris.impl.EphemeridesForEarthCalculator;
-import jp.albedo.jpl.ephemeris.impl.SimpleEphemeridesForEarthCalculator;
-import jp.albedo.jpl.ephemeris.impl.SunEphemeridesForEarthCalculator;
+import jp.albedo.jpl.ephemeris.impl.EphemeridesForEarthShadowCalculator;
+import jp.albedo.jpl.ephemeris.impl.SimpleEphemeridesForEarthShadowCalculator;
+import jp.albedo.jpl.ephemeris.impl.EphemeridesForSolarSystemBodiesCalculator;
+import jp.albedo.jpl.ephemeris.impl.SimpleEphemeridesForSolarSystemBodiesCalculator;
+import jp.albedo.jpl.ephemeris.impl.EphemeridesForSunCalculator;
 import jp.albedo.webapp.ephemeris.EphemeridesSolver;
 import jp.albedo.webapp.ephemeris.EphemerisException;
 import jp.albedo.webapp.ephemeris.EphemerisMethod;
@@ -95,10 +95,10 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
 
             final EphemeridesCalculator<SimpleEphemeris> ephemeridesCalculator;
             if (BodyDetails.EARTH_SHADOW.equals(bodyDetails)) {
-                ephemeridesCalculator = new EarthShadowSimpleEphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel());
+                ephemeridesCalculator = new SimpleEphemeridesForEarthShadowCalculator(jplBinaryKernelsService.getSpKernel());
             } else {
                 final JplBody body = findBody(bodyDetails).orElseThrow(() -> new EphemerisException("Cannot find JLP body for " + bodyDetails));
-                ephemeridesCalculator = new SimpleEphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel(), body);
+                ephemeridesCalculator = new SimpleEphemeridesForSolarSystemBodiesCalculator(jplBinaryKernelsService.getSpKernel(), body);
             }
 
             final SimpleEphemeris ephemeris = SimpleEphemerisParallaxCorrection.correctFor(observerLocation)
@@ -125,10 +125,10 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
 
             final EphemeridesCalculator<SimpleEphemeris> ephemeridesCalculator;
             if (BodyDetails.EARTH_SHADOW.equals(bodyDetails)) {
-                ephemeridesCalculator = new EarthShadowSimpleEphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel());
+                ephemeridesCalculator = new SimpleEphemeridesForEarthShadowCalculator(jplBinaryKernelsService.getSpKernel());
             } else {
                 final JplBody body = findBody(bodyDetails).orElseThrow(() -> new EphemerisException("Cannot find JLP body for " + bodyDetails));
-                ephemeridesCalculator = new SimpleEphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel(), body);
+                ephemeridesCalculator = new SimpleEphemeridesForSolarSystemBodiesCalculator(jplBinaryKernelsService.getSpKernel(), body);
             }
 
             final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);
@@ -157,12 +157,12 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
 
             EphemeridesCalculator<Ephemeris> ephemeridesCalculator;
             if (BodyDetails.EARTH_SHADOW.equals(bodyDetails)) {
-                ephemeridesCalculator = new EarthShadowEphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel());
+                ephemeridesCalculator = new EphemeridesForEarthShadowCalculator(jplBinaryKernelsService.getSpKernel());
             } else if (BodyDetails.SUN.equals(bodyDetails)) {
-                ephemeridesCalculator = new SunEphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel());
+                ephemeridesCalculator = new EphemeridesForSunCalculator(jplBinaryKernelsService.getSpKernel());
             } else {
                 final JplBody body = findBody(bodyDetails).orElseThrow(() -> new EphemerisException("Cannot find JLP body for " + bodyDetails));
-                ephemeridesCalculator = new EphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel(), body);
+                ephemeridesCalculator = new EphemeridesForSolarSystemBodiesCalculator(jplBinaryKernelsService.getSpKernel(), body);
             }
 
             final Ephemeris uncorrectedEphemeris = ephemeridesCalculator.computeFor(jde);
@@ -190,12 +190,12 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
 
             EphemeridesCalculator<Ephemeris> ephemeridesCalculator;
             if (BodyDetails.EARTH_SHADOW.equals(bodyDetails)) {
-                ephemeridesCalculator = new EarthShadowEphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel());
+                ephemeridesCalculator = new EphemeridesForEarthShadowCalculator(jplBinaryKernelsService.getSpKernel());
             } else if (BodyDetails.SUN.equals(bodyDetails)) {
-                ephemeridesCalculator = new SunEphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel());
+                ephemeridesCalculator = new EphemeridesForSunCalculator(jplBinaryKernelsService.getSpKernel());
             } else {
                 final JplBody body = findBody(bodyDetails).orElseThrow(() -> new EphemerisException("Cannot find JLP body for " + bodyDetails));
-                ephemeridesCalculator = new EphemeridesForEarthCalculator(jplBinaryKernelsService.getSpKernel(), body);
+                ephemeridesCalculator = new EphemeridesForSolarSystemBodiesCalculator(jplBinaryKernelsService.getSpKernel(), body);
             }
 
             final List<Double> jdes = JulianDay.forRange(fromDate, toDate, interval);

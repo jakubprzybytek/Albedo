@@ -5,7 +5,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jpl.JplBody;
 import jp.albedo.jpl.JplException;
-import jp.albedo.jpl.ephemeris.impl.EphemeridesForEarthCalculator;
+import jp.albedo.jpl.ephemeris.impl.EphemeridesForSolarSystemBodiesCalculator;
 import jp.albedo.jpl.testdata.de438.TestData_de438;
 import jp.albedo.jpl.kernel.SpkKernelRepository;
 import jp.albedo.testutils.AlbedoAssertions;
@@ -32,7 +32,7 @@ class EarthEphemeridesCalculatorTest {
     @ParameterizedTest
     @MethodSource
     void test(JplBody target, double jde, AstronomicalCoordinates expectedCoords, double expectedElongation, double magnitude) throws JplException {
-        EphemeridesForEarthCalculator ephemeridesCalculator = new EphemeridesForEarthCalculator(kernel, target);
+        EphemeridesForSolarSystemBodiesCalculator ephemeridesCalculator = new EphemeridesForSolarSystemBodiesCalculator(kernel, target);
 
         Ephemeris ephemeris = ephemeridesCalculator.computeFor(jde);
         System.out.printf("%s ephemeris: %s%n", target, ephemeris.toStringHighPrecision());
