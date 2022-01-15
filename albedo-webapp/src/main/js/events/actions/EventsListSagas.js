@@ -77,7 +77,7 @@ export function* fetchFutureEvents() {
       enabled: true,
       planetsEnabled: true
     },
-    { enabled: false },
+    { enabled: true },
     store.observerLocation,
     store.timeZone,
     store.engineSettings)
