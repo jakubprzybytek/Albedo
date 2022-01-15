@@ -11,6 +11,7 @@ import jp.albedo.vsop87.VSOPException;
 import jp.albedo.webapp.ephemeris.EphemeridesSolver;
 import jp.albedo.webapp.ephemeris.EphemerisException;
 import jp.albedo.webapp.ephemeris.EphemerisMethod;
+import jp.albedo.webapp.ephemeris.ParallaxCorrection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
@@ -102,7 +104,9 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
         }
 
         try {
-            final Ephemeris ephemeris = EllipticMotion.compute(jde, orbitingBodyRecord.getMagnitudeParameters(), orbitingBodyRecord.getOrbitElements());
+            final Ephemeris ephemeris = ParallaxCorrection.correctFor(observerLocation).apply(
+                    EllipticMotion.compute(jde, orbitingBodyRecord.getMagnitudeParameters(), orbitingBodyRecord.getOrbitElements())
+            );
 
             if (LOG.isDebugEnabled()) {
                 LOG.debug(String.format("Calculated ephemeris in %s", Duration.between(start, Instant.now())));
@@ -131,7 +135,9 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
 
         try {
             final List<Double> JDEs = JulianDay.forRange(fromDate, toDate, interval);
-            final List<Ephemeris> ephemerides = EllipticMotion.compute(JDEs, orbitingBodyRecord.getMagnitudeParameters(), orbitingBodyRecord.getOrbitElements());
+            final List<Ephemeris> ephemerides = EllipticMotion.compute(JDEs, orbitingBodyRecord.getMagnitudeParameters(), orbitingBodyRecord.getOrbitElements()).stream()
+                    .map(ParallaxCorrection.correctFor(observerLocation))
+                    .collect(Collectors.toList());
 
             if (LOG.isDebugEnabled()) {
                 LOG.debug(String.format("Calculated %d ephemerides in %s", ephemerides.size(), Duration.between(start, Instant.now())));
