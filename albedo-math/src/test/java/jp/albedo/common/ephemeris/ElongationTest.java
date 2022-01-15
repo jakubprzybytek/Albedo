@@ -1,8 +1,7 @@
 package jp.albedo.common.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
-import jp.albedo.common.Radians;
-import jp.albedo.common.RectangularCoordinates;
+import jp.albedo.ephemeris.Elongation;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

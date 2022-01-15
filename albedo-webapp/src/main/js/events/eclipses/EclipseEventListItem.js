@@ -33,7 +33,7 @@ export default function EclipseEventListItem(props) {
 
   return (
     <ExpandableEventListItem event={event} expanded={expanded} toggleHandler={toggleHandler} expandedPanel={expandedPanel}>
-      Sun Eclipse with separation of {formatDegrees(event.separation)}.
+      {event.eclipsed.bodyDetails.name} Eclipse with separation of {formatDegrees(event.separation)}.
     </ExpandableEventListItem>
   );
 }

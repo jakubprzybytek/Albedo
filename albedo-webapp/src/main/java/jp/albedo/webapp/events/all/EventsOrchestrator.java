@@ -74,13 +74,13 @@ public class EventsOrchestrator {
 
         if (!conjunctionBodyNames.isEmpty() || !conjunctionPrimaryBodyTypes.isEmpty()) {
             astronomicalEvents.addAll(this.conjunctionsOrchestrator.computeForTwoMovingBodies(
-                    conjunctionBodyNames,
-                    conjunctionPrimaryBodyTypes,
-                    conjunctionSecondaryBodyTypes,
-                    fromDate,
-                    toDate + 1.0,
-                    observerLocation,
-                    ephemerisMethodPreference)
+                            conjunctionBodyNames,
+                            conjunctionPrimaryBodyTypes,
+                            conjunctionSecondaryBodyTypes,
+                            fromDate,
+                            toDate + 1.0,
+                            observerLocation,
+                            ephemerisMethodPreference)
                     .stream()
                     .filter(conjunction -> conjunction.jde > fromDate) // FixMe
                     .filter(conjunctionTwoBodyEventsFilter)
@@ -89,13 +89,13 @@ public class EventsOrchestrator {
         }
         if ((!conjunctionBodyNames.isEmpty() || !conjunctionPrimaryBodyTypes.isEmpty()) && !conjunctionCatalogues.isEmpty()) {
             astronomicalEvents.addAll(this.conjunctionsOrchestrator.computeForBodyAndCatalogueEntry(
-                    conjunctionBodyNames,
-                    conjunctionPrimaryBodyTypes,
-                    conjunctionCatalogues,
-                    fromDate,
-                    toDate + 1.0,
-                    observerLocation,
-                    ephemerisMethodPreference)
+                            conjunctionBodyNames,
+                            conjunctionPrimaryBodyTypes,
+                            conjunctionCatalogues,
+                            fromDate,
+                            toDate + 1.0,
+                            observerLocation,
+                            ephemerisMethodPreference)
                     .stream()
                     .filter(conjunction -> conjunction.jde > fromDate) // FixMe
                     .filter(conjunctionBodyAndCatalogueEventsFilter)

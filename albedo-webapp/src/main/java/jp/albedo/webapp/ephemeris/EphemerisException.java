@@ -6,4 +6,7 @@ public class EphemerisException extends Exception {
         super(message);
     }
 
+    public EphemerisException(String message, Throwable t) {
+        super(message, t);
+    }
 }

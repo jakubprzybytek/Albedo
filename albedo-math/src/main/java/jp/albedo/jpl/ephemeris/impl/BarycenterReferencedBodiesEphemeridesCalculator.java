@@ -3,8 +3,8 @@ package jp.albedo.jpl.ephemeris.impl;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyInformation;
 import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.common.ephemeris.Elongation;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Elongation;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.common.magnitude.ApparentMagnitudeCalculator;
 import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
 import jp.albedo.jpl.JplBody;
@@ -24,7 +24,7 @@ import java.util.Optional;
  * JPL's Kernel based ephemerides calculator for main Solar System objects.
  */
 @Deprecated
-public class BarycenterReferencedBodiesEphemeridesCalculator implements EphemeridesCalculator {
+public class BarycenterReferencedBodiesEphemeridesCalculator implements EphemeridesCalculator<Ephemeris> {
 
     private final double speedOfLight;
 

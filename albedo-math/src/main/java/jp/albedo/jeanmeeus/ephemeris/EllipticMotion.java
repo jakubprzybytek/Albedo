@@ -2,8 +2,8 @@ package jp.albedo.jeanmeeus.ephemeris;
 
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.common.ephemeris.Elongation;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Elongation;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.common.magnitude.MagnitudeParameters;
 import jp.albedo.common.magnitude.MinorPlanetMagnitudeCalculator;
 import jp.albedo.jeanmeeus.ephemeris.common.LightTime;
@@ -28,7 +28,7 @@ public class EllipticMotion {
      * @throws VSOPException
      */
     static public Ephemeris compute(double jde, MagnitudeParameters magnitudeParameters, OrbitElements orbitParams) throws VSOPException {
-        return compute(Arrays.asList(jde), magnitudeParameters, orbitParams).get(0);
+        return compute(List.of(jde), magnitudeParameters, orbitParams).get(0);
     }
 
     /**

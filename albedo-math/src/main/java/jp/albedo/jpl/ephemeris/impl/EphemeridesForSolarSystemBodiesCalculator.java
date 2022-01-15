@@ -3,8 +3,8 @@ package jp.albedo.jpl.ephemeris.impl;
 import jp.albedo.common.AstronomicalCoordinates;
 import jp.albedo.common.BodyInformation;
 import jp.albedo.common.RectangularCoordinates;
-import jp.albedo.common.ephemeris.Elongation;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Elongation;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.common.magnitude.ApparentMagnitudeCalculator;
 import jp.albedo.jeanmeeus.ephemeris.common.AngularSize;
 import jp.albedo.jpl.JplBody;
@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * JPL's Kernel based ephemerides calculator for main Solar System objects .
  */
-public class EarthEphemeridesCalculator implements EphemeridesCalculator {
+public class EphemeridesForSolarSystemBodiesCalculator implements EphemeridesCalculator<Ephemeris> {
 
     private final double bodyEquatorialRadius;
 
@@ -36,7 +36,7 @@ public class EarthEphemeridesCalculator implements EphemeridesCalculator {
 
     private final Optional<ApparentMagnitudeCalculator> magnitudeCalculator;
 
-    public EarthEphemeridesCalculator(SpkKernelRepository kernel, JplBody body) throws JplException {
+    public EphemeridesForSolarSystemBodiesCalculator(SpkKernelRepository kernel, JplBody body) throws JplException {
         this.earthToBodyStateSolver = kernel.stateSolver()
                 .target(body)
                 .observer(JplBody.Earth)

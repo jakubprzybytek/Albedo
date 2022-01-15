@@ -1,6 +1,6 @@
 package jp.albedo.webapp.altitude;
 
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.sidereal.HourAngle;
 import jp.albedo.jeanmeeus.sidereal.SiderealTime;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;

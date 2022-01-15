@@ -1,6 +1,7 @@
 package jp.albedo.webapp.comets;
 
 import jp.albedo.common.JulianDay;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.jeanmeeus.topocentric.GeographicCoordinates;
 import jp.albedo.jeanmeeus.topocentric.ObserverLocation;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
@@ -26,7 +27,7 @@ public class BrightCometsController {
     private CometsOrchestrator cometsOrchestrator;
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/comets/bright")
-    public List<ComputedEphemeris> getBrightComets(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+    public List<ComputedEphemeris<Ephemeris>> getBrightComets(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                    @RequestParam(name = "magnitudeLimit", defaultValue = "10.0") double magnitudeLimit,
                                                    @RequestParam("longitude") double observerLongitude,
                                                    @RequestParam("latitude") double observerLatitude,
@@ -38,7 +39,7 @@ public class BrightCometsController {
 
         LOG.info(String.format("Returning bright comets, params: [date=%s]", date));
 
-        final List<ComputedEphemeris> computedEphemerides = this.cometsOrchestrator.getBrightComets(JulianDay.fromDate(date), magnitudeLimit, observerLocation);
+        final List<ComputedEphemeris<Ephemeris>> computedEphemerides = this.cometsOrchestrator.getBrightComets(JulianDay.fromDate(date), magnitudeLimit, observerLocation);
 
         return computedEphemerides;
     }

@@ -26,31 +26,58 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-flex',
     flexWrap: 'wrap',
   },
+  drawing: {
+    marginTop: theme.spacing(1)
+  }
 }));
 
-function EclipseDrawing(props) {
+function EclipseDrawing({ eclipse }) {
+  const eclipsedBodyRadius = eclipse.eclipsed.ephemeris.angularSize / 2.0;
+  const eclipsingBodyRadius = eclipse.eclipsing.ephemeris.angularSize / 2.0;
 
-  const { eclipse } = props;
-
-  const sunRadius = eclipse.sun.ephemeris.angularSize / 2.0;
-  const moonRadius = eclipse.moon.ephemeris.angularSize / 2.0;
-  const longestDimention = (sunRadius / 2 + eclipse.separation + moonRadius) * 1.5;
-  const scale = 500 / longestDimention;
-
-  const positionAngle = eclipse.positionAngle * Math.PI / 180.0;
-  const x = eclipse.separation * Math.sin(positionAngle) / 2 * scale;
-  const y = eclipse.separation * Math.cos(positionAngle) / 2 * scale;
+  const { scale, x, y } = calculateScale(eclipsedBodyRadius, eclipsingBodyRadius, eclipse.separation, eclipse.positionAngle);
 
   const classes = useStyles();
 
   return (
-    <svg viewBox="0 0 500 500" style={{ backgroundColor: 'lightblue' }}>
+    <svg viewBox="0 0 500 500" className={classes.drawing} style={{ backgroundColor: 'lightblue' }}>
       <g>
-          <circle cx={250 - x} cy={250 - y} r={sunRadius * scale} stroke="orange" strokeWidth="2" fill='yellow'></circle>
-          <circle cx={250 + x} cy={250 + y} r={moonRadius * scale} stroke="grey" strokeWidth="2" fill='#585858'></circle>
+          <circle cx={250 - x} cy={250 - y} r={eclipsedBodyRadius * scale} stroke="orange" strokeWidth="2" fill='yellow'></circle>
+          <circle cx={250 + x} cy={250 + y} r={eclipsingBodyRadius * scale} stroke="grey" strokeWidth="2" fill='#585858'></circle>
       </g>
     </svg>
   );
+}
+
+function MoonEclipseDrawing({ eclipse }) {
+  const eclipsedBodyRadius = eclipse.eclipsed.ephemeris.angularSize / 2.0;
+  const earthUmbraRadius = eclipse.eclipsing.earthShadow.umbraAngularSize / 2.0;
+  const earthPenumbraRadius = eclipse.eclipsing.earthShadow.penumbraAngularSize / 2.0;
+
+  const { scale, x, y } = calculateScale(eclipsedBodyRadius, earthUmbraRadius, eclipse.separation, eclipse.positionAngle);
+
+  const classes = useStyles();
+
+  return (
+    <svg viewBox="0 0 500 500" className={classes.drawing} style={{ backgroundColor: 'darkblue' }}>
+      <g>
+        <circle cx={250 + x} cy={250 + y} r={earthPenumbraRadius * scale} stroke="grey" strokeWidth="2" fill='#787878'></circle>
+        <circle cx={250 + x} cy={250 + y} r={earthUmbraRadius * scale} stroke="grey" strokeWidth="2" fill='#585858'></circle>
+        <circle cx={250 - x} cy={250 - y} r={eclipsedBodyRadius * scale} stroke="orange" strokeWidth="2" fill='silver'></circle>
+      </g>
+    </svg>
+  );
+}
+
+function calculateScale(firstObjectRadius, secondObjectRadius, separation, positionAngle) {
+  const longestDimention = (firstObjectRadius / 2 + separation + secondObjectRadius) * 1.5;
+  const scale = 500 / longestDimention;
+
+  const positionAngleRad = positionAngle * Math.PI / 180.0;
+  const x = separation * Math.sin(positionAngleRad) / 2 * scale;
+  const y = separation * Math.cos(positionAngleRad) / 2 * scale;
+
+  return { scale, x, y }
 }
 
 export default function EclipseCard(props) {
@@ -75,7 +102,8 @@ export default function EclipseCard(props) {
             {eclipse.positionAngle && eclipse.positionAngle.toFixed(1) + '°'}
           </Typography>
         </Typography>
-        <EclipseDrawing eclipse={eclipse} />
+        {eclipse.eclipsed.bodyDetails.name === 'Sun' && <EclipseDrawing eclipse={eclipse} />}
+        {eclipse.eclipsed.bodyDetails.name === 'Moon' && <MoonEclipseDrawing eclipse={eclipse} />}
       </CardContent>
     </Card>
   );

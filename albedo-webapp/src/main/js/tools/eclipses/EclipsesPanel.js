@@ -6,6 +6,7 @@ import EclipsesForm from './EclipsesForm';
 import EclipsesTable from './EclipsesTable';
 import EclipseCard from './EclipseCard';
 import BodyCard from '../../components/BodyCard';
+import EarthShadowCard from './EarthShadowCard';
 
 const useStyles = makeStyles(theme => ({
   area: {
@@ -40,17 +41,20 @@ export default function EclipsesPanel() {
         </div>
       </Grid>
       <Grid item xs={3}>
-        {selectedEvent && <div>
+        {selectedEvent && <>
           <div className={classes.card}>
             <EclipseCard eclipse={selectedEvent} />
           </div>
           <div className={classes.card}>
-            <BodyCard bodyInfo={selectedEvent.sun} />
+            <BodyCard bodyInfo={selectedEvent.eclipsed} />
           </div>
-          <div className={classes.card}>
-            <BodyCard bodyInfo={selectedEvent.moon} />
-          </div>
-        </div>}
+          {selectedEvent.eclipsing && <div className={classes.card}>
+            <BodyCard bodyInfo={selectedEvent.eclipsing} />
+          </div>}
+          {selectedEvent.eclipsing.earthShadow && <div className={classes.card}>
+            <EarthShadowCard objectInfo={selectedEvent.eclipsing} />
+          </div>}
+        </>}
       </Grid>
     </Grid>
   );

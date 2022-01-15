@@ -2,7 +2,7 @@ package jp.albedo.webapp.ephemeris.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.albedo.common.JulianDay;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.webapp.rest.WrappedEvent;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
 
@@ -22,7 +22,7 @@ public class EphemeridesResponse {
     @JsonProperty
     private final String engine;
 
-    public EphemeridesResponse(ComputedEphemeris computedEphemeris, ZoneId zoneId) {
+    public EphemeridesResponse(ComputedEphemeris<Ephemeris> computedEphemeris, ZoneId zoneId) {
         this.bodyInfo = new BodyInfo(computedEphemeris.getBodyDetails(), computedEphemeris.getOrbitElements(), computedEphemeris.getMagnitudeParameters());
         this.engine = computedEphemeris.getEngine();
 

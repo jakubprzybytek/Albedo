@@ -43,7 +43,7 @@ export default function EclipsesTable(props) {
                 <LocalDateTimeChip time={event.localTime} jd={event.jde} />
               </TableCell>
               <TableCell component="th" scope="row" align="center">
-                Sun eclipse
+                {event.eclipsed.bodyDetails.name} eclipse
               </TableCell>
               <TableCell component="th" scope="row" align="center">
                 {formatDegrees(event.separation)}

@@ -3,7 +3,7 @@ package jp.albedo.webapp.conjunctions;
 import jp.albedo.catalogue.CatalogueEntry;
 import jp.albedo.common.BodyDetails;
 import jp.albedo.common.Radians;
-import jp.albedo.common.ephemeris.Ephemeris;
+import jp.albedo.ephemeris.Ephemeris;
 import jp.albedo.utils.StreamUtils;
 import jp.albedo.webapp.conjunctions.impl.LocalMinimumsFindingCollector;
 import jp.albedo.webapp.ephemeris.ComputedEphemeris;
@@ -30,7 +30,7 @@ public class ConjunctionFinder {
      * @param maxSeparation Maximal separation that would constitute for a conjunctions. Encounters separated more than that will be ignored.
      * @return List of conjunctions.
      */
-    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(Pair<ComputedEphemeris, ComputedEphemeris> pairOfBodies, double maxSeparation) {
+    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(Pair<ComputedEphemeris<Ephemeris>, ComputedEphemeris<Ephemeris>> pairOfBodies, double maxSeparation) {
         return forTwoBodies(Collections.singletonList(pairOfBodies), maxSeparation);
     }
 
@@ -41,7 +41,7 @@ public class ConjunctionFinder {
      * @param maxSeparation Maximal separation that would constitute for a conjunctions. Encounters separated more than that will be ignored.
      * @return List of conjunctions.
      */
-    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(List<Pair<ComputedEphemeris, ComputedEphemeris>> pairOfBodies, double maxSeparation) {
+    public static List<Conjunction<BodyDetails, BodyDetails>> forTwoBodies(List<Pair<ComputedEphemeris<Ephemeris>, ComputedEphemeris<Ephemeris>>> pairOfBodies, double maxSeparation) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d body pairs", pairOfBodies.size()));
@@ -74,7 +74,7 @@ public class ConjunctionFinder {
      * @param maxSeparation Maximal separation that would constitute for a conjunctions. Encounters separated more than that will be ignored.
      * @return List of conjunctions.
      */
-    public static List<Conjunction<BodyDetails, CatalogueEntry>> forBodyAndCatalogueEntry(List<Pair<ComputedEphemeris, CatalogueEntry>> pairToCompare, double maxSeparation) {
+    public static List<Conjunction<BodyDetails, CatalogueEntry>> forBodyAndCatalogueEntry(List<Pair<ComputedEphemeris<Ephemeris>, CatalogueEntry>> pairToCompare, double maxSeparation) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Calculating conjunctions for %d pairs of objects", pairToCompare.size()));
@@ -106,7 +106,7 @@ public class ConjunctionFinder {
      * @param pairOfBodies
      * @return List of conjunctions.
      */
-    static List<Conjunction<BodyDetails, BodyDetails>> findConjunctionsBetweenTwoBodies(Pair<ComputedEphemeris, ComputedEphemeris> pairOfBodies) {
+    static List<Conjunction<BodyDetails, BodyDetails>> findConjunctionsBetweenTwoBodies(Pair<ComputedEphemeris<Ephemeris>, ComputedEphemeris<Ephemeris>> pairOfBodies) {
 
         return StreamUtils
                 .zip(
@@ -137,7 +137,7 @@ public class ConjunctionFinder {
      * @param pairToCompare
      * @return List of conjunctions.
      */
-    static List<Conjunction<BodyDetails, CatalogueEntry>> findConjunctionsBetweenBodyAndCatalogueEntry(Pair<ComputedEphemeris, CatalogueEntry> pairToCompare) {
+    static List<Conjunction<BodyDetails, CatalogueEntry>> findConjunctionsBetweenBodyAndCatalogueEntry(Pair<ComputedEphemeris<Ephemeris>, CatalogueEntry> pairToCompare) {
 
         return pairToCompare.getFirst().getEphemerisList().stream()
                 .collect(LocalMinimumsFindingCollector.of(
