@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class JplBinaryKernelsService {
+public class BinaryKernelsService {
 
-    private static final Log LOG = LogFactory.getLog(JplBinaryKernelsService.class);
+    private static final Log LOG = LogFactory.getLog(BinaryKernelsService.class);
 
     @Value("${binarySpkKernel.loadData.startDate}")
     private String loadDataStartDate;

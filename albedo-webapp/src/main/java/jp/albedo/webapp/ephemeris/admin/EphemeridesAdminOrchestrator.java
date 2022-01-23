@@ -4,7 +4,7 @@ import jp.albedo.common.JulianDay;
 import jp.albedo.jpl.JplException;
 import jp.albedo.jpl.kernel.SpkKernelCollection;
 import jp.albedo.webapp.ephemeris.admin.rest.KernelInfo;
-import jp.albedo.webapp.ephemeris.jpl.JplBinaryKernelsService;
+import jp.albedo.webapp.ephemeris.jpl.BinaryKernelsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 public class EphemeridesAdminOrchestrator {
 
     @Autowired
-    private JplBinaryKernelsService jplBinaryKernelsService;
+    private BinaryKernelsService binaryKernelsService;
 
     public List<KernelInfo> listKernels() throws IOException, JplException {
-        return jplBinaryKernelsService.getSpKernel().registeredKernelsStream()
+        return binaryKernelsService.getSpKernel().registeredKernelsStream()
                 .map(this::describeSpkKernelCollection)
                 .collect(Collectors.toList());
     }
