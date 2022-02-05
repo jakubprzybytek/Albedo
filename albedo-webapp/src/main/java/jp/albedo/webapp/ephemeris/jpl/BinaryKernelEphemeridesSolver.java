@@ -213,20 +213,22 @@ public class BinaryKernelEphemeridesSolver implements EphemeridesSolver {
         }
     }
 
-    private void loadSupportedBodies() {
-        jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
-                .filter(jplBody -> BodyType.NaturalSatellite == jplBody.bodyType || BodyType.Planet == jplBody.bodyType)
-                .filter(jplBody -> JplBody.Earth != jplBody)
-                .forEach(jplBody -> {
-                    byBodyName.put(jplBody.name(), jplBody.toBodyDetails());
-                    byBodyDetails.put(jplBody.toBodyDetails(), jplBody);
-                    byBodyType.get(jplBody.bodyType).add(jplBody.toBodyDetails());
-                });
+    private synchronized void loadSupportedBodies() {
+        if (!supportedBodiesInitialised) {
+            jplBinaryKernelsService.getSpKernel().registeredBodiesStream()
+                    .filter(jplBody -> BodyType.NaturalSatellite == jplBody.bodyType || BodyType.Planet == jplBody.bodyType)
+                    .filter(jplBody -> JplBody.Earth != jplBody)
+                    .forEach(jplBody -> {
+                        byBodyName.put(jplBody.name(), jplBody.toBodyDetails());
+                        byBodyDetails.put(jplBody.toBodyDetails(), jplBody);
+                        byBodyType.get(jplBody.bodyType).add(jplBody.toBodyDetails());
+                    });
 
-        byBodyName.put(JplBody.Sun.name(), JplBody.Sun.toBodyDetails());
-        byBodyDetails.put(JplBody.Sun.toBodyDetails(), JplBody.Sun);
+            byBodyName.put(JplBody.Sun.name(), JplBody.Sun.toBodyDetails());
+            byBodyDetails.put(JplBody.Sun.toBodyDetails(), JplBody.Sun);
 
-        supportedBodiesInitialised = true;
+            supportedBodiesInitialised = true;
+        }
     }
 
 }

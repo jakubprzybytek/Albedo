@@ -149,18 +149,20 @@ public class OrbitBasedEphemerisSolver implements EphemeridesSolver {
         }
     }
 
-    private void loadSupportedBodyOrbits() {
-        List.of(BodyType.Asteroid, BodyType.Comet)
-                .forEach(bodyType ->
-                        orbitsService.getByType(bodyType).stream()
-                                .filter(orbitingBodyRecord -> orbitingBodyRecord.getOrbitElements().isOrbitElliptic())
-                                .forEach(orbitingBodyRecord -> {
-                                    byBodyName.put(orbitingBodyRecord.getBodyDetails().name, orbitingBodyRecord.getBodyDetails());
-                                    byBodyDetails.put(orbitingBodyRecord.getBodyDetails(), orbitingBodyRecord);
-                                    byBodyType.get(bodyType).add(orbitingBodyRecord.getBodyDetails());
-                                })
-                );
+    private synchronized void loadSupportedBodyOrbits() {
+        if (!supportedBodiesInitialised) {
+            List.of(BodyType.Asteroid, BodyType.Comet)
+                    .forEach(bodyType ->
+                            orbitsService.getByType(bodyType).stream()
+                                    .filter(orbitingBodyRecord -> orbitingBodyRecord.getOrbitElements().isOrbitElliptic())
+                                    .forEach(orbitingBodyRecord -> {
+                                        byBodyName.put(orbitingBodyRecord.getBodyDetails().name, orbitingBodyRecord.getBodyDetails());
+                                        byBodyDetails.put(orbitingBodyRecord.getBodyDetails(), orbitingBodyRecord);
+                                        byBodyType.get(bodyType).add(orbitingBodyRecord.getBodyDetails());
+                                    })
+                    );
 
-        supportedBodiesInitialised = true;
+            supportedBodiesInitialised = true;
+        }
     }
 }

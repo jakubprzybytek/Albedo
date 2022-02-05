@@ -9,8 +9,6 @@
 .project
 .settings
 
-package-lock.json
-
 target
 misc
 node_modules
