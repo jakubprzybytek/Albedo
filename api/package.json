@@ -1,0 +1,12 @@
+{
+  "name": "@Albedo/api",
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {},
+  "dependencies": {
+    "aws-sdk": "^2.1155.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.100"
+  }
+}

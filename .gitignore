@@ -1,15 +1,12 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-.idea
-.classpath
-.project
-.settings
-
-target
-misc
+# dependencies
 node_modules
-albedo-webapp/src/main/resources/static/built
+
+# sst
+.sst
+.build
+
+# misc
+.DS_Store
+
+# local env files
+.env*.local
