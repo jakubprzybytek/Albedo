@@ -1,11 +1,21 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["functions"],
+  "include": ["functions/**/*.ts", "math"],
   "compilerOptions": {
     "module": "esnext",
     "target": "es2017",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@math": ["./math"],
+      "@math/*": ["./math/*"],
+      "@jpl": ["./math/jpl"],
+      "@jpl/*": ["./math/jpl/*"]
+    }
+  },
+  "ts-node": {
+      "esm": true
   }
 }
