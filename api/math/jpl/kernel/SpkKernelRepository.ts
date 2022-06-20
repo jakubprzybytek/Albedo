@@ -7,7 +7,7 @@ export class SpkKernelRepository {
     readonly spkKernelCollections: Forest<JplBody, SpkKernelCollection> = new Forest();
 
     registerSpkKernelCollection(newCollection: SpkKernelCollection) {
-        console.log(`Registering spk records for ${newCollection.body} w.r.t. ${newCollection.centerBody}`);
+        console.log(`Registering SPK records for ${newCollection.body.bodyId} w.r.t. ${newCollection.centerBody.bodyId}`);
 
         const existingCollection = this.spkKernelCollections.findEdge(newCollection.centerBody, newCollection.body);
 

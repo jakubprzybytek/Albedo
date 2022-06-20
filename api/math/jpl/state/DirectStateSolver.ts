@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from 'math';
+import { RectangularCoordinates } from '../..';
 import { SpkKernelCollection } from "@jpl/kernel";
 import { StateSolver } from "./";
 import { PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from './chebyshev';

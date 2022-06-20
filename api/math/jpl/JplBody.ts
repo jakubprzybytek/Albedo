@@ -20,7 +20,7 @@ export class JplBody {
     public static readonly SaturnBarycenter = new JplBody(6, BodyType.Barycenter);
     public static readonly UranusBarycenter = new JplBody(7, BodyType.Barycenter);
     public static readonly NeptuneBarycenter = new JplBody(8, BodyType.Barycenter);
-    public static readonly  PlutoBarycenter = new JplBody(9, BodyType.Barycenter);
+    public static readonly PlutoBarycenter = new JplBody(9, BodyType.Barycenter);
 
     public static readonly Sun = new JplBody(10, BodyType.Star);
 

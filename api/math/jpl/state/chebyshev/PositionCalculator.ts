@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from 'math';
+import { RectangularCoordinates } from '../../..';
 import { PositionChebyshevRecord } from '@jpl/kernel';
 import { ChebyshevPolynomialExpander } from './';
 

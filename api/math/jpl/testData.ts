@@ -48,12 +48,7 @@ const MERCURY_FOR_2019_10_09: SpkKernelCollection = {
 
 export const kernelRepository: SpkKernelRepository = new SpkKernelRepository();
 kernelRepository.registerSpkKernelCollections([
+    SUN_FOR_2019_10_09,
     MERCURY_BARYCENTER_FOR_2019_10_09,
     MERCURY_FOR_2019_10_09
 ]);
-
-
-export const stateSolver: StateSolver = new DirectStateSolver([
-    MERCURY_BARYCENTER_FOR_2019_10_09,
-    MERCURY_FOR_2019_10_09
-], false);
