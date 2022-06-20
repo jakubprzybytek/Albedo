@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { JulianDay } from '@math';
 import { EphemerisSeconds } from '@jpl';
-import { stateSolver } from '../math/jpl/test';
+import { stateSolver } from '../math/jpl/testData';
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 

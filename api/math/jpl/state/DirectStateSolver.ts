@@ -9,7 +9,7 @@ export class DirectStateSolver implements StateSolver {
 
     readonly negate: boolean;
 
-    constructor(spkKernelCollections: SpkKernelCollection[], negate: boolean) {
+    constructor(spkKernelCollections: SpkKernelCollection[], negate: boolean = false) {
         this.calculators = spkKernelCollections
             .map(this.buildCalculator);
         this.negate = negate;
