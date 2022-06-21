@@ -10,6 +10,7 @@ describe("DE440 data", () => {
         const spkForMercury = kernelRepository.getAllTransientSpkKernelCollections(JplBody.Mercury);
         const mercuryStateSolver = new DirectStateSolver(spkForMercury);
         console.log(mercuryStateSolver.positionFor(EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9))));
+        console.log(mercuryStateSolver.velocityFor(EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 9))));
     });
 
 });

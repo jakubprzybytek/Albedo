@@ -1,27 +1,31 @@
 import { RectangularCoordinates } from '../../..';
 import { PositionChebyshevRecord } from '@jpl/kernel';
+import { ForwardLookingArray } from '../../utils';
 import { PositionAndVelocityCalculator, ChebyshevPolynomialExpander } from '.';
 
 const DERIVATIVE_STEP_SIZE = 20.0; // seconds
 
 export class PositionAndVelocitySolvingCalculator implements PositionAndVelocityCalculator {
 
-    readonly positionChebyshevRecords: PositionChebyshevRecord[];
-
-    cachedPositionChebyshevRecord!: PositionChebyshevRecord;
+    readonly positionChebyshevRecords: ForwardLookingArray<PositionChebyshevRecord>;
 
     constructor(positionChebyshevRecords: PositionChebyshevRecord[]) {
-        this.positionChebyshevRecords = positionChebyshevRecords;
+        this.positionChebyshevRecords = new ForwardLookingArray(positionChebyshevRecords);
     }
 
     positionFor(ephemerisSeconds: number): RectangularCoordinates {
-        const record = this.findPositionChebyshevRecord(ephemerisSeconds);
+        const record = this.positionChebyshevRecords.find(record => record.timeSpan.inside(ephemerisSeconds));
+
+        if (record === undefined) {
+            throw new Error(`No position Chebyshev records found for jde=${ephemerisSeconds}`);
+        }
+
         const normalizedTime = record.timeSpan.normalizeFor(ephemerisSeconds);
 
         return new RectangularCoordinates(
-            new ChebyshevPolynomialExpander(this.cachedPositionChebyshevRecord.positionCoefficients.x).computeFor(normalizedTime),
-            new ChebyshevPolynomialExpander(this.cachedPositionChebyshevRecord.positionCoefficients.y).computeFor(normalizedTime),
-            new ChebyshevPolynomialExpander(this.cachedPositionChebyshevRecord.positionCoefficients.z).computeFor(normalizedTime)
+            new ChebyshevPolynomialExpander(record.positionCoefficients.x).computeFor(normalizedTime),
+            new ChebyshevPolynomialExpander(record.positionCoefficients.y).computeFor(normalizedTime),
+            new ChebyshevPolynomialExpander(record.positionCoefficients.z).computeFor(normalizedTime)
         );
     }
 
@@ -36,17 +40,4 @@ export class PositionAndVelocitySolvingCalculator implements PositionAndVelocity
         );
     }
 
-    private findPositionChebyshevRecord(ephemerisSeconds: number): PositionChebyshevRecord {
-        if (this.cachedPositionChebyshevRecord === undefined || !this.cachedPositionChebyshevRecord.timeSpan.inside(ephemerisSeconds)) {
-            const foundRecord = this.positionChebyshevRecords
-                .find(record => record.timeSpan.inside(ephemerisSeconds));
-
-            if (foundRecord === undefined) {
-                throw new Error(`No position Chebyshev records found for jde=${ephemerisSeconds}`);
-            }
-
-            this.cachedPositionChebyshevRecord = foundRecord;
-        }
-        return this.cachedPositionChebyshevRecord;
-    }
 }
