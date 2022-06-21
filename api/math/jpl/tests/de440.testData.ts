@@ -1,6 +1,5 @@
-import { TimeSpan, XYZCoefficients, SpkKernelCollection, SpkKernelRepository } from './kernel';
-import { StateSolver, DirectStateSolver } from './state';
-import { JplBody } from '.';
+import { TimeSpan, XYZCoefficients, SpkKernelCollection, SpkKernelRepository } from '../kernel';
+import { JplBody } from '..';
 
 const sunTimeSpan = new TimeSpan(6.22728E8, 6.241104E8);
 const sunCoefficients: XYZCoefficients = {
