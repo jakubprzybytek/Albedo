@@ -6,13 +6,6 @@
     "target": "es2021",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "@math": ["./math"],
-      "@math/*": ["./math/*"],
-      "@jpl": ["./math/jpl"],
-      "@jpl/*": ["./math/jpl/*"]
-    }
   },
   "ts-node": {
       "esm": true

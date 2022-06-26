@@ -8,7 +8,7 @@ const sunCoefficients: XYZCoefficients = {
     z: [450996.32930615003, -215.0135880794347, -11.226174968401923, -0.03109580797745313, 0.0012350020163736574, 1.0431197409908896E-5, 2.589970133605912E-6, 2.6550244922659776E-8, 1.3018428655934041E-8, 3.57210963473656E-10, 1.941252776869667E-11]
 };
 
-const SUN_FOR_2019_10_09: SpkKernelCollection = {
+export const SUN_FOR_2019_10_09: SpkKernelCollection = {
     kernelFileName: "Test",
     body: JplBody.Sun,
     centerBody: JplBody.SolarSystemBarycenter,
@@ -23,7 +23,7 @@ const mecuryBarycenterCoefficients: XYZCoefficients = {
     z: [-3.1874360491296835E7, -659006.1992306064, 388161.499669195, 3528.004727854257, -131.72219233525072, -1.8889580803456458, -0.3352057813149339, -0.006850623679890459, -3.9984825636191505E-4, -7.296155221573185E-6, -1.5317954709297716E-7, 3.7489065968233876E-9, 6.526294327412687E-10, -1.5308274352127492E-10]
 };
 
-const MERCURY_BARYCENTER_FOR_2019_10_09: SpkKernelCollection = {
+export const MERCURY_BARYCENTER_FOR_2019_10_09: SpkKernelCollection = {
     kernelFileName: "Test",
     body: JplBody.MercuryBarycenter,
     centerBody: JplBody.SolarSystemBarycenter,
@@ -38,7 +38,7 @@ const mercuryCoefficients: XYZCoefficients = {
     z: [0.0, 0.0],
 };
 
-const MERCURY_FOR_2019_10_09: SpkKernelCollection = {
+export const MERCURY_FOR_2019_10_09: SpkKernelCollection = {
     kernelFileName: "Test",
     body: JplBody.Mercury,
     centerBody: JplBody.MercuryBarycenter,

@@ -1,7 +1,6 @@
 import { RectangularCoordinates } from '../..';
-import { SpkKernelCollection } from "@jpl/kernel";
-import { StateSolver } from "./";
-import { PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from './chebyshev';
+import { SpkKernelCollection } from "../kernel";
+import { StateSolver, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "./";
 
 export class DirectStateSolver implements StateSolver {
 
