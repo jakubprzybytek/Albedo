@@ -1,7 +1,7 @@
 import { RectangularCoordinates } from '../../..';
 import { ForwardLookingArray } from '../../utils';
 import { PositionChebyshevRecord } from '../../kernel';
-import { PositionAndVelocityCalculator, ChebyshevPolynomialExpander } from '..';
+import { PositionAndVelocityCalculator, ChebyshevPolynomialExpander } from './';
 
 const DERIVATIVE_STEP_SIZE = 20.0; // seconds
 
