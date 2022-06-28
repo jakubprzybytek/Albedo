@@ -29,11 +29,11 @@ export class JplBody {
     // Venus(299, BodyType.Planet),
 
     // Moon(301, BodyType.NaturalSatellite),
-    // Earth(399, BodyType.Planet),
+    public static readonly Earth = new JplBody(399, BodyType.Planet);
 
-    // Phobos(401, BodyType.NaturalSatellite),
-    // Deimos(402, BodyType.NaturalSatellite),
-    // Mars(499, BodyType.Planet),
+    public static readonly Phobos = new JplBody(401, BodyType.NaturalSatellite);
+    public static readonly Deimos = new JplBody(402, BodyType.NaturalSatellite);
+    public static readonly Mars = new JplBody(499, BodyType.Planet);
 
     // Io(501, BodyType.NaturalSatellite),
     // Europa(502, BodyType.NaturalSatellite),
@@ -109,4 +109,7 @@ export class JplBody {
     //     return new BodyDetails(this.name(), bodyType);
     // }
 
+    public toString = () : string => {
+        return `(${this.bodyId})`;
+    }
 }

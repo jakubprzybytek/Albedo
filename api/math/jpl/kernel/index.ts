@@ -4,6 +4,9 @@ export * from './SpkKernelRepository';
 import { JplBody } from '../JplBody';
 import { TimeSpan } from './';
 
+export * from './TimeSpan';
+export * from './SpkKernelRepository';
+
 export type XYZCoefficients = {
     x: number[];
     y: number[];

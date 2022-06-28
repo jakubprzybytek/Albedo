@@ -1,12 +1,13 @@
-import { JplBody, SpkKernelRepository } from "../";
+import { JplBody } from "../";
+import { SpkKernelRepository } from "../kernel";
 import { StateSolver, DirectStateSolver } from "./";
 
 export class StateSolverBuilder {
 
-    readonly spkKernel: SpkKernelRepository;
+    private readonly spkKernel: SpkKernelRepository;
 
-    targetBody?: JplBody;
-    observerBody?: JplBody;
+    private targetBody?: JplBody;
+    private observerBody?: JplBody;
 
     constructor(spkKernel: SpkKernelRepository) {
         this.spkKernel = spkKernel;
@@ -30,23 +31,21 @@ export class StateSolverBuilder {
         const spkForTarget = this.spkKernel.getAllTransientSpkKernelCollections(this.targetBody);
 
         // check if observer is on the path for target
-        while (spkForTarget.length > 0 && spkForTarget[0].centerBody !== this.observerBody) {
-            spkForTarget.unshift();
-        }
+        const observerIndex = spkForTarget
+            .findIndex(spkKernelCollection => spkKernelCollection.centerBody === this.observerBody);
 
-        if (spkForTarget.length > 0) {
-            return new DirectStateSolver(spkForTarget);
+        if (observerIndex >= 0) {
+            return new DirectStateSolver(spkForTarget.slice(observerIndex));
         }
 
         const spkForObserver = this.spkKernel.getAllTransientSpkKernelCollections(this.observerBody);
 
         // check if target is on the spkRecords for observer
-        while (spkForObserver.length > 0 && spkForObserver[0].centerBody !== this.targetBody) {
-            spkForObserver.unshift();
-        }
+        const targetIndex = spkForObserver
+            .findIndex(spkKernelCollection => spkKernelCollection.centerBody === this.targetBody);
 
         if (spkForObserver.length > 0) {
-            return new DirectStateSolver(spkForObserver, true);
+            return new DirectStateSolver(spkForObserver.slice(targetIndex), true);
         }
 
         throw Error(`Cannot create state solver for '${this.targetBody}' w.r.t. '${this.observerBody}'`);
