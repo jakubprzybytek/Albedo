@@ -74,5 +74,7 @@ export const kernelRepository: SpkKernelRepository = new SpkKernelRepository();
 kernelRepository.registerSpkKernelCollections([
     SUN_FOR_2019_10_09,
     MERCURY_BARYCENTER_FOR_2019_10_09,
-    MERCURY_FOR_2019_10_09
+    MERCURY_FOR_2019_10_09,
+    EARTH_MOON_BARYCENTER_FOR_2019_10_09,
+    EARTH_FOR_2019_10_09,
 ]);

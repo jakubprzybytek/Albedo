@@ -1,11 +1,10 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { JulianDay } from '@math';
-import { JplBody, EphemerisSeconds } from '@jpl';
+import { JulianDay } from '../math';
+import { JplBody, EphemerisSeconds } from '../math/jpl';
 import { DirectStateSolver } from '../math/jpl/state';
 import { kernelRepository } from '../math/jpl/tests/de440.testData';
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
-
   const spkForMercury = kernelRepository.getAllTransientSpkKernelCollections(JplBody.Mercury);
   const mercuryStateSolver = new DirectStateSolver(spkForMercury);
 

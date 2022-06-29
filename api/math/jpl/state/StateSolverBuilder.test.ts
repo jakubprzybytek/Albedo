@@ -16,8 +16,8 @@ describe("StateSolverBuilder", () => {
 
     it("should use DirectStateSolver when bodies are in close relation to each other", () => {
         const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository)
-            .target(JplBody.Earth)
-            .observer(JplBody.SolarSystemBarycenter);
+            .forTarget(JplBody.Earth)
+            .forObserver(JplBody.SolarSystemBarycenter);
 
         const buildDirectStateSolver = vi.spyOn(stateSolverBuilder, 'buildDirectStateSolver');
 
@@ -32,8 +32,8 @@ describe("StateSolverBuilder", () => {
 
     it("should use DirectStateSolver when bodies are in close relation to each other in opposite direction that in kernel configuration", () => {
         const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository)
-            .target(JplBody.EarthMoonBarycenter)
-            .observer(JplBody.Earth);
+            .forTarget(JplBody.EarthMoonBarycenter)
+            .forObserver(JplBody.Earth);
 
         const buildDirectStateSolver = vi.spyOn(stateSolverBuilder, 'buildDirectStateSolver');
 

@@ -13,12 +13,12 @@ export class StateSolverBuilder {
         this.spkKernel = spkKernel;
     }
 
-    target(targetBody: JplBody): StateSolverBuilder {
+    forTarget(targetBody: JplBody): StateSolverBuilder {
         this.targetBody = targetBody;
         return this;
     }
 
-    observer(observerBody: JplBody): StateSolverBuilder {
+    forObserver(observerBody: JplBody): StateSolverBuilder {
         this.observerBody = observerBody;
         return this;
     }
