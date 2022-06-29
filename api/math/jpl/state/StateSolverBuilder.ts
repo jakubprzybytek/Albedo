@@ -1,5 +1,5 @@
 import { JplBody } from "../";
-import { SpkKernelRepository } from "../kernel";
+import { SpkKernelRepository, SpkKernelCollection } from "../kernel";
 import { StateSolver, DirectStateSolver } from "./";
 
 export class StateSolverBuilder {
@@ -35,7 +35,7 @@ export class StateSolverBuilder {
             .findIndex(spkKernelCollection => spkKernelCollection.centerBody === this.observerBody);
 
         if (observerIndex >= 0) {
-            return new DirectStateSolver(spkForTarget.slice(observerIndex));
+            return this.buildDirectStateSolver(spkForTarget.slice(observerIndex));
         }
 
         const spkForObserver = this.spkKernel.getAllTransientSpkKernelCollections(this.observerBody);
@@ -45,10 +45,14 @@ export class StateSolverBuilder {
             .findIndex(spkKernelCollection => spkKernelCollection.centerBody === this.targetBody);
 
         if (spkForObserver.length > 0) {
-            return new DirectStateSolver(spkForObserver.slice(targetIndex), true);
+            return this.buildDirectStateSolver(spkForObserver.slice(targetIndex), true);
         }
 
         throw Error(`Cannot create state solver for '${this.targetBody}' w.r.t. '${this.observerBody}'`);
+    }
+
+    buildDirectStateSolver(spkKernelCollections: SpkKernelCollection[], negate: boolean = false) {
+        return new DirectStateSolver(spkKernelCollections, negate)
     }
 
 }

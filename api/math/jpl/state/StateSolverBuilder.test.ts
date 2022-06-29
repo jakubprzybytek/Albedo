@@ -1,44 +1,48 @@
-import { vi, describe, it, beforeAll, expect } from "vitest";
+import { vi, describe, it, expect } from "vitest";
 import { JplBody } from "../";
-import { SpkKernelRepository } from "../kernel";
-import { StateSolverBuilder, DirectStateSolver } from "./";
+import { SpkKernelCollection, SpkKernelRepository } from "../kernel";
+import { StateSolverBuilder } from "./";
+
+const earthMoonSpk: SpkKernelCollection = { kernelFileName: '', body: JplBody.EarthMoonBarycenter, centerBody: JplBody.SolarSystemBarycenter, positionData: [] };
+const earthSpk: SpkKernelCollection = { kernelFileName: '', body: JplBody.Earth, centerBody: JplBody.EarthMoonBarycenter, positionData: [] };
 
 const spkKernelRepository = new SpkKernelRepository();
 spkKernelRepository.registerSpkKernelCollections([
-    { kernelFileName: '', body: JplBody.EarthMoonBarycenter, centerBody: JplBody.SolarSystemBarycenter, positionData: [] },
-    { kernelFileName: '', body: JplBody.Earth, centerBody: JplBody.EarthMoonBarycenter, positionData: [] }
+    earthMoonSpk,
+    earthSpk
 ]);
 
 describe("StateSolverBuilder", () => {
 
     it("should use DirectStateSolver when bodies are in close relation to each other", () => {
-        const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository);
-        stateSolverBuilder.target(JplBody.Earth);
-        stateSolverBuilder.observer(JplBody.SolarSystemBarycenter);
-        
-        const stateSolver = stateSolverBuilder.build();
+        const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository)
+            .target(JplBody.Earth)
+            .observer(JplBody.SolarSystemBarycenter);
 
-        expect(stateSolver).toBeInstanceOf(DirectStateSolver);
+        const buildDirectStateSolver = vi.spyOn(stateSolverBuilder, 'buildDirectStateSolver');
 
-        const directStateSolcer = stateSolver as DirectStateSolver;
+        stateSolverBuilder.build();
 
-        expect(directStateSolcer.negate).toBeFalsy();
-        expect(directStateSolcer.calculators).toHaveLength(2);
+        expect(buildDirectStateSolver).toBeCalledTimes(1);
+        expect(buildDirectStateSolver).toBeCalledWith([
+            earthMoonSpk,
+            earthSpk,
+        ]);
     });
 
     it("should use DirectStateSolver when bodies are in close relation to each other in opposite direction that in kernel configuration", () => {
-        const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository);
-        stateSolverBuilder.target(JplBody.EarthMoonBarycenter);
-        stateSolverBuilder.observer(JplBody.Earth);
-        
-        const stateSolver = stateSolverBuilder.build();
+        const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository)
+            .target(JplBody.EarthMoonBarycenter)
+            .observer(JplBody.Earth);
 
-        expect(stateSolver).toBeInstanceOf(DirectStateSolver);
+        const buildDirectStateSolver = vi.spyOn(stateSolverBuilder, 'buildDirectStateSolver');
 
-        const directStateSolcer = stateSolver as DirectStateSolver;
+        stateSolverBuilder.build();
 
-        expect(directStateSolcer.negate).toBeTruthy();
-        expect(directStateSolcer.calculators).toHaveLength(1);
+        expect(buildDirectStateSolver).toBeCalledTimes(1);
+        expect(buildDirectStateSolver).toBeCalledWith([
+            earthSpk,
+        ], true);
     });
 
 });
