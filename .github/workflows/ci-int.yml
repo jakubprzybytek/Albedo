@@ -16,10 +16,10 @@ env:
 
 jobs:
 
-  unit-test:
+  deploy:
     runs-on: ubuntu-latest
 
-    name: Unit tests
+    name: Deploy Int
 
     steps:
       - uses: actions/checkout@v2
@@ -28,16 +28,6 @@ jobs:
 
       - name: Run unit tests
         run: npm test
-
-  deploy:
-    runs-on: ubuntu-latest
-
-    name: Deploy Int
-
-    needs: [ unit-test ]
-
-    steps:
-      - uses: actions/checkout@v2
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
