@@ -1,5 +1,5 @@
 import { TimeSpan, XYZCoefficients, SpkKernelCollection, SpkKernelRepository } from '../kernel';
-import { JplBody } from '..';
+import { JplBodyId } from '..';
 
 const sunCoefficients: XYZCoefficients = {
     x: [-455990.8605211873, -10164.153171569056, -0.34116709362255426, 0.15909081160831753, 0.0018506343197832423, 9.679889959136377E-6, 7.012612128750007E-7, -3.7966953317498574E-8, 3.335068702399374E-9, -1.8160396887491537E-9, -2.7202449287697574E-11],
@@ -9,8 +9,8 @@ const sunCoefficients: XYZCoefficients = {
 
 export const SUN_FOR_2019_10_09: SpkKernelCollection = {
     kernelFileName: "Test",
-    body: JplBody.Sun,
-    centerBody: JplBody.SolarSystemBarycenter,
+    bodyId: JplBodyId.Sun,
+    centerBodyId: JplBodyId.SolarSystemBarycenter,
     positionData: [{ timeSpan: new TimeSpan(6.22728E8, 6.241104E8), positionCoefficients: sunCoefficients }]
 };
 
@@ -23,8 +23,8 @@ const mecuryBarycenterCoefficients: XYZCoefficients = {
 
 export const MERCURY_BARYCENTER_FOR_2019_10_09: SpkKernelCollection = {
     kernelFileName: "Test",
-    body: JplBody.MercuryBarycenter,
-    centerBody: JplBody.SolarSystemBarycenter,
+    bodyId: JplBodyId.MercuryBarycenter,
+    centerBodyId: JplBodyId.SolarSystemBarycenter,
     positionData: [{ timeSpan: new TimeSpan(6.234192E8, 6.241104E8), positionCoefficients: mecuryBarycenterCoefficients }]
 };
 
@@ -37,8 +37,8 @@ const mercuryCoefficients: XYZCoefficients = {
 
 export const MERCURY_FOR_2019_10_09: SpkKernelCollection = {
     kernelFileName: "Test",
-    body: JplBody.Mercury,
-    centerBody: JplBody.MercuryBarycenter,
+    bodyId: JplBodyId.Mercury,
+    centerBodyId: JplBodyId.MercuryBarycenter,
     positionData: [{ timeSpan: new TimeSpan(-1.42007472E10, 2.05140816E10), positionCoefficients: mercuryCoefficients }]
 };
 
@@ -51,8 +51,8 @@ const earthBarycenterCoefficients: XYZCoefficients = {
 
 export const EARTH_MOON_BARYCENTER_FOR_2019_10_09: SpkKernelCollection = {
     kernelFileName: "Test",
-    body: JplBody.EarthMoonBarycenter,
-    centerBody: JplBody.SolarSystemBarycenter,
+    bodyId: JplBodyId.EarthMoonBarycenter,
+    centerBodyId: JplBodyId.SolarSystemBarycenter,
     positionData: [{ timeSpan: new TimeSpan(6.22728E8, 6.241104E8), positionCoefficients: earthBarycenterCoefficients }]
 };
 
@@ -64,8 +64,8 @@ const earthCoefficients: XYZCoefficients = {
 
 export const EARTH_FOR_2019_10_09: SpkKernelCollection = {
     kernelFileName: "Test",
-    body: JplBody.Earth,
-    centerBody: JplBody.EarthMoonBarycenter,
+    bodyId: JplBodyId.Earth,
+    centerBodyId: JplBodyId.EarthMoonBarycenter,
     positionData: [{ timeSpan: new TimeSpan(6.22728E8, 6.241104E8), positionCoefficients: earthCoefficients }]
 };
 

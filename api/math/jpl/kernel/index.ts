@@ -1,7 +1,7 @@
 export * from './TimeSpan';
 export * from './SpkKernelRepository';
 
-import { JplBody } from '../JplBody';
+import { JplBodyId } from '../JplBody';
 import { TimeSpan } from './';
 
 export * from './TimeSpan';
@@ -20,7 +20,7 @@ export type PositionChebyshevRecord = {
 
 export type SpkKernelCollection = {
     kernelFileName: string;
-    body: JplBody;
-    centerBody: JplBody;
+    bodyId: JplBodyId;
+    centerBodyId: JplBodyId;
     positionData: PositionChebyshevRecord[];
 }

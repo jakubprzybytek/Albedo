@@ -1,4 +1,4 @@
-import { JplBody } from "../";
+import { JplBodyId } from "../";
 import { SpkKernelRepository, SpkKernelCollection } from "../kernel";
 import { StateSolver, DirectStateSolver } from "./";
 
@@ -6,25 +6,25 @@ export class StateSolverBuilder {
 
     private readonly spkKernel: SpkKernelRepository;
 
-    private targetBody?: JplBody;
-    private observerBody?: JplBody;
+    private targetBody?: JplBodyId;
+    private observerBody?: JplBodyId;
 
     constructor(spkKernel: SpkKernelRepository) {
         this.spkKernel = spkKernel;
     }
 
-    forTarget(targetBody: JplBody): StateSolverBuilder {
+    forTarget(targetBody: JplBodyId): StateSolverBuilder {
         this.targetBody = targetBody;
         return this;
     }
 
-    forObserver(observerBody: JplBody): StateSolverBuilder {
+    forObserver(observerBody: JplBodyId): StateSolverBuilder {
         this.observerBody = observerBody;
         return this;
     }
 
     build(): StateSolver {
-        if (!this.targetBody || !this.observerBody) {
+        if (this.targetBody === undefined || this.observerBody === undefined) {
             throw Error('Both target body and observer body need to be defined.');
         }
 
@@ -32,7 +32,7 @@ export class StateSolverBuilder {
 
         // check if observer is on the path for target
         const observerIndex = spkForTarget
-            .findIndex(spkKernelCollection => spkKernelCollection.centerBody === this.observerBody);
+            .findIndex(spkKernelCollection => spkKernelCollection.centerBodyId === this.observerBody);
 
         if (observerIndex >= 0) {
             return this.buildDirectStateSolver(spkForTarget.slice(observerIndex));
@@ -42,7 +42,7 @@ export class StateSolverBuilder {
 
         // check if target is on the spkRecords for observer
         const targetIndex = spkForObserver
-            .findIndex(spkKernelCollection => spkKernelCollection.centerBody === this.targetBody);
+            .findIndex(spkKernelCollection => spkKernelCollection.centerBodyId === this.targetBody);
 
         if (spkForObserver.length > 0) {
             return this.buildDirectStateSolver(spkForObserver.slice(targetIndex), true);

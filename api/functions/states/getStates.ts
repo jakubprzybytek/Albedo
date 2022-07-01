@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { JulianDay } from '../../math';
-import { JplBody, EphemerisSeconds } from '../../math/jpl';
+import { EphemerisSeconds, jplBodyFromString } from '../../math/jpl';
 import { kernelRepository } from '../../math/jpl/tests/de440.testData';
 
 type GetStatesParams = {
@@ -14,9 +14,21 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
         throw Error("Following parameters are required: 'target', 'observer'");
     }
 
+    const targetJplBody = jplBodyFromString(target);
+
+    if (targetJplBody == undefined) {
+        throw Error(`Cannot parse JPL body from '${target}'`);
+    }
+
+    const observerJplBody = jplBodyFromString(observer);
+
+    if (observerJplBody === undefined) {
+        throw Error(`Cannot parse JPL body from '${observer}'`);
+    }
+
     const stateSolver = kernelRepository.stateSolverBuilder()
-        .forTarget(JplBody.Earth)
-        .forObserver(JplBody.SolarSystemBarycenter)
+        .forTarget(targetJplBody.id)
+        .forObserver(observerJplBody.id)
         .build();
 
     const states = JulianDay.forRange(JulianDay.fromDate(2019, 10, 9), JulianDay.fromDate(2019, 10, 10), 0.1)

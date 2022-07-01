@@ -1,22 +1,25 @@
 import { SpkKernelCollection } from './';
-import { JplBody } from '..';
+import { JplBodyId, jplBodyFromId } from '..';
 import { Forest } from './tree';
 import { StateSolverBuilder } from '../state';
 
 export class SpkKernelRepository {
 
-    readonly spkKernel: Forest<JplBody, SpkKernelCollection> = new Forest();
+    readonly spkKernel: Forest<JplBodyId, SpkKernelCollection> = new Forest();
 
     registerSpkKernelCollection(newCollection: SpkKernelCollection) {
-        console.log(`Registering SPK records for ${newCollection.body.id} w.r.t. ${newCollection.centerBody.id}`);
+        const body = jplBodyFromId(newCollection.bodyId);
+        const centerBody = jplBodyFromId(newCollection.centerBodyId);
 
-        const existingCollection = this.spkKernel.findEdge(newCollection.centerBody, newCollection.body);
+        console.log(`Registering SPK records for '${body?.name}' w.r.t. '${centerBody?.name}'`);
+
+        const existingCollection = this.spkKernel.findEdge(newCollection.centerBodyId, newCollection.bodyId);
 
         if (existingCollection) {
-            throw Error(`SPK Kernel for ${newCollection.body} w.r.t. ${newCollection.centerBody} is already registered`);
+            throw Error(`SPK Kernel for '${body?.name}' w.r.t. '${centerBody?.name}' is already registered. Merging not implemented yet!`);
         }
 
-        this.spkKernel.addEdge(newCollection.centerBody, newCollection.body, newCollection);
+        this.spkKernel.addEdge(newCollection.centerBodyId, newCollection.bodyId, newCollection);
     }
 
     registerSpkKernelCollections(newCollections: SpkKernelCollection[]) {
@@ -27,7 +30,7 @@ export class SpkKernelRepository {
         return new StateSolverBuilder(this);
     }
 
-    getAllTransientSpkKernelCollections(target: JplBody): SpkKernelCollection[] {
+    getAllTransientSpkKernelCollections(target: JplBodyId): SpkKernelCollection[] {
         const spkKernelCollectionsToTarget = this.spkKernel.findEdgesTo(target);
 
         if (spkKernelCollectionsToTarget === undefined) {

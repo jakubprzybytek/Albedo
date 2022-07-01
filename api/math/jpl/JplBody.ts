@@ -1,55 +1,30 @@
 import { BodyType } from './';
 
-enum JplBodyName {
-    SolarSystemBarycenter,
-    MercuryBarycenter,
-    VenusBarycenter
-};
+export enum JplBodyId {
+    SolarSystemBarycenter = 0,
 
-type JplBodyDetauks = {
-    name: JplBodyName,
-    id: number,
-    type: BodyType
-};
+    MercuryBarycenter = 1,
+    VenusBarycenter = 2,
+    EarthMoonBarycenter = 3,
+    MarsBarycenter = 4,
+    JupiterBarycenter = 5,
+    SaturnBarycenter = 6,
+    UranusBarycenter = 7,
+    NeptuneBarycenter = 8,
+    PlutoBarycenter = 9,
 
-const JplBody2 = {
-    
-};
+    Sun = 10,
 
-export class JplBody {
+    Mercury = 199,
 
-    readonly id: number;
-    readonly type: BodyType;
+    Venus = 299,
 
-    constructor(id: number, type: BodyType) {
-        this.id = id;
-        this.type = type;
-    }
+    Moon = 301,
+    Earth = 399,
 
-    public static readonly SolarSystemBarycenter = new JplBody(0, BodyType.Barycenter);
-
-    public static readonly MercuryBarycenter = new JplBody(1, BodyType.Barycenter);
-    public static readonly VenusBarycenter = new JplBody(2, BodyType.Barycenter);
-    public static readonly EarthMoonBarycenter = new JplBody(3, BodyType.Barycenter);
-    public static readonly MarsBarycenter = new JplBody(4, BodyType.Barycenter);
-    public static readonly JupiterBarycenter = new JplBody(5, BodyType.Barycenter);
-    public static readonly SaturnBarycenter = new JplBody(6, BodyType.Barycenter);
-    public static readonly UranusBarycenter = new JplBody(7, BodyType.Barycenter);
-    public static readonly NeptuneBarycenter = new JplBody(8, BodyType.Barycenter);
-    public static readonly PlutoBarycenter = new JplBody(9, BodyType.Barycenter);
-
-    public static readonly Sun = new JplBody(10, BodyType.Star);
-
-    public static readonly Mercury = new JplBody(199, BodyType.Planet);
-
-    // Venus(299, BodyType.Planet),
-
-    // Moon(301, BodyType.NaturalSatellite),
-    public static readonly Earth = new JplBody(399, BodyType.Planet);
-
-    public static readonly Phobos = new JplBody(401, BodyType.NaturalSatellite);
-    public static readonly Deimos = new JplBody(402, BodyType.NaturalSatellite);
-    public static readonly Mars = new JplBody(499, BodyType.Planet);
+    Phobos = 401,
+    Deimos = 402,
+    Mars = 499,
 
     // Io(501, BodyType.NaturalSatellite),
     // Europa(502, BodyType.NaturalSatellite),
@@ -113,19 +88,52 @@ export class JplBody {
     // T1000000000(1000000000, BodyType.TimeType),
     // T1000000001(1000000001, BodyType.TimeType);
 
-    // public static JplBody forId(int id) {
-    //     if (!lookup.containsKey(id)) {
-    //         throw new UnsupportedOperationException("Unknown body id: " + id);
-    //     }
+}
 
-    //     return lookup.get(id);
-    // }
+export type JplBody = {
+    id: JplBodyId,
+    name: string,
+    type: BodyType
+};
 
-    // public BodyDetails toBodyDetails() {
-    //     return new BodyDetails(this.name(), bodyType);
-    // }
+const jplBodies: JplBody[] = [
+    { id: JplBodyId.SolarSystemBarycenter, name: 'Solar System Barycenter', type: BodyType.Barycenter },
+    { id: JplBodyId.MercuryBarycenter, name: 'Mercury Barycenter', type: BodyType.Barycenter },
+    { id: JplBodyId.VenusBarycenter, name: 'Venus Barycenter', type: BodyType.Barycenter },
+    { id: JplBodyId.EarthMoonBarycenter, name: 'Earth Moon Barycenter', type: BodyType.Barycenter },
+    { id: JplBodyId.MarsBarycenter, name: 'Mars Barycenter', type: BodyType.Barycenter },
+    { id: JplBodyId.JupiterBarycenter, name: 'Jupiter Barycenter', type: BodyType.Barycenter },
+    { id: JplBodyId.SaturnBarycenter, name: 'Saturn Barycenter', type: BodyType.Barycenter },
+    { id: JplBodyId.UranusBarycenter, name: 'Uranus Barycenter', type: BodyType.Barycenter },
+    { id: JplBodyId.NeptuneBarycenter, name: 'Neptune Barycenter', type: BodyType.Barycenter },
+    { id: JplBodyId.PlutoBarycenter, name: 'Pluto Barycenter', type: BodyType.Barycenter },
 
-    public toString = () : string => {
-        return `(${this.id})`;
-    }
+    { id: JplBodyId.Sun, name: 'Sun', type: BodyType.Star },
+
+    { id: JplBodyId.Mercury, name: 'Mercury', type: BodyType.Planet },
+
+    { id: JplBodyId.Venus, name: 'Venus', type: BodyType.Planet },
+
+    { id: JplBodyId.Moon, name: 'Moon', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Earth, name: 'Earth', type: BodyType.Planet },
+
+    { id: JplBodyId.Phobos, name: 'Phobos', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Deimos, name: 'Deimos', type: BodyType.Barycenter },
+    { id: JplBodyId.Mars, name: 'Mars', type: BodyType.Planet },
+];
+
+const jplBodiesById = Object.fromEntries(
+    jplBodies.map(jplBodyDetails => [jplBodyDetails.id, jplBodyDetails])
+);
+
+const jplBodiesByName = Object.fromEntries(
+    jplBodies.map(jplBodyDetails => [jplBodyDetails.name, jplBodyDetails])
+);
+
+export function jplBodyFromId(jplBodyId: JplBodyId): JplBody | undefined {
+    return jplBodiesById[jplBodyId];
+}
+
+export function jplBodyFromString(input: string): JplBody | undefined {
+    return jplBodiesByName[input];
 }

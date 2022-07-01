@@ -1,10 +1,10 @@
 import { vi, describe, it, expect } from "vitest";
-import { JplBody } from "../";
+import { JplBodyId } from "../";
 import { SpkKernelCollection, SpkKernelRepository } from "../kernel";
 import { StateSolverBuilder } from "./";
 
-const earthMoonSpk: SpkKernelCollection = { kernelFileName: '', body: JplBody.EarthMoonBarycenter, centerBody: JplBody.SolarSystemBarycenter, positionData: [] };
-const earthSpk: SpkKernelCollection = { kernelFileName: '', body: JplBody.Earth, centerBody: JplBody.EarthMoonBarycenter, positionData: [] };
+const earthMoonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.EarthMoonBarycenter, centerBodyId: JplBodyId.SolarSystemBarycenter, positionData: [] };
+const earthSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Earth, centerBodyId: JplBodyId.EarthMoonBarycenter, positionData: [] };
 
 const spkKernelRepository = new SpkKernelRepository();
 spkKernelRepository.registerSpkKernelCollections([
@@ -16,8 +16,8 @@ describe("StateSolverBuilder", () => {
 
     it("should use DirectStateSolver when bodies are in close relation to each other", () => {
         const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository)
-            .forTarget(JplBody.Earth)
-            .forObserver(JplBody.SolarSystemBarycenter);
+            .forTarget(JplBodyId.Earth)
+            .forObserver(JplBodyId.SolarSystemBarycenter);
 
         const buildDirectStateSolver = vi.spyOn(stateSolverBuilder, 'buildDirectStateSolver');
 
@@ -32,8 +32,8 @@ describe("StateSolverBuilder", () => {
 
     it("should use DirectStateSolver when bodies are in close relation to each other in opposite direction that in kernel configuration", () => {
         const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository)
-            .forTarget(JplBody.EarthMoonBarycenter)
-            .forObserver(JplBody.Earth);
+            .forTarget(JplBodyId.EarthMoonBarycenter)
+            .forObserver(JplBodyId.Earth);
 
         const buildDirectStateSolver = vi.spyOn(stateSolverBuilder, 'buildDirectStateSolver');
 
