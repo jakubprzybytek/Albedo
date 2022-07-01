@@ -1,12 +1,28 @@
 import { BodyType } from './';
 
+enum JplBodyName {
+    SolarSystemBarycenter,
+    MercuryBarycenter,
+    VenusBarycenter
+};
+
+type JplBodyDetauks = {
+    name: JplBodyName,
+    id: number,
+    type: BodyType
+};
+
+const JplBody2 = {
+    
+};
+
 export class JplBody {
 
-    readonly bodyId: number;
+    readonly id: number;
     readonly type: BodyType;
 
     constructor(id: number, type: BodyType) {
-        this.bodyId = id;
+        this.id = id;
         this.type = type;
     }
 
@@ -110,6 +126,6 @@ export class JplBody {
     // }
 
     public toString = () : string => {
-        return `(${this.bodyId})`;
+        return `(${this.id})`;
     }
 }
