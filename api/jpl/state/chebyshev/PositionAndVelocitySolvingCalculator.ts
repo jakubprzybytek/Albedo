@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from '../../..';
+import { RectangularCoordinates } from '../../../math';
 import { ForwardLookingArray } from '../../utils';
 import { PositionChebyshevRecord } from '../../kernel';
 import { PositionAndVelocityCalculator, ChebyshevPolynomialExpander } from './';

@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { JulianDay } from '../../math';
-import { EphemerisSeconds, jplBodyFromString } from '../../math/jpl';
-import { kernelRepository } from '../../math/jpl/tests/de440.testData';
+import { EphemerisSeconds, jplBodyFromString } from '../../jpl';
+import { kernelRepository } from '../../jpl/tests/de440.testData';
 
 type GetStatesParams = {
     target: string,

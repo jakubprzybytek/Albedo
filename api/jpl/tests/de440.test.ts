@@ -1,5 +1,5 @@
 import { describe, it } from "vitest";
-import { JulianDay } from "../..";
+import { JulianDay } from "../../math";
 import { EphemerisSeconds, JplBodyId } from '..';
 import { DirectStateSolver } from '../state';
 import { kernelRepository } from './de440.testData';

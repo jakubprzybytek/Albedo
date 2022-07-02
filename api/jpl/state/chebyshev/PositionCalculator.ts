@@ -1,5 +1,5 @@
-import { RectangularCoordinates } from '../../..';
-import { PositionChebyshevRecord } from '@jpl/kernel';
+import { RectangularCoordinates } from '../../../math';
+import { PositionChebyshevRecord } from '../../kernel';
 import { ChebyshevPolynomialExpander } from './';
 
 export class PositionCalculator {

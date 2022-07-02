@@ -1,4 +1,4 @@
-import { JulianDay } from "..";
+import { JulianDay } from "../math";
 
 export class EphemerisSeconds {
 

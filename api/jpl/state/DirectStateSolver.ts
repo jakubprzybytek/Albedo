@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from '../..';
+import { RectangularCoordinates } from '../../math';
 import { SpkKernelCollection } from "../kernel";
 import { StateSolver } from "./";
 import { PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "./chebyshev";
