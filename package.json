@@ -24,6 +24,7 @@
     "api"
   ],
   "dependencies": {
+    "@sls-next/lambda-at-edge": "^3.7.0",
     "astronomy-engine": "^2.1.2"
   }
 }
