@@ -9,6 +9,10 @@ describe("JulianDay", () => {
         expect(JulianDay.fromDate(2650, 0, 25)).toBe(2688945.5);
     });
 
+    it("should correctly compute from date object", () => {
+        expect(JulianDay.fromDateObject(new Date('1990-10-06'))).toBe(2448170.5);
+    });
+
     it("should generate ranges", () => {
         expect(JulianDay.forRange(10, 13.4, 1.5)).toEqual([10, 11.5, 13]);
     });

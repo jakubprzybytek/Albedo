@@ -36,30 +36,13 @@ export class JulianDay {
      * @param day   Gregorian day of the month.
      * @return Date in Julian Days.
      */
-    static fromDate(year: number, month: number, day: number) {
+    static fromDate(year: number, month: number, day: number): number {
         return JulianDay.fromDateTime(year, month, day, 0, 0, 0.0);
     }
 
-    // /**
-    //  * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
-    //  *
-    //  * @param date Gregorian date.
-    //  * @return Date in Julian Days.
-    //  */
-    // public static double fromDate(LocalDate date) {
-    //     return fromDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-    // }
-
-    // /**
-    //  * Return date in Julian Days that represents the same time instant as Gregorian date provided as parameters.
-    //  *
-    //  * @param dateTime Gregorian date time.
-    //  * @return Date in Julian Days.
-    //  */
-    // public static double fromDate(LocalDateTime dateTime) {
-    //     return fromDateTime(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth(),
-    //             dateTime.getHour(), dateTime.getMinute(), dateTime.getSecond());
-    // }
+    static fromDateObject(date: Date): number {
+        return this.fromDate(date.getFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
+    }
 
     static forRange(jdFrom: number, jdTo: number, interval: number): number[] {
         const julianDays: number[] = [];

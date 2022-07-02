@@ -11,7 +11,10 @@ export class SpkKernelRepository {
         const body = jplBodyFromId(newCollection.bodyId);
         const centerBody = jplBodyFromId(newCollection.centerBodyId);
 
-        console.log(`Registering SPK records for '${body?.name}' w.r.t. '${centerBody?.name}'`);
+        const fromJde = newCollection.positionData[0].timeSpan.from;
+        const toJde = newCollection.positionData[newCollection.positionData.length - 1].timeSpan.to;
+
+        console.log(`Registering SPK records for '${body?.name}' w.r.t. '${centerBody?.name}' for time span between ${fromJde} and ${toJde}`);
 
         const existingCollection = this.spkKernel.findEdge(newCollection.centerBodyId, newCollection.bodyId);
 
