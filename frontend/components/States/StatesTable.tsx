@@ -15,7 +15,11 @@ type VectoryDisplayPropsType = {
 
 function VectorDisplay({ coords }: VectoryDisplayPropsType): JSX.Element {
     return (
-        <span>x: {coords.x}, y: {coords.y}, z: {coords.z}</span>
+        <>
+            <span>x: {coords.x}</span>
+            <span>y: {coords.y}</span>
+            <span>z: {coords.z}</span>
+        </>
     );
 }
 
@@ -29,11 +33,10 @@ export default function StatesList({ states }: StatesListPropsType): JSX.Element
 
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <Table size="small" aria-label="a dense table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>JDE</TableCell>
-                        <TableCell align="center">ES</TableCell>
+                        <TableCell>Time</TableCell>
                         <TableCell align="center">Position</TableCell>
                         <TableCell align="right">Velocity</TableCell>
                     </TableRow>
@@ -41,10 +44,16 @@ export default function StatesList({ states }: StatesListPropsType): JSX.Element
                 <TableBody>
                     {states.map((state) => (
                         <TableRow key={state.jde} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell className={styles.paragraph}>{state.jde}</TableCell>
-                            <TableCell>{state.ephemerisSeconds}</TableCell>
-                            <TableCell align="right"><VectorDisplay coords={state.position} /></TableCell>
-                            <TableCell align="right"><VectorDisplay coords={state.velocity} /></TableCell>
+                            <TableCell className={styles.cell}>
+                                <span>{state.jde} [JDE]</span>
+                                <span>{state.ephemerisSeconds} [ES]</span>
+                            </TableCell>
+                            <TableCell align="right" className={styles.cell}>
+                                <VectorDisplay coords={state.position} />
+                            </TableCell>
+                            <TableCell align="right" className={styles.cell}>
+                                <VectorDisplay coords={state.velocity} />
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

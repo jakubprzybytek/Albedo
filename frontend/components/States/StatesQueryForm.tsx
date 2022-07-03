@@ -89,8 +89,8 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                 </Grid>
             </Grid>
             <Grid container className={styles.actionRow}>
-                <Grid item>
-                    <Button variant="contained" size="small" disabled={loading} className={styles.formItem}
+                <Grid item className={styles.formItem}>
+                    <Button variant="contained" size="small" disabled={loading}
                         onClick={handleSubmit}
                     >Submit</Button>
                 </Grid>
