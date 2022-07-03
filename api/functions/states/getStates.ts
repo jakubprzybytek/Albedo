@@ -1,17 +1,26 @@
-import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { JulianDay } from '../../math';
+import { lambdaHandler } from '../HandlerProxy';
+import { JulianDay, RectangularCoordinates } from '../../math';
 import { EphemerisSeconds, jplBodyFromString } from '../../jpl';
 import { kernelRepository } from '../../jpl/tests/de440.testData';
 
 type GetStatesParams = {
-    target: string,
-    observer: string,
-    fromTde: string,
-    toTde: string,
-    interval: string
+    target: string;
+    observer: string;
+    fromTde: string;
+    toTde: string;
+    interval: string;
 }
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+type State = {
+    jde: number;
+    ephemerisSeconds: number;
+    position: RectangularCoordinates;
+    velocity: RectangularCoordinates;
+}
+
+export type GetStatesReturnType = State[];
+
+export const handler = lambdaHandler<GetStatesReturnType>(event => {
     const { target, observer, fromTde, toTde, interval } = event.queryStringParameters as GetStatesParams;
     if (!target || !observer || !fromTde || !toTde || !interval) {
         throw Error("Following parameters are required: 'target', 'observer', 'fromTde', 'toTde', 'interval");
@@ -43,7 +52,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
         .forObserver(observerJplBody.id)
         .build();
 
-    const states = JulianDay.forRange(fromJde, toJde, intervalInDays)
+    const states: GetStatesReturnType = JulianDay.forRange(fromJde, toJde, intervalInDays)
         .map(jde => ({
             jde: jde,
             ephemerisSeconds: EphemerisSeconds.fromJde(jde)
@@ -55,9 +64,5 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
             velocity: stateSolver.velocityFor(ephemerisSeconds)
         }));
 
-    return {
-        statusCode: 200,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(states),
-    };
-};
+    return states;
+});
