@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import StatesList from "../components/States/StatesList";
+import StatesBrowser from "../components/States/StatesBrowser";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -14,7 +13,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <StatesList />
+        <StatesBrowser />
       </main>
     </div>
   );

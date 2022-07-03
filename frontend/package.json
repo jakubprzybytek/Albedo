@@ -1,6 +1,6 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "albedo-frontend",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "sst-env -- next dev",
@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@date-io/date-fns": "^2.14.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/material": "^5.8.6",
+    "@mui/x-date-pickers": "^5.0.0-alpha.7",
+    "date-fns": "^2.28.0",
     "next": "12.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"

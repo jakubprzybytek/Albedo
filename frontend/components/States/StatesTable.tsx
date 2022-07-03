@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { GetStatesReturnType } from '@lambda/states/getStates';
 import { RectangularCoordinates } from "@math";
 import Table from '@mui/material/Table';
@@ -8,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import styles from "./StatesList.module.css";
+import styles from "./StatesTable.module.css";
 
 type VectoryDisplayPropsType = {
     coords: RectangularCoordinates;
@@ -20,21 +19,13 @@ function VectorDisplay({ coords }: VectoryDisplayPropsType): JSX.Element {
     );
 }
 
-export default function StatesList(): JSX.Element {
-    const [states, setStates] = useState<GetStatesReturnType>([]);
+type StatesListPropsType = {
+    states: GetStatesReturnType;
+}
+
+export default function StatesList({ states }: StatesListPropsType): JSX.Element {
 
     console.log('Render');
-
-    useEffect(() => {
-        console.log('Start fetch');
-
-        fetch(process.env.NEXT_PUBLIC_API_URL + "/api/states?target=Sun&observer=Solar%20System%20Barycenter&fromTde=2019-10-09&toTde=2019-10-10&interval=0.2")
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('Fetched: ' + data);
-                setStates(data);
-            });
-    }, []);
 
     return (
         <TableContainer component={Paper}>
@@ -49,9 +40,7 @@ export default function StatesList(): JSX.Element {
                 </TableHead>
                 <TableBody>
                     {states.map((state) => (
-                        <TableRow key={state.jde}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
+                        <TableRow key={state.jde} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell className={styles.paragraph}>{state.jde}</TableCell>
                             <TableCell>{state.ephemerisSeconds}</TableCell>
                             <TableCell align="right"><VectorDisplay coords={state.position} /></TableCell>
