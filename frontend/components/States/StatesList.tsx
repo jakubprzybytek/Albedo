@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { GetStatesReturnType } from '../../api/functions/states/getStates';
-import { RectangularCoordinates } from "../../api/math";
+import { GetStatesReturnType } from '@lambda/states/getStates';
+import { RectangularCoordinates } from "@math";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
