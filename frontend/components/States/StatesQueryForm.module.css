@@ -1,4 +1,16 @@
+.queryForm {
+  max-width: 800px;
+  padding-top: 8px;
+}
+
+.formItem {
+  padding: 8px;
+}
+
 .field {
   width: 100%;
-  margin: 8px;
+}
+
+.actionRow {
+  justify-content: flex-end;
 }

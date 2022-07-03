@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GetStatesReturnType } from '@lambda/states/getStates';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -41,9 +41,9 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
     }
 
     return (
-        <Box component="form">
+        <Paper component="form" className={styles.queryForm}>
             <Grid container>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} className={styles.formItem}>
                     <TextField label="Target" size="small" className={styles.field}
                         value={target}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +51,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} className={styles.formItem}>
                     <TextField label="Observer" size="small" className={styles.field}
                         value={observer}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +61,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                 </Grid>
             </Grid>
             <Grid container>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={4} className={styles.formItem}>
                     <DatePicker label="From (TDE)"
                         renderInput={(params) => <TextField size="small" className={styles.field} {...params} />}
                         value={fromTde}
@@ -70,7 +70,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={4} className={styles.formItem}>
                     <DatePicker label="To (TDE)"
                         renderInput={(params) => <TextField size="small" className={styles.field} {...params} />}
                         value={toTde}
@@ -79,7 +79,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={4} className={styles.formItem}>
                     <TextField label="Interval" size="small" type="number" className={styles.field}
                         value={interval}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,12 +87,14 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                         }}
                     />
                 </Grid>
+            </Grid>
+            <Grid container className={styles.actionRow}>
                 <Grid item>
-                    <Button variant="contained" size="small" disabled={loading}
+                    <Button variant="contained" size="small" disabled={loading} className={styles.formItem}
                         onClick={handleSubmit}
                     >Submit</Button>
                 </Grid>
             </Grid>
-        </Box>
+        </Paper>
     );
 }
