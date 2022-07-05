@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Auth, API } from "aws-amplify";
 import { GetStatesReturnType } from '@lambda/states/getStates';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -20,7 +21,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
 
     const [loading, setLoading] = useState(false);
 
-    function handleSubmit() {
+    async function handleSubmit() {
         const params = new URLSearchParams({
             target,
             observer,
@@ -31,13 +32,31 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
 
         setLoading(true);
 
-        fetch(process.env.NEXT_PUBLIC_API_URL + '/api/states?' + params.toString())
-            .then((response) => response.json())
+        API.get('api', '/api/states?' + params.toString(), {
+            target,
+            observer,
+            fromTde: fromTde?.toISOString() || '',
+            toTde: toTde?.toISOString() || '',
+            interval,
+            headers: {
+                Authorization: `Bearer ${(await Auth.currentSession())
+                    .getAccessToken()
+                    .getJwtToken()}`,
+            },
+        })
             .then((data) => {
                 console.log('Fetched: ' + data);
                 setStates(data);
                 setLoading(false);
             });
+
+        // fetch(process.env.NEXT_PUBLIC_API_URL + '/api/states?' + params.toString())
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         console.log('Fetched: ' + data);
+        //         setStates(data);
+        //         setLoading(false);
+        //     });
     }
 
     return (
