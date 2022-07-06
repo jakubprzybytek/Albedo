@@ -1,5 +1,6 @@
 import { GetStatesReturnType } from '@lambda/states/getStates';
 import { RectangularCoordinates } from "@math";
+import { useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -27,11 +28,15 @@ type StatesListPropsType = {
 }
 
 export default function StatesList({ states }: StatesListPropsType): JSX.Element {
+    const theme = useTheme();
 
     console.log('Render');
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{
+            backgroundColor: theme.palette.secondaryBackground,
+            '& td, & th' : { borderColor: theme.palette.background.default }
+        }}>
             <Table size="small" aria-label="a dense table">
                 <TableHead>
                     <TableRow>

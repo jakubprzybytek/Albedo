@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Auth, API } from "aws-amplify";
+import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -17,6 +18,8 @@ export default function QueryForm({ path, params, setData, children }: QueryForm
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>();
     const [errorMessage, setErrorMessage] = useState<string | null>();
+
+    const theme = useTheme();
 
     async function handleSubmit() {
         setLoading(true);
@@ -49,6 +52,7 @@ export default function QueryForm({ path, params, setData, children }: QueryForm
         <Paper component="form" sx={{
             pt: 2, pl: 1,
             maxWidth: '800px',
+            backgroundColor: theme.palette.secondaryBackground,
             '& .MuiGrid-item': { pb: 1, pr: 1 },
             '& .MuiTextField-root': { width: '100%' }
         }}>
