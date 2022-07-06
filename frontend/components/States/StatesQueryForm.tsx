@@ -25,7 +25,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
 
     async function handleSubmit() {
         const params = new URLSearchParams({
-            //target,
+            target,
             observer,
             fromTde: fromTde?.toISOString() || '',
             toTde: toTde?.toISOString() || '',
