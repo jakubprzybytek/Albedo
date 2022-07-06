@@ -7,7 +7,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import styles from "./StatesTable.module.css";
 
 type VectoryDisplayPropsType = {
     coords: RectangularCoordinates;
@@ -43,15 +42,18 @@ export default function StatesList({ states }: StatesListPropsType): JSX.Element
                 </TableHead>
                 <TableBody>
                     {states.map((state) => (
-                        <TableRow key={state.jde} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell className={styles.cell}>
+                        <TableRow key={state.jde} sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                            '& span': { display: 'block' }
+                        }}>
+                            <TableCell>
                                 <span>{state.jde} [JDE]</span>
                                 <span>{state.ephemerisSeconds} [ES]</span>
                             </TableCell>
-                            <TableCell align="right" className={styles.cell}>
+                            <TableCell align="right">
                                 <VectorDisplay coords={state.position} />
                             </TableCell>
-                            <TableCell align="right" className={styles.cell}>
+                            <TableCell align="right">
                                 <VectorDisplay coords={state.velocity} />
                             </TableCell>
                         </TableRow>
