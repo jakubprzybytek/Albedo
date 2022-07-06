@@ -1,4 +1,4 @@
-import { lambdaHandler } from '../HandlerProxy';
+import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { JulianDay, RectangularCoordinates } from '../../math';
 import { EphemerisSeconds, jplBodyFromString } from '../../jpl';
 import { kernelRepository } from '../../jpl/tests/de440.testData';
@@ -23,19 +23,19 @@ export type GetStatesReturnType = State[];
 export const handler = lambdaHandler<GetStatesReturnType>(event => {
     const { target, observer, fromTde, toTde, interval } = event.queryStringParameters as GetStatesParams;
     if (!target || !observer || !fromTde || !toTde || !interval) {
-        throw Error("Following parameters are required: 'target', 'observer', 'fromTde', 'toTde', 'interval");
+        return Failure("Following parameters are required: 'target', 'observer', 'fromTde', 'toTde', 'interval");
     }
 
     const targetJplBody = jplBodyFromString(target);
 
     if (targetJplBody == undefined) {
-        throw Error(`Cannot parse JPL body from '${target}'`);
+        return Failure(`Cannot parse JPL body from '${target}'`);
     }
 
     const observerJplBody = jplBodyFromString(observer);
 
     if (observerJplBody === undefined) {
-        throw Error(`Cannot parse JPL body from '${observer}'`);
+        return Failure(`Cannot parse JPL body from '${observer}'`);
     }
 
     const fromTdeDate = new Date(fromTde);
@@ -64,5 +64,5 @@ export const handler = lambdaHandler<GetStatesReturnType>(event => {
             velocity: stateSolver.velocityFor(ephemerisSeconds)
         }));
 
-    return states;
+    return Success(states);
 });

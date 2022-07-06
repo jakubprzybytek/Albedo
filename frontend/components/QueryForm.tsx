@@ -33,7 +33,7 @@ export default function QueryForm({ path, params, setData, children }: QueryForm
                     .getJwtToken()}`,
             },
         })
-            .then((data) => {
+            .then(data => {
                 console.log('Fetched: ' + data);
                 setSuccessMessage(`Loaded in ${new Date().getTime() - startTime} ms`);
                 setErrorMessage(null);
