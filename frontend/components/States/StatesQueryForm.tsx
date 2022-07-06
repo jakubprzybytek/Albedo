@@ -3,8 +3,9 @@ import { Auth, API } from "aws-amplify";
 import { GetStatesReturnType } from '@lambda/states/getStates';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 type StatesQueryFormParams = {
@@ -19,10 +20,12 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
     const [interval, setInterval] = useState('1');
 
     const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState<string | null>();
+    const [errorMessage, setErrorMessage] = useState<string | null>();
 
     async function handleSubmit() {
         const params = new URLSearchParams({
-            target,
+            //target,
             observer,
             fromTde: fromTde?.toISOString() || '',
             toTde: toTde?.toISOString() || '',
@@ -45,7 +48,15 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
         })
             .then((data) => {
                 console.log('Fetched: ' + data);
+                setSuccessMessage('Loaded');
+                setErrorMessage(null);
                 setStates(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.log(error);
+                setSuccessMessage(null);
+                setErrorMessage(error.toString());
                 setLoading(false);
             });
     }
@@ -103,11 +114,15 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                     />
                 </Grid>
             </Grid>
-            <Grid container sx={{ justifyContent: 'flex-end' }}>
+            <Grid container sx={{ justifyContent: 'space-between' }}>
                 <Grid item>
-                    <Button variant="contained" size="small" disabled={loading}
+                    {errorMessage && <Typography sx={{ color: 'red' }}>{errorMessage}</Typography>}
+                    {successMessage && <Typography>{successMessage}</Typography>}
+                </Grid>
+                <Grid item>
+                    <LoadingButton variant="contained" size="small" loading={loading}
                         onClick={handleSubmit}
-                    >Submit</Button>
+                    >Submit</LoadingButton>
                 </Grid>
             </Grid>
         </Paper>
