@@ -53,9 +53,9 @@ const theme = createTheme({
             secondary: '#2e9cca',
         },
         background: {
-            default: '#464866'
+            default: '#25274d'
         },
-        secondaryBackground: '#25274d'
+        secondaryBackground: '#464866'
     },
 });
 
