@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { openSync, readSync, closeSync } from 'node:fs';
-import { SpkFileInformationReader } from './';
+import { readSpkFileInformation } from './';
 
 describe("SpkFileInformationReader", () => {
 

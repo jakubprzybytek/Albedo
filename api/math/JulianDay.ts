@@ -54,58 +54,57 @@ export class JulianDay {
         return julianDays;
     }
 
-    // /**
-    //  * From: Jean Meeus' Astronomical Algorithms
-    //  *
-    //  * @param julianDay Date in Julian Days.
-    //  * @return Gregorian date.
-    //  */
-    // public static LocalDateTime toDateTime(double julianDay) {
-    //     julianDay += 0.5;
+    /**
+     * From: Jean Meeus' Astronomical Algorithms
+     *
+     * @param julianDay Date in Julian Days.
+     * @return Gregorian date.
+     */
+    static toDateTime(julianDay: number) {
+        julianDay += 0.5;
 
-    //     final int Z = (int) julianDay;
-    //     double F = julianDay - Z;
-    //     double A;
+        const Z = Math.floor(julianDay);
+        let F = julianDay - Z;
+        let A;
 
-    //     if (Z < 2299161.0) {
-    //         A = Z;
-    //     } else {
-    //         double alpha = Math.floor((Z - 1867216.25) / 36524.25);
-    //         A = Z + 1.0 + alpha - Math.floor(alpha / 4.0);
-    //     }
+        if (Z < 2299161.0) {
+            A = Z;
+        } else {
+            let alpha = Math.floor((Z - 1867216.25) / 36524.25);
+            A = Z + 1.0 + alpha - Math.floor(alpha / 4.0);
+        }
 
-    //     final double B = A + 1524.0;
-    //     final double C = Math.floor((B - 122.1) / 365.25);
-    //     final double D = Math.floor(365.25 * C);
-    //     final double E = Math.floor((B - D) / 30.6001);
+        const B = A + 1524.0;
+        const C = Math.floor((B - 122.1) / 365.25);
+        const D = Math.floor(365.25 * C);
+        const E = Math.floor((B - D) / 30.6001);
 
-    //     int month = (int) (E < 14.0 ? E - 1.0 : E - 13.0);
-    //     int year = (int) (C - (month > 2 ? 4716.0 : 4715.0));
-    //     int dayOfMonth = (int) (B - D - Math.floor(30.6001 * E));
+        let month = Math.floor(E < 14.0 ? E - 1.0 : E - 13.0);
+        let year = Math.floor(C - (month > 2 ? 4716.0 : 4715.0));
+        let dayOfMonth = Math.floor(B - D - Math.floor(30.6001 * E));
 
-    //     int hours = (int) Math.floor(F * 24.0);
-    //     F = F * 24.0 - hours;
-    //     int minutes = (int) Math.floor(F * 60.0);
-    //     F = F * 60.0 - minutes;
-    //     int seconds = (int) Math.rint(F * 60.0);
+        let hours = Math.floor(F * 24.0);
+        F = F * 24.0 - hours;
+        let minutes = Math.floor(F * 60.0);
+        F = F * 60.0 - minutes;
+        let seconds = Math.floor(F * 60.0);
 
-    //     // FixMe: Correct up to years
-    //     if (seconds == 60) {
-    //         seconds = 0;
-    //         minutes++;
-    //     }
-    //     if (minutes == 60) {
-    //         minutes = 0;
-    //         hours++;
-    //     }
-    //     if (hours == 24) {
-    //         hours = 0;
-    //         dayOfMonth++;
-    //     }
+        // FixMe: Correct up to years
+        if (seconds == 60) {
+            seconds = 0;
+            minutes++;
+        }
+        if (minutes == 60) {
+            minutes = 0;
+            hours++;
+        }
+        if (hours == 24) {
+            hours = 0;
+            dayOfMonth++;
+        }
 
-    //     return LocalDateTime.of(
-    //             year, month, dayOfMonth,
-    //             hours, minutes, seconds);
-    // }
-
+        return new Date(
+            year, month, dayOfMonth,
+            hours, minutes, seconds);
+    }
 }
