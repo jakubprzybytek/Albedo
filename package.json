@@ -9,7 +9,8 @@
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "listSpkFileContent": "ts-node ./api/jpl/tools/ListSpkFileContent.ts"
   },
   "devDependencies": {
     "@serverless-stack/cli": "^1.3.0",
