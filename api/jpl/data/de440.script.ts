@@ -60,15 +60,25 @@ writeSync(outputFd, "import { SpkKernelRepository, SpkKernelCollection, TimeSpan
 writeSync(outputFd, `// from: ${from.toISOString()}\n`);
 writeSync(outputFd, `// to: ${to.toISOString()}\n\n`);
 
+generateSpkCollection(spkFd, outputFd, 'SUN_ERT_SOLAR_SYSTEM_BARYCENTER', jplBodyFromString('Sun'), jplBodyFromString('Solar System Barycenter'), fromJde, toJde);
 generateSpkCollection(spkFd, outputFd, 'EARTH_MOON_BARYCENTER_ERT_SOLAR_SYSTEM_BARYCENTER', jplBodyFromString('Earth Moon Barycenter'), jplBodyFromString('Solar System Barycenter'), fromJde, toJde);
 generateSpkCollection(spkFd, outputFd, 'EARTH_WRT_EARTH_MOON_BARYCENTER', jplBodyFromString('Earth'), jplBodyFromString('Earth Moon Barycenter'), fromJde, toJde);
+generateSpkCollection(spkFd, outputFd, 'MERCURY_BARYCENTER_ERT_SOLAR_SYSTEM_BARYCENTER', jplBodyFromString('Mercury Barycenter'), jplBodyFromString('Solar System Barycenter'), fromJde, toJde);
+generateSpkCollection(spkFd, outputFd, 'MERCURY_ERT_MERCURY_BARYCENTER', jplBodyFromString('Mercury'), jplBodyFromString('Mercury Barycenter'), fromJde, toJde);
+generateSpkCollection(spkFd, outputFd, 'VENUS_BARYCENTER_ERT_SOLAR_SYSTEM_BARYCENTER', jplBodyFromString('Venus Barycenter'), jplBodyFromString('Solar System Barycenter'), fromJde, toJde);
+generateSpkCollection(spkFd, outputFd, 'VENUS_ERT_VENUS_BARYCENTER', jplBodyFromString('Venus'), jplBodyFromString('Venus Barycenter'), fromJde, toJde);
 
 closeSync(spkFd);
 
 writeSync(outputFd, 'export const kernelRepository: SpkKernelRepository = new SpkKernelRepository();\n');
 writeSync(outputFd, 'kernelRepository.registerSpkKernelCollections([\n');
+writeSync(outputFd, '\tSUN_ERT_SOLAR_SYSTEM_BARYCENTER,\n');
 writeSync(outputFd, '\tEARTH_MOON_BARYCENTER_ERT_SOLAR_SYSTEM_BARYCENTER,\n');
 writeSync(outputFd, '\tEARTH_WRT_EARTH_MOON_BARYCENTER,\n');
+writeSync(outputFd, '\tMERCURY_BARYCENTER_ERT_SOLAR_SYSTEM_BARYCENTER,\n');
+writeSync(outputFd, '\tMERCURY_ERT_MERCURY_BARYCENTER,\n');
+writeSync(outputFd, '\tVENUS_BARYCENTER_ERT_SOLAR_SYSTEM_BARYCENTER,\n');
+writeSync(outputFd, '\tVENUS_ERT_VENUS_BARYCENTER,\n');
 writeSync(outputFd, ']);\n');
 
 closeSync(outputFd);

@@ -45,7 +45,7 @@ export const handler = lambdaHandler<GetStatesReturnType>(event => {
     const fromJde = JulianDay.fromDateObject(fromTdeDate);
     const toJde = JulianDay.fromDateObject(toTdeDate);
 
-    console.log(`Compute states for '${targetJplBody.name}' w.r.t. ${observerJplBody.name} between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${intervalInDays} days`);
+    console.log(`Compute states for '${targetJplBody.name}' w.r.t. '${observerJplBody.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${intervalInDays} day(s)`);
 
     const stateSolver = kernelRepository.stateSolverBuilder()
         .forTarget(targetJplBody.id)
