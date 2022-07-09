@@ -12,8 +12,8 @@ type StatesQueryFormParams = {
 export default function StatesQueryForm({ setStates }: StatesQueryFormParams): JSX.Element {
     const [target, setTarget] = useState('Earth');
     const [observer, setObserver] = useState('Solar System Barycenter');
-    const [fromTde, setFromTde] = useState<Date | null>(new Date('2019-10-09'));
-    const [toTde, setToTde] = useState<Date | null>(new Date('2019-10-12'));
+    const [fromTde, setFromTde] = useState<Date | null>(new Date());
+    const [toTde, setToTde] = useState<Date | null>(new Date());
     const [interval, setInterval] = useState('1');
 
     const params = {

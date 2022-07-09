@@ -10,11 +10,13 @@
     "console": "sst console",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "listSpkFileContent": "esrun ./api/jpl/tools/ListSpkFileContent.ts"
+    "listSpkFileContent": "esrun ./api/jpl/tools/ListSpkFileContent.ts",
+    "printRecordsFromSpkFile": "esrun ./api/jpl/tools/PrintRecordsFromSpkFile.ts",
+    "de440": "esrun ./api/jpl/data/de440.script.ts && move de440.ts ./api/jpl/data/de440.ts"
   },
   "dependencies": {
     "@sls-next/lambda-at-edge": "^3.7.0",
-    "astronomy-engine": "^2.1.2"
+    "commander": "^9.3.0"
   },
   "devDependencies": {
     "@digitak/esrun": "^3.2.8",

@@ -32,8 +32,6 @@ export function Main({ stack }: StackContext) {
         },
         routes: {
             "GET /": "functions/lambda.handler",
-            "GET /lunar-eclipses": "functions/lunarEclipses.handler",
-            "GET /ephemeris": "functions/ephemeris.handler",
             "GET /api/states": "functions/states/getStates.handler",
         },
     });

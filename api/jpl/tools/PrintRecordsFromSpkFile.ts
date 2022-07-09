@@ -1,19 +1,11 @@
 import { openSync, closeSync } from 'node:fs';
+import { Command } from 'commander';
 import { JulianDay } from "../../math";
-import { jplBodyFromString, EphemerisSeconds } from "..";
-import { readSpkFileInformation, readSpkPositionChebyshevPolynomials, readSpkPositionAndVelocityChebyshevPolynomials } from "../files";
+import { JplBody, jplBodyFromString, EphemerisSeconds } from "..";
+import { PositionChebyshevRecord, PositionAndVelocityChebyshevRecord } from '../kernel';
+import { readSpkFileInformation, readSpkPositionChebyshevPolynomials, readSpkPositionAndVelocityChebyshevPolynomials, DataType } from "../files";
 
-function PrintRecordsFromSpkFile(fileName: string, bodyName: string, centerBodyName: string) {
-    const body = jplBodyFromString(bodyName);
-    if (body === undefined) {
-        throw Error(`Cannot pare JPL body name: ${bodyName}`);
-    }
-
-    const centerBody = jplBodyFromString(centerBodyName);
-    if (centerBody === undefined) {
-        throw Error(`Cannot pare JPL body name: ${centerBodyName}`);
-    }
-
+function PrintRecordsFromSpkFile(fileName: string, body: JplBody, centerBody: JplBody, fromJde: number, toJde: number) {
     const fd = openSync(fileName, 'r');
 
     const { spkFileArrayInformationList } = readSpkFileInformation(fd);
@@ -25,17 +17,42 @@ function PrintRecordsFromSpkFile(fileName: string, bodyName: string, centerBodyN
         throw Error(`Cannot find array information for body '${body.name}' w.r.t. '${centerBody.name}'`);
     }
 
-    const positionChebyshevRecords = readSpkPositionChebyshevPolynomials(fd, arrayInformation, -1000, 1000);
-    //const positionAndVelocityChebyshevRecords = readSpkPositionAndVelocityChebyshevPolynomials(fd, arrayInformation, -1000, 1000);
-
-    //positionAndVelocityChebyshevRecords.forEach(record => {
-    positionChebyshevRecords.forEach(record => {
-        console.log(`[${record.timeSpan.from}, ${record.timeSpan.to}]`);
-        console.log(JSON.stringify(record, null, 2));
-    });
+    switch (arrayInformation.dataType) {
+        case DataType.ChebyshevPosition:
+            const positionChebyshevRecords = readSpkPositionChebyshevPolynomials(fd, arrayInformation, EphemerisSeconds.fromJde(fromJde), EphemerisSeconds.fromJde(toJde));
+            console.log(JSON.stringify(positionChebyshevRecords, null, 2));
+            break;
+        case DataType.ChebyshevPosition:
+            const positionAndVelocityChebyshevRecords = readSpkPositionAndVelocityChebyshevPolynomials(fd, arrayInformation, EphemerisSeconds.fromJde(fromJde), EphemerisSeconds.fromJde(toJde));
+            console.log(JSON.stringify(positionAndVelocityChebyshevRecords, null, 2));
+            break;
+    }
 
     closeSync(fd);
 }
 
-PrintRecordsFromSpkFile('d:/Workspace/Java/Albedo/misc/jpl-kernels/de440s.bsp', 'Earth Moon Barycenter', 'Solar System Barycenter');
-//PrintRecordsFromSpkFile('d:/Workspace/Java/Albedo/misc/jpl-kernels/mar097.bsp', 'Mars', 'Mars Barycenter');
+const program = new Command();
+program
+    .usage('<fileName>')
+    .argument('<fileName>', 'SPK file name')
+    .requiredOption('--body <body>', 'Body name - must parse to JPL Body Id')
+    .requiredOption('--centerBody <body>', 'Center body name - must parse to JPL Body Id')
+    .requiredOption('--from <date>', 'Start date to cover, yyyy-mm-dd')
+    .requiredOption('--to <date>', 'End date to cover')
+    .action((fileName, options) => {
+        const body = jplBodyFromString(options.body);
+        if (body === undefined) {
+            throw Error(`Cannot pare JPL body name: ${options.body}`);
+        }
+
+        const centerBody = jplBodyFromString(options.centerBody);
+        if (centerBody === undefined) {
+            throw Error(`Cannot pare JPL body name: ${options.centerBody}`);
+        }
+
+        const fromDate = new Date(options.from);
+        const toDate = new Date(options.to);
+
+        PrintRecordsFromSpkFile(fileName, body, centerBody, JulianDay.fromDateObject(fromDate), JulianDay.fromDateObject(toDate));
+    })
+    .parse(process.argv);

@@ -1,4 +1,5 @@
 import { openSync, closeSync } from 'node:fs';
+import { Command } from 'commander';
 import { JulianDay } from "../../math";
 import { EphemerisSeconds } from "../";
 import { DataType, readSpkFileInformation } from "../files";
@@ -29,5 +30,11 @@ function ListSpkFileContent(fileName: string) {
     });
 }
 
-//ListSpkFileContent('d:/Workspace/Java/Albedo/misc/jpl-kernels/de440s.bsp');
-ListSpkFileContent('d:/Workspace/Java/Albedo/misc/jpl-kernels/mar097.bsp');
+const program = new Command();
+program
+    .usage('<fileName>')
+    .argument('<fileName>', 'SPK file name')
+    .action(fileName => {
+        ListSpkFileContent(fileName);
+    })
+    .parse(process.argv);

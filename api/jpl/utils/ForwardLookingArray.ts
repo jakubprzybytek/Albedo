@@ -12,7 +12,7 @@ export class ForwardLookingArray<Type> {
         const startingIndex = this.index;
 
         while (!predicate(this.array[this.index])) {
-            this.index = this.index < this.array.length ? this.index + 1 : 0;
+            this.index = this.index < this.array.length - 1 ? this.index + 1 : 0;
             if (this.index === startingIndex) {
                 return undefined;
             }
