@@ -25,8 +25,9 @@ function ListSpkFileContent(fileName: string) {
         console.log(`${bodyName}${' '.repeat(24 - bodyName.length)} w.r.t. ${centerBodyName}${' '.repeat(24 - centerBodyName.length)} `
             + `from ${startDate.toISOString()} to ${endDate.toISOString()}, `
             + `start index: ${spkFileArrayInformation.startIndex}, end index: ${spkFileArrayInformation.endIndex}, `
-            + `data type: ${dataType}`);
+            + `data type: ${dataType}(${spkFileArrayInformation.dataType})`);
     });
 }
 
-ListSpkFileContent('d:/Workspace/Java/Albedo/misc/jpl-kernels/de440s.bsp');
+//ListSpkFileContent('d:/Workspace/Java/Albedo/misc/jpl-kernels/de440s.bsp');
+ListSpkFileContent('d:/Workspace/Java/Albedo/misc/jpl-kernels/mar097.bsp');

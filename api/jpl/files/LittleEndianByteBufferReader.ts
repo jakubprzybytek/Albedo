@@ -7,6 +7,13 @@ export class LittleEndianByteBufferReader {
         this.dataView = new DataView(byteBuffer.buffer);
     }
 
+    position(newIndex: number) {
+        if (newIndex >= this.dataView.byteLength) {
+            throw Error('Out of index error');
+        }
+        this.index = newIndex;
+    }
+
     getInt(): number {
         if (this.index + 4 > this.dataView.byteLength) {
             throw Error('Out of index error');

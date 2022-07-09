@@ -12,6 +12,18 @@ describe("LittleEndianByteBufferReader", () => {
         expect(leBufferReader.getInt()).toBe(67305985);
     });
 
+    it("should read int using position", () => {
+        const byteBuffer = new Uint8Array([29, 44, 59, 74, 1, 2, 3, 4]);
+
+        const leBufferReader = new LittleEndianByteBufferReader(byteBuffer);
+
+        leBufferReader.position(4);
+        expect(leBufferReader.getInt()).toBe(67305985);
+
+        leBufferReader.position(0);
+        expect(leBufferReader.getInt()).toBe(1245391901);
+    });
+
     it("should read double", () => {
         const byteBuffer = new Uint8Array([29, 44, 59, 74, 11, 22, 33, 44, 1, 2, 3, 4, 5, 6, 7, 8]);
 

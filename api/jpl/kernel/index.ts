@@ -18,6 +18,12 @@ export type PositionChebyshevRecord = {
     positionCoefficients: XYZCoefficients;
 }
 
+export type PositionAndVelocityChebyshevRecord = {
+    timeSpan: TimeSpan;
+    positionCoefficients: XYZCoefficients;
+    velocityCoefficients: XYZCoefficients;
+}
+
 export type SpkKernelCollection = {
     kernelFileName: string;
     bodyId: JplBodyId;

@@ -2,6 +2,8 @@ import { JplBody } from "../";
 
 export * from './LittleEndianByteBufferReader';
 export * from './SpkFileInformationReader';
+export * from './SpkFilePositionChebyshevPolynomialsReader';
+export * from './SpkFilePositionAndVelocityChebyshevPolynomialsReader';
 
 export enum FileArchitecture {
     DAF_SPK = 'DAF/SPK'
@@ -13,8 +15,8 @@ export enum DataType {
 };
 
 const dataTypesById: { [key: number]: DataType } = {
-    2: DataType.ChebyshevPositionAndVelocity,
-    3: DataType.ChebyshevPosition
+    2: DataType.ChebyshevPosition,
+    3: DataType.ChebyshevPositionAndVelocity
 }
 
 export function dataTypeFromId(id: number): DataType | undefined {
@@ -30,6 +32,8 @@ export function referenceFrameFromId(id: number): ReferenceFrame | undefined {
 }
 
 export const FILE_BLOCK_SIZE = 1024;
+
+export const SPK_DOUBLE_SIZE = 8;
 
 export const FILE_DESCRIPTOR_SIZE = 88;
 
