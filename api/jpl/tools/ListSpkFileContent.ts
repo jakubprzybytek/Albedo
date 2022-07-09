@@ -3,7 +3,7 @@ import { JulianDay } from "../../math";
 import { EphemerisSeconds } from "../";
 import { DataType, readSpkFileInformation } from "../files";
 
-export function ListSpkFileContent(fileName: string) {
+function ListSpkFileContent(fileName: string) {
     const fd = openSync(fileName, 'r');
 
     const { spkFileDescriptor, spkFileArrayInformationList } = readSpkFileInformation(fd);
@@ -28,3 +28,5 @@ export function ListSpkFileContent(fileName: string) {
             + `data type: ${dataType}`);
     });
 }
+
+ListSpkFileContent('d:/Workspace/Java/Albedo/misc/jpl-kernels/de440s.bsp');
