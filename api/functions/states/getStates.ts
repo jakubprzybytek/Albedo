@@ -1,7 +1,7 @@
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
-import { JulianDay, RectangularCoordinates } from '../../math';
-import { EphemerisSeconds, jplBodyFromString } from '../../jpl';
-import { kernelRepository } from '../../jpl/data/de440.full';
+import { JulianDay } from '../../math';
+import { jplBodyFromString } from '../../jpl';
+import { States, State } from './States';
 
 type GetStatesParams = {
     target: string;
@@ -9,13 +9,6 @@ type GetStatesParams = {
     fromTde: string;
     toTde: string;
     interval: string;
-}
-
-type State = {
-    jde: number;
-    ephemerisSeconds: number;
-    position: RectangularCoordinates;
-    velocity: RectangularCoordinates;
 }
 
 export type GetStatesReturnType = State[];
@@ -47,22 +40,7 @@ export const handler = lambdaHandler<GetStatesReturnType>(event => {
 
     console.log(`Compute states for '${targetJplBody.name}' w.r.t. '${observerJplBody.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${intervalInDays} day(s)`);
 
-    const stateSolver = kernelRepository.stateSolverBuilder()
-        .forTarget(targetJplBody.id)
-        .forObserver(observerJplBody.id)
-        .build();
-
-    const states: GetStatesReturnType = JulianDay.forRange(fromJde, toJde, intervalInDays)
-        .map(jde => ({
-            jde: jde,
-            ephemerisSeconds: EphemerisSeconds.fromJde(jde)
-        }))
-        .map(({ jde, ephemerisSeconds }) => ({
-            jde,
-            ephemerisSeconds,
-            position: stateSolver.positionFor(ephemerisSeconds),
-            velocity: stateSolver.velocityFor(ephemerisSeconds)
-        }));
+    const states = States.get(targetJplBody.id, observerJplBody.id, fromJde, toJde, intervalInDays)
 
     return Success(states);
 });

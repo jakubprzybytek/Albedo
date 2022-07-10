@@ -60,7 +60,7 @@ export class JulianDay {
      * @param julianDay Date in Julian Days.
      * @return Gregorian date.
      */
-    static toDateTime(julianDay: number) {
+    static toDateTime(julianDay: number): Date {
         julianDay += 0.5;
 
         const Z = Math.floor(julianDay);
