@@ -18,4 +18,12 @@ export class RectangularCoordinates {
     negate(): RectangularCoordinates {
         return new RectangularCoordinates(-this.x, -this.y, -this.z);
     }
+
+    substract(other: RectangularCoordinates): RectangularCoordinates {
+        return new RectangularCoordinates(this.x - other.x, this.y - other.y, this.z - other.z)
+    }
+
+    length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
 }

@@ -1,7 +1,7 @@
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { JulianDay, RectangularCoordinates } from '../../math';
 import { EphemerisSeconds, jplBodyFromString } from '../../jpl';
-import { kernelRepository } from '../../jpl/data/de440';
+import { kernelRepository } from '../../jpl/data/de440.full';
 
 type GetStatesParams = {
     target: string;
