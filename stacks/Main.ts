@@ -33,6 +33,7 @@ export function Main({ stack }: StackContext) {
         routes: {
             "GET /": "functions/lambda.handler",
             "GET /api/states": "functions/states/getStates.handler",
+            "GET /api/ephemeris": "functions/ephemeris/getEphemeris.handler",
         },
     });
     stack.addOutputs({

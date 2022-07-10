@@ -1,7 +1,8 @@
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { JulianDay } from '../../math';
 import { jplBodyFromString } from '../../jpl';
-import { States, State } from './States';
+import { State } from './';
+import { States } from './States';
 
 type GetStatesParams = {
     target: string;

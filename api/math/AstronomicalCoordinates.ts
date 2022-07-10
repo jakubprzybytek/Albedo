@@ -3,12 +3,19 @@ import { Radians, RectangularCoordinates } from './';
 const TWO_PI = Math.PI * 2;
 
 export class AstronomicalCoordinates {
-    readonly rightAscension: number;
-    readonly declination: number;
+    readonly rightAscension: number; // radians
+    readonly declination: number; // radians
 
+    /*
+        Constructs AstronomicalCoordinates using radians.
+    */
     constructor(rightAscension: number, declination: number) {
         this.rightAscension = rightAscension;
         this.declination = declination;
+    }
+
+    toDegrees(): AstronomicalCoordinates {
+        return new AstronomicalCoordinates(Radians.toDegrees(this.rightAscension), Radians.toDegrees(this.declination));
     }
 
     static fromDegrees(rightAscensionInDegrees: number, declinationInDegrees: number): AstronomicalCoordinates {

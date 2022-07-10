@@ -46,5 +46,4 @@ describe("StateSolverBuilder", () => {
             earthSpk,
         ], true);
     });
-
 });

@@ -1,14 +1,7 @@
-import { JulianDay, RectangularCoordinates } from '../../math';
-import { EphemerisSeconds, jplBodyFromString, JplBodyId } from '../../jpl';
+import { JulianDay } from '../../math';
+import { EphemerisSeconds, JplBodyId } from '../../jpl';
+import { State } from './';
 import { kernelRepository } from '../../jpl/data/de440.full';
-
-export type State = {
-    jde: number;
-    ephemerisSeconds: number;
-    tde: Date;
-    position: RectangularCoordinates;
-    velocity: RectangularCoordinates;
-}
 
 export class States {
     static get(tagetBodyId: JplBodyId, observerBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): State[] {

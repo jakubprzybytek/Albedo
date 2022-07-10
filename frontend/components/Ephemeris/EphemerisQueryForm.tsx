@@ -3,30 +3,28 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
-import { State } from '@lambda/states';
+import { Ephemeris } from '@lambda/ephemeris';
 import QueryForm from '../QueryForm';
 
-type StatesQueryFormParams = {
-    setStates: (states: State[]) => void;
+type EphemerisQueryFormParams = {
+    setEphemerides: (ephemerides: Ephemeris[]) => void;
 };
 
-export default function StatesQueryForm({ setStates }: StatesQueryFormParams): JSX.Element {
-    const [target, setTarget] = useState('Earth');
-    const [observer, setObserver] = useState('Solar System Barycenter');
+export default function EphemerisQueryForm({ setEphemerides }: EphemerisQueryFormParams): JSX.Element {
+    const [target, setTarget] = useState('Venus');
     const [fromTde, setFromTde] = useState<Date | null>(new Date());
     const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 1));
     const [interval, setInterval] = useState('1');
 
     const getParams = () => ({
         target,
-        observer,
         fromTde: fromTde ? format(fromTde, 'yyyy-MM-dd') : '',
         toTde: toTde ? format(toTde, 'yyyy-MM-dd') : '',
         interval
     });
 
     return (
-        <QueryForm path='/api/states' getParams={getParams} setResults={setStates}>
+        <QueryForm path='/api/ephemeris' getParams={getParams} setResults={setEphemerides}>
             <>
                 <Grid container>
                     <Grid item xs={12} sm={6}>
@@ -34,14 +32,6 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                             value={target}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 setTarget(event.target.value);
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField label="Observer" size="small"
-                            value={observer}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                setObserver(event.target.value);
                             }}
                         />
                     </Grid>

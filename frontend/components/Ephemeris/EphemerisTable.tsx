@@ -6,31 +6,28 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { RectangularCoordinates } from "@math";
-import { State } from '@lambda/states';
+import { AstronomicalCoordinates } from "@math";
+import { Ephemeris } from '@lambda/ephemeris';
 
-type VectoryDisplayPropsType = {
-    coords: RectangularCoordinates;
+type AstroCoordsPropsType = {
+    coords: AstronomicalCoordinates;
 }
 
-function VectorDisplay({ coords }: VectoryDisplayPropsType): JSX.Element {
+function AstroCoords({ coords }: AstroCoordsPropsType): JSX.Element {
     return (
         <>
-            <span>x: {coords.x}</span>
-            <span>y: {coords.y}</span>
-            <span>z: {coords.z}</span>
+            <span>R.A.: {coords.rightAscension} [hms]</span>
+            <span>Dec.: {coords.declination} [°]</span>
         </>
     );
 }
 
-type StatesTablePropsType = {
-    states: State[];
+type EphemerisTablePropsType = {
+    ephemerides: Ephemeris[];
 }
 
-export default function StatesTable({ states }: StatesTablePropsType): JSX.Element {
+export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType): JSX.Element {
     const theme = useTheme();
-
-    console.log('Render');
 
     return (
         <TableContainer component={Paper} sx={{
@@ -41,26 +38,22 @@ export default function StatesTable({ states }: StatesTablePropsType): JSX.Eleme
                 <TableHead>
                     <TableRow>
                         <TableCell>Time</TableCell>
-                        <TableCell align="center">Position</TableCell>
-                        <TableCell align="right">Velocity</TableCell>
+                        <TableCell align="center">Coordinates</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {states.map((state) => (
-                        <TableRow key={state.jde} sx={{
+                    {ephemerides.map((ephemeris) => (
+                        <TableRow key={ephemeris.jde} sx={{
                             '&:last-child td, &:last-child th': { border: 0 },
                             '& span': { display: 'block' }
                         }}>
                             <TableCell>
-                                <span>{state.jde} (JDE)</span>
-                                <span>{state.ephemerisSeconds} [ES]</span>
-                                <span><>{state.tde} (TDE)</></span>
+                                <span>{ephemeris.jde} (JDE)</span>
+                                <span>{ephemeris.ephemerisSeconds} [ES]</span>
+                                <span><>{ephemeris.tde} (TDE)</></span>
                             </TableCell>
                             <TableCell align="right">
-                                <VectorDisplay coords={state.position} />
-                            </TableCell>
-                            <TableCell align="right">
-                                <VectorDisplay coords={state.velocity} />
+                                <AstroCoords coords={ephemeris.coords} />
                             </TableCell>
                         </TableRow>
                     ))}

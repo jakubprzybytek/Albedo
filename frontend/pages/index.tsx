@@ -1,30 +1,27 @@
-import type { NextPage } from "next";
-import { Auth } from "aws-amplify";
-import Head from "next/head";
+import type { ReactElement } from 'react'
 import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import type { NextPageWithLayout } from "./_app";
+import MainLayout from 'layouts/MainLayout';
 import StatesBrowser from "../components/States/StatesBrowser";
-import styles from "../styles/Home.module.css";
+import EphemerisBrowser from "../components/Ephemeris/EphemerisBrowser";
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
     const theme = useTheme();
 
     return (
         <>
-            <Head>
-                <title>Albedo 2.0</title>
-                <meta name="description" content="Albedo. Predicting astronomical events." />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <header>
-                <Button onClick={() => Auth.signOut()}>Log out</Button>
-            </header>
-            <Box component='main' bgcolor={theme.palette.background.default} className={styles.main}>
-                <StatesBrowser />
-            </Box>
+            <StatesBrowser />
+            <EphemerisBrowser />
         </>
     );
 };
+
+Home.getLayout = function getLayout(page: ReactElement) {
+    return (
+        <MainLayout>
+            {page}
+        </MainLayout>
+    )
+}
 
 export default Home;

@@ -44,7 +44,7 @@ export class StateSolverBuilder {
         const targetIndex = spkForObserver
             .findIndex(spkKernelCollection => spkKernelCollection.centerBodyId === this.targetBody);
 
-        if (spkForObserver.length > 0) {
+        if (targetIndex >= 0) {
             return this.buildDirectStateSolver(spkForObserver.slice(targetIndex), true);
         }
 
