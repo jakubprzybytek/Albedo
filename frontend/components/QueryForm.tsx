@@ -13,7 +13,7 @@ type QueryFormParams = {
     children: JSX.Element;
 };
 
-export default function QueryForm({ path, getParams: params, setResults: setData, children }: QueryFormParams): JSX.Element {
+export default function QueryForm({ path, getParams: params, setResults: setResults, children }: QueryFormParams): JSX.Element {
 
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>();
@@ -37,7 +37,7 @@ export default function QueryForm({ path, getParams: params, setResults: setData
                 console.log('Fetched: ' + data);
                 setSuccessMessage(`Loaded in ${new Date().getTime() - startTime} ms`);
                 setErrorMessage(null);
-                setData(data);
+                setResults(data);
                 setLoading(false);
             })
             .catch(error => {

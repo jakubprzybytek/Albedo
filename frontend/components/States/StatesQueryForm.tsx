@@ -3,6 +3,7 @@ import { GetStatesReturnType } from '@lambda/states/getStates';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { addMonths } from 'date-fns';
 import QueryForm from '../QueryForm';
 
 type StatesQueryFormParams = {
@@ -13,7 +14,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
     const [target, setTarget] = useState('Earth');
     const [observer, setObserver] = useState('Solar System Barycenter');
     const [fromTde, setFromTde] = useState<Date | null>(new Date());
-    const [toTde, setToTde] = useState<Date | null>(new Date());
+    const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 1));
     const [interval, setInterval] = useState('1');
 
     const getParams = () => ({
@@ -47,7 +48,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                 </Grid>
                 <Grid container>
                     <Grid item xs={12} sm={4}>
-                        <DatePicker label="From (TDE)"
+                        <DatePicker label="From (TDE)" inputFormat="yyyy-MM-dd"
                             renderInput={(params) => <TextField size="small" {...params} />}
                             value={fromTde}
                             onChange={(newValue) => {
@@ -56,7 +57,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                         />
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <DatePicker label="To (TDE)"
+                        <DatePicker label="To (TDE)" inputFormat="yyyy-MM-dd"
                             renderInput={(params) => <TextField size="small" {...params} />}
                             value={toTde}
                             onChange={(newValue) => {

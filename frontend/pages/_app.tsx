@@ -5,6 +5,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import '../styles/globals.css';
 import { Amplify } from "aws-amplify";
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 
 declare module '@mui/material/styles' {
     // fix the type error when referencing the Theme object in your styled component
