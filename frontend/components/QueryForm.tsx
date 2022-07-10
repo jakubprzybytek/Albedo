@@ -8,12 +8,12 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 type QueryFormParams = {
     path: string;
-    params: { [key: string]: string };
-    setData: (data: any) => void;
+    getParams: () => { [key: string]: string };
+    setResults: (data: any) => void;
     children: JSX.Element;
 };
 
-export default function QueryForm({ path, params, setData, children }: QueryFormParams): JSX.Element {
+export default function QueryForm({ path, getParams: params, setResults: setData, children }: QueryFormParams): JSX.Element {
 
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>();
@@ -26,7 +26,7 @@ export default function QueryForm({ path, params, setData, children }: QueryForm
 
         const startTime = new Date().getTime();
 
-        API.get('api', path + '?' + new URLSearchParams(params).toString(), {
+        API.get('api', path + '?' + new URLSearchParams(params()).toString(), {
             headers: {
                 Authorization: `Bearer ${(await Auth.currentSession())
                     .getAccessToken()

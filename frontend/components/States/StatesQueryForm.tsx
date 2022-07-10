@@ -16,16 +16,16 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
     const [toTde, setToTde] = useState<Date | null>(new Date());
     const [interval, setInterval] = useState('1');
 
-    const params = {
+    const getParams = () => ({
         target,
         observer,
         fromTde: fromTde?.toISOString() || '',
         toTde: toTde?.toISOString() || '',
         interval
-    };
+    });
 
     return (
-        <QueryForm path='/api/states' params={params} setData={setStates}>
+        <QueryForm path='/api/states' getParams={getParams} setResults={setStates}>
             <>
                 <Grid container>
                     <Grid item xs={12} sm={6}>

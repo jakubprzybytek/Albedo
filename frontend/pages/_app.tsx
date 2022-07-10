@@ -40,23 +40,67 @@ Amplify.configure({
 // '#2e9cca'
 // '#29648a'
 
+// const theme = createTheme({
+//     palette: {
+//         primary: {
+//             main: '#2e9cca',
+//         },
+//         secondary: {
+//             main: '#aaabb8',
+//         },
+//         text: {
+//             primary: '#aaabb8',
+//             secondary: '#2e9cca',
+//         },
+//         background: {
+//             default: '#25274d'
+//         },
+//         secondaryBackground: '#464866'
+//     },
+// });
+
+// const theme = createTheme({
+//     palette: {
+//         primary: {
+//             main: '#f76c6c',
+//         },
+//         secondary: {
+//             main: '#f8e9a1',
+//         },
+//         text: {
+//             primary: '#f8e9a1',
+//             secondary: '#a8d0e6',
+//         },
+//         background: {
+//             default: '#24305e'
+//         },
+//         secondaryBackground: '#374785'
+//     },
+// });
+
+// const theme = createTheme({
+//     palette: {
+//         primary: {
+//             main: '#f8e9a1',
+//         },
+//         text: {
+//             primary: '#a8d0e6',
+//             secondary: '#a8d0e6',
+//         },
+//         background: {
+//             default: '#24305e'
+//         },
+//         secondaryBackground: '#374785'
+//     },
+// });
+
 const theme = createTheme({
     palette: {
-        primary: {
-            main: '#2e9cca',
-        },
-        secondary: {
-            main: '#aaabb8',
-        },
-        text: {
-            primary: '#aaabb8',
-            secondary: '#2e9cca',
-        },
         background: {
-            default: '#25274d'
+            default: '#aaabb8',
         },
-        secondaryBackground: '#464866'
-    },
+        secondaryBackground: '#eeeeee'
+    }
 });
 
 function MyApp(props: AppProps | undefined) {
