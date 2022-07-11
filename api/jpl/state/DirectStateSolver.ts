@@ -35,5 +35,4 @@ export class DirectStateSolver implements StateSolver {
             .reduce((a, b) => a.add(b), RectangularCoordinates.ZERO);
         return this.negate ? computed.negate() : computed;
     }
-
 }

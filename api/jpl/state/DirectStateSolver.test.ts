@@ -16,8 +16,8 @@ describe("DirectStateSolver", () => {
         const position = directStateSolcer.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
         const velocity = directStateSolcer.velocityFor(EphemerisSeconds.fromDate(2019, 10, 9));
 
-        const positionDelta = position.substract(new RectangularCoordinates(143811325.04688266, 36856589.50987644, 15977853.64250682));
-        const velocityDelta = velocity.substract(new RectangularCoordinates(-8.28800013, 26.26862274, 11.38875394));
+        const positionDelta = position.subtract(new RectangularCoordinates(143811325.04688266, 36856589.50987644, 15977853.64250682));
+        const velocityDelta = velocity.subtract(new RectangularCoordinates(-8.28800013, 26.26862274, 11.38875394));
 
         console.log(`Position error: ${positionDelta.length()}`);
         console.log(`Velocity error: ${velocityDelta.length()}`);
@@ -31,8 +31,8 @@ describe("DirectStateSolver", () => {
         const position = directStateSolcer.positionFor(EphemerisSeconds.fromDate(2019, 10, 9));
         const velocity = directStateSolcer.velocityFor(EphemerisSeconds.fromDate(2019, 10, 9));
         
-        const positionDelta = position.substract(new RectangularCoordinates(-143811325.04688266, -36856589.50987644, -15977853.64250682));
-        const velocityDelta = velocity.substract(new RectangularCoordinates(8.28800013, -26.26862274, -11.38875394));
+        const positionDelta = position.subtract(new RectangularCoordinates(-143811325.04688266, -36856589.50987644, -15977853.64250682));
+        const velocityDelta = velocity.subtract(new RectangularCoordinates(8.28800013, -26.26862274, -11.38875394));
 
         console.log(`Position error: ${positionDelta.length()}`);
         console.log(`Velocity error: ${velocityDelta.length()}`);

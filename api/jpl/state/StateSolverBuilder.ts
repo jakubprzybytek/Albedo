@@ -1,6 +1,6 @@
 import { JplBodyId } from "../";
 import { SpkKernelRepository, SpkKernelCollection } from "../kernel";
-import { StateSolver, DirectStateSolver } from "./";
+import { StateSolver, DirectStateSolver, CommonCenterBodyStateSolver } from "./";
 
 export class StateSolverBuilder {
 
@@ -48,6 +48,17 @@ export class StateSolverBuilder {
             return this.buildDirectStateSolver(spkForObserver.slice(targetIndex), true);
         }
 
+        // try to find smallest subtree with common root node
+        var commonIndex = 0;
+        while (spkForTarget[commonIndex].bodyId === spkForObserver[commonIndex].bodyId &&
+            spkForTarget[commonIndex].centerBodyId === spkForObserver[commonIndex].centerBodyId) {
+            commonIndex++;
+        }
+
+        if (spkForTarget[commonIndex].centerBodyId === spkForObserver[commonIndex].centerBodyId) {
+            return this.buildCommonCenterBodyStateSolver(spkForTarget.slice(commonIndex), spkForObserver.slice(commonIndex));
+        }
+
         throw Error(`Cannot create state solver for '${this.targetBody}' w.r.t. '${this.observerBody}'`);
     }
 
@@ -55,4 +66,7 @@ export class StateSolverBuilder {
         return new DirectStateSolver(spkKernelCollections, negate)
     }
 
+    buildCommonCenterBodyStateSolver(spkKernelCollectionsForTarget: SpkKernelCollection[], spkKernelCollectionsForObserver: SpkKernelCollection[]) {
+        return new CommonCenterBodyStateSolver(spkKernelCollectionsForTarget, spkKernelCollectionsForObserver);
+    }
 }

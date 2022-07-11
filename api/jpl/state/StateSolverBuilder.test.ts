@@ -7,11 +7,13 @@ const DUMMY_RECORD: PositionChebyshevRecord = { timeSpan: new TimeSpan(0, 1), po
 
 const earthMoonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.EarthMoonBarycenter, centerBodyId: JplBodyId.SolarSystemBarycenter, positionData: [DUMMY_RECORD] };
 const earthSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Earth, centerBodyId: JplBodyId.EarthMoonBarycenter, positionData: [DUMMY_RECORD] };
+const moonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Moon, centerBodyId: JplBodyId.EarthMoonBarycenter, positionData: [DUMMY_RECORD] };
 
 const spkKernelRepository = new SpkKernelRepository();
 spkKernelRepository.registerSpkKernelCollections([
     earthMoonSpk,
-    earthSpk
+    earthSpk,
+    moonSpk
 ]);
 
 describe("StateSolverBuilder", () => {
@@ -45,5 +47,22 @@ describe("StateSolverBuilder", () => {
         expect(buildDirectStateSolver).toBeCalledWith([
             earthSpk,
         ], true);
+    });
+
+    it("should use CommonCenterBodyStateSolver when bodies revolves around common center body", () => {
+        const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository)
+            .forTarget(JplBodyId.Moon)
+            .forObserver(JplBodyId.Earth);
+
+        const buildCommonCenterBodyStateSolver = vi.spyOn(stateSolverBuilder, 'buildCommonCenterBodyStateSolver');
+
+        stateSolverBuilder.build();
+
+        expect(buildCommonCenterBodyStateSolver).toBeCalledTimes(1);
+        expect(buildCommonCenterBodyStateSolver).toBeCalledWith([
+            moonSpk,
+        ], [
+            earthSpk,
+        ]);
     });
 });

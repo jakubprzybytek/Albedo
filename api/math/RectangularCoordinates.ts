@@ -19,7 +19,7 @@ export class RectangularCoordinates {
         return new RectangularCoordinates(-this.x, -this.y, -this.z);
     }
 
-    substract(other: RectangularCoordinates): RectangularCoordinates {
+    subtract(other: RectangularCoordinates): RectangularCoordinates {
         return new RectangularCoordinates(this.x - other.x, this.y - other.y, this.z - other.z)
     }
 

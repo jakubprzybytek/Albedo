@@ -11,7 +11,7 @@ describe("RectangularCoordinates", () => {
     });
 
     it("should substract", () => {
-        expect(new RectangularCoordinates(1, 2, 3).substract(new RectangularCoordinates(10, 20, 30))).toEqual(new RectangularCoordinates(-9, -18, -27));
+        expect(new RectangularCoordinates(1, 2, 3).subtract(new RectangularCoordinates(10, 20, 30))).toEqual(new RectangularCoordinates(-9, -18, -27));
     });
 
     it("should compute length", () => {
