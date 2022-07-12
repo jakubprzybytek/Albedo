@@ -38,7 +38,7 @@ export const handler = lambdaHandler<GetEphemerisReturnType>(event => {
 
     console.log(`Compute ephemerides for '${targetJplBody.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${intervalInDays} day(s)`);
 
-    const states = States.get(targetJplBody.id, JplBodyId.Earth, fromJde, toJde, intervalInDays)
+    const states = States.position(targetJplBody.id, JplBodyId.Earth, fromJde, toJde, intervalInDays)
         .map(state => ({
             jde: state.jde,
             ephemerisSeconds: state.ephemerisSeconds,

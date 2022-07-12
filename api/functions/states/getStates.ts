@@ -1,7 +1,7 @@
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { JulianDay } from '../../math';
 import { jplBodyFromString } from '../../jpl';
-import { State } from './';
+import { StateWithPositionAndVelocity } from './';
 import { States } from './States';
 
 type GetStatesParams = {
@@ -12,7 +12,7 @@ type GetStatesParams = {
     interval: string;
 }
 
-export type GetStatesReturnType = State[];
+export type GetStatesReturnType = StateWithPositionAndVelocity[];
 
 export const handler = lambdaHandler<GetStatesReturnType>(event => {
     const { target, observer, fromTde, toTde, interval } = event.queryStringParameters as GetStatesParams;
@@ -41,7 +41,7 @@ export const handler = lambdaHandler<GetStatesReturnType>(event => {
 
     console.log(`Compute states for '${targetJplBody.name}' w.r.t. '${observerJplBody.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${intervalInDays} day(s)`);
 
-    const states = States.get(targetJplBody.id, observerJplBody.id, fromJde, toJde, intervalInDays)
+    const states = States.positionAndVelocity(targetJplBody.id, observerJplBody.id, fromJde, toJde, intervalInDays)
 
     return Success(states);
 });
