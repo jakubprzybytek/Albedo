@@ -3,11 +3,11 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
-import { State } from '@lambda/states';
+import { StateWithPositionAndVelocity } from '@lambda/states';
 import QueryForm from '../QueryForm';
 
 type StatesQueryFormParams = {
-    setStates: (states: State[]) => void;
+    setStates: (states: StateWithPositionAndVelocity[]) => void;
 };
 
 export default function StatesQueryForm({ setStates }: StatesQueryFormParams): JSX.Element {
