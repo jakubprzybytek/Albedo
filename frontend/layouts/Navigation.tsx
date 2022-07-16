@@ -71,6 +71,11 @@ export default function Navigation(): JSX.Element {
                                 </ListItemButton>
                             </ListItem>
                         </List>
+                        <Divider />
+                        <Typography variant="h6" sx={{ my: 2 }}
+                            onClick={() => Auth.signOut()}>
+                            Log out
+                        </Typography>
                     </Box>
                 </Drawer>
             </Box>
