@@ -1,9 +1,9 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
-import { JulianDay, AstronomicalCoordinates } from '../../math';
-import { States, JplBody, JplBodyId } from '../../jpl';
-import { Ephemeris } from './';
+import { JulianDay } from '../../math';
+import { JplBody, JplBodyId } from '../../jpl';
+import { Ephemerides, Ephemeris } from '../../jpl/ephemeris';
 
 type GetEphemeridesParams = {
     target: JplBody;
@@ -33,13 +33,7 @@ export const handler = lambdaHandler<GetEphemerisReturnType>(event => {
 
     console.log(`Compute ephemerides for '${target.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${interval} day(s)`);
 
-    const states = States.position(target.id, JplBodyId.Earth, fromJde, toJde, interval)
-        .map(state => ({
-            jde: state.jde,
-            ephemerisSeconds: state.ephemerisSeconds,
-            tde: state.tde,
-            coords: AstronomicalCoordinates.fromRectangular(state.position).toDegrees()
-        }))
+    const ephemerides = Ephemerides.simple(target.id, fromJde, toJde, interval);
 
-    return Success(states);
+    return Success(ephemerides);
 });

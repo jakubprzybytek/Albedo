@@ -1,8 +1,3 @@
-import { AstronomicalCoordinates } from '../../math';
+import { Ephemeris } from '../../jpl/ephemeris';
 
-export type Ephemeris = {
-    jde: number;
-    ephemerisSeconds: number;
-    tde: Date;
-    coords: AstronomicalCoordinates;
-};
+export { Ephemeris };
