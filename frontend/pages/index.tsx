@@ -18,7 +18,7 @@ const Home: NextPageWithLayout = () => {
 
 Home.getLayout = function getLayout(page: ReactElement) {
     return (
-        <MainLayout>
+        <MainLayout title="Dashboard">
             {page}
         </MainLayout>
     )

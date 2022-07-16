@@ -16,7 +16,11 @@ import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Auth } from "aws-amplify";
 
-export default function Navigation(): JSX.Element {
+type NavigationParamsType = {
+    title: string;
+}
+
+export default function Navigation({ title }: NavigationParamsType): JSX.Element {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
 
     return (
@@ -27,8 +31,11 @@ export default function Navigation(): JSX.Element {
                         onClick={() => setIsMobileOpen(!isMobileOpen)}>
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
+                    <Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         <Link href='/'>Albedo 2.0</Link>
+                    </Typography>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'center' }}>
+                        {title}
                     </Typography>
                     <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'flex' } }}>
                         <Typography variant="h6" component="div">

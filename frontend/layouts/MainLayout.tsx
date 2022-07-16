@@ -6,10 +6,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Navigation from './Navigation';
 
 type MainLayoutParams = {
+    title: string;
     children: JSX.Element;
 };
 
-export default function MainLayout({ children }: MainLayoutParams): JSX.Element {
+export default function MainLayout({ title, children }: MainLayoutParams): JSX.Element {
     const theme = useTheme();
 
     return (
@@ -19,7 +20,7 @@ export default function MainLayout({ children }: MainLayoutParams): JSX.Element 
                 <meta name="description" content="Albedo. Predicting astronomical events." />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Navigation />
+            <Navigation title={title} />
             <Box component="main" bgcolor={theme.palette.background.default} sx={{ minHeight: '100vh' }}>
                 <Toolbar />
                 {children}
