@@ -1,3 +1,3 @@
 import { Ephemeris } from '../../jpl/ephemeris';
 
-export { Ephemeris };
+export type { Ephemeris };

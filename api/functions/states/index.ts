@@ -1,3 +1,3 @@
 import { StateWithPosition, StateWithPositionAndVelocity } from '../../jpl/state';
 
-export { StateWithPosition, StateWithPositionAndVelocity };
+export type { StateWithPosition, StateWithPositionAndVelocity };
