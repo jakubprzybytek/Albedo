@@ -1,7 +1,7 @@
 import { JulianDay } from '../../math';
-import { EphemerisSeconds, JplBodyId } from '../../jpl';
-import { StateWithPosition, StateWithPositionAndVelocity } from './';
-import { kernelRepository } from '../../jpl/data/de440.full';
+import { EphemerisSeconds, JplBodyId } from '..';
+import { StateWithPosition, StateWithPositionAndVelocity } from '.';
+import { kernelRepository } from '../data/de440.full';
 
 export class States {
     static position(tagetBodyId: JplBodyId, observerBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): StateWithPosition[] {

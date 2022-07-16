@@ -1,7 +1,7 @@
 import { SpkKernelCollection } from './';
 import { JplBodyId, jplBodyFromId } from '..';
 import { Forest } from './tree';
-import { StateSolverBuilder } from '../state';
+import { StateSolverBuilder } from '../state/solvers';
 
 export class SpkKernelRepository {
 

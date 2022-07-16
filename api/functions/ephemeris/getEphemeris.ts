@@ -2,8 +2,7 @@ import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay, AstronomicalCoordinates } from '../../math';
-import { JplBody, JplBodyId } from '../../jpl';
-import { States } from '../states/States';
+import { States, JplBody, JplBodyId } from '../../jpl';
 import { Ephemeris } from './';
 
 type GetEphemeridesParams = {

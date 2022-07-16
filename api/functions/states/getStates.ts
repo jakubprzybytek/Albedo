@@ -3,8 +3,7 @@ import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '../../math';
 import { JplBody } from '../../jpl';
-import { StateWithPositionAndVelocity } from './';
-import { States } from './States';
+import { States, StateWithPositionAndVelocity } from '../../jpl/state';
 
 type GetStatesParams = {
     target: JplBody;

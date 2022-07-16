@@ -1,12 +1,3 @@
-import { RectangularCoordinates } from '../../math';
+import { StateWithPosition, StateWithPositionAndVelocity } from '../../jpl/state';
 
-export type StateWithPosition = {
-    jde: number;
-    ephemerisSeconds: number;
-    tde: Date;
-    position: RectangularCoordinates;
-}
-
-export type StateWithPositionAndVelocity = StateWithPosition & {
-    velocity: RectangularCoordinates;
-}
+export { StateWithPosition, StateWithPositionAndVelocity };

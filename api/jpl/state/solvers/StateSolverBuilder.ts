@@ -1,6 +1,6 @@
-import { JplBodyId } from "../";
-import { SpkKernelRepository, SpkKernelCollection } from "../kernel";
-import { StateSolver, DirectStateSolver, CommonCenterBodyStateSolver } from "./";
+import { JplBodyId } from '../..';
+import { SpkKernelRepository, SpkKernelCollection } from '../../kernel';
+import { StateSolver, DirectStateSolver, CommonCenterBodyStateSolver } from './';
 
 export class StateSolverBuilder {
 

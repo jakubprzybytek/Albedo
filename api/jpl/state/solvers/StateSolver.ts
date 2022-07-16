@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from '../../math';
+import { RectangularCoordinates } from '../../../math';
 
 export interface StateSolver {
 

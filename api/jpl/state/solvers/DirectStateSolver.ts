@@ -1,7 +1,7 @@
-import { RectangularCoordinates } from '../../math';
-import { SpkKernelCollection } from "../kernel";
+import { RectangularCoordinates } from '../../../math';
+import { SpkKernelCollection } from "../../kernel";
+import { PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "../chebyshev";
 import { StateSolver } from "./";
-import { PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "./chebyshev";
 
 export class DirectStateSolver implements StateSolver {
 
