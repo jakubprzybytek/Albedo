@@ -44,6 +44,9 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                         <Typography variant="h6" component="div">
                             <Link href='/ephemeris'>Ephemeris</Link>
                         </Typography>
+                        <Typography variant="h6" component="div">
+                            <Link href='/conjunctions'>Conjunctions</Link>
+                        </Typography>
                         <Button variant="contained" color="secondary" size='small' onClick={() => Auth.signOut()}>Log out</Button>
                     </Stack>
                 </Toolbar>
@@ -75,6 +78,11 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                             <ListItem disablePadding>
                                 <ListItemButton sx={{ textAlign: 'center' }}>
                                     <Link href='/ephemeris'><ListItemText primary="Ephemeris" /></Link>
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton sx={{ textAlign: 'center' }}>
+                                    <Link href='/conjunctions'><ListItemText primary="Conjunctions" /></Link>
                                 </ListItemButton>
                             </ListItem>
                         </List>

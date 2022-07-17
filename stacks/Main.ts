@@ -34,6 +34,7 @@ export function Main({ stack }: StackContext) {
             "GET /": "functions/lambda.handler",
             "GET /api/states": "functions/states/getStates.handler",
             "GET /api/ephemeris": "functions/ephemeris/getEphemeris.handler",
+            "GET /api/conjunctions": "functions/conjunctions/getConjunctions.handler",
         },
     });
     stack.addOutputs({
