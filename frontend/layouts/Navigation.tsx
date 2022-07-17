@@ -20,6 +20,25 @@ type NavigationParamsType = {
     title: string;
 }
 
+const menuItems = [
+    {
+        link: '/states',
+        label: 'States'
+    },
+    {
+        link: '/ephemeris',
+        label: 'Ephemeris'
+    },
+    {
+        link: '/separations',
+        label: 'Separations'
+    },
+    {
+        link: '/conjunctions',
+        label: 'Conjunctions'
+    }
+];
+
 export default function Navigation({ title }: NavigationParamsType): JSX.Element {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -38,15 +57,11 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                         {title}
                     </Typography>
                     <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                        <Typography variant="h6" component="div">
-                            <Link href='/states'>States</Link>
-                        </Typography>
-                        <Typography variant="h6" component="div">
-                            <Link href='/ephemeris'>Ephemeris</Link>
-                        </Typography>
-                        <Typography variant="h6" component="div">
-                            <Link href='/conjunctions'>Conjunctions</Link>
-                        </Typography>
+                        {menuItems.map(menuItem => (
+                            <Typography key={menuItem.link} variant="h6" component="div">
+                                <Link href={menuItem.link}>{menuItem.label}</Link>
+                            </Typography>
+                        ))}
                         <Button variant="contained" color="secondary" size='small' onClick={() => Auth.signOut()}>Log out</Button>
                     </Stack>
                 </Toolbar>
@@ -70,21 +85,13 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                         </Typography>
                         <Divider />
                         <List>
-                            <ListItem disablePadding>
-                                <ListItemButton sx={{ textAlign: 'center' }}>
-                                    <Link href='/states'><ListItemText primary="States" /></Link>
-                                </ListItemButton>
-                            </ListItem>
-                            <ListItem disablePadding>
-                                <ListItemButton sx={{ textAlign: 'center' }}>
-                                    <Link href='/ephemeris'><ListItemText primary="Ephemeris" /></Link>
-                                </ListItemButton>
-                            </ListItem>
-                            <ListItem disablePadding>
-                                <ListItemButton sx={{ textAlign: 'center' }}>
-                                    <Link href='/conjunctions'><ListItemText primary="Conjunctions" /></Link>
-                                </ListItemButton>
-                            </ListItem>
+                            {menuItems.map(menuItem => (
+                                <ListItem key={menuItem.link} disablePadding>
+                                    <ListItemButton sx={{ textAlign: 'center' }}>
+                                        <Link href={menuItem.link}><ListItemText primary={menuItem.label} /></Link>
+                                    </ListItemButton>
+                                </ListItem>
+                            ))}
                         </List>
                         <Divider />
                         <Typography variant="h6" sx={{ my: 2 }}

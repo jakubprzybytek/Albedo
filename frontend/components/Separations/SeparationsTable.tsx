@@ -7,8 +7,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { AstronomicalCoordinates } from "@math";
-import { Conjunction } from '@lambda/conjunctions';
+import { Separation } from '@lambda/separations';
 import { formatHourAngle, formatDegrees } from '../Utils';
+
 
 type AstroCoordsPropsType = {
     coords: AstronomicalCoordinates;
@@ -22,12 +23,11 @@ function AstroCoords({ coords }: AstroCoordsPropsType): JSX.Element {
         </>
     );
 }
-
-type ConjunctionsTablePropsType = {
-    conjunctions: Conjunction[];
+type SeparationsTablePropsType = {
+    separations: Separation[];
 }
 
-export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePropsType): JSX.Element {
+export default function SeparationsTable({ separations }: SeparationsTablePropsType): JSX.Element {
     const theme = useTheme();
 
     return (
@@ -45,24 +45,24 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {conjunctions.map((conjunction) => (
-                        <TableRow key={conjunction.jde} sx={{
+                    {separations.map((separation) => (
+                        <TableRow key={separation.jde} sx={{
                             '&:last-child td, &:last-child th': { border: 0 },
                             '& span': { display: 'block' }
                         }}>
                             <TableCell>
-                                <span>{conjunction.jde} (JDE)</span>
-                                <span>{conjunction.ephemerisSeconds} [ES]</span>
-                                <span><>{conjunction.tde} (TDE)</></span>
+                                <span>{separation.jde} (JDE)</span>
+                                <span>{separation.ephemerisSeconds} [ES]</span>
+                                <span><>{separation.tde} (TDE)</></span>
                             </TableCell>
                             <TableCell align="center">
-                                <AstroCoords coords={conjunction.firstBody.ephemeris.coords} />
+                                <AstroCoords coords={separation.firstBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="center">
-                                <AstroCoords coords={conjunction.secondBody.ephemeris.coords} />
+                                <AstroCoords coords={separation.secondBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="right">
-                                {formatDegrees(conjunction.separation)}
+                                {formatDegrees(separation.separation)}
                             </TableCell>
                         </TableRow>
                     ))}

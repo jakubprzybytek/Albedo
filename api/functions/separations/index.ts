@@ -1,9 +1,9 @@
 import { JplBodyId } from "../../jpl";
 import { Ephemeris } from "../ephemeris";
 
-export * from './Conjunctions';
+export * from './Separations';
 
-export type Conjunction = {
+export type Separation = {
     jde: number;
     ephemerisSeconds: number;
     tde: Date;
