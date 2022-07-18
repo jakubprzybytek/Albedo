@@ -1,6 +1,6 @@
 import { AstronomicalCoordinates } from '../../math';
-import { JplBodyId } from '..';
-import { States } from '../state';
+import { JplBodyId } from '../../jpl';
+import { States } from '../../jpl/state';
 import { Ephemeris } from '.';
 
 export class Ephemerides {

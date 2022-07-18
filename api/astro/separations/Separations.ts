@@ -1,5 +1,5 @@
 import { JplBodyId } from "../../jpl";
-import { Ephemerides } from "../../jpl/ephemeris";
+import { Ephemerides } from "../ephemeris";
 import { Radians } from "../../math";
 import { Separation } from './';
 

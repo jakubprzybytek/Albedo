@@ -1,5 +1,5 @@
 import { JplBodyId } from "../../jpl";
-import { Ephemeris } from "../../jpl/ephemeris";
+import { Ephemeris } from "../ephemeris";
 
 export * from './Conjunctions';
 

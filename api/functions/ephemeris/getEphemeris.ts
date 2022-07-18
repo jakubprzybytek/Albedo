@@ -3,7 +3,7 @@ import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '../../math';
 import { JplBody, JplBodyId } from '../../jpl';
-import { Ephemerides, Ephemeris } from '../../jpl/ephemeris';
+import { Ephemerides, Ephemeris } from '../../astro/ephemeris';
 
 type GetEphemeridesParams = {
     target: JplBody;
