@@ -1,6 +1,6 @@
-import { RectangularCoordinates } from '../../math';
-import { SpkKernelCollection } from "../kernel";
-import { StateSolver, DirectStateSolver } from ".";
+import { RectangularCoordinates } from '../../../math';
+import { SpkKernelCollection } from "../../kernel";
+import { StateSolver, DirectStateSolver } from '.';
 
 export class CommonCenterBodyStateSolver implements StateSolver {
     readonly targetStateSolver: DirectStateSolver;
@@ -17,6 +17,6 @@ export class CommonCenterBodyStateSolver implements StateSolver {
 
     velocityFor(ephemerisSeconds: number): RectangularCoordinates {
         return this.targetStateSolver.velocityFor(ephemerisSeconds).subtract(this.observerStateSolver.velocityFor(ephemerisSeconds));
-//        throw Error('Velocity solving routine not implemented yet!');
+        //        throw Error('Velocity solving routine not implemented yet!');
     }
 }

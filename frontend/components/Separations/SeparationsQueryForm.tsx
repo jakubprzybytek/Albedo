@@ -3,16 +3,16 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
-import { StateWithPositionAndVelocity } from '@lambda/states';
+import { Separation } from '@lambda/separations';
 import QueryForm from '../QueryForm';
 
-type StatesQueryFormParams = {
-    setStates: (states: StateWithPositionAndVelocity[]) => void;
+type SeparationsQueryFormParams = {
+    setSeparations: (separations: Separation[]) => void;
 };
 
-export default function StatesQueryForm({ setStates }: StatesQueryFormParams): JSX.Element {
-    const [target, setTarget] = useState('Earth');
-    const [observer, setObserver] = useState('Solar System Barycenter');
+export default function SeparationsQueryForm({ setSeparations }: SeparationsQueryFormParams): JSX.Element {
+    const [target, setTarget] = useState('Mercury');
+    const [observer, setObserver] = useState('Venus');
     const [fromTde, setFromTde] = useState<Date | null>(new Date());
     const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 1));
     const [interval, setInterval] = useState('1');
@@ -26,7 +26,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
     });
 
     return (
-        <QueryForm path='/api/states' getParams={getParams} setResults={setStates}>
+        <QueryForm path='/api/separations' getParams={getParams} setResults={setSeparations}>
             <>
                 <Grid container>
                     <Grid item xs={12} sm={6}>

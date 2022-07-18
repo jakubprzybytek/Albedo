@@ -1,47 +1,37 @@
-import { lambdaHandler, Success, Failure } from '../HandlerProxy';
+import { APIGatewayProxyEventV2 } from "aws-lambda";
+import { lambdaHandler, Success } from '../HandlerProxy';
+import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '../../math';
-import { jplBodyFromString } from '../../jpl';
-import { State } from './';
-import { States } from './States';
+import { JplBody } from '../../jpl';
+import { States, StateWithPositionAndVelocity } from '../../jpl/state';
 
 type GetStatesParams = {
-    target: string;
-    observer: string;
-    fromTde: string;
-    toTde: string;
-    interval: string;
+    target: JplBody;
+    observer: JplBody;
+    fromTde: Date;
+    toTde: Date;
+    interval: number;
 }
 
-export type GetStatesReturnType = State[];
+const parseGetStatesParams: (event: APIGatewayProxyEventV2) => GetStatesParams = (event: APIGatewayProxyEventV2) => ({
+    target: mandatoryJplBody(event, 'target'),
+    observer: mandatoryJplBody(event, 'observer'),
+    fromTde: mandatoryDate(event, 'fromTde'),
+    toTde: mandatoryDate(event, 'toTde'),
+    interval: mandatoryFloat(event, 'interval')
+});
+
+export type GetStatesReturnType = StateWithPositionAndVelocity[];
 
 export const handler = lambdaHandler<GetStatesReturnType>(event => {
-    const { target, observer, fromTde, toTde, interval } = event.queryStringParameters as GetStatesParams;
-    if (!target || !observer || !fromTde || !toTde || !interval) {
-        return Failure("Following parameters are required: 'target', 'observer', 'fromTde', 'toTde', 'interval");
-    }
+    const { target, observer, fromTde, toTde, interval } = parseGetStatesParams(event);
 
-    const targetJplBody = jplBodyFromString(target);
+    const fromJde = JulianDay.fromDateObject(fromTde);
+    const toJde = JulianDay.fromDateObject(toTde);
 
-    if (targetJplBody == undefined) {
-        return Failure(`Cannot parse JPL body from '${target}'`);
-    }
+    console.log(`Compute states for '${target.name}' w.r.t. '${observer.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${interval} day(s)`);
 
-    const observerJplBody = jplBodyFromString(observer);
-
-    if (observerJplBody === undefined) {
-        return Failure(`Cannot parse JPL body from '${observer}'`);
-    }
-
-    const fromTdeDate = new Date(fromTde);
-    const toTdeDate = new Date(toTde);
-    const intervalInDays = Number.parseFloat(interval);
-
-    const fromJde = JulianDay.fromDateObject(fromTdeDate);
-    const toJde = JulianDay.fromDateObject(toTdeDate);
-
-    console.log(`Compute states for '${targetJplBody.name}' w.r.t. '${observerJplBody.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${intervalInDays} day(s)`);
-
-    const states = States.get(targetJplBody.id, observerJplBody.id, fromJde, toJde, intervalInDays)
+    const states = States.positionAndVelocity(target.id, observer.id, fromJde, toJde, interval)
 
     return Success(states);
 });

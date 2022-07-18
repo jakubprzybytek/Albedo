@@ -1,6 +1,6 @@
 import { vi, describe, it, expect } from "vitest";
-import { JplBodyId } from "../";
-import { PositionChebyshevRecord, SpkKernelCollection, SpkKernelRepository, TimeSpan } from "../kernel";
+import { JplBodyId } from '../..';
+import { PositionChebyshevRecord, SpkKernelCollection, SpkKernelRepository, TimeSpan } from "../../kernel";
 import { StateSolverBuilder } from "./";
 
 const DUMMY_RECORD: PositionChebyshevRecord = { timeSpan: new TimeSpan(0, 1), positionCoefficients: { x: [], y: [], z: [] } };

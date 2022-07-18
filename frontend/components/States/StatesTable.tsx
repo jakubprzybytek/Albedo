@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { RectangularCoordinates } from "@math";
-import { State } from '@lambda/states';
+import { StateWithPositionAndVelocity } from '@lambda/states';
 
 type VectoryDisplayPropsType = {
     coords: RectangularCoordinates;
@@ -16,15 +16,15 @@ type VectoryDisplayPropsType = {
 function VectorDisplay({ coords }: VectoryDisplayPropsType): JSX.Element {
     return (
         <>
-            <span>x: {coords.x}</span>
-            <span>y: {coords.y}</span>
-            <span>z: {coords.z}</span>
+            <span>x: {coords.x.toFixed(6)}</span>
+            <span>y: {coords.y.toFixed(6)}</span>
+            <span>z: {coords.z.toFixed(6)}</span>
         </>
     );
 }
 
 type StatesTablePropsType = {
-    states: State[];
+    states: StateWithPositionAndVelocity[];
 }
 
 export default function StatesTable({ states }: StatesTablePropsType): JSX.Element {

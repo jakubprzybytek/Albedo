@@ -7,8 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { AstronomicalCoordinates } from "@math";
-import { Ephemeris } from '@lambda/ephemeris';
-import { formatHourAngle, formatDegrees} from '../Utils';
+import { Conjunction } from '@lambda/conjunctions';
+import { formatHourAngle, formatDegrees } from '../Utils';
 
 type AstroCoordsPropsType = {
     coords: AstronomicalCoordinates;
@@ -23,11 +23,11 @@ function AstroCoords({ coords }: AstroCoordsPropsType): JSX.Element {
     );
 }
 
-type EphemerisTablePropsType = {
-    ephemerides: Ephemeris[];
+type ConjunctionsTablePropsType = {
+    conjunctions: Conjunction[];
 }
 
-export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType): JSX.Element {
+export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePropsType): JSX.Element {
     const theme = useTheme();
 
     return (
@@ -39,22 +39,30 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
                 <TableHead>
                     <TableRow>
                         <TableCell>Time</TableCell>
-                        <TableCell align="center">Coordinates</TableCell>
+                        <TableCell align="center">First body</TableCell>
+                        <TableCell align="center">Second body</TableCell>
+                        <TableCell align="right">Separation</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {ephemerides.map((ephemeris) => (
-                        <TableRow key={ephemeris.jde} sx={{
+                    {conjunctions.map((conjunction) => (
+                        <TableRow key={conjunction.jde} sx={{
                             '&:last-child td, &:last-child th': { border: 0 },
                             '& span': { display: 'block' }
                         }}>
                             <TableCell>
-                                <span>{ephemeris.jde} (JDE)</span>
-                                <span>{ephemeris.ephemerisSeconds} [ES]</span>
-                                <span><>{ephemeris.tde} (TDE)</></span>
+                                <span>{conjunction.jde} (JDE)</span>
+                                <span>{conjunction.ephemerisSeconds} [ES]</span>
+                                <span><>{conjunction.tde} (TDE)</></span>
+                            </TableCell>
+                            <TableCell align="center">
+                                <AstroCoords coords={conjunction.firstBody.ephemeris.coords} />
+                            </TableCell>
+                            <TableCell align="center">
+                                <AstroCoords coords={conjunction.secondBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="right">
-                                <AstroCoords coords={ephemeris.coords} />
+                                {formatDegrees(conjunction.separation)}
                             </TableCell>
                         </TableRow>
                     ))}
