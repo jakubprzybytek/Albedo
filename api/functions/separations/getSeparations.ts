@@ -3,7 +3,7 @@ import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '../../math';
 import { JplBody } from '../../jpl';
-import { Separations, Separation } from './';
+import { Separations, Separation } from '../../astro/separations';
 
 type GetSeparationsParams = {
     target: JplBody;

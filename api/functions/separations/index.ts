@@ -1,19 +1,3 @@
-import { JplBodyId } from "../../jpl";
-import { Ephemeris } from "../ephemeris";
+import { Separation } from "../../astro/separations";
 
-export * from './Separations';
-
-export type Separation = {
-    jde: number;
-    ephemerisSeconds: number;
-    tde: Date;
-    firstBody: {
-        id: JplBodyId;
-        ephemeris: Ephemeris;
-    }
-    secondBody: {
-        id: JplBodyId;
-        ephemeris: Ephemeris;
-    }
-    separation: number;
-};
+export type { Separation };

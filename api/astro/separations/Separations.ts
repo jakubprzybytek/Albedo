@@ -1,7 +1,7 @@
 import { JplBodyId } from "../../jpl";
 import { Ephemerides } from "../../jpl/ephemeris";
 import { Radians } from "../../math";
-import { Separation } from '.';
+import { Separation } from './';
 
 export class Separations {
     static all(firstBodyId: JplBodyId, secondBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Separation[] {

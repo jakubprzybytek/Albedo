@@ -1,9 +1,8 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
-import { lambdaHandler, Success, Failure } from '../HandlerProxy';
-import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
+import { lambdaHandler, Success } from '../HandlerProxy';
+import { mandatoryDate } from '../LambdaParams';
 import { JulianDay } from '../../math';
-import { JplBody, JplBodyId } from '../../jpl';
-import { Conjunctions, Conjunction } from './';
+import { Conjunctions, Conjunction } from '../../astro/conjunctions';
 
 type GetConjunctionsParams = {
     fromTde: Date;
