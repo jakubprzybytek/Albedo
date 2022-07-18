@@ -1,5 +1,5 @@
 {
-  "name": "Albedo",
+  "name": "albedo",
   "version": "2.0.0",
   "private": true,
   "scripts": {
@@ -20,9 +20,9 @@
   },
   "devDependencies": {
     "@digitak/esrun": "^3.2.8",
-    "@serverless-stack/cli": "^1.3.0",
-    "@serverless-stack/resources": "^1.3.0",
-    "@serverless-stack/static-site-env": "^1.3.0",
+    "@serverless-stack/cli": "^1.4.1",
+    "@serverless-stack/resources": "^1.4.1",
+    "@serverless-stack/static-site-env": "^1.4.1",
     "@tsconfig/node16": "^1.0.3",
     "aws-cdk-lib": "2.24.0",
     "typescript": "^4.7.4",
