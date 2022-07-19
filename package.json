@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@sls-next/lambda-at-edge": "^3.7.0",
-    "commander": "^9.3.0"
+    "commander": "^9.4.0"
   },
   "devDependencies": {
     "@digitak/esrun": "^3.2.8",
