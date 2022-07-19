@@ -103,8 +103,6 @@ export class JulianDay {
             dayOfMonth++;
         }
 
-        return new Date(
-            year, month, dayOfMonth,
-            hours, minutes, seconds);
+        return new Date(Date.UTC(year, month - 1, dayOfMonth, hours, minutes, seconds));
     }
 }

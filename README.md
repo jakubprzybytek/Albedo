@@ -1,5 +1,10 @@
 ## Resources
 
+### JPL Kernels
+This reposotory contains various kernels required for all computations.
+
+https://naif.jpl.nasa.gov/pub/naif/generic_kernels
+
 ### WebGeocalc
 This site allows to compute states of solar system objects using SPK kernels.
 

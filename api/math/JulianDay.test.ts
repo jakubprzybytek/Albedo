@@ -18,9 +18,9 @@ describe("JulianDay", () => {
     });
 
     it("should compute georgian from julian", () => {
-        expect(JulianDay.toDateTime(2436116.31)).toEqual(new Date(1957, 10, 4, 19, 26, 24));
-        expect(JulianDay.toDateTime(1842713.0)).toEqual(new Date(333, 1, 27, 12, 0, 0));
-        expect(JulianDay.toDateTime(1507900.13)).toEqual(new Date(-584, 5, 28, 15, 7, 11));
-        expect(JulianDay.toDateTime(2458813.740272218)).toEqual(new Date(2019, 11, 26, 5, 45, 59));
+        expect(JulianDay.toDateTime(2436116.31)).toEqual(new Date(Date.UTC(1957, 9, 4, 19, 26, 24)));
+        expect(JulianDay.toDateTime(1842713.0)).toEqual(new Date(Date.UTC(333, 0, 27, 12, 0, 0)));
+        expect(JulianDay.toDateTime(1507900.13)).toEqual(new Date(Date.UTC(-584, 4, 28, 15, 7, 11)));
+        expect(JulianDay.toDateTime(2458813.740272218)).toEqual(new Date(Date.UTC(2019, 10, 26, 5, 45, 59)));
     });
 });
