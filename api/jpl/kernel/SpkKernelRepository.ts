@@ -11,8 +11,8 @@ export class SpkKernelRepository {
         const body = jplBodyFromId(newCollection.bodyId);
         const centerBody = jplBodyFromId(newCollection.centerBodyId);
 
-        const fromJde = newCollection.positionData[0].timeSpan.from;
-        const toJde = newCollection.positionData[newCollection.positionData.length - 1].timeSpan.to;
+        const fromJde = newCollection.data[0].timeSpan.from;
+        const toJde = newCollection.data[newCollection.data.length - 1].timeSpan.to;
 
         console.log(`Registering SPK records for '${body?.name}' w.r.t. '${centerBody?.name}' for time span between ${fromJde} and ${toJde}`);
 

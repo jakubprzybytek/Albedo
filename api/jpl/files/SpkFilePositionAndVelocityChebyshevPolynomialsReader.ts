@@ -1,6 +1,7 @@
 import { readSync } from 'node:fs';
 import { XYZCoefficients, TimeSpan, PositionAndVelocityChebyshevRecord } from '../kernel';
 import { SpkFileArrayInformation, LittleEndianByteBufferReader, DataType, SPK_DOUBLE_SIZE } from './';
+
 /**
  * Source: https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/spk.html#Type%203:%20Chebyshev%20(position%20and%20velocity)
  */

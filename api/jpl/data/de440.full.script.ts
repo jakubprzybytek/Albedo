@@ -3,6 +3,7 @@ import { readMultipleSpkCollections, printSpkCollections } from "./testDataGener
 
 const from = new Date('2022-01-01');
 const to = new Date('2023-12-31');
+//const to = new Date('2022-01-02');
 
 const de440spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/de440.bsp', from, to, [
     { body: JplBodyId.Sun, centerBody: JplBodyId.SolarSystemBarycenter },
@@ -15,4 +16,9 @@ const de440spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/de440.b
     { body: JplBodyId.Venus, centerBody: JplBodyId.VenusBarycenter },
 ]);
 
-printSpkCollections('de440.full.ts', de440spk, from, to);
+const mar097spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/mar097.bsp', from, to, [
+    { body: JplBodyId.MarsBarycenter, centerBody: JplBodyId.SolarSystemBarycenter },
+    { body: JplBodyId.Mars, centerBody: JplBodyId.MarsBarycenter },
+]);
+
+printSpkCollections('de440.full.ts', [...de440spk, ...mar097spk], from, to);

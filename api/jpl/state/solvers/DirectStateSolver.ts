@@ -1,6 +1,6 @@
 import { RectangularCoordinates } from '../../../math';
-import { SpkKernelCollection } from "../../kernel";
-import { PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "../chebyshev";
+import { SpkKernelCollection, PositionAndVelocityChebyshevRecord, DataType } from "../../kernel";
+import { PositionAndVelocityCalculator, PositionAndTrueVelocityCalculator, PositionAndVelocitySolvingCalculator } from "../chebyshev";
 import { StateSolver } from "./";
 
 export class DirectStateSolver implements StateSolver {
@@ -16,10 +16,12 @@ export class DirectStateSolver implements StateSolver {
     }
 
     buildCalculator(spkKernelCollection: SpkKernelCollection): PositionAndVelocityCalculator {
-        return new PositionAndVelocitySolvingCalculator(spkKernelCollection.positionData);
-        // return spkKernelCollection.hasPositionAndVelocityData() ?
-        //         new PositionAndTrueVelocityCalculator(spkKernelCollection.getPositionAndVelocityData()) :
-        //         new PositionAndVelocitySolvingCalculator(spkKernelCollection.getPositionData());
+        switch (spkKernelCollection.dataType) {
+            case DataType.ChebyshevPosition:
+                return new PositionAndVelocitySolvingCalculator(spkKernelCollection.data);
+            case DataType.ChebyshevPositionAndVelocity:
+                return new PositionAndTrueVelocityCalculator(spkKernelCollection.data as PositionAndVelocityChebyshevRecord[]);
+        }
     }
 
     positionFor(ephemerisSeconds: number): RectangularCoordinates {

@@ -1,11 +1,11 @@
 export * from './TimeSpan';
 export * from './SpkKernelRepository';
 
+import { DataType } from '../files';
 import { JplBodyId } from '../JplBody';
 import { TimeSpan } from './';
 
-export * from './TimeSpan';
-export * from './SpkKernelRepository';
+export { DataType };
 
 export type XYZCoefficients = {
     x: number[];
@@ -28,5 +28,6 @@ export type SpkKernelCollection = {
     kernelFileName: string;
     bodyId: JplBodyId;
     centerBodyId: JplBodyId;
-    positionData: PositionChebyshevRecord[];
+    data: PositionChebyshevRecord[] | PositionAndVelocityChebyshevRecord[];
+    dataType: DataType;
 }

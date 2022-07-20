@@ -7,7 +7,7 @@ export const a_3_wrt_0: SpkKernelCollection = {
   "kernelFileName": "test",
   "bodyId": 3,
   "centerBodyId": 0,
-  "positionData": [
+  "data": [
     {
       "timeSpan": new TimeSpan(622728000, 624110400),
       "positionCoefficients": {
@@ -58,14 +58,15 @@ export const a_3_wrt_0: SpkKernelCollection = {
         ]
       }
     }
-  ]
+  ],
+  "dataType": 2
 };
 
 export const a_399_wrt_3: SpkKernelCollection = {
   "kernelFileName": "test",
   "bodyId": 399,
   "centerBodyId": 3,
-  "positionData": [
+  "data": [
     {
       "timeSpan": new TimeSpan(623764800, 624110400),
       "positionCoefficients": {
@@ -116,7 +117,8 @@ export const a_399_wrt_3: SpkKernelCollection = {
         ]
       }
     }
-  ]
+  ],
+  "dataType": 2
 };
 
 export const kernelRepository: SpkKernelRepository = new SpkKernelRepository();

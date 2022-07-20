@@ -36,7 +36,7 @@ export default function SeparationsChart({ separations }: SeparationsChartPropsT
     const theme = useTheme();
 
     return (
-        <Box sx={{ aspectRatio: { xs: '1', sm: '2' } }}>
+        <Box sx={{ aspectRatio: { xs: '1', sm: '2' }, maxHeight: '70vh' }}>
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={separations}>
                     <XAxis dataKey="tde" tick={<DateAxisTick />} />

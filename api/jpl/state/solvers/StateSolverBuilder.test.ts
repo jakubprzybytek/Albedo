@@ -5,9 +5,9 @@ import { StateSolverBuilder } from "./";
 
 const DUMMY_RECORD: PositionChebyshevRecord = { timeSpan: new TimeSpan(0, 1), positionCoefficients: { x: [], y: [], z: [] } };
 
-const earthMoonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.EarthMoonBarycenter, centerBodyId: JplBodyId.SolarSystemBarycenter, positionData: [DUMMY_RECORD] };
-const earthSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Earth, centerBodyId: JplBodyId.EarthMoonBarycenter, positionData: [DUMMY_RECORD] };
-const moonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Moon, centerBodyId: JplBodyId.EarthMoonBarycenter, positionData: [DUMMY_RECORD] };
+const earthMoonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.EarthMoonBarycenter, centerBodyId: JplBodyId.SolarSystemBarycenter, data: [DUMMY_RECORD] };
+const earthSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Earth, centerBodyId: JplBodyId.EarthMoonBarycenter, data: [DUMMY_RECORD] };
+const moonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Moon, centerBodyId: JplBodyId.EarthMoonBarycenter, data: [DUMMY_RECORD] };
 
 const spkKernelRepository = new SpkKernelRepository();
 spkKernelRepository.registerSpkKernelCollections([

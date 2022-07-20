@@ -2,14 +2,12 @@ import { openSync, writeSync, closeSync } from 'node:fs';
 import { JulianDay } from "../../math";
 import { JplBodyId, EphemerisSeconds } from "..";
 import { SpkKernelCollection, TimeSpan } from '../kernel';
-import { SpkFileArrayInformation, readSpkFileInformation, readSpkPositionChebyshevPolynomials, DataType } from "../files";
-
+import { SpkFileArrayInformation, readSpkFileInformation, readSpkPositionChebyshevPolynomials, readSpkPositionAndVelocityChebyshevPolynomials, DataType } from "../files";
 
 type BodiesPair = {
     body: JplBodyId;
     centerBody: JplBodyId;
 }
-
 
 function readRecords(fd: number, spkFileArrayInformationList: SpkFileArrayInformation[], bodyId: JplBodyId, centerBodyId: JplBodyId, fromJde: number, toJde: number): SpkKernelCollection {
     const arrayInformation = spkFileArrayInformationList
@@ -25,7 +23,16 @@ function readRecords(fd: number, spkFileArrayInformationList: SpkFileArrayInform
                 kernelFileName: 'test',
                 bodyId: bodyId,
                 centerBodyId: centerBodyId,
-                positionData: readSpkPositionChebyshevPolynomials(fd, arrayInformation, EphemerisSeconds.fromJde(fromJde), EphemerisSeconds.fromJde(toJde))
+                data: readSpkPositionChebyshevPolynomials(fd, arrayInformation, EphemerisSeconds.fromJde(fromJde), EphemerisSeconds.fromJde(toJde)),
+                dataType: DataType.ChebyshevPosition
+            }
+        case DataType.ChebyshevPositionAndVelocity:
+            return {
+                kernelFileName: 'test',
+                bodyId: bodyId,
+                centerBodyId: centerBodyId,
+                data: readSpkPositionAndVelocityChebyshevPolynomials(fd, arrayInformation, EphemerisSeconds.fromJde(fromJde), EphemerisSeconds.fromJde(toJde)),
+                dataType: DataType.ChebyshevPositionAndVelocity
             }
     }
 
@@ -59,7 +66,7 @@ export function printSpkCollections(outputFileName: string, spkCollectionsList: 
     writeSync(fd, "import { SpkKernelRepository, SpkKernelCollection, TimeSpan } from '../kernel';\n\n");
     writeSync(fd, `// from: ${from.toISOString()}\n`);
     writeSync(fd, `// to: ${to.toISOString()}\n\n`);
-    
+
     var kernelRepositorySnippet = 'export const kernelRepository: SpkKernelRepository = new SpkKernelRepository();\n'
         + 'kernelRepository.registerSpkKernelCollections([\n';
 
