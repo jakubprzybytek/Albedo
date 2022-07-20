@@ -1,7 +1,12 @@
 import { JplBodyId } from "..";
-import { generateTestData } from "./testDataGenerator";
+import { readMultipleSpkCollections, printSpkCollections } from "./testDataGenerator";
 
-generateTestData('d:/Workspace/Java/Albedo/misc/jpl-kernels/de440s.bsp', 'de440.testData.ts', new Date('2019-10-09'), new Date('2019-10-11'), [
+const from = new Date('2019-10-09');
+const to = new Date('2019-10-11');
+
+const de440spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/de440.bsp', from, to, [
     { body: JplBodyId.EarthMoonBarycenter, centerBody: JplBodyId.SolarSystemBarycenter },
     { body: JplBodyId.Earth, centerBody: JplBodyId.EarthMoonBarycenter },
 ]);
+
+printSpkCollections('de440.testData.ts', de440spk, from, to);
