@@ -1,7 +1,7 @@
 import { openSync, writeSync, closeSync } from 'node:fs';
 import { JulianDay } from "../../math";
 import { JplBodyId, EphemerisSeconds } from "..";
-import { SpkKernelCollection, TimeSpan } from '../kernel';
+import { PositionAndVelocityChebyshevRecord, PositionChebyshevRecord, SpkKernelCollection, TimeSpan } from '../kernel';
 import { SpkFileArrayInformation, readSpkFileInformation, readSpkPositionChebyshevPolynomials, readSpkPositionAndVelocityChebyshevPolynomials, DataType } from "../files";
 
 type BodiesPair = {
@@ -10,33 +10,35 @@ type BodiesPair = {
 }
 
 function readRecords(fd: number, spkFileArrayInformationList: SpkFileArrayInformation[], bodyId: JplBodyId, centerBodyId: JplBodyId, fromJde: number, toJde: number): SpkKernelCollection {
-    const arrayInformation = spkFileArrayInformationList
-        .find(arrayInformation => arrayInformation.body.id === bodyId && arrayInformation.centerBody.id === centerBodyId);
+    const positionRecords: PositionChebyshevRecord[] = new Array();
+    const positionAndVelocityRecords: PositionAndVelocityChebyshevRecord[] = new Array();
 
-    if (arrayInformation === undefined) {
-        throw Error(`Cannot find array information for body '${bodyId}' w.r.t. '${centerBodyId}'`);
+    spkFileArrayInformationList
+        .filter(arrayInformation => arrayInformation.body.id === bodyId && arrayInformation.centerBody.id === centerBodyId)
+        .forEach(arrayInformation => {
+            switch (arrayInformation.dataType) {
+                case DataType.ChebyshevPosition:
+                    const newPRecords = readSpkPositionChebyshevPolynomials(fd, arrayInformation, EphemerisSeconds.fromJde(fromJde), EphemerisSeconds.fromJde(toJde));
+                    positionRecords.push(...newPRecords);
+                    break;
+                case DataType.ChebyshevPositionAndVelocity:
+                    const newPVRecords = readSpkPositionAndVelocityChebyshevPolynomials(fd, arrayInformation, EphemerisSeconds.fromJde(fromJde), EphemerisSeconds.fromJde(toJde));
+                    positionAndVelocityRecords.push(...newPVRecords);
+                    break;
+            };
+        })
+
+    if (positionRecords.length === 0 && positionAndVelocityRecords.length === 0) {
+        throw Error(`Cannot find records for body '${bodyId}' w.r.t. '${centerBodyId}'`);
     }
 
-    switch (arrayInformation.dataType) {
-        case DataType.ChebyshevPosition:
-            return {
-                kernelFileName: 'test',
-                bodyId: bodyId,
-                centerBodyId: centerBodyId,
-                data: readSpkPositionChebyshevPolynomials(fd, arrayInformation, EphemerisSeconds.fromJde(fromJde), EphemerisSeconds.fromJde(toJde)),
-                dataType: DataType.ChebyshevPosition
-            }
-        case DataType.ChebyshevPositionAndVelocity:
-            return {
-                kernelFileName: 'test',
-                bodyId: bodyId,
-                centerBodyId: centerBodyId,
-                data: readSpkPositionAndVelocityChebyshevPolynomials(fd, arrayInformation, EphemerisSeconds.fromJde(fromJde), EphemerisSeconds.fromJde(toJde)),
-                dataType: DataType.ChebyshevPositionAndVelocity
-            }
+    return {
+        kernelFileName: 'test',
+        bodyId: bodyId,
+        centerBodyId: centerBodyId,
+        data: positionRecords.length > 0 ? positionRecords : positionAndVelocityRecords,
+        dataType: positionRecords.length > 0 ? DataType.ChebyshevPosition : DataType.ChebyshevPositionAndVelocity
     }
-
-    throw Error(`Unsupported data typ ${arrayInformation.dataType}`);
 }
 
 export function readMultipleSpkCollections(spkFileName: string, from: Date, to: Date, bodies: BodiesPair[]): SpkKernelCollection[] {

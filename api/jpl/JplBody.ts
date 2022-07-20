@@ -26,15 +26,15 @@ export enum JplBodyId {
     Deimos = 402,
     Mars = 499,
 
-    // Io(501, BodyType.NaturalSatellite),
-    // Europa(502, BodyType.NaturalSatellite),
-    // Ganymede(503, BodyType.NaturalSatellite),
-    // Callisto(504, BodyType.NaturalSatellite),
-    // Amalthea(505, BodyType.NaturalSatellite),
-    // Thebe(514, BodyType.NaturalSatellite),
-    // Adrastea(515, BodyType.NaturalSatellite),
-    // Metis(516, BodyType.NaturalSatellite),
-    // Jupiter(599, BodyType.Planet),
+    Io = 501,
+    Europa = 502,
+    Ganymede = 503,
+    Callisto = 504,
+    Amalthea = 505,
+    Thebe = 514,
+    Adrastea = 515,
+    Metis = 516,
+    Jupiter = 599,
 
     // Mimas(601, BodyType.NaturalSatellite),
     // Enceladus(602, BodyType.NaturalSatellite),
@@ -120,11 +120,21 @@ const jplBodies: JplBody[] = [
     { id: JplBodyId.Phobos, name: 'Phobos', type: BodyType.NaturalSatellite },
     { id: JplBodyId.Deimos, name: 'Deimos', type: BodyType.Barycenter },
     { id: JplBodyId.Mars, name: 'Mars', type: BodyType.Planet },
-];
+
+    { id: JplBodyId.Io, name: 'Io', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Europa, name: 'Europa', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Ganymede, name: 'Ganymede', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Callisto, name: 'Callisto', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Amalthea, name: 'Amalthea', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Thebe, name: 'Thebe', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Adrastea, name: 'Adrastea', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Metis, name: 'Metis', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Jupiter, name: 'Jupiter', type: BodyType.Planet }
+]
 
 const jplBodiesById = Object.fromEntries(
-    jplBodies.map(jplBodyDetails => [jplBodyDetails.id, jplBodyDetails])
-);
+        jplBodies.map(jplBodyDetails => [jplBodyDetails.id, jplBodyDetails])
+    );
 
 const jplBodiesByName = Object.fromEntries(
     jplBodies.map(jplBodyDetails => [jplBodyDetails.name, jplBodyDetails])

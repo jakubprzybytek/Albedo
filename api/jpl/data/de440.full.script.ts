@@ -21,4 +21,9 @@ const mar097spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/mar097
     { body: JplBodyId.Mars, centerBody: JplBodyId.MarsBarycenter },
 ]);
 
-printSpkCollections('de440.full.ts', [...de440spk, ...mar097spk], from, to);
+const jup365spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/jup365.bsp', from, to, [
+    { body: JplBodyId.JupiterBarycenter, centerBody: JplBodyId.SolarSystemBarycenter },
+    { body: JplBodyId.Jupiter, centerBody: JplBodyId.JupiterBarycenter },
+]);
+
+printSpkCollections('de440.full.ts', [...de440spk, ...mar097spk, ...jup365spk], from, to);
