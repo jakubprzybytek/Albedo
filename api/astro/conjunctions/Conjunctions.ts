@@ -7,7 +7,7 @@ const PRELIMINARY_INTERVAL = 1;
 
 export class Conjunctions {
     static all(fromJde: number, toJde: number): Conjunction[] {
-        const sepearations = Separations.all(JplBodyId.Mercury, JplBodyId.Venus, fromJde, toJde, PRELIMINARY_INTERVAL);
+        const sepearations = Separations.all(JplBodyId.Mars, JplBodyId.Jupiter, fromJde, toJde, PRELIMINARY_INTERVAL);
         return localMinimums(sepearations, element => element.separation)
     }
 };
