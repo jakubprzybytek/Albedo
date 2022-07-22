@@ -38,6 +38,7 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
             <Table size="small" aria-label="a dense table">
                 <TableHead>
                     <TableRow>
+                    <TableCell>Event</TableCell>
                         <TableCell>Time</TableCell>
                         <TableCell align="center">First body</TableCell>
                         <TableCell align="center">Second body</TableCell>
@@ -50,6 +51,10 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
                             '&:last-child td, &:last-child th': { border: 0 },
                             '& span': { display: 'block' }
                         }}>
+                            <TableCell>
+                                Conjunction between ({conjunction.firstBody.id}) and ({conjunction.secondBody.id})
+                                with a sepration of {formatDegrees(conjunction.separation)}.
+                            </TableCell>
                             <TableCell>
                                 <span>{conjunction.jde} (JDE)</span>
                                 <span><>{conjunction.tde} (TDE)</></span>

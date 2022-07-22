@@ -6,6 +6,8 @@ import { Conjunction } from './';
 
 const PRELIMINARY_INTERVAL = 1;
 
+const SEPARATION_THRESHOLD = 5;
+
 type BodyWithEphemerides = {
     body: JplBody;
     ephemerides: Ephemeris[];
@@ -27,11 +29,10 @@ export class Conjunctions {
                 bodyPairs.push([bodies[i], bodies[j]]);
             }
         }
-        console.log("body pairs " + bodyPairs.length)
 
         return bodyPairs
             .map((pair) => Separations.fromEphemerides(pair[0].body.id, pair[0].ephemerides, pair[1].body.id, pair[1].ephemerides))
             .flatMap((separations) => localMinimums(separations, element => element.separation))
-            .filter((separation) => separation.separation < 20);
+            .filter((separation) => separation.separation < SEPARATION_THRESHOLD);
     }
 };
