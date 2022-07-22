@@ -52,7 +52,6 @@ export default function SeparationsTable({ separations }: SeparationsTablePropsT
                         }}>
                             <TableCell>
                                 <span>{separation.jde} (JDE)</span>
-                                <span>{separation.ephemerisSeconds} [ES]</span>
                                 <span><>{separation.tde} (TDE)</></span>
                             </TableCell>
                             <TableCell align="center">

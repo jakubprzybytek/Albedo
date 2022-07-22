@@ -52,13 +52,14 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
                         }}>
                             <TableCell>
                                 <span>{conjunction.jde} (JDE)</span>
-                                <span>{conjunction.ephemerisSeconds} [ES]</span>
                                 <span><>{conjunction.tde} (TDE)</></span>
                             </TableCell>
                             <TableCell align="center">
+                                ({conjunction.firstBody.id})
                                 <AstroCoords coords={conjunction.firstBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="center">
+                                ({conjunction.secondBody.id})
                                 <AstroCoords coords={conjunction.secondBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="right">

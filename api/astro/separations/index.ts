@@ -5,7 +5,6 @@ export * from './Separations';
 
 export type Separation = {
     jde: number;
-    ephemerisSeconds: number;
     tde: Date;
     firstBody: {
         id: JplBodyId;

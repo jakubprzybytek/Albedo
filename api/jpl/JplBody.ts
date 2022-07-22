@@ -52,20 +52,29 @@ export enum JplBodyId {
     // Polydeuces(634, BodyType.NaturalSatellite),
     // Saturn(699, BodyType.Planet),
 
-    // Cordelia(706, BodyType.NaturalSatellite),
-    // Ophelia(707, BodyType.NaturalSatellite),
-    // Bianca(708, BodyType.NaturalSatellite),
-    // Cressida(709, BodyType.NaturalSatellite),
-    // Desdemona(710, BodyType.NaturalSatellite),
-    // Juliet(711, BodyType.NaturalSatellite),
-    // Portia(712, BodyType.NaturalSatellite),
-    // Rosalind(713, BodyType.NaturalSatellite),
-    // Belinda(714, BodyType.NaturalSatellite),
-    // Puck(715, BodyType.NaturalSatellite),
-    // Perdita(725, BodyType.NaturalSatellite),
-    // Mab(726, BodyType.NaturalSatellite),
-    // Cupid(727, BodyType.NaturalSatellite),
-    // Uranus(799, BodyType.Planet),
+    Cordelia = 706,
+    Ophelia = 707,
+    Bianca = 708,
+    Cressida = 709,
+    Desdemona = 710,
+    Juliet = 711,
+    Portia = 712,
+    Rosalind = 713,
+    Belinda = 714,
+    Puck = 715,
+    Caliban = 716,
+    Sycorax = 717,
+    Prospero = 718,
+    Setebos = 719,
+    Stephano = 720,
+    Trinculo = 721,
+    Francisco = 722,
+    Margaret = 723,
+    Ferdinand = 724,
+    Perdita = 725,
+    Mab = 726,
+    Cupid = 727,
+    Uranus = 799,
 
     // Triton(801, BodyType.NaturalSatellite),
     // Nereid(802, BodyType.NaturalSatellite),
@@ -129,12 +138,36 @@ const jplBodies: JplBody[] = [
     { id: JplBodyId.Thebe, name: 'Thebe', type: BodyType.NaturalSatellite },
     { id: JplBodyId.Adrastea, name: 'Adrastea', type: BodyType.NaturalSatellite },
     { id: JplBodyId.Metis, name: 'Metis', type: BodyType.NaturalSatellite },
-    { id: JplBodyId.Jupiter, name: 'Jupiter', type: BodyType.Planet }
+    { id: JplBodyId.Jupiter, name: 'Jupiter', type: BodyType.Planet },
+
+    { id: JplBodyId.Cordelia, name: 'Cordelia', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Ophelia, name: 'Ophelia', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Bianca, name: 'Bianca', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Cressida, name: 'Cressida', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Desdemona, name: 'Desdemona', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Juliet, name: 'Juliet', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Portia, name: 'Portia', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Rosalind, name: 'Rosalind', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Belinda, name: 'Belinda', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Puck, name: 'Puck', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Caliban, name: 'Caliban', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Sycorax, name: 'Sycorax', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Prospero, name: 'Prospero', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Setebos, name: 'Setebos', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Stephano, name: 'Stephano', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Trinculo, name: 'Trinculo', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Francisco, name: 'Francisco', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Margaret, name: 'Margaret', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Ferdinand, name: 'Ferdinand', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Perdita, name: 'Perdita', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Mab, name: 'Mab', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Cupid, name: 'Cupid', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Uranus, name: 'Uranus', type: BodyType.Planet },
 ]
 
 const jplBodiesById = Object.fromEntries(
-        jplBodies.map(jplBodyDetails => [jplBodyDetails.id, jplBodyDetails])
-    );
+    jplBodies.map(jplBodyDetails => [jplBodyDetails.id, jplBodyDetails])
+);
 
 const jplBodiesByName = Object.fromEntries(
     jplBodies.map(jplBodyDetails => [jplBodyDetails.name, jplBodyDetails])

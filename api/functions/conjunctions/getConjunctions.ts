@@ -26,5 +26,7 @@ export const handler = lambdaHandler<GetConjunctionsReturnType>(event => {
 
     const conjunctions = Conjunctions.all(fromJde, toJde);
 
+    console.log(`Found ${conjunctions.length} conjunctions.`);
+
     return Success(conjunctions);
 });

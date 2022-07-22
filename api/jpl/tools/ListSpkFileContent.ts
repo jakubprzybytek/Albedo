@@ -23,8 +23,8 @@ function ListSpkFileContent(fileName: string) {
         const endDate = JulianDay.toDateTime(EphemerisSeconds.toJde(spkFileArrayInformation.endDate));
         const dataType = spkFileArrayInformation.dataType === DataType.ChebyshevPosition ? 'position' :
             spkFileArrayInformation.dataType === DataType.ChebyshevPositionAndVelocity ? 'position and velocity' : 'unknown';
-        console.log(`${bodyName}${' '.repeat(24 - bodyName.length)} w.r.t. ${centerBodyName}${' '.repeat(24 - centerBodyName.length)} `
-            + `from ${startDate.toISOString()} to ${endDate.toISOString()}, `
+        console.log(`${bodyName} w.r.t. ${centerBodyName} `
+            + `from ${startDate.toLocaleDateString('pl-pl')} to ${endDate.toLocaleDateString('pl-pl')}, `
             + `start index: ${spkFileArrayInformation.startIndex}, end index: ${spkFileArrayInformation.endIndex}, `
             + `data type: ${dataType}(${spkFileArrayInformation.dataType})`);
     });

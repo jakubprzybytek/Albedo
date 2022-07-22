@@ -5,7 +5,6 @@ export * from './Conjunctions';
 
 export type Conjunction = {
     jde: number;
-    ephemerisSeconds: number;
     tde: Date;
     firstBody: {
         id: JplBodyId;
