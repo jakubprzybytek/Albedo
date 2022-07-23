@@ -47,7 +47,7 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
                 </TableHead>
                 <TableBody>
                     {conjunctions.map((conjunction) => (
-                        <TableRow key={`${conjunction.jde}-${conjunction.firstBody.id}-${conjunction.secondBody.id}`} sx={{
+                        <TableRow key={`${conjunction.jde}-${conjunction.firstBody.info.id}-${conjunction.secondBody.info.id}`} sx={{
                             '&:last-child td, &:last-child th': { border: 0 },
                             '& span': { display: 'block' }
                         }}>
@@ -56,15 +56,14 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
                                 <span><>{conjunction.tde} (TDE)</></span>
                             </TableCell>
                             <TableCell>
-                                Conjunction between ({conjunction.firstBody.id}) and ({conjunction.secondBody.id})
-                                with a sepration of {formatDegrees(conjunction.separation)}.
+                                Conjunction between {conjunction.firstBody.info.name} and {conjunction.secondBody.info.name} with a sepration of {formatDegrees(conjunction.separation)}.
                             </TableCell>
                             <TableCell align="center">
-                                ({conjunction.firstBody.id})
+                                {conjunction.firstBody.info.name}
                                 <AstroCoords coords={conjunction.firstBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="center">
-                                ({conjunction.secondBody.id})
+                                {conjunction.secondBody.info.name}
                                 <AstroCoords coords={conjunction.secondBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="right">

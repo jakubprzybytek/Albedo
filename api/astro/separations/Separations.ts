@@ -1,32 +1,25 @@
-import { JplBodyId } from "../../jpl";
+import { JplBody } from "../../jpl";
 import { Ephemerides, Ephemeris } from "../ephemeris";
 import { Radians } from "../../math";
-import { Separation } from './';
+import { Separation, SeparationWithBodies } from './';
 
 export class Separations {
-    static fromEphemerides(firstBodyId: JplBodyId, firstBodyEphemerides: Ephemeris[], secondBodyId: JplBodyId, secondBodyEphemerides: Ephemeris[]): Separation[] {
+    static fromEphemerides(firstBodyEphemerides: Ephemeris[], secondBodyEphemerides: Ephemeris[]): Separation[] {
         return firstBodyEphemerides
             .map((firstBodyEphemeris, index) => {
                 const secondBodyEphemeris = secondBodyEphemerides[index];
                 return {
                     jde: firstBodyEphemeris.jde,
-                    tde: firstBodyEphemeris.tde,
-                    firstBody: {
-                        id: firstBodyId,
-                        ephemeris: firstBodyEphemeris
-                    },
-                    secondBody: {
-                        id: secondBodyId,
-                        ephemeris: secondBodyEphemeris
-                    },
+                    firstBodyEphemeris: firstBodyEphemeris,
+                    secondBodyEphemeris: secondBodyEphemeris,
                     separation: Radians.separation(firstBodyEphemeris.coords, secondBodyEphemeris.coords)
                 }
             });
     }
 
-    static all(firstBodyId: JplBodyId, secondBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Separation[] {
-        const firstBodyEphemerides = Ephemerides.simple(firstBodyId, fromJde, toJde, interval);
-        const secondBodyEphemerides = Ephemerides.simple(secondBodyId, fromJde, toJde, interval);
+    static all(firstBody: JplBody, secondBody: JplBody, fromJde: number, toJde: number, interval: number): SeparationWithBodies[] {
+        const firstBodyEphemerides = Ephemerides.simple(firstBody.id, fromJde, toJde, interval);
+        const secondBodyEphemerides = Ephemerides.simple(secondBody.id, fromJde, toJde, interval);
 
         return firstBodyEphemerides
             .map((firstBodyEphemeris, index) => {
@@ -35,11 +28,11 @@ export class Separations {
                     jde: firstBodyEphemeris.jde,
                     tde: firstBodyEphemeris.tde,
                     firstBody: {
-                        id: JplBodyId.Mercury,
+                        info: firstBody,
                         ephemeris: firstBodyEphemeris
                     },
                     secondBody: {
-                        id: JplBodyId.Venus,
+                        info: secondBody,
                         ephemeris: secondBodyEphemeris
                     },
                     separation: Radians.separation(firstBodyEphemeris.coords, secondBodyEphemeris.coords)

@@ -1,4 +1,4 @@
-import { JplBodyId } from "../../jpl";
+import { JplBody } from "../../jpl";
 import { Ephemeris } from "../ephemeris";
 
 export * from './Conjunctions';
@@ -7,11 +7,11 @@ export type Conjunction = {
     jde: number;
     tde: Date;
     firstBody: {
-        id: JplBodyId;
+        info: JplBody;
         ephemeris: Ephemeris;
     }
     secondBody: {
-        id: JplBodyId;
+        info: JplBody;
         ephemeris: Ephemeris;
     }
     separation: number;

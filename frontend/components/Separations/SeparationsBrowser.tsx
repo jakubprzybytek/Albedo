@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import SeparationsQueryForm from './SeparationsQueryForm';
 import SeparationsTable from './SeparationsTable';
 import SeparationsChart from "./SeparationsChart";
-import { Separation } from '@lambda/separations';
+import { SeparationWithBodies } from '@lambda/separations';
 
 interface TabPanelProps {
     index: number;
@@ -28,7 +28,7 @@ function TabPanel(props: TabPanelProps) {
 export default function SeparationsBrowser(): JSX.Element {
     const [openedTab, setOpenedTab] = useState(0);
 
-    const [separations, setSeparations] = useState<Separation[]>([]);
+    const [separations, setSeparations] = useState<SeparationWithBodies[]>([]);
 
     return (
         <Box sx={{ '& > div': { mb: 1 } }}>

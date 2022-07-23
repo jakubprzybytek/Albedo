@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { AstronomicalCoordinates } from "@math";
-import { Separation } from '@lambda/separations';
+import { SeparationWithBodies } from '@lambda/separations';
 import { formatHourAngle, formatDegrees } from '../Utils';
 
 
@@ -24,7 +24,7 @@ function AstroCoords({ coords }: AstroCoordsPropsType): JSX.Element {
     );
 }
 type SeparationsTablePropsType = {
-    separations: Separation[];
+    separations: SeparationWithBodies[];
 }
 
 export default function SeparationsTable({ separations }: SeparationsTablePropsType): JSX.Element {
@@ -55,9 +55,11 @@ export default function SeparationsTable({ separations }: SeparationsTablePropsT
                                 <span><>{separation.tde} (TDE)</></span>
                             </TableCell>
                             <TableCell align="center">
+                                {separation.firstBody.info.name}
                                 <AstroCoords coords={separation.firstBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="center">
+                                {separation.secondBody.info.name}
                                 <AstroCoords coords={separation.secondBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="right">

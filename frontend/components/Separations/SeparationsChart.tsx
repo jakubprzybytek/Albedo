@@ -2,7 +2,7 @@ import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { format } from 'date-fns';
-import { Separation } from '@lambda/separations';
+import { SeparationWithBodies } from '@lambda/separations';
 import { formatHourAngle, formatDegrees } from '../Utils';
 
 type DateAxisTickPropsType = {
@@ -29,7 +29,7 @@ function DateAxisTick(props: any): JSX.Element {
 }
 
 type SeparationsChartPropsType = {
-    separations: Separation[];
+    separations: SeparationWithBodies[];
 }
 
 export default function SeparationsChart({ separations }: SeparationsChartPropsType): JSX.Element {

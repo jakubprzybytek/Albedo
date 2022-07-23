@@ -3,7 +3,7 @@ import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '../../math';
 import { JplBody } from '../../jpl';
-import { Separations, Separation } from '../../astro/separations';
+import { Separations, SeparationWithBodies } from '../../astro/separations';
 
 type GetSeparationsParams = {
     target: JplBody;
@@ -21,7 +21,7 @@ const parseGetSeparationsParams: (event: APIGatewayProxyEventV2) => GetSeparatio
     interval: mandatoryFloat(event, 'interval')
 });
 
-export type GetSeparationsReturnType = Separation[];
+export type GetSeparationsReturnType = SeparationWithBodies[];
 
 export const handler = lambdaHandler<GetSeparationsReturnType>(event => {
     const { target, observer, fromTde, toTde, interval } = parseGetSeparationsParams(event);
@@ -31,7 +31,9 @@ export const handler = lambdaHandler<GetSeparationsReturnType>(event => {
 
     console.log(`Compute separations for '${target.name}' w.r.t. '${observer.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${interval} day(s)`);
 
-    const separations = Separations.all(target.id, observer.id, fromJde, toJde, interval)
+    const separations = Separations.all(target, observer, fromJde, toJde, interval)
+
+    console.log(`Computed ${separations.length} separations`);
 
     return Success(separations);
 });
