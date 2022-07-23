@@ -3,11 +3,11 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
-import { Separation } from '@lambda/separations';
+import { SeparationWithBodies } from '@lambda/separations';
 import QueryForm from '../QueryForm';
 
 type SeparationsQueryFormParams = {
-    setSeparations: (separations: Separation[]) => void;
+    setSeparations: (separations: SeparationWithBodies[]) => void;
 };
 
 export default function SeparationsQueryForm({ setSeparations }: SeparationsQueryFormParams): JSX.Element {
