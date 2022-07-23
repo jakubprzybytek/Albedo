@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { format } from 'date-fns';
 import { SeparationWithBodies } from '@lambda/separations';
-import { formatHourAngle, formatDegrees } from '../Utils';
+import { formatHourAngle, formatDegrees } from '../../utils';
 
 type DateAxisTickPropsType = {
     x: number;

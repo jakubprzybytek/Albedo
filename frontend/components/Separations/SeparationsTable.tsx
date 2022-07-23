@@ -6,23 +6,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { AstronomicalCoordinates } from "@math";
 import { SeparationWithBodies } from '@lambda/separations';
-import { formatHourAngle, formatDegrees } from '../Utils';
+import { formatDegrees } from '../../utils';
+import AstronomicalCoords from 'common/AstronomicalCoordinates';
 
-
-type AstroCoordsPropsType = {
-    coords: AstronomicalCoordinates;
-}
-
-function AstroCoords({ coords }: AstroCoordsPropsType): JSX.Element {
-    return (
-        <>
-            <span>R.A.: {formatHourAngle(coords.rightAscension)} ({coords.rightAscension.toFixed(6)}°)</span>
-            <span>Dec.: {formatDegrees(coords.declination)} ({coords.declination.toFixed(6)}°)</span>
-        </>
-    );
-}
 type SeparationsTablePropsType = {
     separations: SeparationWithBodies[];
 }
@@ -56,11 +43,11 @@ export default function SeparationsTable({ separations }: SeparationsTablePropsT
                             </TableCell>
                             <TableCell align="center">
                                 {separation.firstBody.info.name}
-                                <AstroCoords coords={separation.firstBody.ephemeris.coords} />
+                                <AstronomicalCoords coords={separation.firstBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="center">
                                 {separation.secondBody.info.name}
-                                <AstroCoords coords={separation.secondBody.ephemeris.coords} />
+                                <AstronomicalCoords coords={separation.secondBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="right">
                                 {formatDegrees(separation.separation)}

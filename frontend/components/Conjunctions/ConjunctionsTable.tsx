@@ -6,22 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { AstronomicalCoordinates } from "@math";
 import { Conjunction } from '@lambda/conjunctions';
-import { formatHourAngle, formatDegrees } from '../Utils';
-
-type AstroCoordsPropsType = {
-    coords: AstronomicalCoordinates;
-}
-
-function AstroCoords({ coords }: AstroCoordsPropsType): JSX.Element {
-    return (
-        <>
-            <span>R.A.: {formatHourAngle(coords.rightAscension)} ({coords.rightAscension.toFixed(6)}°)</span>
-            <span>Dec.: {formatDegrees(coords.declination)} ({coords.declination.toFixed(6)}°)</span>
-        </>
-    );
-}
+import { formatDegrees } from '../../utils';
+import AstronomicalCoords from 'common/AstronomicalCoordinates';
 
 type ConjunctionsTablePropsType = {
     conjunctions: Conjunction[];
@@ -60,11 +47,11 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
                             </TableCell>
                             <TableCell align="center">
                                 {conjunction.firstBody.info.name}
-                                <AstroCoords coords={conjunction.firstBody.ephemeris.coords} />
+                                <AstronomicalCoords coords={conjunction.firstBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="center">
                                 {conjunction.secondBody.info.name}
-                                <AstroCoords coords={conjunction.secondBody.ephemeris.coords} />
+                                <AstronomicalCoords coords={conjunction.secondBody.ephemeris.coords} />
                             </TableCell>
                             <TableCell align="right">
                                 {formatDegrees(conjunction.separation)}

@@ -6,22 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { AstronomicalCoordinates } from "@math";
 import { Ephemeris } from '@lambda/ephemeris';
-import { formatHourAngle, formatDegrees} from '../Utils';
-
-type AstroCoordsPropsType = {
-    coords: AstronomicalCoordinates;
-}
-
-function AstroCoords({ coords }: AstroCoordsPropsType): JSX.Element {
-    return (
-        <>
-            <span>R.A.: {formatHourAngle(coords.rightAscension)} ({coords.rightAscension.toFixed(6)}°)</span>
-            <span>Dec.: {formatDegrees(coords.declination)} ({coords.declination.toFixed(6)}°)</span>
-        </>
-    );
-}
+import AstronomicalCoords from 'common/AstronomicalCoordinates';
 
 type EphemerisTablePropsType = {
     ephemerides: Ephemeris[];
@@ -54,7 +40,7 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
                                 <span><>{ephemeris.tde} (TDE)</></span>
                             </TableCell>
                             <TableCell align="right">
-                                <AstroCoords coords={ephemeris.coords} />
+                                <AstronomicalCoords coords={ephemeris.coords} />
                             </TableCell>
                         </TableRow>
                     ))}
