@@ -1,3 +1,3 @@
 import { JplBody } from "../jpl";
 
-export { JplBody };
+export type { JplBody };
