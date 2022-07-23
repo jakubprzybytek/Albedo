@@ -3,10 +3,11 @@ import { localMinimums } from '../utils/LocalMinimums';
 import { Ephemerides, Ephemeris } from "../ephemeris";
 import { Separations } from '../separations';
 import { Conjunction } from './';
+import { Radians } from "../../math";
 
 const PRELIMINARY_INTERVAL = 1;
 
-const SEPARATION_THRESHOLD = 5;
+const SEPARATION_THRESHOLD = Radians.fromDegrees(2);
 
 type BodyWithEphemerides = {
     body: JplBody;

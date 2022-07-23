@@ -19,8 +19,7 @@ export class Separations {
                         id: secondBodyId,
                         ephemeris: secondBodyEphemeris
                     },
-                    separation: Radians.toDegrees(
-                        Radians.separation(firstBodyEphemeris.coords, secondBodyEphemeris.coords))
+                    separation: Radians.separation(firstBodyEphemeris.coords, secondBodyEphemeris.coords)
                 }
             });
     }
@@ -43,8 +42,7 @@ export class Separations {
                         id: JplBodyId.Venus,
                         ephemeris: secondBodyEphemeris
                     },
-                    separation: Radians.toDegrees(
-                        Radians.separation(firstBodyEphemeris.coords, secondBodyEphemeris.coords))
+                    separation: Radians.separation(firstBodyEphemeris.coords, secondBodyEphemeris.coords)
                 }
             });
     }
