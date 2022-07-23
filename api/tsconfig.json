@@ -1,6 +1,6 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["functions/**/*.ts", "math", "jpl", "astro"],
+  "include": ["functions", "math", "jpl", "astro"],
   "compilerOptions": {
     "module": "esnext",
     "target": "es2021",

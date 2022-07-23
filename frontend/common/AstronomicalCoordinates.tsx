@@ -8,8 +8,8 @@ type AstronomicalCoordsPropsType = {
 export default function AstronomicalCoords({ coords }: AstronomicalCoordsPropsType): JSX.Element {
     return (
         <>
-            <span>R.A.: {formatHourAngle(coords.rightAscension)} ({coords.rightAscension.toFixed(6)}°)</span>
-            <span>Dec.: {formatDegrees(coords.declination)} ({coords.declination.toFixed(6)}°)</span>
+            <div>R.A.: {formatHourAngle(coords.rightAscension)} ({coords.rightAscension.toFixed(6)}°)</div>
+            <div>Dec.: {formatDegrees(coords.declination)} ({coords.declination.toFixed(6)}°)</div>
         </>
     );
 }

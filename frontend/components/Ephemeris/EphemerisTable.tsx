@@ -31,13 +31,12 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
                 <TableBody>
                     {ephemerides.map((ephemeris) => (
                         <TableRow key={ephemeris.jde} sx={{
-                            '&:last-child td, &:last-child th': { border: 0 },
-                            '& span': { display: 'block' }
+                            '&:last-child td, &:last-child th': { border: 0 }
                         }}>
                             <TableCell>
-                                <span>{ephemeris.jde} (JDE)</span>
-                                <span>{ephemeris.ephemerisSeconds} [ES]</span>
-                                <span><>{ephemeris.tde} (TDE)</></span>
+                                <div>{ephemeris.jde} (JDE)</div>
+                                <div>{ephemeris.ephemerisSeconds} [ES]</div>
+                                <div><>{ephemeris.tde} (TDE)</></div>
                             </TableCell>
                             <TableCell align="right">
                                 <AstronomicalCoords coords={ephemeris.coords} />

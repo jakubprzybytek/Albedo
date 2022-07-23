@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@math": ["../api/math"],
+      "@lambda": ["../api/functions"],
       "@lambda/*": ["../api/functions/*"]
     }
   },

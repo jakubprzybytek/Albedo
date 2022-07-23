@@ -34,8 +34,7 @@ export default function SeparationsTable({ separations }: SeparationsTablePropsT
                 <TableBody>
                     {separations.map((separation) => (
                         <TableRow key={separation.jde} sx={{
-                            '&:last-child td, &:last-child th': { border: 0 },
-                            '& span': { display: 'block' }
+                            '&:last-child td, &:last-child th': { border: 0 }
                         }}>
                             <TableCell>
                                 <span>{separation.jde} (JDE)</span>

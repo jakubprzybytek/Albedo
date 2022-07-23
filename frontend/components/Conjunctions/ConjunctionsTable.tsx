@@ -1,4 +1,5 @@
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import { Conjunction } from '@lambda/conjunctions';
 import { formatDegrees } from '../../utils';
 import AstronomicalCoords from 'common/AstronomicalCoordinates';
+import BodyChip from 'common/BodyChip';
 
 type ConjunctionsTablePropsType = {
     conjunctions: Conjunction[];
@@ -35,15 +37,16 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
                 <TableBody>
                     {conjunctions.map((conjunction) => (
                         <TableRow key={`${conjunction.jde}-${conjunction.firstBody.info.id}-${conjunction.secondBody.info.id}`} sx={{
-                            '&:last-child td, &:last-child th': { border: 0 },
-                            '& span': { display: 'block' }
+                            '&:last-child td, &:last-child th': { border: 0 }
                         }}>
                             <TableCell>
                                 <span>{conjunction.jde} (JDE)</span>
                                 <span><>{conjunction.tde} (TDE)</></span>
                             </TableCell>
                             <TableCell>
-                                Conjunction between {conjunction.firstBody.info.name} and {conjunction.secondBody.info.name} with a sepration of {formatDegrees(conjunction.separation)}.
+                                <Typography>
+                                    Conjunction between <BodyChip body={conjunction.firstBody.info} /> and <BodyChip body={conjunction.secondBody.info} /> with a sepration of {formatDegrees(conjunction.separation)}.
+                                </Typography>
                             </TableCell>
                             <TableCell align="center">
                                 {conjunction.firstBody.info.name}
