@@ -12,7 +12,7 @@ type ConjunctionsQueryFormParams = {
 
 export default function ConjunctionsQueryForm({ setConjunctions }: ConjunctionsQueryFormParams): JSX.Element {
     const [fromTde, setFromTde] = useState<Date | null>(new Date());
-    const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 1));
+    const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 6));
 
     const getParams = () => ({
         fromTde: fromTde ? format(fromTde, 'yyyy-MM-dd') : '',
