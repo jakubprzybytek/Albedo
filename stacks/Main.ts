@@ -22,7 +22,8 @@ export function Main({ stack }: StackContext) {
         defaults: {
             function: {
                 runtime: 'nodejs16.x',
-                memorySize: 128
+                memorySize: '128 MB',
+                timeout: '30 seconds'
             },
             authorizer: "jwt",
             throttle: {
@@ -35,7 +36,13 @@ export function Main({ stack }: StackContext) {
             "GET /api/states": "functions/states/getStates.handler",
             "GET /api/ephemeris": "functions/ephemeris/getEphemeris.handler",
             "GET /api/separations": "functions/separations/getSeparations.handler",
-            "GET /api/conjunctions": "functions/conjunctions/getConjunctions.handler",
+            "GET /api/conjunctions":  {
+                function: {
+                    handler: "functions/conjunctions/getConjunctions.handler",
+                    memorySize: '512 MB'
+                } 
+            }
+            
         },
     });
     stack.addOutputs({
