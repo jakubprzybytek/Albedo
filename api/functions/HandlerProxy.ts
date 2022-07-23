@@ -1,4 +1,5 @@
 import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2 } from "aws-lambda";
+import { coordinatesReplacer } from "./CoordinatesReplacer";
 
 type LambdaResponse<T> = {
     data: T;
@@ -22,7 +23,7 @@ export const lambdaHandler = <T>(lambda: LambdaType<T>): APIGatewayProxyHandlerV
             return {
                 statusCode: response.statusCode,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(response.data),
+                body: JSON.stringify(response.data, coordinatesReplacer),
             };
         } catch (e) {
             console.error(e);

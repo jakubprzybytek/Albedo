@@ -10,7 +10,7 @@ export class Ephemerides {
                 jde: state.jde,
                 ephemerisSeconds: state.ephemerisSeconds,
                 tde: state.tde,
-                coords: AstronomicalCoordinates.fromRectangular(state.position).toDegrees()
+                coords: AstronomicalCoordinates.fromRectangular(state.position)
             }));
     }
 };
