@@ -22,7 +22,7 @@ export default function EventsQueryForm({ setEvents }: EventsQueryFormParams): J
     const theme = useTheme();
 
     async function handleSubmit() {
-        const path = '';
+        const path = '/api/conjunctions';
         const params = {
             fromTde: format(new Date(), 'yyyy-MM-dd'),
             toTde: format(addMonths(new Date(), 6), 'yyyy-MM-dd'),

@@ -7,13 +7,9 @@ export default function EventsBrowser(): JSX.Element {
     const [events, setEvents] = useState<any[]>([]);
 
     return (
-        <Box sx={{ '& > div': { mb: 1 } }}>
-            <div>
-                <EventsQueryForm setEvents={setEvents} />
-            </div>
-            <div>
-                <EventsList events={events} />
-            </div>
-        </Box>
+        <>
+            <EventsQueryForm setEvents={setEvents} />
+            <EventsList events={events} />
+        </>
     );
 }
