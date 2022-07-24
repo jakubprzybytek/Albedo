@@ -1,4 +1,5 @@
 export enum BodyType {
+    Unknown,
 
     // Regular body types
     Star,

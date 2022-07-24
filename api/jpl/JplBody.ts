@@ -76,16 +76,21 @@ export enum JplBodyId {
     Cupid = 727,
     Uranus = 799,
 
-    // Triton(801, BodyType.NaturalSatellite),
-    // Nereid(802, BodyType.NaturalSatellite),
-    // Naid(803, BodyType.NaturalSatellite),
-    // Thalassa(804, BodyType.NaturalSatellite),
-    // Despina(805, BodyType.NaturalSatellite),
-    // Galatea(806, BodyType.NaturalSatellite),
-    // Larissa(807, BodyType.NaturalSatellite),
-    // Proteus(808, BodyType.NaturalSatellite),
-    // Hippocamp(814, BodyType.NaturalSatellite),
-    // Neptune(899, BodyType.Planet),
+    Triton = 801,
+    Nereid = 802,
+    Naid = 803,
+    Thalassa = 804,
+    Despina = 805,
+    Galatea = 806,
+    Larissa = 807,
+    Proteus = 808,
+    Halimede = 809,
+    Psamathe = 810,
+    Sao = 811,
+    Laomedeia = 812,
+    Neso = 813,
+    Hippocamp = 814,
+    Neptune = 899,
 
     // Charon(901, BodyType.NaturalSatellite),
     // Nix(902, BodyType.NaturalSatellite),
@@ -163,6 +168,22 @@ const jplBodies: JplBody[] = [
     { id: JplBodyId.Mab, name: 'Mab', type: BodyType.NaturalSatellite },
     { id: JplBodyId.Cupid, name: 'Cupid', type: BodyType.NaturalSatellite },
     { id: JplBodyId.Uranus, name: 'Uranus', type: BodyType.Planet },
+
+    { id: JplBodyId.Triton, name: 'Triton', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Nereid, name: 'Nereid', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Naid, name: 'Naid', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Thalassa, name: 'Thalassa', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Despina, name: 'Despina', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Galatea, name: 'Galatea', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Larissa, name: 'Larissa', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Proteus, name: 'Proteus', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Halimede, name: 'Halimede', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Psamathe, name: 'Psamathe', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Sao, name: 'Sao', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Laomedeia, name: 'Laomedeia', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Neso, name: 'Neso', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Hippocamp, name: 'Hippocamp', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Neptune, name: 'Neptune', type: BodyType.Planet },
 ]
 
 const jplBodiesById = Object.fromEntries(
@@ -174,7 +195,11 @@ const jplBodiesByName = Object.fromEntries(
 );
 
 export function jplBodyFromId(jplBodyId: JplBodyId): JplBody | undefined {
-    return jplBodiesById[jplBodyId];
+    return jplBodiesById[jplBodyId] || {
+        id: jplBodyId,
+        name: `unknown(${jplBodyId})`,
+        type: BodyType.Unknown
+    };
 }
 
 export function jplBodyFromString(input: string): JplBody | undefined {
