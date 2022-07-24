@@ -4,7 +4,7 @@ import ConjunctionsQueryForm from './ConjunctionsQueryForm';
 import ConjunctionsTable from './ConjunctionsTable';
 import { Conjunction } from '@lambda/conjunctions';
 
-export default function StatesBrowser(): JSX.Element {
+export default function ConjunctionsBrowser(): JSX.Element {
     const [conjunctions, setConjunctions] = useState<Conjunction[]>([]);
 
     return (

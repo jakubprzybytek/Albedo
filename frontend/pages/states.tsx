@@ -1,22 +1,22 @@
-import type { ReactElement } from 'react'
+import type { ReactElement } from 'react';
 import { useTheme } from '@mui/material/styles';
-import type { NextPageWithLayout } from "../_app";
+import type { NextPageWithLayout } from "./_app";
 import MainLayout from 'layouts/MainLayout';
-import EphemerisBrowser from "../../components/Ephemeris/EphemerisBrowser";
+import StatesBrowser from "../components/States/StatesBrowser";
 
 const Home: NextPageWithLayout = () => {
     const theme = useTheme();
 
     return (
         <>
-            <EphemerisBrowser />
+            <StatesBrowser />
         </>
     );
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {
     return (
-        <MainLayout title="Ephemeris">
+        <MainLayout title="States">
             {page}
         </MainLayout>
     )
