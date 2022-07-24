@@ -21,10 +21,11 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
 
     return (
         <TableContainer component={Paper} sx={{
+            width: 'auto',
             backgroundColor: theme.palette.secondaryBackground,
             '& td, & th': { borderColor: theme.palette.background.default }
         }}>
-            <Table size="small" aria-label="a dense table">
+            <Table size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell>Time</TableCell>

@@ -21,8 +21,20 @@ export default function MainLayout({ title, children }: MainLayoutParams): JSX.E
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Navigation title={title} />
-            <Box component="main" bgcolor={theme.palette.background.default} sx={{ minHeight: '100vh' }}>
-                <Toolbar />
+            <Toolbar />
+            <Box component="main" bgcolor={theme.palette.background.default}
+                sx={{
+                    minHeight: '100vh',
+                    '& > *': {
+                        marginTop: 1,
+                        marginRight: {
+                            md: 1
+                        },
+                        marginLeft: {
+                            md: 1
+                        },
+                    }
+                }}>
                 {children}
             </Box>
         </>

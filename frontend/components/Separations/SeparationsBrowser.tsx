@@ -31,11 +31,9 @@ export default function SeparationsBrowser(): JSX.Element {
     const [separations, setSeparations] = useState<SeparationWithBodies[]>([]);
 
     return (
-        <Box sx={{ '& > div': { mb: 1 } }}>
-            <div>
-                <SeparationsQueryForm setSeparations={setSeparations} />
-            </div>
-            <Box sx={{ width: '100%' }}>
+        <>
+            <SeparationsQueryForm setSeparations={setSeparations} />
+            <Box sx={{ width: 'auto' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={openedTab} onChange={(event, newValue) => setOpenedTab(newValue)}>
                         <Tab label="Table" />
@@ -49,6 +47,6 @@ export default function SeparationsBrowser(): JSX.Element {
                     <SeparationsChart separations={separations} />
                 </TabPanel>
             </Box>
-        </Box>
+        </>
     );
 }
