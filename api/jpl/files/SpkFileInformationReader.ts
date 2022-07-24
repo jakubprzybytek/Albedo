@@ -21,9 +21,10 @@ export function readSpkFileInformation(fd: number): SpkFileInformationType {
         throw Error("Unsupported file records format: ND=" + descriptor.fileRecordDoublesNumber + ", NI=" + descriptor.fileRecordIntegersNumber);
     }
 
-    if (descriptor.firstArrayInformationBlockIndex != descriptor.lastArrayInformationBlockIndex) {
-        throw Error("Unsupported file structure: first file record index != last file record index");
-    }
+    // if (descriptor.firstArrayInformationBlockIndex != descriptor.lastArrayInformationBlockIndex) {
+    //     throw Error(`Unsupported file structure: first file record index (${descriptor.firstArrayInformationBlockIndex})`
+    //         + ` != last (${descriptor.lastArrayInformationBlockIndex}) file record index`);
+    // }
 
     // go to first array information record
     const arrayInformationBuffer = new Uint8Array(FILE_BLOCK_SIZE);

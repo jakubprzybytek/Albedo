@@ -17,13 +17,15 @@ function ListSpkFileContent(fileName: string) {
         + `free index: ${spkFileDescriptor.freeDoubleIndex}.`);
 
     spkFileArrayInformationList.forEach(spkFileArrayInformation => {
+        const bodyId = spkFileArrayInformation.body.id;
         const bodyName = spkFileArrayInformation.body.name;
+        const centerBodyId = spkFileArrayInformation.centerBody.id;
         const centerBodyName = spkFileArrayInformation.centerBody.name;
         const startDate = JulianDay.toDateTime(EphemerisSeconds.toJde(spkFileArrayInformation.startDate));
         const endDate = JulianDay.toDateTime(EphemerisSeconds.toJde(spkFileArrayInformation.endDate));
         const dataType = spkFileArrayInformation.dataType === DataType.ChebyshevPosition ? 'position' :
             spkFileArrayInformation.dataType === DataType.ChebyshevPositionAndVelocity ? 'position and velocity' : 'unknown';
-        console.log(`${bodyName} w.r.t. ${centerBodyName} `
+        console.log(`${bodyName}(${bodyId}) w.r.t. ${centerBodyName}(${centerBodyId}) `
             + `from ${startDate.toLocaleDateString('pl-pl')} to ${endDate.toLocaleDateString('pl-pl')}, `
             + `start index: ${spkFileArrayInformation.startIndex}, end index: ${spkFileArrayInformation.endIndex}, `
             + `data type: ${dataType}(${spkFileArrayInformation.dataType})`);
