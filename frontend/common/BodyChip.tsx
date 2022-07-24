@@ -10,11 +10,19 @@ type BodyChipParamType = {
 
 export default function BodyChip({ body }: BodyChipParamType): JSX.Element {
     return (
-        <Box component='span' sx={{ display: 'flex' }}>
-            <Avatar component='span' sx={{ height: 18, width: 18, fontSize: '0.7rem', marginTop: '2px', marginRight: 0.5, background: 'red' }}>
-                <PlanetIcon name={body.name} width={14} height={14} />
+        <Typography component='span' sx={{ whiteSpace: 'nowrap' }}>
+            <Avatar component='span' sx={{
+                display: 'inline-block',
+                verticalAlign: 'text-top',
+                height: 16,
+                width: 16,
+                fontSize: '0.7rem',
+                marginRight: 0.5,
+                background: 'red'
+            }}>
+                <PlanetIcon name={body.name} width={16} height={16} />
             </Avatar>
             <Typography component='span' fontWeight={600}>{body.name}</Typography>
-        </Box>
+        </Typography>
     );
 }
