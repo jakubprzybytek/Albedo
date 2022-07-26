@@ -29,7 +29,6 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
                 <TableHead>
                     <TableRow>
                         <TableCell>Time</TableCell>
-                        <TableCell align="center">Event</TableCell>
                         <TableCell align="center">First body</TableCell>
                         <TableCell align="center">Second body</TableCell>
                         <TableCell align="right">Separation</TableCell>
@@ -43,11 +42,6 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
                             <TableCell>
                                 <span>{conjunction.jde} (JDE)</span>
                                 <span><>{conjunction.tde} (TDE)</></span>
-                            </TableCell>
-                            <TableCell>
-                                <Typography>
-                                    Conjunction between <BodyChip body={conjunction.firstBody.info} /> and <BodyChip body={conjunction.secondBody.info} /> with a sepration of {formatDegrees(conjunction.separation)}.
-                                </Typography>
                             </TableCell>
                             <TableCell align="center">
                                 {conjunction.firstBody.info.name}
