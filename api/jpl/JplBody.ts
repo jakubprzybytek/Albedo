@@ -92,12 +92,12 @@ export enum JplBodyId {
     Hippocamp = 814,
     Neptune = 899,
 
-    // Charon(901, BodyType.NaturalSatellite),
-    // Nix(902, BodyType.NaturalSatellite),
-    // Hydra(903, BodyType.NaturalSatellite),
-    // Keberos(904, BodyType.NaturalSatellite),
-    // Stys(905, BodyType.NaturalSatellite),
-    // Pluto(999, BodyType.Asteroid), // FixMe: should be 'DwarfPlanet'
+    Charon = 901,
+    Nix = 902,
+    Hydra = 903,
+    Keberos = 904,
+    Stys = 905,
+    Pluto = 999,
 
     // T1000000000(1000000000, BodyType.TimeType),
     // T1000000001(1000000001, BodyType.TimeType);
@@ -200,6 +200,13 @@ const jplBodies: JplBody[] = [
     { id: JplBodyId.Neso, name: 'Neso', type: BodyType.NaturalSatellite },
     { id: JplBodyId.Hippocamp, name: 'Hippocamp', type: BodyType.NaturalSatellite },
     { id: JplBodyId.Neptune, name: 'Neptune', type: BodyType.Planet },
+
+    { id: JplBodyId.Charon, name: 'Charon', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Nix, name: 'Nix', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Hydra, name: 'Hydra', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Keberos, name: 'Keberos', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Stys, name: 'Stys', type: BodyType.NaturalSatellite },
+    { id: JplBodyId.Pluto, name: 'Pluto', type: BodyType.Planet },
 ]
 
 const jplBodiesById = Object.fromEntries(
@@ -213,7 +220,7 @@ const jplBodiesByName = Object.fromEntries(
 export function jplBodyFromId(jplBodyId: JplBodyId): JplBody | undefined {
     return jplBodiesById[jplBodyId] || {
         id: jplBodyId,
-        name: `unknown(${jplBodyId})`,
+        name: 'unknown',
         type: BodyType.Unknown
     };
 }

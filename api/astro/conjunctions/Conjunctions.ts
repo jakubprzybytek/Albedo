@@ -21,7 +21,7 @@ type EphemerisPair = {
 
 export class Conjunctions {
     static all(fromJde: number, toJde: number): Conjunction[] {
-        const bodies: BodyWithEphemerides[] = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Uranus, JplBodyId.Neptune]
+        const bodies: BodyWithEphemerides[] = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto]
             .map(jplBodyFromId)
             .filter((jplBody): jplBody is JplBody => !!jplBody)
             .map((jplBody) => ({

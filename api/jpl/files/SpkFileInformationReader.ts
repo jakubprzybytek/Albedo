@@ -7,6 +7,7 @@ type SpkFileInformationType = {
     spkFileArrayInformationList: SpkFileArrayInformation[];
 }
 
+// https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/spk.html#Type%203:%20Chebyshev%20(position%20and%20velocity)
 export function readSpkFileInformation(fd: number): SpkFileInformationType {
     const descriptorBuffer = new Uint8Array(FILE_DESCRIPTOR_SIZE);
     readSync(fd, descriptorBuffer, 0, FILE_DESCRIPTOR_SIZE, null);
@@ -28,19 +29,25 @@ export function readSpkFileInformation(fd: number): SpkFileInformationType {
 
     // go to first array information record
     const arrayInformationBuffer = new Uint8Array(FILE_BLOCK_SIZE);
-    const arrayInformationPosition = descriptor.firstArrayInformationBlockIndex * FILE_BLOCK_SIZE;
-    readSync(fd, arrayInformationBuffer, 0, FILE_BLOCK_SIZE, arrayInformationPosition);
-    const arrayInformationByteReader = new LittleEndianByteBufferReader(arrayInformationBuffer);
-
-    arrayInformationByteReader.readDoubles(2); // skip first and last index
-    const numberOfRecords = arrayInformationByteReader.getDouble();
-
     const arrayInformationList: SpkFileArrayInformation[] = [];
 
-    for (let i = 0; i < numberOfRecords; i++) {
-        const spkFileArrayInformation = readFileArrayInformation(arrayInformationByteReader);
-        arrayInformationList.push(spkFileArrayInformation);
-    }
+    let arrayInformationBlockIndex = descriptor.firstArrayInformationBlockIndex;
+
+    do {
+        const arrayInformationPosition = arrayInformationBlockIndex * FILE_BLOCK_SIZE;
+        readSync(fd, arrayInformationBuffer, 0, FILE_BLOCK_SIZE, arrayInformationPosition);
+        const arrayInformationByteReader = new LittleEndianByteBufferReader(arrayInformationBuffer);
+
+        arrayInformationBlockIndex = arrayInformationByteReader.getDouble() - 1;
+        arrayInformationByteReader.getDouble(); // skip data
+
+        const numberOfRecords = arrayInformationByteReader.getDouble();
+
+        for (let i = 0; i < numberOfRecords; i++) {
+            const spkFileArrayInformation = readFileArrayInformation(arrayInformationByteReader);
+            arrayInformationList.push(spkFileArrayInformation);
+        }
+    } while (arrayInformationBlockIndex > 0);
 
     return {
         spkFileDescriptor: descriptor,

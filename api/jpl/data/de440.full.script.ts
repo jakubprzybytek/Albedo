@@ -2,7 +2,7 @@ import { JplBodyId } from "..";
 import { readMultipleSpkCollections, printSpkCollections } from "./testDataGenerator";
 
 const from = new Date('2022-01-01');
-const to = new Date('2023-12-31');
+const to = new Date('2025-12-31');
 //const to = new Date('2022-01-02');
 
 const de440spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/de440.bsp', from, to, [
@@ -26,6 +26,11 @@ const jup365spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/jup365
     { body: JplBodyId.Jupiter, centerBody: JplBodyId.JupiterBarycenter },
 ]);
 
+const sat450spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/sat450.bsp', from, to, [
+    { body: JplBodyId.SaturnBarycenter, centerBody: JplBodyId.SolarSystemBarycenter },
+    { body: JplBodyId.Saturn, centerBody: JplBodyId.SaturnBarycenter },
+]);
+
 const ura116spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/ura116.bsp', from, to, [
     { body: JplBodyId.UranusBarycenter, centerBody: JplBodyId.SolarSystemBarycenter },
     { body: JplBodyId.Uranus, centerBody: JplBodyId.UranusBarycenter },
@@ -36,4 +41,8 @@ const nep101spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/nep101
     { body: JplBodyId.Neptune, centerBody: JplBodyId.NeptuneBarycenter },
 ]);
 
-printSpkCollections('de440.full.ts', [...de440spk, ...mar097spk, ...jup365spk, ...ura116spk, ...nep101spk], from, to);
+const plu058spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/plu058.bsp', from, to, [
+    { body: JplBodyId.PlutoBarycenter, centerBody: JplBodyId.SolarSystemBarycenter },
+    { body: JplBodyId.Pluto, centerBody: JplBodyId.PlutoBarycenter },
+]);
+printSpkCollections('de440.full.ts', [...de440spk, ...mar097spk, ...jup365spk, ...sat450spk, ...ura116spk, ...nep101spk, ...plu058spk], from, to);
