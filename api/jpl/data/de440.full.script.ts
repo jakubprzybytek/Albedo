@@ -2,7 +2,7 @@ import { JplBodyId } from "..";
 import { readMultipleSpkCollections, printSpkCollections } from "./testDataGenerator";
 
 const from = new Date('2022-01-01');
-const to = new Date('2025-12-31');
+const to = new Date('2023-12-31');
 //const to = new Date('2022-01-02');
 
 const de440spk = readMultipleSpkCollections('c:/_Me/Projects/Albedo-data/de440.bsp', from, to, [
