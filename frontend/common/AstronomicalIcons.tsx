@@ -103,7 +103,7 @@ export function PlanetIcon({ name, width, height }: PlanetIconParamType): JSX.El
         case 'Uranus':
             return (<UranusIcon width={width} height={height} />);
     }
-    return (<>?</>);
+    return (<>P</>);
 }
 
 export function CometIcon({ width, height }: IconSize): JSX.Element {
