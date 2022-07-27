@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { PlanetIcon } from './AstronomicalIcons';

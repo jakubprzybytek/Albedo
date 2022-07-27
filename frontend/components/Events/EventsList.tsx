@@ -1,3 +1,4 @@
+import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -23,10 +24,12 @@ type EventsListPropsType = {
 }
 
 export default function EventsList({ events }: EventsListPropsType): JSX.Element {
+    const theme = useTheme();
+
     return (
         <Box>
             {events.map((event) => (
-                <Paper key={event.jde} sx={{ marginBottom: 1 }}>
+                <Paper key={event.jde} sx={{ marginBottom: 1, backgroundColor: theme.palette.secondaryBackground }}>
                     <ConjunctionEvent conjunction={event as Conjunction} />
                 </Paper>
             ))}
