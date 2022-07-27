@@ -4,6 +4,7 @@ export enum BodyType {
     // Regular body types
     Star,
     Planet,
+    DwarfPlanet,
     NaturalSatellite,
     Asteroid,
     Comet,
@@ -12,10 +13,4 @@ export enum BodyType {
     // Special body types
     Barycenter,
     TimeType
-
-    // public static Set<BodyType> parse(Set<String> strings) {
-    //     return strings.stream()
-    //             .map(BodyType::valueOf)
-    //             .collect(Collectors.toSet());
-    // }
 }

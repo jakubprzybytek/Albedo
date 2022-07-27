@@ -206,7 +206,7 @@ const jplBodies: JplBody[] = [
     { id: JplBodyId.Hydra, name: 'Hydra', type: BodyType.NaturalSatellite },
     { id: JplBodyId.Keberos, name: 'Keberos', type: BodyType.NaturalSatellite },
     { id: JplBodyId.Stys, name: 'Stys', type: BodyType.NaturalSatellite },
-    { id: JplBodyId.Pluto, name: 'Pluto', type: BodyType.Planet },
+    { id: JplBodyId.Pluto, name: 'Pluto', type: BodyType.DwarfPlanet },
 ]
 
 const jplBodiesById = Object.fromEntries(

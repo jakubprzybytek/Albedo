@@ -12,7 +12,7 @@ type ConjunctionEventParamTyp = {
 function ConjunctionEvent({ conjunction }: ConjunctionEventParamTyp): JSX.Element {
     return (
         <Typography key={conjunction.jde} sx={{ padding: 1 }}>
-            Conjunction between <BodyChip body={conjunction.firstBody.info} /> and <BodyChip body={conjunction.secondBody.info} /> with a sepration of {formatDegrees(conjunction.separation)}.
+            <>{conjunction.tde}: Conjunction between <BodyChip body={conjunction.firstBody.info} /> and <BodyChip body={conjunction.secondBody.info} /> with a sepration of {formatDegrees(conjunction.separation)}.</>
         </Typography>
     );
 }
