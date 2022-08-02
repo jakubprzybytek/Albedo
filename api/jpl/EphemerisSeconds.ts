@@ -10,6 +10,10 @@ export class EphemerisSeconds {
         return EphemerisSeconds.fromJde(JulianDay.fromDate(year, month, day));
     }
 
+    static fromDateObject(tbd: Date): number {
+        return EphemerisSeconds.fromJde(JulianDay.fromDateObject(tbd));
+    }
+
     static fromJde(jde: number): number {
         return (jde - EphemerisSeconds.J2000_EPOCH) * EphemerisSeconds.SECONDS_PER_JULIAN_DAY;
     }
