@@ -18,6 +18,7 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
 
     return (
         <TableContainer component={Paper} sx={{
+            width: 'auto',
             backgroundColor: theme.palette.secondaryBackground,
             '& td, & th': { borderColor: theme.palette.background.default }
         }}>

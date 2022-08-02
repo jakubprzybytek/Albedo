@@ -34,6 +34,7 @@ export default function StatesTable({ states }: StatesTablePropsType): JSX.Eleme
 
     return (
         <TableContainer component={Paper} sx={{
+            width: 'auto',
             backgroundColor: theme.palette.secondaryBackground,
             '& td, & th': { borderColor: theme.palette.background.default }
         }}>

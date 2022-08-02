@@ -19,6 +19,7 @@ export default function SeparationsTable({ separations }: SeparationsTablePropsT
 
     return (
         <TableContainer component={Paper} sx={{
+            width: 'auto',
             backgroundColor: theme.palette.secondaryBackground,
             '& td, & th': { borderColor: theme.palette.background.default }
         }}>
