@@ -22,8 +22,8 @@ export type StatesWebGeocalcCSVFileContent = {
     states: State[];
 }
 
-const TARGET_BODY_NAME_REGEX = /"Target","(\w+)"/;
-const OBSERVER_BODY_NAME_REGEX = /"Observer","(\w+)"/;
+const TARGET_BODY_NAME_REGEX = /"Target","([\w ]+)"/;
+const OBSERVER_BODY_NAME_REGEX = /"Observer","([\w ]+)"/;
 const STATES_REGEX = /^(.+,){10}.+$/gm;
 
 const headers = ['tbd', 'distance', 'speed', 'x', 'y', 'z', 'speed_x', 'speed_y', 'speed_z', 'target_tbd', 'light_time'];
@@ -51,6 +51,12 @@ function createParser() {
     })
 };
 
+function toLowerCase(name: string): string {
+    return name.split(' ')
+        .map((word) => word.charAt(0) + word.substring(1).toLocaleLowerCase())
+        .join(' ');
+}
+
 export async function readStatesWebGeocalcCSVFile(fileName: string): Promise<StatesWebGeocalcCSVFileContent> {
 
     const fileContent = readFileSync(fileName).toString();
@@ -73,8 +79,8 @@ export async function readStatesWebGeocalcCSVFile(fileName: string): Promise<Sta
         throw Error("State rows name not found!");
     }
 
-    const targetBodyName = targetBodyNameMatch[1].charAt(0) + targetBodyNameMatch[1].substring(1).toLocaleLowerCase();
-    const observerBodyName = observerBodyNameMatch[1].charAt(0) + observerBodyNameMatch[1].substring(1).toLocaleLowerCase();
+    const targetBodyName = toLowerCase(targetBodyNameMatch[1]);
+    const observerBodyName = toLowerCase(observerBodyNameMatch[1]);
 
     const csvContent = new Readable();
     csvContent.push(statesMatch.join('\n'));
