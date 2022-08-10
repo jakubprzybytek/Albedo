@@ -62,9 +62,14 @@ async function testStateCSVFile(fileName: string): Promise<TestReport> {
     const testFileNames = readdirSync('./api/jpl/test/')
         .filter((testFileName) => testFileName.startsWith('WGC_StateVector'));
 
+    console.log('# Results');
+    console.log(`Test suites: ${testFileNames.length}`);
+    console.log('| Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name |');
+    console.log('| ----------- | ------------- | ---------- | ----------------- | ------------------ | --------- |');
+    
     for (const testFileName of testFileNames) {
         const testReport = await testStateCSVFile('./api/jpl/test/' + testFileName);
-        console.log(`Test suite for ${testReport.targetBodyName} w.r.t. ${testReport.observerBodyName} with ${testReport.testCases} test cases:`
-            + ` Average position error: ${testReport.positionErrorAverage} [km], average velocity error: ${testReport.velocityErrorAverage} [km/s] (${testReport.fileName})`);
+        console.log(`| ${testReport.targetBodyName} | ${testReport.observerBodyName} | ${testReport.testCases}`
+            + `| ${testReport.positionErrorAverage} | ${testReport.velocityErrorAverage} | ${testReport.fileName} |`);
     }
 })();
