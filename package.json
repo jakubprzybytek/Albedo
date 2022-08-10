@@ -13,7 +13,8 @@
     "listSpkFileContent": "esrun ./api/jpl/tools/ListSpkFileContent.ts",
     "printRecordsFromSpkFile": "esrun ./api/jpl/tools/PrintRecordsFromSpkFile.ts",
     "de440.test": "esrun ./api/jpl/data/de440.testData.script.ts && move de440.testData.ts ./api/jpl/data/de440.testData.ts",
-    "de440": "esrun ./api/jpl/data/de440.full.script.ts && move de440.full.ts ./api/jpl/data/de440.full.ts"
+    "de440": "esrun ./api/jpl/data/de440.full.script.ts && move de440.full.ts ./api/jpl/data/de440.full.ts",
+    "test.data": "esrun ./api/jpl/test/fullTest.ts > ./api/jpl/test/fullTest.results.md"
   },
   "dependencies": {
     "@sls-next/lambda-at-edge": "^3.7.0",
