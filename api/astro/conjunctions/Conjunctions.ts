@@ -61,6 +61,7 @@ export class Conjunctions {
                         },
                         separation: separation.separation
                     }));
-            });
+            })
+            .sort((c1, c2) => c1.jde - c2.jde);
     }
 };

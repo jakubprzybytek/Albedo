@@ -13,9 +13,14 @@ type ConjunctionEventParamTyp = {
 
 function ConjunctionEvent({ conjunction }: ConjunctionEventParamTyp): JSX.Element {
     return (
-        <Typography key={conjunction.jde} sx={{ padding: 1 }}>
-            <>{new Date(conjunction.tde).toLocaleString('pl-pl')}: Conjunction between <BodyChip body={conjunction.firstBody.info} /> and <BodyChip body={conjunction.secondBody.info} /> with a sepration of <Angle value={conjunction.separation} />.</>
-        </Typography>
+        <>
+            <Typography variant="subtitle2" sx={{ padding: 1 }}>
+                <>{new Date(conjunction.tde).toLocaleString('pl-pl')}</>
+            </Typography>
+            <Typography sx={{ pb: 1, pr: 1, pl: 1 }}>
+                <>Conjunction between <BodyChip body={conjunction.firstBody.info} /> and <BodyChip body={conjunction.secondBody.info} /> with a sepration of <Angle value={conjunction.separation} />.</>
+            </Typography>
+        </>
     );
 }
 

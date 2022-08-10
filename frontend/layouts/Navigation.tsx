@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Drawer from '@mui/material/Drawer';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
@@ -41,6 +43,15 @@ const menuItems = [
 
 export default function Navigation({ title }: NavigationParamsType): JSX.Element {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <>
@@ -53,17 +64,37 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                     <Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         <Link href='/'>Albedo 2.0</Link>
                     </Typography>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'center' }}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, pl: 2 }}>
                         {title}
                     </Typography>
                     <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                        {menuItems.map(menuItem => (
-                            <Typography key={menuItem.link} variant="h6" component="div">
-                                <Link href={menuItem.link}>{menuItem.label}</Link>
-                            </Typography>
-                        ))}
-                        <Button variant="contained" color="secondary" size='small' onClick={() => Auth.signOut()}>Log out</Button>
+                        <Button variant="contained" color="secondary" size='small' onClick={handleMenu}>
+                            Tools
+                        </Button>
+                        <Button variant="contained" color="secondary" size='small' onClick={() => Auth.signOut()}>
+                            Log out
+                        </Button>
                     </Stack>
+                    <Menu
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                    >
+                        {menuItems.map(menuItem => (
+                            <MenuItem key={menuItem.link} onClick={handleClose}>
+                                <Link href={menuItem.link}>{menuItem.label}</Link>
+                            </MenuItem>
+                        ))}
+                    </Menu>
                 </Toolbar>
             </AppBar>
             <Box component="nav">
