@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import EventsQueryForm from './EventsQueryForm';
 import EventsList from './EventsList';
 import getConjunctions from "./GetConjunctions";
 
