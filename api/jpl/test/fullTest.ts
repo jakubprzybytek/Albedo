@@ -70,6 +70,6 @@ async function testStateCSVFile(fileName: string): Promise<TestReport> {
     for (const testFileName of testFileNames) {
         const testReport = await testStateCSVFile('./api/jpl/test/' + testFileName);
         console.log(`| ${testReport.targetBodyName} | ${testReport.observerBodyName} | ${testReport.testCases}`
-            + `| ${testReport.positionErrorAverage} | ${testReport.velocityErrorAverage} | ${testReport.fileName} |`);
+            + `| ${testReport.positionErrorAverage.toPrecision(3)} | ${testReport.velocityErrorAverage.toPrecision(3)} | ${testReport.fileName} |`);
     }
 })();
