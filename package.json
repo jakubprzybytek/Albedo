@@ -13,7 +13,8 @@
     "listSpkFileContent": "esrun ./api/jpl/tools/ListSpkFileContent.ts",
     "printRecordsFromSpkFile": "esrun ./api/jpl/tools/PrintRecordsFromSpkFile.ts",
     "de440.test": "esrun ./api/jpl/data/de440.testData.script.ts && move de440.testData.ts ./api/jpl/data/de440.testData.ts",
-    "de440": "esrun ./api/jpl/data/de440.full.script.ts && move de440.full.ts ./api/jpl/data/de440.full.ts"
+    "de440": "esrun ./api/jpl/data/de440.full.script.ts && move de440.full.ts ./api/jpl/data/de440.full.ts",
+    "test.data": "esrun ./api/jpl/test/fullTest.ts > ./api/jpl/test/fullTest.results.md"
   },
   "dependencies": {
     "@sls-next/lambda-at-edge": "^3.7.0",
@@ -27,7 +28,7 @@
     "@serverless-stack/resources": "^1.4.1",
     "@serverless-stack/static-site-env": "^1.4.1",
     "@tsconfig/node16": "^1.0.3",
-    "aws-cdk-lib": "2.24.0",
+    "aws-cdk-lib": "2.37.0",
     "typescript": "^4.7.4",
     "vitest": "^0.18.1"
   },
