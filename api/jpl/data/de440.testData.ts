@@ -3,6 +3,82 @@ import { SpkKernelRepository, SpkKernelCollection, TimeSpan } from '../kernel';
 // from: 2019-10-09T00:00:00.000Z
 // to: 2019-10-11T00:00:00.000Z
 
+export const a_2_wrt_0: SpkKernelCollection = {
+  "kernelFileName": "test",
+  "bodyId": 2,
+  "centerBodyId": 0,
+  "data": [
+    {
+      "timeSpan": new TimeSpan(622728000, 624110400),
+      "positionCoefficients": {
+        "x": [
+          -78613521.50691658,
+          16214962.21533116,
+          985798.6291314324,
+          -34661.90913917022,
+          -989.9148424493401,
+          23.47617066352885,
+          0.3446500612786167,
+          -0.008980823683474302,
+          -0.00001132926179631438,
+          0.000002749410689572513
+        ],
+        "y": [
+          -67157017.89285201,
+          -15786403.070606835,
+          859841.5764972483,
+          32360.62132711788,
+          -933.7183287170461,
+          -18.58048204491512,
+          0.4469835788326351,
+          0.003428329167759509,
+          -0.00014595062380241326,
+          0.0000010169098952321207
+        ],
+        "z": [
+          -25288673.9049305,
+          -8129417.517172128,
+          324512.0587469885,
+          16753.906109725907,
+          -357.4917803264506,
+          -9.84578481928477,
+          0.17931554737990704,
+          0.002110691485473324,
+          -0.0000649529774679309,
+          2.8601015215864316e-7
+        ]
+      }
+    }
+  ],
+  "dataType": 2
+};
+
+export const a_299_wrt_2: SpkKernelCollection = {
+  "kernelFileName": "test",
+  "bodyId": 299,
+  "centerBodyId": 2,
+  "data": [
+    {
+      "timeSpan": new TimeSpan(-14200747200, 20514081600),
+      "positionCoefficients": {
+        "x": [
+          0,
+          0
+        ],
+        "y": [
+          0,
+          0
+        ],
+        "z": [
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "dataType": 2
+};
+
 export const a_3_wrt_0: SpkKernelCollection = {
   "kernelFileName": "test",
   "bodyId": 3,
@@ -123,6 +199,8 @@ export const a_399_wrt_3: SpkKernelCollection = {
 
 export const kernelRepository: SpkKernelRepository = new SpkKernelRepository();
 kernelRepository.registerSpkKernelCollections([
+	a_2_wrt_0,
+	a_299_wrt_2,
 	a_3_wrt_0,
 	a_399_wrt_3,
 ]);

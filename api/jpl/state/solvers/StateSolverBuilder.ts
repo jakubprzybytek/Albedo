@@ -1,6 +1,6 @@
 import { JplBodyId } from '../..';
 import { SpkKernelRepository, SpkKernelCollection } from '../../kernel';
-import { StateSolver, DirectStateSolver, CommonCenterBodyStateSolver } from './';
+import { StateSolver, DirectStateSolver, CommonCenterBodyStateSolver, LightTimeCorrectingStateSolver, CorrectionType } from './';
 
 export class StateSolverBuilder {
 
@@ -8,6 +8,7 @@ export class StateSolverBuilder {
 
     private targetBody?: JplBodyId;
     private observerBody?: JplBodyId;
+    private corrections?: CorrectionType[];
 
     constructor(spkKernel: SpkKernelRepository) {
         this.spkKernel = spkKernel;
@@ -23,7 +24,20 @@ export class StateSolverBuilder {
         return this;
     }
 
+    withCorrections(...corrections: CorrectionType[]): StateSolverBuilder {
+        this.corrections = corrections;
+        return this;
+    }
+
     build(): StateSolver {
+        if (this.corrections === undefined || this.corrections.length === 0) {
+            return this.buildUncorrected();
+        } else {
+            return this.buildCorrected(this.corrections);
+        }
+    }
+
+    buildUncorrected(): StateSolver {
         if (this.targetBody === undefined || this.observerBody === undefined) {
             throw Error('Both target body and observer body need to be defined.');
         }
@@ -60,6 +74,25 @@ export class StateSolverBuilder {
         }
 
         throw Error(`Cannot create state solver for '${this.targetBody}' w.r.t. '${this.observerBody}'`);
+    }
+
+    buildCorrected(corrections: CorrectionType[]): StateSolver {
+        if (this.targetBody === undefined || this.observerBody === undefined) {
+            throw Error('Both target body and observer body need to be defined.');
+        }
+
+        const spkForTarget = this.spkKernel.getAllTransientSpkKernelCollections(this.targetBody);
+        const spkForObserver = this.spkKernel.getAllTransientSpkKernelCollections(this.observerBody);
+
+        if (spkForTarget[0].centerBodyId != spkForObserver[0].centerBodyId) {
+            throw Error("Cannot set up state solver for bodies that don't have the same ancestor in SPK kernel.");
+        }
+
+        if (corrections.includes(CorrectionType.LightTime)) {
+            return new LightTimeCorrectingStateSolver(spkForTarget, spkForObserver);
+        }
+
+        throw Error("Cannot set up state solver for corrections: " + corrections);
     }
 
     buildDirectStateSolver(spkKernelCollections: SpkKernelCollection[], negate: boolean = false) {
