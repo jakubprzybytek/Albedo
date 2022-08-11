@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EventsList from './EventsList';
-import getConjunctions from "./GetConjunctions";
+import getConjunctions from "../../sdk/GetConjunctions";
 
 export default function EventsBrowser(): JSX.Element {
     const [events, setEvents] = useState<any[]>([]);
