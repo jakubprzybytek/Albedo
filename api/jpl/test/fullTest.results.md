@@ -21,14 +21,13 @@ Registering SPK records for 'Pluto' w.r.t. 'Pluto Barycenter' for time span betw
 # Results
 Test suites: 10
 | Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name |
-| ----------- | ------------- | ---------- | ----------------- | ------------------ | --------- |
-| Mercury | Earth | 37| 2.64e-8 | 5.31e-9 | ./api/jpl/test/WGC_StateVector_20220727190826.csv |
-| Jupiter | Earth | 37| 7.68e-8 | 5.46e-9 | ./api/jpl/test/WGC_StateVector_20220802221423.csv |
-| Mars | Earth | 37| 116 | 6.22e-8 | ./api/jpl/test/WGC_StateVector_20220802225259.csv |
-| Saturn | Earth | 37| 1.78e-7 | 6.86e-9 | ./api/jpl/test/WGC_StateVector_20220802225311.csv |
-| Venus | Earth | 37| 3.39e-8 | 4.92e-9 | ./api/jpl/test/WGC_StateVector_20220802230546.csv |
-| Uranus | Earth | 37| 2.22e-7 | 8.79e-9 | ./api/jpl/test/WGC_StateVector_20220802230606.csv |
-| Neptune | Earth | 37| 4.94e-7 | 1.66e-8 | ./api/jpl/test/WGC_StateVector_20220802230619.csv |
-| Pluto | Earth | 37| 3.63e-7 | 1.28e-8 | ./api/jpl/test/WGC_StateVector_20220802230632.csv |
-| Mars | Mars Barycenter | 37| 2.32e-9 | 4.00e-17 | ./api/jpl/test/WGC_StateVector_20220803165555.csv |
-| Mars Barycenter | Solar System Barycenter | 37| 116 | 6.17e-8 | ./api/jpl/test/WGC_StateVector_20220803170949.csv |
+| ----------- | ------------- | ---------- | ---------------------- | ------------------------- | --------- |
+| Mercury | Earth | 37| 3.089e+8 | 104.4 | ./api/jpl/test/uncorrected/WGC_StateVector_20220727190826.csv |
+| Jupiter | Earth | 37| 1.492e+9 | 62.04 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802221423.csv |
+| Mars | Earth | 37| 3.981e+8 | 56.84 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802225259.csv |
+| Saturn | Earth | 37| 2.953e+9 | 60.65 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802225311.csv |
+| Venus | Earth | 37| 3.595e+8 | 88.47 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802230546.csv |
+| Uranus | Earth | 37| 5.901e+9 | 60.37 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802230606.csv |
+| Neptune | Earth | 37| 8.951e+9 | 60.07 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802230619.csv |
+| Pluto | Earth | 37| 1.034e+10 | 60.10 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802230632.csv |
+| Mars | Mars Barycenter | 37| 0.0003181 | 7.083e-8 | ./api/jpl/test/uncorrected/WGC_StateVector_20220803165555.csv |
