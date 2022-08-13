@@ -7,60 +7,52 @@ import { CorrectionType } from '../state/solvers';
 
 export type SolverOptions = {
     corrections: CorrectionType[];
-    computeVelocity: boolean;
 }
 
 type Stats = {
-    positionErrorAverage: number;
-    velocityErrorAverage?: number;
+    positionDifferenceAverage?: number;
+    positionComputationError?: any;
+    velocityDifferenceAverage?: number;
+    velocityComputationError?: any;
 };
 
 function testStates(targetBodyId: JplBodyId, observerBodyId: JplBodyId, states: State[], solverOptions: SolverOptions): Stats {
-    const { corrections, computeVelocity } = solverOptions;
+    const { corrections } = solverOptions;
     const stateSolver = kernelRepository.stateSolverBuilder()
         .forTarget(targetBodyId)
         .forObserver(observerBodyId)
         .withCorrections(...corrections)
         .build();
 
-    if (computeVelocity) {
-        const errors = states.map(state => {
+    const stats: Stats = {};
+
+    try {
+        const positionDifferences = states.map(state => {
             const computedPosition = stateSolver.positionFor(EphemerisSeconds.fromDateObject(state.tbd));
             const expectedPosition = new RectangularCoordinates(state.x, state.y, state.z);
 
+            return expectedPosition.subtract(computedPosition).length();
+        });
+
+        stats.positionDifferenceAverage = average(positionDifferences);
+    } catch (e: any) {
+        stats.positionComputationError = e;
+    }
+
+    try {
+        const velocityDifferences = states.map(state => {
             const computedVelocity = stateSolver.velocityFor(EphemerisSeconds.fromDateObject(state.tbd));
             const expectedVelocity = new RectangularCoordinates(state.speed_x, state.speed_y, state.speed_z);
 
-            return {
-                positionError: expectedPosition.subtract(computedPosition).length(),
-                velocityError: expectedVelocity.subtract(computedVelocity).length()
-            }
+            return expectedVelocity.subtract(computedVelocity).length();
         });
 
-        const positionErrorAverage = average(errors.map((error) => error.positionError));
-        const velocityErrorAverage = average(errors.map((error) => error.velocityError));
-
-        return {
-            positionErrorAverage,
-            velocityErrorAverage
-        };
+        stats.velocityDifferenceAverage = average(velocityDifferences);
+    } catch (e: any) {
+        stats.velocityComputationError = e;
     }
-    else {
-        const errors = states.map(state => {
-            const computedPosition = stateSolver.positionFor(EphemerisSeconds.fromDateObject(state.tbd));
-            const expectedPosition = new RectangularCoordinates(state.x, state.y, state.z);
 
-            return {
-                positionError: expectedPosition.subtract(computedPosition).length(),
-            }
-        });
-
-        const positionErrorAverage = average(errors.map((error) => error.positionError));
-
-        return {
-            positionErrorAverage,
-        };
-    }
+    return stats;
 };
 
 export type TestReport = {
@@ -68,8 +60,7 @@ export type TestReport = {
     targetBodyName: string;
     observerBodyName: string;
     testCases: number;
-    positionErrorAverage: number;
-    velocityErrorAverage?: number;
+    stats: Stats;
 };
 
 export async function testStateCSVFile(fileName: string, solverOptions: SolverOptions): Promise<TestReport> {
@@ -85,14 +76,13 @@ export async function testStateCSVFile(fileName: string, solverOptions: SolverOp
         throw Error(`Cannot parse body name to JplBodyId: ${observerBodyName}`);
     }
 
-    const { positionErrorAverage, velocityErrorAverage } = testStates(targetBodyId, observerBodyId, states, solverOptions);
+    const stats = testStates(targetBodyId, observerBodyId, states, solverOptions);
 
     return {
         fileName,
         targetBodyName,
         observerBodyName,
         testCases: states.length,
-        positionErrorAverage,
-        velocityErrorAverage
+        stats
     };
 };
