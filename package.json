@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@digitak/esrun": "^3.2.9",
-    "@serverless-stack/cli": "^1.6.10",
+    "@serverless-stack/cli": "^1.7.0",
     "@serverless-stack/resources": "^1.6.10",
     "@serverless-stack/static-site-env": "^1.6.10",
     "@tsconfig/node16": "^1.0.3",
