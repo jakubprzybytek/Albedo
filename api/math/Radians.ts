@@ -1,4 +1,4 @@
-import { AstronomicalCoordinates } from "./";
+import { AstronomicalCoordinates, RectangularCoordinates } from "./";
 
 export class Radians {
     static fromDegrees(degrees: number): number {
@@ -48,5 +48,16 @@ export class Radians {
         const z = Math.sin(first.declination) * Math.sin(second.declination)
             + Math.cos(first.declination) * Math.cos(second.declination) * Math.cos(second.rightAscension - first.rightAscension);
         return Math.atan2(Math.sqrt(x * x + y * y), z);
+    }
+
+    /**
+     * Computes angle between two vectors defined as RectangularCoordinates.
+     *
+     * @param first  First vector.
+     * @param second Second vector.
+     * @return Angle between two vectors in radians.
+     */
+    static between(first: RectangularCoordinates, second: RectangularCoordinates): number {
+        return Math.acos((first.x * second.x + first.y * second.y + first.z * second.z) / (first.length() * second.length()));
     }
 }
