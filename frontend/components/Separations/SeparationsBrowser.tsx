@@ -31,7 +31,17 @@ export default function SeparationsBrowser(): JSX.Element {
     const [separations, setSeparations] = useState<SeparationWithBodies[]>([]);
 
     return (
-        <>
+        <Box sx={{
+            '& > *': {
+                marginTop: 1,
+                marginRight: {
+                    md: 1
+                },
+                marginLeft: {
+                    md: 1
+                },
+            }
+        }}>
             <SeparationsQueryForm setSeparations={setSeparations} />
             <Box sx={{ width: 'auto' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -47,6 +57,6 @@ export default function SeparationsBrowser(): JSX.Element {
                     <SeparationsChart separations={separations} />
                 </TabPanel>
             </Box>
-        </>
+        </Box>
     );
 }

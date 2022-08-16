@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import EventsList from './EventsList';
 import getConjunctions from "../../sdk/GetConjunctions";
@@ -20,7 +21,19 @@ export default function EventsBrowser(): JSX.Element {
     return (
         <>
             <LinearProgress variant="determinate" value={progress} />
-            <EventsList events={events} />
+            <Box sx={{
+                '& > *': {
+                    marginTop: 1,
+                    marginRight: {
+                        md: 1
+                    },
+                    marginLeft: {
+                        md: 1
+                    },
+                }
+            }}>
+                <EventsList events={events} />
+            </Box>
         </>
     );
 }
