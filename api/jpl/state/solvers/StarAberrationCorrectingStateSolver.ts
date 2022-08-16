@@ -14,8 +14,8 @@ export class StarAberrationCorrectingStateSolver implements StateSolver {
 
     readonly observerStateSolver: DirectStateSolver;
 
-    constructor(targetObjectSolver: StateSolver, spkKernelRecordsForObserver: SpkKernelCollection[]) {
-        this.targetStateSolver = targetObjectSolver;
+    constructor(targetStateSolver: StateSolver, spkKernelRecordsForObserver: SpkKernelCollection[]) {
+        this.targetStateSolver = targetStateSolver;
         this.observerStateSolver = new DirectStateSolver(spkKernelRecordsForObserver, false);
     }
 

@@ -50,7 +50,7 @@ Test suites: 10
 
 ## Overview
 
-Computing body states with only light time correction applied
+Computing body states with light time correction applied
 
 ## Details
 
@@ -74,3 +74,32 @@ Test suites: 10
 | Pluto | Earth | 37 | 3.693e-7 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183650.csv |
 | Mars | Mars Barycenter | 37 | 1.997e-9 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183758.csv |
 | Mars Barycenter | Solar System Barycenter | 36 | Error: Cannot find SPK Kernel record data for target: 0 | Error: Cannot find SPK Kernel record data for target: 0 | WGC_StateVector_20220816193347.csv |
+# Test cases
+
+## Overview
+
+Computing body states with star aberration and light time correction applied
+
+## Details
+
+Folder: `./api/jpl/test/starAberrationCorrected`, file name prefix: `WGC_StateVector`
+
+Corrections: 0,1
+
+## Results
+
+Test suites: 11
+
+| Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name |
+| ----------- | ------------- | ---------- | ---------------------- | ------------------------- | --------- |
+| Mercury | Earth | 37 | 1.847e-7 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220816210748.csv |
+| Venus | Earth | 37 | 2.146e-7 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220816210929.csv |
+| Moon | Earth | 37 | 2.463e-8 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220816210945.csv |
+| Mars | Earth | 37 | 115.8 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220816211000.csv |
+| Jupiter | Earth | 37 | 9.749e-7 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220816211014.csv |
+| Saturn | Earth | 37 | 0.000002354 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220816211027.csv |
+| Uranus | Earth | 37 | 0.000004345 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220816211041.csv |
+| Neptune | Earth | 37 | 0.000005882 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220816211053.csv |
+| Pluto | Earth | 37 | 0.000008564 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220816211107.csv |
+| Mars Barycenter | Solar System Barycenter | 37 | Error: Cannot find SPK Kernel record data for target: 0 | Error: Cannot find SPK Kernel record data for target: 0 | WGC_StateVector_20220816211205.csv |
+| Solar System Barycenter | Mars Barycenter | 37 | Error: Cannot find SPK Kernel record data for target: 0 | Error: Cannot find SPK Kernel record data for target: 0 | WGC_StateVector_20220816211222.csv |

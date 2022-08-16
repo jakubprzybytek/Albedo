@@ -23,7 +23,53 @@ export class RectangularCoordinates {
         return new RectangularCoordinates(this.x - other.x, this.y - other.y, this.z - other.z)
     }
 
+    multiplyBy(value: number): RectangularCoordinates {
+        return new RectangularCoordinates(
+            this.x * value,
+            this.y * value,
+            this.z * value
+        );
+    }
+
+    divideBy(value: number): RectangularCoordinates {
+        return new RectangularCoordinates(
+            this.x / value,
+            this.y / value,
+            this.z / value
+        );
+    }
     length() {
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+
+    normalize(): RectangularCoordinates {
+        return this.divideBy(this.length());
+    }
+
+    scalarProduct(other: RectangularCoordinates): number {
+        return this.x * other.x + this.y * other.y + this.z * other.z;
+    }
+
+    crossProduct(other: RectangularCoordinates): RectangularCoordinates {
+        return new RectangularCoordinates(
+            this.y * other.z - this.z * other.y,
+            this.z * other.x - this.x * other.z,
+            this.x * other.y - this.y * other.x
+        );
+    }
+
+    /*
+    * From https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+    *
+    * @param axis  Vector to rotate about.
+    * @param angle Rotation angle.
+    * @return New vector after rotation.
+    */
+    rotate(axis: RectangularCoordinates, angle: number): RectangularCoordinates {
+        const k = axis.normalize();
+        const first = this.multiplyBy(Math.cos(angle));
+        const second = k.multiplyBy(this.scalarProduct(k)).multiplyBy(1 - Math.cos(angle));
+        const third = k.crossProduct(this).multiplyBy(Math.sin(angle));
+        return first.add(second).add(third);
     }
 }

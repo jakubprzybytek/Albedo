@@ -86,27 +86,12 @@ describe("Radians", () => {
 
     it("should calculate angle between two vectors", () => {
         const second = new RectangularCoordinates(1.0, 0.0, 0.0);
-        expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(1.0, 1.0, 0.0), second)))
-            .toBeCloseTo(45, 13);
-            expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(1.0, 1.0, 0.0), second)))
-            .toBeCloseTo(45, 13);
-            expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(1.0, 1.0, 0.0), second)))
-            .toBeCloseTo(45, 13);
-            expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(1.0, 1.0, 0.0), second)))
-            .toBeCloseTo(45, 13);
-            expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(1.0, 1.0, 0.0), second)))
-            .toBeCloseTo(45, 13);
-            expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(1.0, 1.0, 0.0), second)))
-            .toBeCloseTo(45, 13);
-            expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(1.0, 1.0, 0.0), second)))
-            .toBeCloseTo(45, 13);
-
-            assertEquals(90.0, Math.toDegrees(Radians.between(new RectangularCoordinates(0.0, 1.0, 0.0), second)));
-            assertEquals(135.0, Math.toDegrees(Radians.between(new RectangularCoordinates(-1.0, 1.0, 0.0), second)));
-            assertEquals(180.0, Math.toDegrees(Radians.between(new RectangularCoordinates(-1.0, 0.0, 0.0), second)));
-            assertEquals(135.0, Math.toDegrees(Radians.between(new RectangularCoordinates(-1.0, -1.0, 0.0), second)));
-            assertEquals(90.0, Math.toDegrees(Radians.between(new RectangularCoordinates(0.0, -1.0, 0.0), second)));
-            assertEquals(45.0, Math.toDegrees(Radians.between(new RectangularCoordinates(1.0, -1.0, 0.0), second)), 0.00000000000001);
-    
-        });
+        expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(1, 1, 0), second))).toBeCloseTo(45, 13);
+        expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(0, 1, 0), second))).toBeCloseTo(90, 13);
+        expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(-1, 1, 0), second))).toBeCloseTo(135, 13);
+        expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(-1, 0, 0), second))).toBeCloseTo(180, 13);
+        expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(-1, -1, 0), second))).toBeCloseTo(135, 13);
+        expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(0, -1, 0), second))).toBeCloseTo(90, 13);
+        expect(Radians.toDegrees(Radians.between(new RectangularCoordinates(1, -1, 0), second))).toBeCloseTo(45, 13);
+    });
 });

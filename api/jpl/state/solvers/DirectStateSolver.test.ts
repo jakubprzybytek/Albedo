@@ -19,8 +19,8 @@ describe("DirectStateSolver", () => {
         const positionDelta = position.subtract(new RectangularCoordinates(143811325.04688266, 36856589.50987644, 15977853.64250682));
         const velocityDelta = velocity.subtract(new RectangularCoordinates(-8.28800013, 26.26862274, 11.38875394));
 
-        console.log(`Position error: ${positionDelta.length()}`);
-        console.log(`Velocity error: ${velocityDelta.length()}`);
+        console.log(`DirectStateSolver position error: ${positionDelta.length()}`);
+        console.log(`DirectStateSolver velocity error: ${velocityDelta.length()}`);
 
         expect(positionDelta.length()).toBeLessThan(3e-8);
         expect(velocityDelta.length()).toBeLessThan(1e-8);
@@ -34,8 +34,8 @@ describe("DirectStateSolver", () => {
         const positionDelta = position.subtract(new RectangularCoordinates(-143811325.04688266, -36856589.50987644, -15977853.64250682));
         const velocityDelta = velocity.subtract(new RectangularCoordinates(8.28800013, -26.26862274, -11.38875394));
 
-        console.log(`Position error: ${positionDelta.length()}`);
-        console.log(`Velocity error: ${velocityDelta.length()}`);
+        console.log(`DirectStateSolver position error: ${positionDelta.length()}`);
+        console.log(`DirectStateSolver velocity error: ${velocityDelta.length()}`);
 
         expect(positionDelta.length()).toBeLessThan(3e-8);
         expect(velocityDelta.length()).toBeLessThan(1e-8);

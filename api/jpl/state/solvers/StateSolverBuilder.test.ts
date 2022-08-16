@@ -1,13 +1,13 @@
 import { vi, describe, it, expect } from "vitest";
 import { JplBodyId } from '../..';
-import { PositionChebyshevRecord, SpkKernelCollection, SpkKernelRepository, TimeSpan } from "../../kernel";
-import { StateSolverBuilder } from "./";
+import { DataType, PositionChebyshevRecord, SpkKernelCollection, SpkKernelRepository, TimeSpan } from "../../kernel";
+import { CorrectionType, LightTimeCorrectingStateSolver, StateSolverBuilder } from "./";
 
 const DUMMY_RECORD: PositionChebyshevRecord = { timeSpan: new TimeSpan(0, 1), positionCoefficients: { x: [], y: [], z: [] } };
 
-const earthMoonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.EarthMoonBarycenter, centerBodyId: JplBodyId.SolarSystemBarycenter, data: [DUMMY_RECORD] };
-const earthSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Earth, centerBodyId: JplBodyId.EarthMoonBarycenter, data: [DUMMY_RECORD] };
-const moonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Moon, centerBodyId: JplBodyId.EarthMoonBarycenter, data: [DUMMY_RECORD] };
+const earthMoonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.EarthMoonBarycenter, centerBodyId: JplBodyId.SolarSystemBarycenter, data: [DUMMY_RECORD], dataType: DataType.ChebyshevPosition };
+const earthSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Earth, centerBodyId: JplBodyId.EarthMoonBarycenter, data: [DUMMY_RECORD], dataType: DataType.ChebyshevPosition };
+const moonSpk: SpkKernelCollection = { kernelFileName: '', bodyId: JplBodyId.Moon, centerBodyId: JplBodyId.EarthMoonBarycenter, data: [DUMMY_RECORD], dataType: DataType.ChebyshevPosition };
 
 const spkKernelRepository = new SpkKernelRepository();
 spkKernelRepository.registerSpkKernelCollections([
@@ -64,5 +64,44 @@ describe("StateSolverBuilder", () => {
         ], [
             earthSpk,
         ]);
+    });
+
+    it("should use LightTimeCorrectingStateSolver when Light Time correction is enabled", () => {
+        const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository)
+            .forTarget(JplBodyId.Moon)
+            .forObserver(JplBodyId.Earth)
+            .withCorrections(CorrectionType.LightTime);
+
+        const buildLightTimeCorrectingStateSolver = vi.spyOn(stateSolverBuilder, 'buildLightTimeCorrectingStateSolver');
+
+        stateSolverBuilder.build();
+
+        expect(buildLightTimeCorrectingStateSolver).toBeCalledTimes(1);
+        expect(buildLightTimeCorrectingStateSolver).toBeCalledWith([
+            earthMoonSpk,
+            moonSpk,
+        ], [
+            earthMoonSpk,
+            earthSpk,
+        ]);
+    });
+
+    it("should use StarAberrationCorrectingStateSolver when Light Time correction is enabled", () => {
+        const stateSolverBuilder = new StateSolverBuilder(spkKernelRepository)
+            .forTarget(JplBodyId.Moon)
+            .forObserver(JplBodyId.Earth)
+            .withCorrections(CorrectionType.LightTime, CorrectionType.StarAbberation);
+
+        const buildStarAberrationCorrectingStateSolver = vi.spyOn(stateSolverBuilder, 'buildStarAberrationCorrectingStateSolver');
+
+        stateSolverBuilder.build();
+
+        expect(buildStarAberrationCorrectingStateSolver).toBeCalledTimes(1);
+        expect(buildStarAberrationCorrectingStateSolver).toBeCalledWith(
+            new LightTimeCorrectingStateSolver([earthMoonSpk, moonSpk], [earthMoonSpk, earthSpk]),
+            [
+                earthMoonSpk,
+                earthSpk,
+            ]);
     });
 });

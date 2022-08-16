@@ -44,5 +44,7 @@ async function testSuite(folder: string, fileNamePrefix: string, solverOptions: 
     await testSuite('./api/jpl/test/uncorrected', 'WGC_StateVector', { corrections: [] },
         'Computing body states without any corrections');
     await testSuite('./api/jpl/test/lightTimeCorrected', 'WGC_StateVector', { corrections: [CorrectionType.LightTime] },
-        'Computing body states with only light time correction applied');
+        'Computing body states with light time correction applied');
+    await testSuite('./api/jpl/test/starAberrationCorrected', 'WGC_StateVector', { corrections: [CorrectionType.LightTime, CorrectionType.StarAbberation] },
+        'Computing body states with star aberration and light time correction applied');
 })();

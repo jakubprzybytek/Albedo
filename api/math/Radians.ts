@@ -60,4 +60,5 @@ export class Radians {
     static between(first: RectangularCoordinates, second: RectangularCoordinates): number {
         return Math.acos((first.x * second.x + first.y * second.y + first.z * second.z) / (first.length() * second.length()));
     }
+    
 }
