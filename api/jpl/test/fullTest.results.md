@@ -36,16 +36,16 @@ Test suites: 10
 
 | Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name |
 | ----------- | ------------- | ---------- | ---------------------- | ------------------------- | --------- |
-| Mercury | Earth | 37 | 2.639e-8 | 5.309e-9 | ./api/jpl/test/uncorrected/WGC_StateVector_20220727190826.csv |
-| Jupiter | Earth | 37 | 7.684e-8 | 5.462e-9 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802221423.csv |
-| Mars | Earth | 37 | 115.8 | 6.218e-8 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802225259.csv |
-| Saturn | Earth | 37 | 1.780e-7 | 6.858e-9 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802225311.csv |
-| Venus | Earth | 37 | 3.385e-8 | 4.918e-9 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802230546.csv |
-| Uranus | Earth | 37 | 2.220e-7 | 8.794e-9 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802230606.csv |
-| Neptune | Earth | 37 | 4.939e-7 | 1.656e-8 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802230619.csv |
-| Pluto | Earth | 37 | 3.625e-7 | 1.278e-8 | ./api/jpl/test/uncorrected/WGC_StateVector_20220802230632.csv |
-| Mars | Mars Barycenter | 37 | 2.318e-9 | 3.995e-17 | ./api/jpl/test/uncorrected/WGC_StateVector_20220803165555.csv |
-| Mars Barycenter | Solar System Barycenter | 37 | 115.8 | 6.172e-8 | ./api/jpl/test/uncorrected/WGC_StateVector_20220803170949.csv |
+| Mercury | Earth | 37 | 2.639e-8 | 5.309e-9 | WGC_StateVector_20220727190826.csv |
+| Jupiter | Earth | 37 | 7.684e-8 | 5.462e-9 | WGC_StateVector_20220802221423.csv |
+| Mars | Earth | 37 | 115.8 | 6.218e-8 | WGC_StateVector_20220802225259.csv |
+| Saturn | Earth | 37 | 1.780e-7 | 6.858e-9 | WGC_StateVector_20220802225311.csv |
+| Venus | Earth | 37 | 3.385e-8 | 4.918e-9 | WGC_StateVector_20220802230546.csv |
+| Uranus | Earth | 37 | 2.220e-7 | 8.794e-9 | WGC_StateVector_20220802230606.csv |
+| Neptune | Earth | 37 | 4.939e-7 | 1.656e-8 | WGC_StateVector_20220802230619.csv |
+| Pluto | Earth | 37 | 3.625e-7 | 1.278e-8 | WGC_StateVector_20220802230632.csv |
+| Mars | Mars Barycenter | 37 | 2.318e-9 | 3.995e-17 | WGC_StateVector_20220803165555.csv |
+| Mars Barycenter | Solar System Barycenter | 37 | 115.8 | 6.172e-8 | WGC_StateVector_20220803170949.csv |
 # Test cases
 
 ## Overview
@@ -60,16 +60,17 @@ Corrections: 0
 
 ## Results
 
-Test suites: 9
+Test suites: 10
 
 | Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name |
 | ----------- | ------------- | ---------- | ---------------------- | ------------------------- | --------- |
-| Mercury | Earth | 37 | 2.479e-8 | Error: Velocity solving routine not implemented yet! | ./api/jpl/test/lightTimeCorrected/WGC_StateVector_20220812182335.csv |
-| Venus | Earth | 37 | 2.924e-8 | Error: Velocity solving routine not implemented yet! | ./api/jpl/test/lightTimeCorrected/WGC_StateVector_20220812183524.csv |
-| Mars | Earth | 37 | 115.8 | Error: Velocity solving routine not implemented yet! | ./api/jpl/test/lightTimeCorrected/WGC_StateVector_20220812183540.csv |
-| Jupiter | Earth | 37 | 9.358e-8 | Error: Velocity solving routine not implemented yet! | ./api/jpl/test/lightTimeCorrected/WGC_StateVector_20220812183553.csv |
-| Saturn | Earth | 37 | 1.980e-7 | Error: Velocity solving routine not implemented yet! | ./api/jpl/test/lightTimeCorrected/WGC_StateVector_20220812183606.csv |
-| Neptune | Earth | 37 | 1.775e-7 | Error: Velocity solving routine not implemented yet! | ./api/jpl/test/lightTimeCorrected/WGC_StateVector_20220812183620.csv |
-| Uranus | Earth | 37 | 2.681e-7 | Error: Velocity solving routine not implemented yet! | ./api/jpl/test/lightTimeCorrected/WGC_StateVector_20220812183634.csv |
-| Pluto | Earth | 37 | 3.693e-7 | Error: Velocity solving routine not implemented yet! | ./api/jpl/test/lightTimeCorrected/WGC_StateVector_20220812183650.csv |
-| Mars | Mars Barycenter | 37 | 1.997e-9 | Error: Velocity solving routine not implemented yet! | ./api/jpl/test/lightTimeCorrected/WGC_StateVector_20220812183758.csv |
+| Mercury | Earth | 37 | 2.479e-8 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812182335.csv |
+| Venus | Earth | 37 | 2.924e-8 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183524.csv |
+| Mars | Earth | 37 | 115.8 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183540.csv |
+| Jupiter | Earth | 37 | 9.358e-8 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183553.csv |
+| Saturn | Earth | 37 | 1.980e-7 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183606.csv |
+| Neptune | Earth | 37 | 1.775e-7 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183620.csv |
+| Uranus | Earth | 37 | 2.681e-7 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183634.csv |
+| Pluto | Earth | 37 | 3.693e-7 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183650.csv |
+| Mars | Mars Barycenter | 37 | 1.997e-9 | Error: Velocity solving routine not implemented yet! | WGC_StateVector_20220812183758.csv |
+| Mars Barycenter | Solar System Barycenter | 36 | Error: Cannot find SPK Kernel record data for target: 0 | Error: Cannot find SPK Kernel record data for target: 0 | WGC_StateVector_20220816193347.csv |

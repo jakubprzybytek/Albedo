@@ -32,9 +32,11 @@ async function testSuite(folder: string, fileNamePrefix: string, solverOptions: 
         const positionSummary = testReport.stats.positionDifferenceAverage?.toPrecision(4) || testReport.stats.positionComputationError;
         const velocitySummary = testReport.stats.velocityDifferenceAverage?.toPrecision(4) || testReport.stats.velocityComputationError;
 
+        var fileName = /[^/]*$/.exec(testReport.fileName)?.[0] || testReport.fileName;
+
         console.log(`| ${testReport.targetBodyName} | ${testReport.observerBodyName} | ${testReport.testCases}`
             + ` | ${positionSummary} | ${velocitySummary}`
-            + ` | ${testReport.fileName} |`);
+            + ` | ${fileName} |`);
     }
 }
 

@@ -18,37 +18,43 @@ type Stats = {
 
 function testStates(targetBodyId: JplBodyId, observerBodyId: JplBodyId, states: State[], solverOptions: SolverOptions): Stats {
     const { corrections } = solverOptions;
-    const stateSolver = kernelRepository.stateSolverBuilder()
-        .forTarget(targetBodyId)
-        .forObserver(observerBodyId)
-        .withCorrections(...corrections)
-        .build();
 
     const stats: Stats = {};
 
     try {
-        const positionDifferences = states.map(state => {
-            const computedPosition = stateSolver.positionFor(EphemerisSeconds.fromDateObject(state.tbd));
-            const expectedPosition = new RectangularCoordinates(state.x, state.y, state.z);
+        const stateSolver = kernelRepository.stateSolverBuilder()
+            .forTarget(targetBodyId)
+            .forObserver(observerBodyId)
+            .withCorrections(...corrections)
+            .build();
 
-            return expectedPosition.subtract(computedPosition).length();
-        });
+        try {
+            const positionDifferences = states.map(state => {
+                const computedPosition = stateSolver.positionFor(EphemerisSeconds.fromDateObject(state.tbd));
+                const expectedPosition = new RectangularCoordinates(state.x, state.y, state.z);
 
-        stats.positionDifferenceAverage = average(positionDifferences);
+                return expectedPosition.subtract(computedPosition).length();
+            });
+
+            stats.positionDifferenceAverage = average(positionDifferences);
+        } catch (e: any) {
+            stats.positionComputationError = e;
+        }
+
+        try {
+            const velocityDifferences = states.map(state => {
+                const computedVelocity = stateSolver.velocityFor(EphemerisSeconds.fromDateObject(state.tbd));
+                const expectedVelocity = new RectangularCoordinates(state.speed_x, state.speed_y, state.speed_z);
+
+                return expectedVelocity.subtract(computedVelocity).length();
+            });
+
+            stats.velocityDifferenceAverage = average(velocityDifferences);
+        } catch (e: any) {
+            stats.velocityComputationError = e;
+        }
     } catch (e: any) {
         stats.positionComputationError = e;
-    }
-
-    try {
-        const velocityDifferences = states.map(state => {
-            const computedVelocity = stateSolver.velocityFor(EphemerisSeconds.fromDateObject(state.tbd));
-            const expectedVelocity = new RectangularCoordinates(state.speed_x, state.speed_y, state.speed_z);
-
-            return expectedVelocity.subtract(computedVelocity).length();
-        });
-
-        stats.velocityDifferenceAverage = average(velocityDifferences);
-    } catch (e: any) {
         stats.velocityComputationError = e;
     }
 
