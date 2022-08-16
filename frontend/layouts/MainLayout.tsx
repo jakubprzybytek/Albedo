@@ -26,7 +26,6 @@ export default function MainLayout({ title, children }: MainLayoutParams): JSX.E
                 sx={{
                     minHeight: '100vh',
                     '& > *': {
-                        marginTop: 1,
                         marginRight: {
                             md: 1
                         },

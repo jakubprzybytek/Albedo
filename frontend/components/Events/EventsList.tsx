@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { Conjunction } from '@lambda/conjunctions';
-import { format } from 'date-fns';
 import Angle from 'common/Angle';
 import BodyChip from 'common/BodyChip';
 
