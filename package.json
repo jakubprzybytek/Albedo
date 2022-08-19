@@ -25,7 +25,7 @@
     "simple-statistics": "^7.7.6"
   },
   "devDependencies": {
-    "@digitak/esrun": "^3.2.9",
+    "@digitak/esrun": "^3.2.10",
     "@serverless-stack/cli": "^1.7.0",
     "@serverless-stack/resources": "^1.7.0",
     "@serverless-stack/static-site-env": "^1.7.0",
