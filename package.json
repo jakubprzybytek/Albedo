@@ -14,7 +14,9 @@
     "printRecordsFromSpkFile": "esrun ./api/jpl/tools/PrintRecordsFromSpkFile.ts",
     "de440.test": "esrun ./api/jpl/data/de440.testData.script.ts && move de440.testData.ts ./api/jpl/data/de440.testData.ts",
     "de440": "esrun ./api/jpl/data/de440.full.script.ts && move de440.full.ts ./api/jpl/data/de440.full.ts",
-    "test.data": "esrun ./api/jpl/test/fullTest.ts > ./api/jpl/test/fullTest.results.md"
+    "test.data": "npm run test.states & npm run test.ephemeris",
+    "test.states": "esrun ./api/jpl/test/fullTest.states.ts > ./api/jpl/test/fullTest.states.results.md",
+    "test.ephemeris": "esrun ./api/jpl/test/fullTest.ephemeris.ts > ./api/jpl/test/fullTest.ephemeris.results.md"
   },
   "dependencies": {
     "@sls-next/lambda-at-edge": "^3.7.0",
@@ -25,7 +27,7 @@
   "devDependencies": {
     "@digitak/esrun": "^3.2.9",
     "@serverless-stack/cli": "^1.7.0",
-    "@serverless-stack/resources": "^1.7.0",
+    "@serverless-stack/resources": "^1.8.1",
     "@serverless-stack/static-site-env": "^1.7.0",
     "@tsconfig/node16": "^1.0.3",
     "aws-cdk-lib": "2.32.0",
