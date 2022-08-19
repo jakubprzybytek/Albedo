@@ -14,6 +14,8 @@ describe("JulianDay", () => {
     });
 
     it("should generate ranges", () => {
+        expect(JulianDay.forRange(10, 10, 1)).toEqual([10]);
+        expect(JulianDay.forRange(10, 12, 1)).toEqual([10, 11, 12]);
         expect(JulianDay.forRange(10, 13.4, 1.5)).toEqual([10, 11.5, 13]);
     });
 

@@ -2,12 +2,14 @@ import { JulianDay } from '../../math';
 import { EphemerisSeconds, JplBodyId } from '..';
 import { StateWithPosition, StateWithPositionAndVelocity } from '.';
 import { kernelRepository } from '../data/de440.full';
+import { CorrectionType } from './solvers';
 
 export class States {
     static position(tagetBodyId: JplBodyId, observerBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): StateWithPosition[] {
         const stateSolver = kernelRepository.stateSolverBuilder()
             .forTarget(tagetBodyId)
             .forObserver(observerBodyId)
+            .withCorrections(CorrectionType.LightTime, CorrectionType.StarAbberation)
             .build();
 
         return JulianDay.forRange(fromJde, toJde, interval)
@@ -27,6 +29,7 @@ export class States {
         const stateSolver = kernelRepository.stateSolverBuilder()
             .forTarget(tagetBodyId)
             .forObserver(observerBodyId)
+            .withCorrections(CorrectionType.LightTime, CorrectionType.StarAbberation)
             .build();
 
         return JulianDay.forRange(fromJde, toJde, interval)

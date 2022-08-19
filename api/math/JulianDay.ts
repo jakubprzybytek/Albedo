@@ -47,7 +47,7 @@ export class JulianDay {
     static forRange(jdFrom: number, jdTo: number, interval: number): number[] {
         const julianDays: number[] = [];
         let currentJd = jdFrom;
-        while (currentJd < jdTo) {
+        while (currentJd <= jdTo) {
             julianDays.push(currentJd);
             currentJd += interval;
         }

@@ -26,7 +26,7 @@ Computing body states without any corrections
 
 ## Details
 
-Folder: `./api/jpl/test/uncorrected`, file name prefix: `WGC_StateVector`
+Folder: `./api/jpl/test/states-reference-uncorrected`, file name prefix: `WGC_StateVector`
 
 Corrections: *none*
 
@@ -54,7 +54,7 @@ Computing body states with light time correction applied
 
 ## Details
 
-Folder: `./api/jpl/test/lightTimeCorrected`, file name prefix: `WGC_StateVector`
+Folder: `./api/jpl/test/states-reference-lightTimeCorrected`, file name prefix: `WGC_StateVector`
 
 Corrections: 0
 
@@ -82,7 +82,7 @@ Computing body states with star aberration and light time correction applied
 
 ## Details
 
-Folder: `./api/jpl/test/starAberrationCorrected`, file name prefix: `WGC_StateVector`
+Folder: `./api/jpl/test/states-reference-starAberrationCorrected`, file name prefix: `WGC_StateVector`
 
 Corrections: 0,1
 
