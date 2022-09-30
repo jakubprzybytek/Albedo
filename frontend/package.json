@@ -22,7 +22,7 @@
     "next": "12.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "recharts": "^2.1.12"
+    "recharts": "^2.1.14"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
