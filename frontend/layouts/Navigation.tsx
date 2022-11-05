@@ -38,6 +38,10 @@ const menuItems = [
     {
         link: '/conjunctions',
         label: 'Conjunctions'
+    },
+    {
+        link: '/eclipses',
+        label: 'Eclipses'
     }
 ];
 

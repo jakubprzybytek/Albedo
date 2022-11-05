@@ -36,13 +36,13 @@ export function Main({ stack }: StackContext) {
             "GET /api/states": "functions/states/getStates.handler",
             "GET /api/ephemeris": "functions/ephemeris/getEphemeris.handler",
             "GET /api/separations": "functions/separations/getSeparations.handler",
-            "GET /api/conjunctions":  {
+            "GET /api/conjunctions": {
                 function: {
                     handler: "functions/conjunctions/getConjunctions.handler",
                     memorySize: '512 MB'
-                } 
-            }
-            
+                }
+            },
+            "GET /api/eclipses": "functions/eclipses/getEclipses.handler",
         },
     });
     stack.addOutputs({

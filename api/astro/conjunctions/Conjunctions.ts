@@ -20,8 +20,8 @@ type EphemerisPair = {
 }
 
 export class Conjunctions {
-    static all(fromJde: number, toJde: number): Conjunction[] {
-        const bodies: BodyWithEphemerides[] = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto]
+    static for(bodies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction[] {
+        const bodiesWithEphemeris = bodies
             .map(jplBodyFromId)
             .filter((jplBody): jplBody is JplBody => !!jplBody)
             .map((jplBody) => ({
@@ -30,9 +30,9 @@ export class Conjunctions {
             }));
 
         const bodyPairs: EphemerisPair[] = new Array();
-        for (let i = 0; i < bodies.length - 1; i++) {
-            for (let j = i + 1; j < bodies.length; j++) {
-                bodyPairs.push({ first: bodies[i], second: bodies[j] });
+        for (let i = 0; i < bodiesWithEphemeris.length - 1; i++) {
+            for (let j = i + 1; j < bodiesWithEphemeris.length; j++) {
+                bodyPairs.push({ first: bodiesWithEphemeris[i], second: bodiesWithEphemeris[j] });
             }
         }
 
@@ -44,7 +44,7 @@ export class Conjunctions {
                     Separations.fromEphemerides(pair.first.ephemerides, pair.second.ephemerides),
                     element => element.separation
                 )
-                    .filter((separation) => separation.separation < SEPARATION_THRESHOLD)
+                    .filter((separation) => separation.separation < separationLimit)
             }))
             .flatMap((pair) => {
                 return pair.separations
@@ -63,5 +63,10 @@ export class Conjunctions {
                     }));
             })
             .sort((c1, c2) => c1.jde - c2.jde);
+    }
+
+    static all(fromJde: number, toJde: number): Conjunction[] {
+        const bodies = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
+        return this.for(bodies, fromJde, toJde, SEPARATION_THRESHOLD);
     }
 };
