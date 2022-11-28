@@ -27,7 +27,7 @@
   "devDependencies": {
     "@digitak/esrun": "^3.2.10",
     "@serverless-stack/cli": "^1.8.1",
-    "@serverless-stack/resources": "^1.8.1",
+    "@serverless-stack/resources": "^1.18.4",
     "@serverless-stack/static-site-env": "^1.8.1",
     "@tsconfig/node16": "^1.0.3",
     "aws-cdk-lib": "2.32.0",
