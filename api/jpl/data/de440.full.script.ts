@@ -1,7 +1,7 @@
 import { JplBodyId } from "..";
 import { readMultipleSpkCollections, printSpkCollections } from "./testDataGenerator";
 
-const from = new Date('2025-01-01');
+const from = new Date('2022-01-01');
 const to = new Date('2026-12-31');
 //const to = new Date('2022-01-02');
 
