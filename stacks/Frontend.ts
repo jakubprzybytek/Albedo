@@ -1,13 +1,13 @@
-import { use, StackContext, NextjsSite } from '@serverless-stack/resources';
-import { Main } from './Main';
+import { use, StackContext, NextjsSite } from 'sst/constructs';
+import { API } from './MyStack';
 
 export function Frontend({ stack }: StackContext) {
-    const { auth, api } = use(Main);
+    const { cognito, api } = use(API);
 
     const customDomainPrefix = stack.stage === 'int' ? '' : stack.stage + '.';
 
     const site = new NextjsSite(stack, 'Site', {
-        path: 'frontend',
+        path: 'packages/dashboard',
         customDomain: {
             hostedZone: 'albedoonline.com',
             domainName: customDomainPrefix + 'albedoonline.com',
@@ -15,8 +15,8 @@ export function Frontend({ stack }: StackContext) {
         environment: {
             NEXT_PUBLIC_AWS_REGION: stack.region,
             NEXT_PUBLIC_API_URL: api.customDomainUrl || api.url,
-            NEXT_PUBLIC_USER_POOL_ID: auth.userPoolId,
-            NEXT_PUBLIC_USER_POOL_CLIENT_ID: auth.userPoolClientId,
+            NEXT_PUBLIC_USER_POOL_ID: cognito.userPoolId,
+            NEXT_PUBLIC_USER_POOL_CLIENT_ID: cognito.userPoolClientId,
         },
     });
 

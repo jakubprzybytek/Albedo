@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@Albedo/core/*": ["../core/src/*"],
+      "@math": ["../core/src/math"],
+      "@astro/*": ["../core/src/astro/*"],
+      "@jpl": ["../core/src/jpl"],
+      "@jpl/*": ["../core/src/jpl/*"],
+    }
+  }
+}
