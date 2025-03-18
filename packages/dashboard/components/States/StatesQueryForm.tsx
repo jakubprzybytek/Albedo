@@ -5,6 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
 import { StateWithPositionAndVelocity } from '@lambda/states';
 import QueryForm from '../QueryForm';
+import { pink, yellow } from "@mui/material/colors";
 
 type StatesQueryFormParams = {
     setStates: (states: StateWithPositionAndVelocity[]) => void;
@@ -48,22 +49,12 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
                 </Grid>
                 <Grid container>
                     <Grid item xs={12} sm={4}>
-                        <DatePicker label="From (TDE)" inputFormat="yyyy-MM-dd"
-                            renderInput={(params) => <TextField size="small" {...params} />}
-                            value={fromTde}
-                            onChange={(newValue) => {
-                                setFromTde(newValue);
-                            }}
-                        />
+                        <DatePicker label="From (TDE)" sx={{ '& > div': { height: 40 } }}
+                            value={fromTde} onChange={(newValue) => setFromTde(newValue)} />
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <DatePicker label="To (TDE)" inputFormat="yyyy-MM-dd"
-                            renderInput={(params) => <TextField size="small" {...params} />}
-                            value={toTde}
-                            onChange={(newValue) => {
-                                setToTde(newValue);
-                            }}
-                        />
+                        <DatePicker label="To (TDE)" sx={{ '& > div': { height: 40 } }}
+                            value={toTde} onChange={(newValue) => setToTde(newValue)} />
                     </Grid>
                     <Grid item xs={12} sm={4} >
                         <TextField label="Interval" size="small" type="number"

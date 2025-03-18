@@ -1,14 +1,15 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement } from 'react';
+import { Amplify, ResourcesConfig } from "aws-amplify";
+import { fetchAuthSession } from 'aws-amplify/auth';
+import { withAuthenticator } from '@aws-amplify/ui-react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import '../styles/globals.css';
-import { Amplify, ResourcesConfig } from "aws-amplify";
-import { fetchAuthSession } from 'aws-amplify/auth';
-import { withAuthenticator } from '@aws-amplify/ui-react';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { pl } from 'date-fns/locale/pl';
 import '@aws-amplify/ui-react/styles.css';
+import '../styles/globals.css';
 
 declare module '@mui/material/styles' {
     // fix the type error when referencing the Theme object in your styled component
@@ -43,15 +44,15 @@ Amplify.configure({
     },
 } satisfies ResourcesConfig, {
     API: {
-      REST: {
-        headers: async () => {
-          return {
-            Authorization: `Bearer ${(await fetchAuthSession()).tokens?.accessToken.toString()}`,
-          };
+        REST: {
+            headers: async () => {
+                return {
+                    Authorization: `Bearer ${(await fetchAuthSession()).tokens?.accessToken.toString()}`,
+                };
+            },
         },
-      },
     },
-  });
+});
 
 export type NextPageWithLayout = NextPage & {
     getLayout: (page: ReactElement) => ReactElement
@@ -82,7 +83,7 @@ function MyApp(props: AppPropsWithLayout | undefined) {
     //     <Component {...pageProps} />
     // </ThemeProvider>);
     return getLayout(<ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={pl}>
             <Component {...pageProps} />
         </LocalizationProvider>
     </ThemeProvider>);

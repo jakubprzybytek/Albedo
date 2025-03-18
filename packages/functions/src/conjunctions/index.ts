@@ -1,3 +1,3 @@
-import { Conjunction } from "../../astro/conjunctions";
+import { Conjunction } from "@astro/conjunctions";
 
 export type { Conjunction };

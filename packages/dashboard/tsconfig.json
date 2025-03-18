@@ -20,9 +20,12 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@math": ["../core/src/math"],
       "@lambda": ["../functions/src"],
-      "@lambda/*": ["../functions/src/*"]
+      "@lambda/*": ["../functions/src/*"],
+      "@math": ["../core/src/math"],
+      "@astro/*": ["../core/src/astro/*"],
+      "@jpl": ["../core/src/jpl"],
+      "@jpl/*": ["../core/src/jpl/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

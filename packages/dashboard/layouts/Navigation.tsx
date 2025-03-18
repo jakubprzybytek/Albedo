@@ -66,7 +66,7 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        <Link href='/'>Albedo 2.0</Link>
+                        <Link href='/'>Albedo 2.1</Link>
                     </Typography>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, pl: 2 }}>
                         {title}
@@ -75,7 +75,7 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                         <Button variant="contained" color="secondary" size='small' onClick={handleMenu}>
                             Tools
                         </Button>
-                        <Button variant="contained" color="secondary" size='small' onClick={() => Auth.signOut()}>
+                        <Button variant="contained" color="secondary" size='small' onClick={() => signOut()}>
                             Log out
                         </Button>
                     </Stack>

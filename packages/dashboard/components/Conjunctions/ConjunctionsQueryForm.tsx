@@ -24,22 +24,13 @@ export default function ConjunctionsQueryForm({ setConjunctions }: ConjunctionsQ
             <>
                 <Grid container>
                     <Grid item xs={12} sm={4}>
-                        <DatePicker label="From (TDE)" inputFormat="yyyy-MM-dd"
-                            renderInput={(params) => <TextField size="small" {...params} />}
+                        <DatePicker label="From (TDE)" sx={{ '& > div': { height: 40 } }}
                             value={fromTde}
-                            onChange={(newValue) => {
-                                setFromTde(newValue);
-                            }}
-                        />
+                            onChange={(newValue) => setFromTde(newValue)} />
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <DatePicker label="To (TDE)" inputFormat="yyyy-MM-dd"
-                            renderInput={(params) => <TextField size="small" {...params} />}
-                            value={toTde}
-                            onChange={(newValue) => {
-                                setToTde(newValue);
-                            }}
-                        />
+                        <DatePicker label="To (TDE)" sx={{ '& > div': { height: 40 } }}
+                            value={toTde} onChange={(newValue) => setToTde(newValue)} />
                     </Grid>
                 </Grid>
             </>

@@ -1,3 +1,3 @@
-import { SeparationWithBodies } from "../../astro/separations";
+import { SeparationWithBodies } from "@astro/separations";
 
 export type { SeparationWithBodies };

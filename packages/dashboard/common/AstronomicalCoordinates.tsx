@@ -1,4 +1,4 @@
-import { AstronomicalCoordinates } from "../../api/math";
+import { AstronomicalCoordinates } from "@math";
 import { formatHourAngle, formatDegrees } from '../utils';
 
 type AstronomicalCoordsPropsType = {

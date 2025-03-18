@@ -9,17 +9,11 @@ export default async function getConjunctions(): Promise<Conjunction[]> {
         toTde: format(addMonths(new Date(), 6), 'yyyy-MM-dd'),
     };
 
-    const call = get({
+    const { body } = await get({
         apiName: 'AlbedoAPI',
         path: path + '?' + new URLSearchParams(params).toString(),
-        // options: {
-        //     headers: {
-        //         Authorization: `Bearer ${(await Auth.currentSession())
-        //             .getAccessToken()
-        //             .getJwtToken()}`,
-        //     },
-        // }
-    });
-    const response = await call.response;
-    return await response.body.json() as Conjunction[];
+    }).response;
+
+    const bodyJson = await body.json() as any;
+    return bodyJson as Conjunction[];
 }

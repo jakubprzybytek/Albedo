@@ -1,3 +1,3 @@
-import { Eclipse } from '../../astro/eclipses';
+import { Eclipse } from '@astro/eclipses';
 
 export type { Eclipse };
