@@ -1,0 +1,17 @@
+{
+  "name": "@albedo/core",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "sst bind vitest",
+    "typecheck": "tsc -noEmit"
+  },
+  "devDependencies": {
+    "vitest": "^3.1.1",
+    "@types/node": "^22.14.1",
+    "sst": "^3.13.13"
+  },
+  "dependencies": {
+    "zod": "^3.24.3"
+  }
+}
