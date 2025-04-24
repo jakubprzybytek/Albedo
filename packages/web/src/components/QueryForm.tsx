@@ -50,7 +50,7 @@ export default function QueryForm({ path, getParams: params, setResults: setResu
         <Paper component="form" sx={{
             pt: 2, pl: 1,
             maxWidth: '800px',
-            backgroundColor: theme.palette.background.default,
+            backgroundColor: theme.palette.grey[200],
             '& .MuiGrid-item': { pb: 1, pr: 1 },
             '& .MuiTextField-root': { width: '100%' }
         }}>

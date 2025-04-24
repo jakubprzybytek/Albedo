@@ -24,8 +24,9 @@ import StatesBrowser from "@/components/States/StatesBrowser";
 
 function States(): JSX.Element {
   return (
-    // <p>sd</p>
-    <StatesBrowser />
+    <MainLayout title="States">
+      <StatesBrowser />
+    </MainLayout>
   );
 }
 

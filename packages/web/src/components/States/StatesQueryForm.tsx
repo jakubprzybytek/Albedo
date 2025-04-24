@@ -29,7 +29,7 @@ export default function StatesQueryForm({ setStates }: StatesQueryFormParams): J
     return (
         <QueryForm path='/api/states' getParams={getParams} setResults={setStates}>
             <>
-                <Grid container>
+                <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <TextField label="Target" size="small"
                             value={target}

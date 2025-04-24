@@ -67,7 +67,7 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        {/* <Link href='/'>Albedo 2.1</Link> */}
+                        <Link to='/'>Albedo 2.2</Link>
                     </Typography>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, pl: 2 }}>
                         {title}
@@ -96,7 +96,7 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                     >
                         {menuItems.map(menuItem => (
                             <MenuItem key={menuItem.link} onClick={handleClose}>
-                                {/* <Link href={menuItem.link}>{menuItem.label}</Link> */}
+                                <Link to={menuItem.link}>{menuItem.label}</Link>
                             </MenuItem>
                         ))}
                     </Menu>
@@ -117,14 +117,14 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
                 >
                     <Box onClick={() => setIsMobileOpen(!isMobileOpen)} sx={{ textAlign: 'center' }}>
                         <Typography variant="h6" sx={{ my: 2 }}>
-                            {/* <Link href='/'>Albedo 2.0</Link> */}
+                            <Link to='/'>Albedo 2.2</Link>
                         </Typography>
                         <Divider />
                         <List>
                             {menuItems.map(menuItem => (
                                 <ListItem key={menuItem.link} disablePadding>
                                     <ListItemButton sx={{ textAlign: 'center' }}>
-                                        {/* <Link href={menuItem.link}><ListItemText primary={menuItem.label} /></Link> */}
+                                        <Link to={menuItem.link}><ListItemText primary={menuItem.label} /></Link>
                                     </ListItemButton>
                                 </ListItem>
                             ))}
