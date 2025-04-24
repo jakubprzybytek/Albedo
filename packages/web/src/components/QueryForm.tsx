@@ -1,0 +1,71 @@
+import { useState, type JSX } from "react";
+import { get } from "aws-amplify/api";
+import { useTheme } from '@mui/material/styles';
+import Grid from '@mui/material/GridLegacy';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
+
+type QueryFormParams = {
+    path: string;
+    getParams: () => { [key: string]: string };
+    setResults: (data: any) => void;
+    children: JSX.Element;
+};
+
+export default function QueryForm({ path, getParams: params, setResults: setResults, children }: QueryFormParams): JSX.Element {
+    const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState<string | null>();
+    const [errorMessage, setErrorMessage] = useState<string | null>();
+
+    const theme = useTheme();
+
+    async function handleSubmit() {
+        setLoading(true);
+
+        const startTime = new Date().getTime();
+
+        try {
+            const { body } = await get({
+                apiName: 'AlbedoAPI',
+                path: path + '?' + new URLSearchParams(params()).toString()
+            }).response;
+
+            const jsonBody = await body.json();
+
+            console.log('Fetched: ' + jsonBody);
+            setSuccessMessage(`Loaded in ${new Date().getTime() - startTime} ms`);
+            setErrorMessage(null);
+            setResults(jsonBody);
+            setLoading(false);
+        } catch (error: any) {
+            console.log(error);
+            setSuccessMessage(null);
+            setErrorMessage(error.message);
+            setLoading(false);
+        }
+    }
+
+    return (
+        <Paper component="form" sx={{
+            pt: 2, pl: 1,
+            maxWidth: '800px',
+            backgroundColor: theme.palette.background.default,
+            '& .MuiGrid-item': { pb: 1, pr: 1 },
+            '& .MuiTextField-root': { width: '100%' }
+        }}>
+            {children}
+            <Grid container sx={{ justifyContent: 'space-between' }}>
+                <Grid item>
+                    {errorMessage && <Typography sx={{ color: 'red' }}>{errorMessage}</Typography>}
+                    {successMessage && <Typography>{successMessage}</Typography>}
+                </Grid>
+                <Grid item>
+                    <LoadingButton variant="contained" size="small" loading={loading}
+                        onClick={handleSubmit}
+                    >Submit</LoadingButton>
+                </Grid>
+            </Grid>
+        </Paper>
+    );
+}

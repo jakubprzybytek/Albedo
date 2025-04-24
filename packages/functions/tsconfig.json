@@ -5,7 +5,11 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@albedo/core/*": ["../core/src/*"]
+      "@Albedo/core/*": ["../core/src/*"],
+      "@math": ["../core/src/math"],
+      "@astro/*": ["../core/src/astro/*"],
+      "@jpl": ["../core/src/jpl"],
+      "@jpl/*": ["../core/src/jpl/*"],
     }
   }
 }
