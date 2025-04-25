@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,8 +7,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Ephemeris } from '@lambda/ephemeris';
 import AstronomicalCoords from '../../common/AstronomicalCoordinates';
+import type { Ephemeris } from '@/sdk/GetEphemerides';
 
 type EphemerisTablePropsType = {
   ephemerides: Ephemeris[];

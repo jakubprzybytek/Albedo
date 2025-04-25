@@ -4,10 +4,9 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
 import QueryPanel from "@/forms/QueryPanel";
-import type { EphemeridesQuery } from "@/sdk/GetEphemerides";
+import QuerySubmit from "@/forms/QuerySubmit";
 import type { ManagedQuery } from "@/forms/useQuery";
-import Alert from "@mui/material/Alert";
-import Button from "@mui/material/Button";
+import type { EphemeridesQuery } from "@/sdk/GetEphemerides";
 
 type EphemerisQueryFormParams = {
   query: ManagedQuery<EphemeridesQuery>;
@@ -31,7 +30,7 @@ export default function EphemerisQueryForm({ query }: EphemerisQueryFormParams):
   return (
     <QueryPanel>
       <Grid container rowSpacing={2} columnSpacing={1}>
-        <Grid size={{ xs: 12, sm: 6 }}>
+        <Grid size={12}>
           <TextField label="Target" size="small"
             value={target}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +38,7 @@ export default function EphemerisQueryForm({ query }: EphemerisQueryFormParams):
             }}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
+        <Grid size={{ xs: 12, sm: 4 }}>
           <DatePicker label="From (TDE)" sx={{ '& > div': { height: 40 } }}
             value={fromTde}
             onChange={(newValue) => setFromTde(newValue)} />
@@ -57,15 +56,7 @@ export default function EphemerisQueryForm({ query }: EphemerisQueryFormParams):
             }}
           />
         </Grid>
-        <Grid container height={48} width="100%" justifyContent={'space-between'} alignItems={'flex-end'}>
-          <Grid >
-            {query.successMessage && <Alert severity="success">{query.successMessage}</Alert>}
-            {query.errorMessage && <Alert severity="error">{query.errorMessage}</Alert>}
-          </Grid>
-          <Grid>
-            <Button variant="contained" size="small" loading={query.loading} onClick={handleSubmit}>Submit</Button>
-          </Grid>
-        </Grid>
+        <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
       </Grid>
     </QueryPanel >
   );

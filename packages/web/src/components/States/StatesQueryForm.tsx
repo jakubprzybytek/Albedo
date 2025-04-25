@@ -1,11 +1,10 @@
 import { useState, type JSX } from "react";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
 import QueryPanel from "../../forms/QueryPanel";
+import QuerySubmit from "@/forms/QuerySubmit";
 import type { StatesQuery } from "@/sdk/GetStates";
 import type { ManagedQuery } from "@/forms/useQuery";
 
@@ -65,15 +64,7 @@ export default function StatesQueryForm({ query }: StatesQueryFormParams): JSX.E
             }}
           />
         </Grid>
-        <Grid container height={48} width="100%" justifyContent={'space-between'} alignItems={'flex-end'}>
-          <Grid >
-            {query.successMessage && <Alert severity="success">{query.successMessage}</Alert>}
-            {query.errorMessage && <Alert severity="error">{query.errorMessage}</Alert>}
-          </Grid>
-          <Grid>
-            <Button variant="contained" size="small" loading={query.loading} onClick={handleSubmit}>Submit</Button>
-          </Grid>
-        </Grid>
+        <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
       </Grid>
     </QueryPanel>
   );
