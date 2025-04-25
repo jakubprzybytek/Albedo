@@ -12,7 +12,7 @@ import "./app.css";
 import { Amplify, type ResourcesConfig } from "aws-amplify";
 import { fetchAuthSession } from 'aws-amplify/auth';
 import { withAuthenticator } from '@aws-amplify/ui-react';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { pl } from 'date-fns/locale/pl';
 
@@ -81,9 +81,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 function App() {
   return (
-    // <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={pl}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={pl}>
       <Outlet />
-    // </LocalizationProvider>
+     </LocalizationProvider>
   );
 }
 

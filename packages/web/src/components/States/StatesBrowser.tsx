@@ -1,26 +1,22 @@
 import { useState, type JSX } from "react";
-import Box from "@mui/material/Box";
 import StatesQueryForm from './StatesQueryForm';
 import StatesTable from './StatesTable';
-import type { StateWithPositionAndVelocity } from '@lambda/states';
+import useQuery from "@/forms/useQuery";
+import getStates, { type StatesQuery, type StateWithPositionAndVelocity } from "@/sdk/GetStates";
+import { Stack } from "@mui/material";
 
 export default function StatesBrowser(): JSX.Element {
-    const [states, setStates] = useState<StateWithPositionAndVelocity[]>([]);
+  const [states, setStates] = useState<StateWithPositionAndVelocity[]>([]);
+  const query = useQuery<StatesQuery, StateWithPositionAndVelocity[]>(fetchData, setStates);
 
-    return (
-        <Box sx={{
-            '& > *': {
-                marginTop: 1,
-                marginRight: {
-                    md: 1
-                },
-                marginLeft: {
-                    md: 1
-                },
-            }
-        }}>
-            <StatesQueryForm setStates={setStates} />
-            <StatesTable states={states} />
-        </Box>
-    );
+  async function fetchData(params: StatesQuery) {
+    return await getStates(params);
+  }
+
+  return (
+    <Stack spacing={1} padding={1}>
+      <StatesQueryForm query={query} />
+      <StatesTable states={states} />
+    </Stack>
+  );
 }

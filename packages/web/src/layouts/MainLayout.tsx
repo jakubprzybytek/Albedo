@@ -15,11 +15,11 @@ export default function MainLayout({ title, children }: MainLayoutParams): JSX.E
 
     return (
         <>
-            <head>
+            {/* <head>
                 <title>Albedo 2.0</title>
                 <meta name="description" content="Albedo. Predicting astronomical events." />
                 <link rel="icon" href="/favicon.ico" />
-            </head>
+            </head> */}
             <Navigation title={title} />
             <Toolbar />
             <Box component="main" bgcolor={theme.palette.background.default} sx={{ minHeight: '100vh' }}>
