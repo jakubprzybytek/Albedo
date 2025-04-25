@@ -1,26 +1,23 @@
-import { useState } from "react";
-import Box from "@mui/material/Box";
+import { useState, type JSX } from "react";
+import Stack from "@mui/material/Stack";
 import EclipsesQueryForm from './EclipsesQueryForm';
 import EclipsesTable from './EclipsesTable';
-import { Eclipse } from '@lambda/eclipses';
+import type { Eclipse, EclipsesQuery } from "@/sdk/Eclipses";
+import useQuery from "@/forms/useQuery";
+import getEclipses from "@/sdk/Eclipses";
 
 export default function EclipsesBrowser(): JSX.Element {
-    const [eclipses, setEclipses] = useState<Eclipse[]>([]);
+  const [eclipses, setEclipses] = useState<Eclipse[]>([]);
+  const query = useQuery<EclipsesQuery, Eclipse[]>(fetchData, setEclipses);
 
-    return (
-        <Box sx={{
-            '& > *': {
-                marginTop: 1,
-                marginRight: {
-                    md: 1
-                },
-                marginLeft: {
-                    md: 1
-                },
-            }
-        }}>
-            <EclipsesQueryForm setEclipses={setEclipses} />
-            <EclipsesTable eclipses={eclipses} />
-        </Box>
-    );
+  async function fetchData(params: EclipsesQuery) {
+    return await getEclipses(params);
+  }
+
+  return (
+    <Stack spacing={1} padding={1}>
+      <EclipsesQueryForm query={query} />
+      <EclipsesTable eclipses={eclipses} />
+    </Stack>
+  );
 }
