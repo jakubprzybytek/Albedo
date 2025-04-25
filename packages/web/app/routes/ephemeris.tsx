@@ -4,7 +4,7 @@ import EphemerisBrowser from '@/components/Ephemeris/EphemerisBrowser';
 
 function Ephemeris(): JSX.Element {
   return (
-    <MainLayout title="States">
+    <MainLayout title="Ephemeris">
       <EphemerisBrowser />
     </MainLayout>
   );

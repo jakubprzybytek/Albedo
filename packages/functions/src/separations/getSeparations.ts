@@ -4,6 +4,7 @@ import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams
 import { JulianDay } from '@math';
 import { JplBody } from '@jpl';
 import { Separations, SeparationWithBodies } from '@astro/separations';
+import { GetSeparationsResponseType } from ".";
 
 type GetSeparationsParams = {
     target: JplBody;
@@ -21,9 +22,7 @@ const parseGetSeparationsParams: (event: APIGatewayProxyEventV2) => GetSeparatio
     interval: mandatoryFloat(event, 'interval')
 });
 
-export type GetSeparationsReturnType = SeparationWithBodies[];
-
-export const handler = lambdaHandler<GetSeparationsReturnType>(event => {
+export const handler = lambdaHandler<GetSeparationsResponseType>(event => {
     const { target, observer, fromTde, toTde, interval } = parseGetSeparationsParams(event);
 
     const fromJde = JulianDay.fromDateObject(fromTde);

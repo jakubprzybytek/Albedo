@@ -1,26 +1,23 @@
-import { useState } from "react";
-import Box from "@mui/material/Box";
+import { useState, type JSX } from "react";
+import Stack from "@mui/material/Stack";
 import ConjunctionsQueryForm from './ConjunctionsQueryForm';
 import ConjunctionsTable from './ConjunctionsTable';
-import { Conjunction } from '@lambda/conjunctions';
+import type { Conjunction, ConjunctionsQuery } from "@/sdk/GetConjunctions";
+import useQuery from "@/forms/useQuery";
+import getConjunctions from "@/sdk/GetConjunctions";
 
 export default function ConjunctionsBrowser(): JSX.Element {
-    const [conjunctions, setConjunctions] = useState<Conjunction[]>([]);
+  const [conjunctions, setConjunctions] = useState<Conjunction[]>([]);
+  const query = useQuery<ConjunctionsQuery, Conjunction[]>(fetchData, setConjunctions);
 
-    return (
-        <Box sx={{
-            '& > *': {
-                marginTop: 1,
-                marginRight: {
-                    md: 1
-                },
-                marginLeft: {
-                    md: 1
-                },
-            }
-        }}>
-            <ConjunctionsQueryForm setConjunctions={setConjunctions} />
-            <ConjunctionsTable conjunctions={conjunctions} />
-        </Box>
-    );
+  async function fetchData(params: ConjunctionsQuery) {
+    return await getConjunctions(params);
+  }
+
+  return (
+    <Stack spacing={1} padding={1}>
+      <ConjunctionsQueryForm query={query} />
+      <ConjunctionsTable conjunctions={conjunctions} />
+    </Stack>
+  );
 }
