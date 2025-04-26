@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type JSX } from "react";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import EventsList from './EventsList';
-import getConjunctions from "../../sdk/GetConjunctions";
+import { addMonths, format } from 'date-fns';
+import getConjunctions, { type ConjunctionsQuery } from "../../sdk/GetConjunctions";
 
 export default function EventsBrowser(): JSX.Element {
     const [events, setEvents] = useState<any[]>([]);
@@ -11,7 +12,11 @@ export default function EventsBrowser(): JSX.Element {
 
     useEffect(() => {
         const fetchData = async () => {
-            const conjunctions = await getConjunctions();
+            const query: ConjunctionsQuery = {
+                fromTde: format(new Date(), 'yyyy-MM-dd'),
+                toTde: format(addMonths(new Date(), 6), 'yyyy-MM-dd'),
+            };
+            const conjunctions = await getConjunctions(query);
             setEvents(conjunctions);
         };
 
