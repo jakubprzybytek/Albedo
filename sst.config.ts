@@ -5,7 +5,7 @@ import { Frontend } from "./stacks/Frontend";
 export default {
   config(_input) {
     return {
-      name: "albedo",
+      name: "Albedo2-2",
       region: "eu-west-1",
     };
   },
