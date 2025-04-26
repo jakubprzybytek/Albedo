@@ -1,27 +1,29 @@
-import { use, StackContext, NextjsSite } from '@serverless-stack/resources';
-import { Main } from './Main';
+import { use, StackContext, StaticSite } from 'sst/constructs';
+import { API } from './MyStack';
 
 export function Frontend({ stack }: StackContext) {
-    const { auth, api } = use(Main);
+  const { cognito, api } = use(API);
 
-    const customDomainPrefix = stack.stage === 'int' ? '' : stack.stage + '.';
+  const customDomainPrefix = stack.stage === 'int' ? '' : stack.stage + '.';
 
-    const site = new NextjsSite(stack, 'Site', {
-        path: 'frontend',
-        customDomain: {
-            hostedZone: 'albedoonline.com',
-            domainName: customDomainPrefix + 'albedoonline.com',
-        },
-        environment: {
-            NEXT_PUBLIC_AWS_REGION: stack.region,
-            NEXT_PUBLIC_API_URL: api.customDomainUrl || api.url,
-            NEXT_PUBLIC_USER_POOL_ID: auth.userPoolId,
-            NEXT_PUBLIC_USER_POOL_CLIENT_ID: auth.userPoolClientId,
-        },
-    });
+  const site = new StaticSite(stack, 'Site', {
+    path: 'packages/web',
+    buildCommand: 'npm run build',
+    buildOutput: 'build/client',
+    customDomain: {
+        hostedZone: 'albedoonline.com',
+        domainName: customDomainPrefix + 'albedoonline.com',
+    },
+    environment: {
+      VITE_AWS_REGION: stack.region,
+      VITE_API_URL: api.customDomainUrl || api.url,
+      VITE_USER_POOL_ID: cognito.userPoolId,
+      VITE_USER_POOL_CLIENT_ID: cognito.userPoolClientId,
+    },
+  });
 
-    // Show the site URL in the output
-    stack.addOutputs({
-        URL: site.url,
-    });
+  // Show the site URL in the output
+  stack.addOutputs({
+    URL: site.url,
+  });
 }
