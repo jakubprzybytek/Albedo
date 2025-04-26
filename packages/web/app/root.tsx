@@ -46,6 +46,20 @@ Amplify.configure({
   },
 });
 
+export function meta() {
+  return [
+    { title: "Albedo 2.2" },
+    {
+      property: "og:title",
+      content: "Albedo 2.2",
+    },
+    {
+      name: "description",
+      content: "Astronomical events",
+    },
+  ];
+}
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
