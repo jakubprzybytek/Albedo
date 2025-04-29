@@ -26,8 +26,8 @@ jobs:
 
       - uses: bahmutov/npm-install@v1.10.9
 
-#      - name: Run unit tests
-#        run: npm test
+      - name: Run unit tests
+        run: npm test
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
