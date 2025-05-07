@@ -1,7 +1,7 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
-import { JulianDay } from '@math';
+import { JulianDay } from '@astro';
 import { JplBody } from '@jpl';
 import { States, StateWithPositionAndVelocity } from '@jpl/state';
 

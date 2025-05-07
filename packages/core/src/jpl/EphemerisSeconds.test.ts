@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { JulianDay } from "../math";
+import { JulianDay } from "@astro";
 import { EphemerisSeconds } from './';
 
 describe("EphemerisSeconds", () => {

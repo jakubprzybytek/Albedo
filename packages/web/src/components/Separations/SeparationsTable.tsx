@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,7 +10,6 @@ import Paper from '@mui/material/Paper';
 import { formatDegrees } from '../../utils';
 import AstronomicalCoords from '../../common/AstronomicalCoordinates';
 import type { SeparationWithBodies } from '@/sdk/GetSeparations';
-import type { JSX } from 'react';
 
 type SeparationsTablePropsType = {
   separations: SeparationWithBodies[];

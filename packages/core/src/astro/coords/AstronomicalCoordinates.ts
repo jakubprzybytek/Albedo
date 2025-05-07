@@ -1,4 +1,4 @@
-import { Radians, RectangularCoordinates } from './';
+import { Radians, RectangularCoordinates } from '.';
 
 const TWO_PI = Math.PI * 2;
 

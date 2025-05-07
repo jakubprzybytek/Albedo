@@ -1,6 +1,6 @@
 import { openSync, closeSync } from 'node:fs';
 import { Command } from 'commander';
-import { JulianDay } from "../../math";
+import { JulianDay } from "../../astro/coords";
 import { JplBody, jplBodyFromString, EphemerisSeconds } from "..";
 import { PositionChebyshevRecord, PositionAndVelocityChebyshevRecord } from '../kernel';
 import { readSpkFileInformation, readSpkPositionChebyshevPolynomials, readSpkPositionAndVelocityChebyshevPolynomials, DataType } from "../files";

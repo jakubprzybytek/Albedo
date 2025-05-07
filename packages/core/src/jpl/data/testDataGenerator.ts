@@ -1,5 +1,5 @@
 import { openSync, writeSync, closeSync } from 'node:fs';
-import { JulianDay } from "../../math";
+import { JulianDay } from "../../astro/coords";
 import { JplBodyId, EphemerisSeconds } from "..";
 import { PositionAndVelocityChebyshevRecord, PositionChebyshevRecord, SpkKernelCollection, TimeSpan } from '../kernel';
 import { SpkFileArrayInformation, readSpkFileInformation, readSpkPositionChebyshevPolynomials, readSpkPositionAndVelocityChebyshevPolynomials, DataType } from "../files";

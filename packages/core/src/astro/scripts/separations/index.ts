@@ -1,7 +1,13 @@
-import { JplBody } from "../../jpl";
-import { Ephemeris } from "../ephemeris";
+import { JplBody } from "@jpl";
+import { Ephemeris } from "@astro/scripts/ephemeris";
 
 export * from './Separations';
+
+export type SimpleSeparation = {
+    jde: number;
+    separation: number;
+};
+
 export type Separation = {
     jde: number;
     firstBodyEphemeris: Ephemeris;

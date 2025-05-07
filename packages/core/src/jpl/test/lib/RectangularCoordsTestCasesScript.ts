@@ -2,7 +2,7 @@ import { average } from 'simple-statistics';
 import { RectangularCoordsData } from './WebGeocalcCSV';
 import { kernelRepository } from '../../data/de440.full';
 import { EphemerisSeconds, JplBodyId } from '../..';
-import { RectangularCoordinates } from '../../../math';
+import { RectangularCoordinates } from '../../../astro/coords';
 import { CorrectionType } from '../../state/solvers';
 
 export type SolverOptions = {

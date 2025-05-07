@@ -1,4 +1,4 @@
-import type { SeparationWithBodies } from "@astro/separations";
+import type { SeparationWithBodies } from "@astro/scripts";
 
 export type { SeparationWithBodies };
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { JulianDay } from './';
+import { JulianDay } from './coords';
 
 describe("JulianDay", () => {
     it("should correctly compute from date", () => {

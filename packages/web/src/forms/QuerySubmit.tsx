@@ -12,7 +12,7 @@ type QuerySubmitParams = {
 
 export default function QuerySubmit({ loading, success, error, onSubmit }: QuerySubmitParams): JSX.Element {
   return (
-    <Grid container height={48} width="100%" justifyContent={'space-between'} alignItems={'flex-end'}>
+    <Grid container minHeight={48} width="100%" spacing={1} justifyContent={'space-between'} alignItems={'flex-end'}>
       <Grid >
         {success && <Alert severity="success">{success}</Alert>}
         {error && <Alert severity="error">{error}</Alert>}

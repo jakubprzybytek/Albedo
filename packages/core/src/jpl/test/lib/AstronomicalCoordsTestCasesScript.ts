@@ -1,5 +1,5 @@
 import { average } from 'simple-statistics';
-import { AstronomicalCoordinates, JulianDay, Radians } from '../../../math';
+import { AstronomicalCoordinates, JulianDay, Radians } from '../../../astro/coords';
 import { Ephemerides } from '../../../astro/ephemeris';
 import { JplBodyId } from '../..';
 import { AstronomicalCoordsData } from './WebGeocalcCSV';

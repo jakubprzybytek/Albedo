@@ -1,6 +1,6 @@
 import { openSync, closeSync } from 'node:fs';
 import { Command } from 'commander';
-import { JulianDay } from "../../math";
+import { JulianDay } from "../../astro/coords";
 import { EphemerisSeconds } from "../";
 import { DataType, readSpkFileInformation } from "../files";
 

@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from '../../../math';
+import { RectangularCoordinates } from '../../../astro/coords';
 import { PositionChebyshevRecord } from '../../kernel';
 import { ChebyshevPolynomialExpander } from './';
 

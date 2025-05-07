@@ -1,3 +1,3 @@
-import { Ephemeris } from '@astro/ephemeris';
+import { Ephemeris } from '@astro/scripts';
 
 export type { Ephemeris };

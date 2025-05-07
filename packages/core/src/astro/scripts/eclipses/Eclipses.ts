@@ -1,7 +1,7 @@
 import { Eclipse } from ".";
-import { JplBodyId } from "../../jpl";
-import { Radians } from "../../math";
-import { Conjunctions } from "../conjunctions";
+import { JplBodyId } from "@jpl";
+import { Radians } from "@astro/coords";
+import { Conjunctions } from "@astro/scripts/conjunctions";
 
 export class Eclipses {
     static all(fromJde: number, toJde: number): Eclipse[] {

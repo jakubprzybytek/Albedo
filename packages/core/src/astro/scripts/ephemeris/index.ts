@@ -1,4 +1,4 @@
-import { AstronomicalCoordinates } from '../../math';
+import { AstronomicalCoordinates } from '../../coords';
 
 export * from './Ephemerides';
 

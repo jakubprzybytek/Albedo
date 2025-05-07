@@ -1,4 +1,4 @@
-import { AstronomicalCoordinates, RectangularCoordinates } from "./";
+import { AstronomicalCoordinates, RectangularCoordinates } from ".";
 
 export class Radians {
     static fromDegrees(degrees: number): number {

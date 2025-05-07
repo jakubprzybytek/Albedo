@@ -1,9 +1,9 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
-import { JulianDay } from '@math';
+import { JulianDay } from '@astro';
+import { Separations, SeparationWithBodies } from '@astro/scripts';
 import { JplBody } from '@jpl';
-import { Separations, SeparationWithBodies } from '@astro/separations';
 import { GetSeparationsResponseType } from ".";
 
 type GetSeparationsParams = {
@@ -30,7 +30,7 @@ export const handler = lambdaHandler<GetSeparationsResponseType>(event => {
 
     console.log(`Compute separations for '${target.name}' w.r.t. '${observer.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${interval} day(s)`);
 
-    const separations = Separations.all(target, observer, fromJde, toJde, interval)
+    const separations = Separations.for(target, observer, fromJde, toJde, interval)
 
     console.log(`Computed ${separations.length} separations`);
 

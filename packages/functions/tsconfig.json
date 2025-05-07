@@ -5,8 +5,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@Albedo/core/*": ["../core/src/*"],
-      "@math": ["../core/src/math"],
+      // "@Albedo/core/*": ["../core/src/*"],
+      "@astro": ["../core/src/astro"],
       "@astro/*": ["../core/src/astro/*"],
       "@jpl": ["../core/src/jpl"],
       "@jpl/*": ["../core/src/jpl/*"],

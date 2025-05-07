@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import Typography from '@mui/material/Typography';
 import { formatDegrees } from '../utils';
 

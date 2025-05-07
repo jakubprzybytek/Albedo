@@ -1,8 +1,8 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate } from '../LambdaParams';
-import { JulianDay } from '@math';
-import { Eclipses, Eclipse } from '@astro/eclipses';
+import { JulianDay } from '@astro';
+import { Eclipses, Eclipse } from '@astro/scripts';
 
 type GetEclipsesParams = {
     fromTde: Date;

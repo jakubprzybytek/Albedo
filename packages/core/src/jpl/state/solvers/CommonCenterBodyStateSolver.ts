@@ -1,5 +1,5 @@
-import { RectangularCoordinates } from '../../../math';
-import { SpkKernelCollection } from "../../kernel";
+import { RectangularCoordinates } from '@astro/coords';
+import { SpkKernelCollection } from "@jpl/kernel";
 import { StateSolver, DirectStateSolver } from '.';
 
 export class CommonCenterBodyStateSolver implements StateSolver {

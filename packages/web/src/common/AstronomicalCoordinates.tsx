@@ -1,4 +1,5 @@
-import { AstronomicalCoordinates } from "@math";
+import type { JSX } from "react";
+import { AstronomicalCoordinates } from "@astro/coords";
 import { formatHourAngle, formatDegrees } from '../utils';
 
 type AstronomicalCoordsPropsType = {

@@ -1,8 +1,8 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate } from '../LambdaParams';
-import { JulianDay } from '@math';
-import { Conjunctions, Conjunction } from '@astro/conjunctions';
+import { JulianDay } from '@astro';
+import { Conjunctions, Conjunction } from '@astro/scripts';
 
 type GetConjunctionsParams = {
     fromTde: Date;

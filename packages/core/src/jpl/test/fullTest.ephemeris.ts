@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { jplBodyFromString } from "..";
-import { Radians } from "../../math";
+import { Radians } from "../../astro/coords";
 import { runAstronomicalCoordsTestCases } from "./lib/AstronomicalCoordsTestCasesScript";
 import { readAstronomicalCoordsFromWebGeocalcCSVFile } from "./lib/WebGeocalcCSV";
 

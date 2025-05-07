@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { RectangularCoordinates } from "../../../math";
+import { RectangularCoordinates } from "../../../astro/coords";
 import { EphemerisSeconds } from '../..';
 import { LightTimeCorrectingStateSolver, StarAberrationCorrectingStateSolver } from '.';
 import { a_2_wrt_0, a_299_wrt_2, a_3_wrt_0, a_399_wrt_3 } from '../../data/de440.testData';

@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { RectangularCoordinates } from "@math";
+import { RectangularCoordinates } from "@astro/coords";
 import type { StateWithPositionAndVelocity } from '@lambda/states';
 
 type VectoryDisplayPropsType = {

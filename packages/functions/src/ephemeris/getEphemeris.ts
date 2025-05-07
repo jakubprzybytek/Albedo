@@ -1,9 +1,9 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
-import { JulianDay } from '@math';
+import { JulianDay } from '@astro';
+import { Ephemerides, Ephemeris } from '@astro/scripts';
 import { JplBody, JplBodyId } from '@jpl';
-import { Ephemerides, Ephemeris } from '@astro/ephemeris';
 
 type GetEphemeridesParams = {
     target: JplBody;

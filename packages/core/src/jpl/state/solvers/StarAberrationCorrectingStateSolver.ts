@@ -1,4 +1,4 @@
-import { Radians, RectangularCoordinates } from "../../../math";
+import { Radians, RectangularCoordinates } from "../../../astro/coords";
 import { SpkKernelCollection } from "../../kernel";
 import { DirectStateSolver, StateSolver } from ".";
 import { SPEED_OF_LIGHT } from "../..";

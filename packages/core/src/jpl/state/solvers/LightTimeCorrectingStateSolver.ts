@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from '../../../math';
+import { RectangularCoordinates } from '../../../astro/coords';
 import { SpkKernelCollection } from "../../kernel";
 import { SPEED_OF_LIGHT } from '../..';
 import { DirectStateSolver, StateSolver } from "./";

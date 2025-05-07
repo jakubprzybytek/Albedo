@@ -1,4 +1,4 @@
-import { Radians } from "@math";
+import { Radians } from "@astro/coords";
 
 export function anglesReplacer(this: any, key: string, value: any): any {
     if (key === 'rightAscension' || key === 'declination' || key === 'separation') {

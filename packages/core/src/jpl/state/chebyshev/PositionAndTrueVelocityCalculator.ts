@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from '../../../math';
+import { RectangularCoordinates } from '../../../astro/coords';
 import { ForwardLookingArray } from '../../utils';
 import { PositionAndVelocityChebyshevRecord } from '../../kernel';
 import { PositionAndVelocityCalculator, ChebyshevPolynomialExpander } from '.';

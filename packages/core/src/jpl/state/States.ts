@@ -1,4 +1,4 @@
-import { JulianDay } from '../../math';
+import { JulianDay } from '@astro';
 import { EphemerisSeconds, JplBodyId } from '..';
 import { StateWithPosition, StateWithPositionAndVelocity } from '.';
 import { kernelRepository } from '../data/de440.full';
