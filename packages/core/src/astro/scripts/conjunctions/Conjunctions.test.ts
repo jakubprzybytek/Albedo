@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { jplBodyFromString } from "../../../jpl";
-import { AstronomicalCoordinates, JulianDay } from "../../coords";
+import { jplBodyFromString } from "@jpl";
+import { JulianDay } from "@astro";
+import { AstronomicalCoordinates } from "@astro/coords";
 import { Conjunctions } from "./Conjunctions";
 
 describe("Conjunctions", () => {

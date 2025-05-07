@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { JulianDay } from "../../coords";
+import { JulianDay } from "@astro";
 import { Eclipses } from "./Eclipses";
 import { Conjunctions } from "@astro/scripts/conjunctions";
 

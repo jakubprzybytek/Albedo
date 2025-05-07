@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { JplBodyId } from "../../jpl";
-import { AstronomicalCoordinates, JulianDay, Radians } from "../../coords";
+import { JplBodyId } from "@jpl";
+import { JulianDay } from "@astro";
+import { Radians } from "@astro/coords";
 import { Ephemerides } from "./Ephemerides";
 
 describe("Ephemerides", () => {
