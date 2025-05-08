@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { JulianDay } from "@astro";
 import { Eclipses } from "./Eclipses";
-import { Conjunctions } from "@astro/scripts/conjunctions";
 
 describe("Eclipses", () => {
   it("should compute all eclipses", () => {
@@ -30,6 +29,6 @@ describe("Eclipses", () => {
     const fromJde = JulianDay.fromDate(2025, 3, 1);
     const toJde = JulianDay.fromDate(2025, 3, 31);
 
-    Conjunctions.forSunAndMoon(fromJde, toJde);
+    Eclipses.forSunAndMoon(fromJde, toJde);
   });
 });

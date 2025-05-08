@@ -31,8 +31,6 @@ type StatesTablePropsType = {
 export default function StatesTable({ states }: StatesTablePropsType): JSX.Element {
     const theme = useTheme();
 
-    console.log('Render');
-
     return (
         <TableContainer component={Paper} sx={{
             width: 'auto',

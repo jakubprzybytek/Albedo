@@ -22,7 +22,7 @@ export const handler = lambdaHandler<GetEclipsesReturnType>(event => {
     const fromJde = JulianDay.fromDateObject(fromTde);
     const toJde = JulianDay.fromDateObject(toTde);
 
-    console.log(`Compute eclipses between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
+    console.log(`Find eclipses between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
 
     const eclipses = Eclipses.all(fromJde, toJde);
 

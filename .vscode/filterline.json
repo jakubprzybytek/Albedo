@@ -1,0 +1,7 @@
+{
+    "type":"regexlist",
+    "rules": [
+        "com.tccc.core.publication.events.DistributionEventHandler",
+        "654a7094aa9d"
+    ]
+}

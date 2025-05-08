@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ChebyshevPolynomialExpander } from './ChebyshevPolynomialExpander';
+import { ChebyshevPolynomialExpander } from '../ChebyshevPolynomialExpander';
 
 describe("ChebyshevPolynomialExpander", () => {
 

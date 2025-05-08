@@ -3,12 +3,8 @@ import { Radians } from '@astro/coords';
 import { localMinimums } from '@astro/utils/LocalMinimums';
 import { Ephemerides, Ephemeris } from "@astro/scripts";
 import { Separations } from '@astro/scripts/separations';
-import { localExtremums } from '@astro/utils';
 import { JplBody, JplBodyId, jplBodyFromId } from "@jpl";
-import { States } from "@jpl/state";
 import { Conjunction } from '.';
-
-const COARSE_PRELIMINARY_INTERVAL = 1;
 
 const PRELIMINARY_INTERVAL = 0.25;
 
@@ -25,6 +21,7 @@ type EphemerisPair = {
 }
 
 export class Conjunctions {
+
   static for(bodies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction[] {
     const bodiesWithEphemeris = bodies
       .map(jplBodyFromId)
@@ -75,16 +72,4 @@ export class Conjunctions {
     return this.for(bodies, fromJde, toJde, SEPARATION_THRESHOLD);
   }
 
-  static forSunAndMoon(fromJde: number, toJde: number): Conjunction[] {
-    const sunPositions = States.position(JplBodyId.Sun, JplBodyId.Earth, fromJde, toJde, COARSE_PRELIMINARY_INTERVAL);
-    const moonPositions = States.position(JplBodyId.Moon, JplBodyId.Earth, fromJde, toJde, COARSE_PRELIMINARY_INTERVAL);
-
-    const sunMoonSeparations = Separations.fromPositions(sunPositions, moonPositions);
-    const { minimums, maximums } = localExtremums(sunMoonSeparations, (separation) => separation.separation);
-    console.log(sunMoonSeparations);
-    console.log('Minimums', minimums);
-    console.log('Maximums', maximums);
-
-    return [];
-  }
 };

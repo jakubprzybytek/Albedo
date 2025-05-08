@@ -22,7 +22,7 @@ export const handler = lambdaHandler<GetConjunctionsReturnType>(event => {
     const fromJde = JulianDay.fromDateObject(fromTde);
     const toJde = JulianDay.fromDateObject(toTde);
 
-    console.log(`Compute conjunctions for between ${fromTde}(${fromJde}) and ${toTde}(${toJde})`);
+    console.log(`Compute conjunctions for between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
 
     const conjunctions = Conjunctions.all(fromJde, toJde);
 
