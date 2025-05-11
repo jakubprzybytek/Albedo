@@ -1,12 +1,33 @@
 import { Eclipse } from ".";
-import { JplBodyId } from "@jpl";
-import { Radians } from "@astro/coords";
-import { Conjunction, Conjunctions } from "@astro/scripts/conjunctions";
+import { EphemerisSeconds, JplBodyId } from "@jpl";
+import { kernelRepository } from '@jpl/data/de440.full';
 import { States } from "@jpl/state";
-import { Separations } from "../separations";
+import { JulianDay } from "@astro";
+import { Radians } from "@astro/coords";
 import { localExtremums } from "@astro/utils";
+import { Conjunction, Conjunctions } from "@astro/scripts/conjunctions";
+import { Separations } from "../separations";
 
 const COARSE_PRELIMINARY_INTERVAL = 1;
+
+const sunStateSolver = kernelRepository.stateSolverBuilder()
+            .forTarget(JplBodyId.Sun)
+            .forObserver(JplBodyId.Earth)
+            .build();
+
+ const moonStateSolver = kernelRepository.stateSolverBuilder()
+            .forTarget(JplBodyId.Moon)
+            .forObserver(JplBodyId.Earth)
+            .build();
+
+function earthsShadowAndMoonAngle(es: number) {
+  const sunState = sunStateSolver.positionFor(es);
+  const earthsShadowState = sunState.negate();
+
+  const moonState = moonStateSolver.positionFor(es);
+
+  return Radians.between(moonState, earthsShadowState);
+}
 
 export class Eclipses {
 
@@ -30,6 +51,13 @@ export class Eclipses {
     console.log(sunMoonSeparations);
     console.log('Minimums', minimums);
     console.log('Maximums', maximums);
+
+    maximums
+      .filter(separation => Radians.toDegrees(separation.separation) > 160)
+      .forEach(separation => {
+      const angle = earthsShadowAndMoonAngle(EphemerisSeconds.fromJde(separation.jde));
+      console.log(`jde: ${separation.jde}, date=${JulianDay.toDateTime(separation.jde)}, angle=${Radians.toDegrees(angle)}°`);
+    })
 
     return [];
   }

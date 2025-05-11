@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { JulianDay } from "@astro";
-import { Eclipses } from "./Eclipses";
+import { Eclipses } from "../Eclipses";
 
 describe("Eclipses", () => {
   it("should compute all eclipses", () => {
