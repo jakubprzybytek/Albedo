@@ -1,1 +1,1 @@
-export * from './Extremums';
+export * from './extremums/Extremums';

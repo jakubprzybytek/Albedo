@@ -22,11 +22,11 @@ export function localMinimum(f: (x: number) => number, a: number, b: number, c: 
   let f_c = f(c);
 
   if (a > b || b > c) {
-    throw new Error(`Parameters don't meet the condition: a=${a} < b=${b} && c=${c} > b=${b}`);
+    throw new Error(`Parameters don't meet the condition: a=${a} < b=${b} < c=${c}`);
   }
 
   if (f_b > f_a || f_b > f_c) {
-    throw new Error(`Parameters don't meet the condition: f(a=${a})=${f_a} > f(b=${b})=${f_b} && f(c=${c})=${f_c} > f(b=${b})=${f_b}`);
+    throw new Error(`Parameters don't meet the condition: f(a=${a})=${f_a} > f(b=${b})=${f_b} < f(c=${c})=${f_c}`);
   }
 
   let iteration = 0;
@@ -49,13 +49,24 @@ export function localMinimum(f: (x: number) => number, a: number, b: number, c: 
         c = d; f_c = f_d;
       }
 
-  } while (iteration++ < effectiveOptions.maxIterations && (c - a) > effectiveOptions.maxResultRangeWidth);
+    // console.log('\n');
+    // console.log(`f(a=${a})=${f_a}`);
+    // console.log(`f(b=${b})=${f_b}`);
+    // console.log(`f(c=${c})=${f_c}`);
+    // console.log(`Iteration: ${iteration}, result range: ${c-a}`);
+
+  } while (++iteration < effectiveOptions.maxIterations && (c - a) > effectiveOptions.maxResultRangeWidth);
+
+  // console.log('\n');
+  // console.log(`f(a=${a})=${f_a}`);
+  // console.log(`f(b=${b})=${f_b}`);
+  // console.log(`f(c=${c})=${f_c}`);
 
   const result = (a + c) / 2;
   const f_result = f(result);
 
-  console.log(`result midle point: f(${result})=${f_result}`);
-  console.log(`result range: ${c - a}`);
+  // console.log(`result midle point: f(${result})=${f_result}`);
+  // console.log(`result range: ${c - a}`);
 
   return [result, f_result, c - a, iteration];
 }

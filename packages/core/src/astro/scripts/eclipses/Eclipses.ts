@@ -1,65 +1,110 @@
-import { Eclipse } from ".";
+import { Eclipse, EclipseType } from ".";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { kernelRepository } from '@jpl/data/de440.full';
 import { States } from "@jpl/state";
 import { JulianDay } from "@astro";
 import { Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
+import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { Conjunction, Conjunctions } from "@astro/scripts/conjunctions";
 import { Separations } from "../separations";
 
 const COARSE_PRELIMINARY_INTERVAL = 1;
 
 const sunStateSolver = kernelRepository.stateSolverBuilder()
-            .forTarget(JplBodyId.Sun)
-            .forObserver(JplBodyId.Earth)
-            .build();
+  .forTarget(JplBodyId.Sun)
+  .forObserver(JplBodyId.Earth)
+  .build();
 
- const moonStateSolver = kernelRepository.stateSolverBuilder()
-            .forTarget(JplBodyId.Moon)
-            .forObserver(JplBodyId.Earth)
-            .build();
+const moonStateSolver = kernelRepository.stateSolverBuilder()
+  .forTarget(JplBodyId.Moon)
+  .forObserver(JplBodyId.Earth)
+  .build();
+
+function sunAndMoonAngle(es: number) {
+  const sunPosition = sunStateSolver.positionFor(es);
+  const moonPosition = moonStateSolver.positionFor(es);
+
+  return Radians.between(sunPosition, moonPosition);
+}
 
 function earthsShadowAndMoonAngle(es: number) {
-  const sunState = sunStateSolver.positionFor(es);
-  const earthsShadowState = sunState.negate();
+  const sunPosition = sunStateSolver.positionFor(es);
+  const earthsShadowPosition = sunPosition.negate();
 
-  const moonState = moonStateSolver.positionFor(es);
+  const moonPosition = moonStateSolver.positionFor(es);
 
-  return Radians.between(moonState, earthsShadowState);
+  return Radians.between(moonPosition, earthsShadowPosition);
 }
 
 export class Eclipses {
 
-
   static all(fromJde: number, toJde: number): Eclipse[] {
     return Conjunctions.for([JplBodyId.Sun, JplBodyId.Moon], fromJde, toJde, Radians.fromDegrees(2))
       .map((conjunction) => ({
+        type: EclipseType.SunEclipse,
         jde: conjunction.jde,
+        eventTimeRangeWidthSeconds: NaN,
         tde: conjunction.tde,
         separation: conjunction.separation,
         positionAngle: 1
       }))
   }
 
-  static forSunAndMoon(fromJde: number, toJde: number): Conjunction[] {
+  static forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
     const sunPositions = States.position(JplBodyId.Sun, JplBodyId.Earth, fromJde, toJde, COARSE_PRELIMINARY_INTERVAL);
     const moonPositions = States.position(JplBodyId.Moon, JplBodyId.Earth, fromJde, toJde, COARSE_PRELIMINARY_INTERVAL);
 
     const sunMoonSeparations = Separations.fromPositions(sunPositions, moonPositions);
-    const { minimums, maximums } = localExtremums(sunMoonSeparations, (separation) => separation.separation);
+    const { minimums, maximums } = localExtremums(sunMoonSeparations, separation => separation.separation);
     console.log(sunMoonSeparations);
     console.log('Minimums', minimums);
     console.log('Maximums', maximums);
 
-    maximums
-      .filter(separation => Radians.toDegrees(separation.separation) > 160)
-      .forEach(separation => {
-      const angle = earthsShadowAndMoonAngle(EphemerisSeconds.fromJde(separation.jde));
-      console.log(`jde: ${separation.jde}, date=${JulianDay.toDateTime(separation.jde)}, angle=${Radians.toDegrees(angle)}°`);
-    })
+    const sunEclipses = minimums
+      .filter(separation => Radians.toDegrees(separation.separation) < 10)
+      .map<Eclipse>(separation => {
+        const a = EphemerisSeconds.fromJde(separation.jde - COARSE_PRELIMINARY_INTERVAL);
+        const b = EphemerisSeconds.fromJde(separation.jde);
+        const c = EphemerisSeconds.fromJde(separation.jde + COARSE_PRELIMINARY_INTERVAL);
+        const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(sunAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
+        // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
+        return {
+          type: EclipseType.SunEclipse,
+          jde: EphemerisSeconds.toJde(eventEs),
+          eventTimeRangeWidthSeconds: resultRangeWidth,
+          tde: JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)),
+          separation: minSeparation,
+          positionAngle: NaN
+        }
+      });
 
-    return [];
+    const moonEclipses = maximums
+      .filter(separation => Radians.toDegrees(separation.separation) > 160) // todo: get rid of SimpleSeparation
+      .map<Eclipse>(separation => {
+        const a = EphemerisSeconds.fromJde(separation.jde - COARSE_PRELIMINARY_INTERVAL);
+        const b = EphemerisSeconds.fromJde(separation.jde);
+        const c = EphemerisSeconds.fromJde(separation.jde + COARSE_PRELIMINARY_INTERVAL);
+        const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(earthsShadowAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
+        // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
+        return {
+          type: EclipseType.MoonEclipse,
+          jde: EphemerisSeconds.toJde(eventEs),
+          eventTimeRangeWidthSeconds: resultRangeWidth,
+          tde: JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)),
+          separation: minSeparation,
+          positionAngle: NaN
+        }
+      });
+
+    const eclipses = [...sunEclipses, ...moonEclipses]
+      .sort((a, b) => a.jde - b.jde);
+
+    eclipses.forEach(eclipse =>
+      console.log(`${eclipse.type}: jde= ${eclipse.jde}, date=${JulianDay.toDateTime(eclipse.jde).toISOString()}, date range=${eclipse.eventTimeRangeWidthSeconds}, angle=${Radians.toDegrees(eclipse.separation)}°`)
+    );
+
+    return eclipses;
   }
 
 };

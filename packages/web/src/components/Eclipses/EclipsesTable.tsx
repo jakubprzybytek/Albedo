@@ -26,6 +26,7 @@ export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX
       <Table size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
+            <TableCell>Type</TableCell>
             <TableCell>Time</TableCell>
             <TableCell align="center">Separation</TableCell>
           </TableRow>
@@ -35,6 +36,9 @@ export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX
             <TableRow key={eclipse.jde} sx={{
               '&:last-child td, &:last-child th': { border: 0 }
             }}>
+              <TableCell>
+                {eclipse.type}
+              </TableCell>
               <TableCell>
                 <div>{eclipse.jde} (JDE)</div>
                 <div><>{eclipse.tde} (TDE)</></div>

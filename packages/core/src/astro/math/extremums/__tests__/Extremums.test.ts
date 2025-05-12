@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { localExtremums } from './Extremums';
+import { localExtremums } from '../Extremums';
 
 const id = (value: number) => value;
 
