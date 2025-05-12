@@ -4,7 +4,7 @@ import { kernelRepository } from '@jpl/data/de440.full';
 import { States } from "@jpl/state";
 import { JulianDay } from "@astro";
 import { Radians } from "@astro/coords";
-import { localExtremums } from "@astro/utils";
+import { localExtremums } from "@astro/math";
 import { Conjunction, Conjunctions } from "@astro/scripts/conjunctions";
 import { Separations } from "../separations";
 

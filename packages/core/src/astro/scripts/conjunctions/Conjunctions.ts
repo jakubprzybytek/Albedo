@@ -1,6 +1,6 @@
 import { JulianDay } from '@astro';
 import { Radians } from '@astro/coords';
-import { localMinimums } from '@astro/utils/LocalMinimums';
+import { localMinimums } from '@astro/math/LocalMinimums';
 import { Ephemerides, Ephemeris } from "@astro/scripts";
 import { Separations } from '@astro/scripts/separations';
 import { JplBody, JplBodyId, jplBodyFromId } from "@jpl";
