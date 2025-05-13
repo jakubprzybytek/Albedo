@@ -4,22 +4,22 @@ export type Extremums<T> = {
 }
 
 export function localExtremums<T>(array: T[], evalFunction: (element: T) => number): Extremums<T> {
-  if (array.length == 0) {
+  if (array.length < 2) {
     return { minimums: [], maximums: [] };
   }
-  if (array.length == 1) {
-    return { minimums: [...array], maximums: [...array] };
-  }
+  // if (array.length == 1) {
+  //   return { minimums: [...array], maximums: [...array] };
+  // }
 
   const length = array.length;
   const minimums: T[] = new Array();
   const maximums: T[] = new Array();
 
-  if (evalFunction(array[0]) < evalFunction(array[1])) {
-    minimums.push(array[0]);
-  } else if (evalFunction(array[0]) > evalFunction(array[1])) {
-    maximums.push(array[0]);
-  }
+  // if (evalFunction(array[0]) < evalFunction(array[1])) {
+  //   minimums.push(array[0]);
+  // } else if (evalFunction(array[0]) > evalFunction(array[1])) {
+  //   maximums.push(array[0]);
+  // }
 
   var previousValue;
   var currentValue = evalFunction(array[0]);
@@ -35,11 +35,11 @@ export function localExtremums<T>(array: T[], evalFunction: (element: T) => numb
     }
   }
 
-  if (evalFunction(array[length - 2]) > evalFunction(array[length - 1])) {
-    minimums.push(array[length - 1]);
-  } else if (evalFunction(array[length - 2]) < evalFunction(array[length - 1])) {
-    maximums.push(array[length - 1]);
-  }
+  // if (evalFunction(array[length - 2]) > evalFunction(array[length - 1])) {
+  //   minimums.push(array[length - 1]);
+  // } else if (evalFunction(array[length - 2]) < evalFunction(array[length - 1])) {
+  //   maximums.push(array[length - 1]);
+  // }
 
   return {
     minimums: minimums,

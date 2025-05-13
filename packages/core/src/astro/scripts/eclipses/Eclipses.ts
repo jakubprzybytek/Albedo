@@ -6,10 +6,13 @@ import { JulianDay } from "@astro";
 import { Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
-import { Conjunction, Conjunctions } from "@astro/scripts/conjunctions";
+import { Conjunctions } from "@astro/scripts/conjunctions";
 import { Separations } from "../separations";
 
 const COARSE_PRELIMINARY_INTERVAL = 1;
+
+const PRELIMINARY_ANGLE_RANGE = Radians.fromDegrees(16);
+const DETAILED_ANGLE_RANGE = Radians.fromDegrees(1.5);
 
 const sunStateSolver = kernelRepository.stateSolverBuilder()
   .forTarget(JplBodyId.Sun)
@@ -62,7 +65,7 @@ export class Eclipses {
     console.log('Maximums', maximums);
 
     const sunEclipses = minimums
-      .filter(separation => Radians.toDegrees(separation.separation) < 10)
+      .filter(separation => separation.separation < PRELIMINARY_ANGLE_RANGE)
       .map<Eclipse>(separation => {
         const a = EphemerisSeconds.fromJde(separation.jde - COARSE_PRELIMINARY_INTERVAL);
         const b = EphemerisSeconds.fromJde(separation.jde);
@@ -80,8 +83,9 @@ export class Eclipses {
       });
 
     const moonEclipses = maximums
-      .filter(separation => Radians.toDegrees(separation.separation) > 160) // todo: get rid of SimpleSeparation
+      .filter(separation => separation.separation > Math.PI - PRELIMINARY_ANGLE_RANGE)
       .map<Eclipse>(separation => {
+        // console.log(`jde: ${separation.jde}, date=${JulianDay.toDateTime(separation.jde).toISOString()}, angle=${Radians.toDegrees(separation.separation)}°`);
         const a = EphemerisSeconds.fromJde(separation.jde - COARSE_PRELIMINARY_INTERVAL);
         const b = EphemerisSeconds.fromJde(separation.jde);
         const c = EphemerisSeconds.fromJde(separation.jde + COARSE_PRELIMINARY_INTERVAL);
@@ -98,6 +102,7 @@ export class Eclipses {
       });
 
     const eclipses = [...sunEclipses, ...moonEclipses]
+      // .filter(eclipse => eclipse.separation < DETAILED_ANGLE_RANGE)
       .sort((a, b) => a.jde - b.jde);
 
     eclipses.forEach(eclipse =>
