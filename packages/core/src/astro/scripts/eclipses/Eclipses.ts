@@ -102,7 +102,7 @@ export class Eclipses {
       });
 
     const eclipses = [...sunEclipses, ...moonEclipses]
-      // .filter(eclipse => eclipse.separation < DETAILED_ANGLE_RANGE)
+      .filter(eclipse => eclipse.separation < DETAILED_ANGLE_RANGE)
       .sort((a, b) => a.jde - b.jde);
 
     eclipses.forEach(eclipse =>

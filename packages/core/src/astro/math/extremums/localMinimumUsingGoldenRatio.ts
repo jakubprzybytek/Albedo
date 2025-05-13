@@ -1,3 +1,7 @@
+/*
+ * Reference: https://th-www.if.uj.edu.pl/zfs/gora/metnum23/wyklad11.pdf
+ */
+
 const omega = (3 - Math.sqrt(5)) / 2;
 
 export type LocalMinimumOptions = {
