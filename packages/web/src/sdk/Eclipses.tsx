@@ -1,7 +1,9 @@
 import { get } from "aws-amplify/api";
 import type { Eclipse } from '@lambda/eclipses';
+import { EclipseType } from '@lambda/eclipses';
 
 export type { Eclipse };
+export { EclipseType };
 
 export type EclipsesQuery = {
   fromTde: string;

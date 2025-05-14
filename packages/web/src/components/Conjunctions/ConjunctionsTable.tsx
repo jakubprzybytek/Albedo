@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { formatDegrees } from '../../utils';
 import AstronomicalCoords from '../../common/AstronomicalCoordinates';
-import type { Conjunction } from '@/sdk/GetConjunctions';
+import type { Conjunction } from '@/sdk/Conjunctions';
 // import BodyChip from 'common/BodyChip';
 
 type ConjunctionsTablePropsType = {

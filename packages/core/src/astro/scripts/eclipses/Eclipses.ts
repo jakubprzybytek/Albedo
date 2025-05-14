@@ -14,30 +14,37 @@ const COARSE_PRELIMINARY_INTERVAL = 1;
 const PRELIMINARY_ANGLE_RANGE = Radians.fromDegrees(16);
 const DETAILED_ANGLE_RANGE = Radians.fromDegrees(1.5);
 
-const sunStateSolver = kernelRepository.stateSolverBuilder()
-  .forTarget(JplBodyId.Sun)
-  .forObserver(JplBodyId.Earth)
-  .build();
+function simpleSunMoonFunction() {
+  const sunStateSolver = kernelRepository.stateSolverBuilder()
+    .forTarget(JplBodyId.Sun)
+    .forObserver(JplBodyId.Earth)
+    .build();
 
-const moonStateSolver = kernelRepository.stateSolverBuilder()
-  .forTarget(JplBodyId.Moon)
-  .forObserver(JplBodyId.Earth)
-  .build();
+  const moonStateSolver = kernelRepository.stateSolverBuilder()
+    .forTarget(JplBodyId.Moon)
+    .forObserver(JplBodyId.Earth)
+    .build();
 
-function sunAndMoonAngle(es: number) {
-  const sunPosition = sunStateSolver.positionFor(es);
-  const moonPosition = moonStateSolver.positionFor(es);
+  function sunAndMoonAngle(es: number) {
+    const sunPosition = sunStateSolver.positionFor(es);
+    const moonPosition = moonStateSolver.positionFor(es);
 
-  return Radians.between(sunPosition, moonPosition);
-}
+    return Radians.between(sunPosition, moonPosition);
+  }
 
-function earthsShadowAndMoonAngle(es: number) {
-  const sunPosition = sunStateSolver.positionFor(es);
-  const earthsShadowPosition = sunPosition.negate();
+  function earthsShadowAndMoonAngle(es: number) {
+    const sunPosition = sunStateSolver.positionFor(es);
+    const earthsShadowPosition = sunPosition.negate();
 
-  const moonPosition = moonStateSolver.positionFor(es);
+    const moonPosition = moonStateSolver.positionFor(es);
 
-  return Radians.between(moonPosition, earthsShadowPosition);
+    return Radians.between(moonPosition, earthsShadowPosition);
+  }
+
+  return {
+    sunAndMoonAngle,
+    earthsShadowAndMoonAngle
+  }
 }
 
 export class Eclipses {
@@ -60,9 +67,11 @@ export class Eclipses {
 
     const sunMoonSeparations = Separations.fromPositions(sunPositions, moonPositions);
     const { minimums, maximums } = localExtremums(sunMoonSeparations, separation => separation.separation);
-    console.log(sunMoonSeparations);
-    console.log('Minimums', minimums);
-    console.log('Maximums', maximums);
+    // console.log(sunMoonSeparations);
+    // console.log('Minimums', minimums);
+    // console.log('Maximums', maximums);
+
+    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunction();
 
     const sunEclipses = minimums
       .filter(separation => separation.separation < PRELIMINARY_ANGLE_RANGE)

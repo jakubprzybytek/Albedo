@@ -2,7 +2,7 @@ import { useState, type JSX } from "react";
 import Grid from '@mui/material/Grid';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
-import type { ConjunctionsQuery } from "@/sdk/GetConjunctions";
+import type { ConjunctionsQuery } from "@/sdk/Conjunctions";
 import type { ManagedQuery } from "@/forms/useQuery";
 import QueryPanel from "@/forms/QueryPanel";
 import QuerySubmit from "@/forms/QuerySubmit";
