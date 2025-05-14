@@ -22,6 +22,8 @@ export default function EventsBrowser(): JSX.Element {
   const [conjunctions, setConjunctions] = useState<Conjunction[]>([]);
   const [eclipses, setEclipses] = useState<Eclipse[]>([]);
 
+  const [eventTypesLoaded, setEventTypesLoaded] = useState(0);
+
   const events = useMemo(() => {
     return [
       ...toEvents(conjunctions, EventType.Conjuction),
@@ -30,7 +32,7 @@ export default function EventsBrowser(): JSX.Element {
       .sort((a, b) => a.jde - b.jde);
   }, [conjunctions, eclipses]);
 
-  const progress = events.length > 0 ? 100 : 0;
+  const progress = (eventTypesLoaded / 2.0) * 100.0;
 
   function toEvents(rawEvents: any[], type: EventType): Event[] {
     return rawEvents.map<Event>(event => ({
@@ -48,6 +50,7 @@ export default function EventsBrowser(): JSX.Element {
       };
       const eclipses = await getEclipses(query);
       setEclipses(eclipses);
+      setEventTypesLoaded(previous => previous + 1);
     };
 
     fetchEData();
@@ -61,6 +64,7 @@ export default function EventsBrowser(): JSX.Element {
       };
       const conjunctions = await getConjunctions(query);
       setConjunctions(conjunctions);
+      setEventTypesLoaded(previous => previous + 1);
     };
 
     fetchCData();
