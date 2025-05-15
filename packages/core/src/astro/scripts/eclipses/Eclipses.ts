@@ -62,8 +62,11 @@ export class Eclipses {
   }
 
   static forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
-    const sunPositions = States.position(JplBodyId.Sun, JplBodyId.Earth, fromJde, toJde, COARSE_PRELIMINARY_INTERVAL);
-    const moonPositions = States.position(JplBodyId.Moon, JplBodyId.Earth, fromJde, toJde, COARSE_PRELIMINARY_INTERVAL);
+    const correctedFromJde = fromJde - COARSE_PRELIMINARY_INTERVAL;
+    const correctedToJde = toJde + COARSE_PRELIMINARY_INTERVAL;
+
+    const sunPositions = States.position(JplBodyId.Sun, JplBodyId.Earth, correctedFromJde, correctedToJde, COARSE_PRELIMINARY_INTERVAL);
+    const moonPositions = States.position(JplBodyId.Moon, JplBodyId.Earth, correctedFromJde, correctedToJde, COARSE_PRELIMINARY_INTERVAL);
 
     const sunMoonSeparations = Separations.fromPositions(sunPositions, moonPositions);
     const { minimums, maximums } = localExtremums(sunMoonSeparations, separation => separation.separation);
