@@ -6,7 +6,6 @@ import { JulianDay } from "@astro";
 import { Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
-import { Conjunctions } from "@astro/scripts/conjunctions";
 import { Separations } from "../separations";
 
 const COARSE_PRELIMINARY_INTERVAL = 1;
@@ -14,7 +13,7 @@ const COARSE_PRELIMINARY_INTERVAL = 1;
 const PRELIMINARY_ANGLE_RANGE = Radians.fromDegrees(16);
 const DETAILED_ANGLE_RANGE = Radians.fromDegrees(1.5);
 
-function simpleSunMoonFunction() {
+function simpleSunMoonFunctions() {
   const sunStateSolver = kernelRepository.stateSolverBuilder()
     .forTarget(JplBodyId.Sun)
     .forObserver(JplBodyId.Earth)
@@ -48,19 +47,6 @@ function simpleSunMoonFunction() {
 }
 
 export class Eclipses {
-
-  static all(fromJde: number, toJde: number): Eclipse[] {
-    return Conjunctions.for([JplBodyId.Sun, JplBodyId.Moon], fromJde, toJde, Radians.fromDegrees(2))
-      .map((conjunction) => ({
-        type: EclipseType.SunEclipse,
-        jde: conjunction.jde,
-        eventTimeRangeWidthSeconds: NaN,
-        tde: conjunction.tde,
-        separation: conjunction.separation,
-        positionAngle: 1
-      }))
-  }
-
   static forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
     const correctedFromJde = fromJde - COARSE_PRELIMINARY_INTERVAL;
     const correctedToJde = toJde + COARSE_PRELIMINARY_INTERVAL;
@@ -74,7 +60,7 @@ export class Eclipses {
     // console.log('Minimums', minimums);
     // console.log('Maximums', maximums);
 
-    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunction();
+    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunctions();
 
     const sunEclipses = minimums
       .filter(separation => separation.separation < PRELIMINARY_ANGLE_RANGE)

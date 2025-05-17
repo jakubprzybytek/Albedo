@@ -1,12 +1,15 @@
 import { JulianDay } from '@astro';
 import { Radians } from '@astro/coords';
 import { localMinimums } from '@astro/math/LocalMinimums';
+import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { Ephemerides, Ephemeris } from "@astro/scripts";
-import { Separations } from '@astro/scripts/separations';
-import { JplBody, JplBodyId, jplBodyFromId } from "@jpl";
+import { Separation, Separations } from '@astro/scripts/separations';
+import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
+import { kernelRepository } from '@jpl/data/de440.full';
+import { StateSolver } from '@jpl/state/solvers';
 import { Conjunction } from '.';
 
-const PRELIMINARY_INTERVAL = 0.25;
+const PRELIMINARY_INTERVAL = 1;
 
 const SEPARATION_THRESHOLD = Radians.fromDegrees(2);
 
@@ -18,6 +21,33 @@ type BodyWithEphemerides = {
 type EphemerisPair = {
   first: BodyWithEphemerides;
   second: BodyWithEphemerides;
+}
+
+function separationFunction(bodies: JplBodyId[]) {
+  const stateSolvers = bodies
+    .reduce((map, bodyId) => {
+      const stateSolver = kernelRepository.stateSolverBuilder().forTarget(bodyId).forObserver(JplBodyId.Earth).build();
+      map.set(bodyId, stateSolver);
+      return map;
+    }, new Map<JplBodyId, StateSolver>());
+
+  function buildSeparationFunctionfor(firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
+    const firstBodySolver = stateSolvers.get(firstBodyId);
+    const secondBodySolver = stateSolvers.get(secondBodyId);
+
+    if (firstBodySolver === undefined || secondBodySolver === undefined) {
+      throw new Error(`Missing solver for either ${firstBodyId} or ${secondBodyId}`);
+    }
+
+    return (es: number) => {
+      const firstBodyPosition = firstBodySolver.positionFor(es);
+      const secondBOdyPosition = secondBodySolver.positionFor(es);
+
+      return Radians.between(firstBodyPosition, secondBOdyPosition);
+    }
+  }
+
+  return buildSeparationFunctionfor;
 }
 
 export class Conjunctions {
@@ -38,6 +68,8 @@ export class Conjunctions {
       }
     }
 
+    const separationFunctionBuilder = separationFunction(bodies);
+
     return bodyPairs
       .map((pair) => ({
         firstBody: pair.first.body,
@@ -46,11 +78,28 @@ export class Conjunctions {
           Separations.fromEphemerides(pair.first.ephemerides, pair.second.ephemerides),
           element => element.separation
         )
-          .filter((separation) => separation.separation < separationLimit)
+          .filter(separation => separation.separation < separationLimit)
+          .map<Separation>(separation => {
+            const separationFunction = separationFunctionBuilder(pair.first.body.id, pair.second.body.id);
+
+            const a = EphemerisSeconds.fromJde(separation.jde - PRELIMINARY_INTERVAL);
+            const b = EphemerisSeconds.fromJde(separation.jde);
+            const c = EphemerisSeconds.fromJde(separation.jde + PRELIMINARY_INTERVAL);
+            const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
+
+            const eventJde = EphemerisSeconds.toJde(eventEs);
+
+            return {
+              jde: eventJde,
+              firstBodyEphemeris: Ephemerides.simple(pair.first.body.id, eventJde, eventJde, 1)[0],
+              secondBodyEphemeris: Ephemerides.simple(pair.second.body.id, eventJde, eventJde, 1)[0],
+              separation: minSeparation
+            };
+          })
       }))
       .flatMap((pair) => {
         return pair.separations
-          .map((separation) => ({
+          .map<Conjunction>((separation) => ({
             jde: separation.jde,
             tde: JulianDay.toDateTime(separation.jde),
             firstBody: {

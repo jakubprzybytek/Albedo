@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { jplBodyFromString } from "@jpl";
 import { JulianDay } from "@astro";
 import { AstronomicalCoordinates } from "@astro/coords";
-import { Conjunctions } from "./Conjunctions";
+import { Conjunctions } from "../Conjunctions";
 
 describe("Conjunctions", () => {
     it("should compute conjunctions for all bodies", () => {
@@ -13,27 +13,27 @@ describe("Conjunctions", () => {
         expect(conjunctions).toHaveLength(1);
 
         expect(conjunctions[0]).toEqual({
-            jde: 2459793.5,
-            tde: new Date(Date.parse('2022-08-02T00:00:00.000Z')),
+            jde: 2459793.5207796507,
+            tde: new Date(Date.parse('2022-08-02T00:29:55.000Z')),
             firstBody: {
                 info: jplBodyFromString('Mars'),
                 ephemeris: {
-                    jde: 2459793.5,
-                    ephemerisSeconds: 712670400,
-                    tde: new Date(Date.parse('2022-08-02T00:00:00.000Z')),
-                    coords: new AstronomicalCoordinates(0.8102253922602426, 0.2738987260932604)
+                    jde: 2459793.5207796507,
+                    ephemerisSeconds: 712672195.3618169,
+                    tde: new Date(Date.parse('2022-08-02T00:29:55.000Z')),
+                    coords: new AstronomicalCoordinates(0.8104572828489092, 0.2739654718548906)
                 }
             },
             secondBody: {
                 info: jplBodyFromString('Uranus'),
                 ephemeris: {
-                    jde: 2459793.5,
-                    ephemerisSeconds: 712670400,
-                    tde: new Date(Date.parse('2022-08-02T00:00:00.000Z')),
-                    coords: new AstronomicalCoordinates(0.8036263316489981, 0.2958694475845389)
+                    jde: 2459793.5207796507,
+                    ephemerisSeconds: 712672195.3618169,
+                    tde: new Date(Date.parse('2022-08-02T00:29:55.000Z')),
+                    coords: new AstronomicalCoordinates(0.80363307066834, 0.2958712333969532)
                 }
             },
-            separation: 0.022865224044365383
+            separation: 0.02286292525872858
         });
     });
 });

@@ -6,7 +6,7 @@ type IconSize = {
 }
 
 // From https://en.wikipedia.org/wiki/Astrological_symbols
-function SunIcon({ width, height }: IconSize): JSX.Element {
+export function SunIcon({ width, height }: IconSize): JSX.Element {
     return (
         <svg viewBox="0 0 50 50" width={width} height={height} version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <path fill="none" strokeWidth="4" stroke="#fff" d="m7,25a18,18 0 1,1 0,.1zm3,0a15,15 0 1,0 0-.1zm11,0a4,4 0 1,0 0-.1z" />
@@ -14,7 +14,7 @@ function SunIcon({ width, height }: IconSize): JSX.Element {
     )
 }
 
-function MoonIcon({ width, height }: IconSize): JSX.Element {
+export function MoonIcon({ width, height }: IconSize): JSX.Element {
     return (
         <svg viewBox="0 0 50 50" width={width} height={height} version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <path fill="none" strokeWidth="4" stroke="#fff" d="M 12.5,3.5 a 22.5,22.5 0 0,1 0,43 a 22.5,22.5 0 1,0 0,-43 z" />
