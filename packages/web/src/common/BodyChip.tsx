@@ -52,9 +52,9 @@ export default function BodyChip({ bodyId }: BodyChipParamType): JSX.Element {
         width: 18,
         fontSize: '0.7rem',
         marginRight: 0.5,
-        background: 'red'
+        background: body.id === JplBodyId.Sun ? 'yellow' : body.id === JplBodyId.Moon ? 'grey' : 'red'
       }}>
-        <AstroIcon body={body} />
+        <AstroIcon body={body}  />
       </Avatar>
       <Typography component='span' fontWeight={600}>{body.name}</Typography>
     </Typography>
