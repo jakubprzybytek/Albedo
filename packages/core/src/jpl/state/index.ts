@@ -11,4 +11,5 @@ export type StateWithPositionAndVelocity = StateWithPosition & {
     velocity: RectangularCoordinates;
 }
 
+export * from './StateSolver';
 export * from './States';

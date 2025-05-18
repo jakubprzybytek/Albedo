@@ -2,6 +2,7 @@ import { SpkKernelCollection } from './';
 import { JplBodyId, jplBodyFromId } from '..';
 import { Forest } from './tree';
 import { StateSolverBuilder } from '../state/solvers';
+import { StateSolver2 } from '@jpl/state/solver2/StateSolver';
 
 export class SpkKernelRepository {
 
@@ -31,6 +32,10 @@ export class SpkKernelRepository {
 
     stateSolverBuilder(): StateSolverBuilder {
         return new StateSolverBuilder(this);
+    }
+
+    stateSolver2(): StateSolver2 {
+        return new StateSolver2(this.spkKernel);
     }
 
     getAllTransientSpkKernelCollections(target: JplBodyId): SpkKernelCollection[] {

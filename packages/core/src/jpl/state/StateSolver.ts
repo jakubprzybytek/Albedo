@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from '../../../astro/coords';
+import { RectangularCoordinates } from '@astro/coords';
 
 export interface StateSolver {
 

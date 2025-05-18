@@ -1,7 +1,7 @@
 import { RectangularCoordinates } from '@astro/coords';
 import { SpkKernelCollection, PositionAndVelocityChebyshevRecord, DataType } from "@jpl/kernel";
 import { PositionAndVelocityCalculator, PositionAndTrueVelocityCalculator, PositionAndVelocitySolvingCalculator } from "../chebyshev";
-import { StateSolver } from "./";
+import { StateSolver } from "../";
 
 export class DirectStateSolver implements StateSolver {
 
