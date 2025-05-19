@@ -16,6 +16,8 @@
     "aws-cdk-lib": "2.192.0",
     "constructs": "10.3.0",
     "sst": "^2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"
   },
   "workspaces": [

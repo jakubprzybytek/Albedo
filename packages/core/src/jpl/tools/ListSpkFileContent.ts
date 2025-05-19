@@ -35,7 +35,7 @@ function ListSpkFileContent(fileName: string) {
 const program = new Command();
 program
     .usage('<fileName>')
-    .argument('<fileName>', 'SPK file name')
+    .arguments('<fileName>')
     .action(fileName => {
         ListSpkFileContent(fileName);
     })

@@ -1,6 +1,6 @@
 import { openSync, closeSync } from 'node:fs';
 import { Command } from 'commander';
-import { JulianDay } from "../../astro/coords";
+import { JulianDay } from "@astro";
 import { JplBody, jplBodyFromString, EphemerisSeconds } from "..";
 import { PositionChebyshevRecord, PositionAndVelocityChebyshevRecord } from '../kernel';
 import { readSpkFileInformation, readSpkPositionChebyshevPolynomials, readSpkPositionAndVelocityChebyshevPolynomials, DataType } from "../files";
@@ -34,7 +34,7 @@ function PrintRecordsFromSpkFile(fileName: string, body: JplBody, centerBody: Jp
 const program = new Command();
 program
     .usage('<fileName>')
-    .argument('<fileName>', 'SPK file name')
+    .arguments('<fileName>')
     .requiredOption('--body <body>', 'Body name - must parse to JPL Body Id')
     .requiredOption('--centerBody <body>', 'Center body name - must parse to JPL Body Id')
     .requiredOption('--from <date>', 'Start date to cover, yyyy-mm-dd')
