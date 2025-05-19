@@ -4,7 +4,8 @@
   "type": "commonjs",
   "scripts": {
     "test": "sst bind vitest",
-    "typecheck": "tsc -noEmit"
+    "typecheck": "tsc -noEmit",
+    "listSpk": "ts-node src/jpl/tools/ListSpkFileContent.ts"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",

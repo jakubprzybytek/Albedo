@@ -10,7 +10,8 @@
     "deploy": "sst deploy",
     "remove": "sst remove",
     "console": "sst console",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "listSpk": "npm run listSpk --prefix ./packages/core" 
   },
   "devDependencies": {
     "aws-cdk-lib": "2.192.0",
