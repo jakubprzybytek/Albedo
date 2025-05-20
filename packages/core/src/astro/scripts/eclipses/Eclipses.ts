@@ -1,17 +1,20 @@
 import { Eclipse, EclipseType } from ".";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { kernelRepository } from '@jpl/data/de440.full';
-import { States } from "@jpl/state";
 import { JulianDay } from "@astro";
 import { Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
-import { Separations } from "../separations";
 
-const COARSE_PRELIMINARY_INTERVAL = 1;
-
+const PRELIMINARY_INTERVAL = 1;
 const PRELIMINARY_ANGLE_RANGE = Radians.fromDegrees(16);
+
 const DETAILED_ANGLE_RANGE = Radians.fromDegrees(1.5);
+
+type Separation = {
+  es: number;
+  separation: number;
+}
 
 function simpleSunMoonFunctions() {
   const sunStateSolver = kernelRepository.stateSolverBuilder()
@@ -48,26 +51,28 @@ function simpleSunMoonFunctions() {
 
 export class Eclipses {
   static forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
-    const correctedFromJde = fromJde - COARSE_PRELIMINARY_INTERVAL;
-    const correctedToJde = toJde + COARSE_PRELIMINARY_INTERVAL;
-
-    const sunPositions = States.position(JplBodyId.Sun, JplBodyId.Earth, correctedFromJde, correctedToJde, COARSE_PRELIMINARY_INTERVAL);
-    const moonPositions = States.position(JplBodyId.Moon, JplBodyId.Earth, correctedFromJde, correctedToJde, COARSE_PRELIMINARY_INTERVAL);
-
-    const sunMoonSeparations = Separations.fromPositions(sunPositions, moonPositions);
-    const { minimums, maximums } = localExtremums(sunMoonSeparations, separation => separation.separation);
-    // console.log(sunMoonSeparations);
-    // console.log('Minimums', minimums);
-    // console.log('Maximums', maximums);
+    const correctedFromJde = fromJde - PRELIMINARY_INTERVAL;
+    const correctedToJde = toJde + PRELIMINARY_INTERVAL;
 
     const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunctions();
 
+    const sunMoonSeparations = JulianDay.forRange(correctedFromJde, correctedToJde, PRELIMINARY_INTERVAL)
+      .map(EphemerisSeconds.fromJde)
+      .map<Separation>(es => ({
+        es,
+        separation: sunAndMoonAngle(es)
+      }));
+
+    const { minimums, maximums } = localExtremums(sunMoonSeparations, minSepration => minSepration.separation);
+    // console.log('Minimums', minimums);
+    // console.log('Maximums', maximums);
+
     const sunEclipses = minimums
-      .filter(separation => separation.separation < PRELIMINARY_ANGLE_RANGE)
+      .filter(minSeparation => minSeparation.separation < PRELIMINARY_ANGLE_RANGE)
       .map<Eclipse>(separation => {
-        const a = EphemerisSeconds.fromJde(separation.jde - COARSE_PRELIMINARY_INTERVAL);
-        const b = EphemerisSeconds.fromJde(separation.jde);
-        const c = EphemerisSeconds.fromJde(separation.jde + COARSE_PRELIMINARY_INTERVAL);
+        const a = separation.es - EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+        const b = separation.es;
+        const c = separation.es + EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
         const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(sunAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
         return {
@@ -84,9 +89,9 @@ export class Eclipses {
       .filter(separation => separation.separation > Math.PI - PRELIMINARY_ANGLE_RANGE)
       .map<Eclipse>(separation => {
         // console.log(`jde: ${separation.jde}, date=${JulianDay.toDateTime(separation.jde).toISOString()}, angle=${Radians.toDegrees(separation.separation)}°`);
-        const a = EphemerisSeconds.fromJde(separation.jde - COARSE_PRELIMINARY_INTERVAL);
-        const b = EphemerisSeconds.fromJde(separation.jde);
-        const c = EphemerisSeconds.fromJde(separation.jde + COARSE_PRELIMINARY_INTERVAL);
+        const a = separation.es - EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+        const b = separation.es;
+        const c = separation.es + EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
         const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(earthsShadowAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
         return {

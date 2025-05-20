@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { JulianDay } from "@astro";
-import { EphemerisSeconds } from './';
+import { EphemerisSeconds } from '..';
 
 describe("EphemerisSeconds", () => {
 
@@ -16,4 +16,7 @@ describe("EphemerisSeconds", () => {
         expect(EphemerisSeconds.toJde(20514081600.0)).toBe(JulianDay.fromDate(2650, 1, 25));
     });
 
+    it("should calculate from days", () => {
+        expect(EphemerisSeconds.fromDays(1)).toBe(86400.0);
+    });
 });

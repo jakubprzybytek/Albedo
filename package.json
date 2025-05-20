@@ -11,7 +11,7 @@
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
-    "listSpk": "npm run listSpk --prefix ./packages/core" 
+    "listSpk": "npm run listSpk --prefix ./packages/core"
   },
   "devDependencies": {
     "aws-cdk-lib": "2.192.0",
@@ -19,7 +19,8 @@
     "sst": "^2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
   },
   "workspaces": [
     "packages/*"

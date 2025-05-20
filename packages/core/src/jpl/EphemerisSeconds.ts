@@ -22,4 +22,7 @@ export class EphemerisSeconds {
         return ephemerisSeconds / EphemerisSeconds.SECONDS_PER_JULIAN_DAY + EphemerisSeconds.J2000_EPOCH;
     }
 
+    static fromDays(days: number): number {
+        return days * this.SECONDS_PER_JULIAN_DAY;
+    }
 }

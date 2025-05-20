@@ -9,8 +9,7 @@
     "data:test": "ts-node src/jpl/data/de440.testData.script.ts"
   },
   "devDependencies": {
-    "@types/node": "^22.13.10",
-    "vitest": "^3.1.4"
+    "@types/node": "^20"
   },
   "dependencies": {
     "zod": "^3.24.2"
