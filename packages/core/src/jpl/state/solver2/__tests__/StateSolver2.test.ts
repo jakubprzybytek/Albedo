@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-import { RectangularCoordinates } from "@astro/coords";
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { kernelRepository } from '@jpl/data/de440.testData';
 import { StateSolver2 } from "../StateSolver";
@@ -41,7 +40,41 @@ describe("StateSolver2", () => {
     expect(reversePosition.z).approximately(-1456.05152013, 1e-8);
   });
 
-  it("should correctly compute state for Earth wrt. Phobos", () => {
+  it("should correctly compute state for Earth wrt. Venus", () => {
+    const stateSolcer = kernelRepository.stateSolver2();
+    const position = stateSolcer.positionFor(JplBodyId.Earth, JplBodyId.Venus, EphemerisSeconds.fromDate(2019, 10, 9));
+    // const velocity = stateSolcer.velocityFor(JplBodyId.Earth, JplBodyId.SolarSystemBarycenter, EphemerisSeconds.fromDate(2019, 10, 9));
+
+    expect(position.x).approximately(212474107.12560332, 0);
+    expect(position.y).approximately(114096424.71648255, 0);
+    expect(position.z).approximately(46433127.17153619, 8e-9);
+
+    const reversePosition = stateSolcer.positionFor(JplBodyId.Venus, JplBodyId.Earth, EphemerisSeconds.fromDate(2019, 10, 9));
+    // const velocity = stateSolcer.velocityFor(JplBodyId.Earth, JplBodyId.SolarSystemBarycenter, EphemerisSeconds.fromDate(2019, 10, 9));
+
+    expect(reversePosition.x).approximately(-212474107.12560332, 0);
+    expect(reversePosition.y).approximately(-114096424.71648255, 0);
+    expect(reversePosition.z).approximately(-46433127.17153619, 8e-9);
+  });
+
+  it("should correctly compute state for Moon wrt. Earth", () => {
+    const stateSolcer = kernelRepository.stateSolver2();
+    const position = stateSolcer.positionFor(JplBodyId.Moon, JplBodyId.Earth, EphemerisSeconds.fromDate(2019, 10, 9));
+    // const velocity = stateSolcer.velocityFor(JplBodyId.Earth, JplBodyId.SolarSystemBarycenter, EphemerisSeconds.fromDate(2019, 10, 9));
+
+    expect(position.x).approximately(317255.79483133, 1e-9);
+    expect(position.y).approximately(-220341.79779477, 2e-9);
+    expect(position.z).approximately(-119833.86746624, 1e-9);
+
+    const reversePosition = stateSolcer.positionFor(JplBodyId.Earth, JplBodyId.Moon, EphemerisSeconds.fromDate(2019, 10, 9));
+    // const velocity = stateSolcer.velocityFor(JplBodyId.Earth, JplBodyId.SolarSystemBarycenter, EphemerisSeconds.fromDate(2019, 10, 9));
+
+    expect(reversePosition.x).approximately(-317255.79483133, 1e-9);
+    expect(reversePosition.y).approximately(220341.79779477, 2e-9);
+    expect(reversePosition.z).approximately(119833.86746624, 1e-9);
+  });
+
+  it("should correctly compute state for Earth wrt. Venus", () => {
     const stateSolcer = kernelRepository.stateSolver2();
     const position = stateSolcer.positionFor(JplBodyId.Earth, JplBodyId.Venus, EphemerisSeconds.fromDate(2019, 10, 9));
     // const velocity = stateSolcer.velocityFor(JplBodyId.Earth, JplBodyId.SolarSystemBarycenter, EphemerisSeconds.fromDate(2019, 10, 9));
