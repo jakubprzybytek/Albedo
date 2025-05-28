@@ -16,29 +16,22 @@ type Separation = {
   separation: number;
 }
 
-function simpleSunMoonFunctions() {
-  const sunStateSolver = kernelRepository.stateSolverBuilder()
-    .forTarget(JplBodyId.Sun)
-    .forObserver(JplBodyId.Earth)
-    .build();
 
-  const moonStateSolver = kernelRepository.stateSolverBuilder()
-    .forTarget(JplBodyId.Moon)
-    .forObserver(JplBodyId.Earth)
-    .build();
+function simpleSunMoonFunctions2() {
+  const stateSolver = kernelRepository.stateSolver2();
 
   function sunAndMoonAngle(es: number) {
-    const sunPosition = sunStateSolver.positionFor(es);
-    const moonPosition = moonStateSolver.positionFor(es);
+    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es);
+    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es);
 
     return Radians.between(sunPosition, moonPosition);
   }
 
   function earthsShadowAndMoonAngle(es: number) {
-    const sunPosition = sunStateSolver.positionFor(es);
+    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es);
     const earthsShadowPosition = sunPosition.negate();
 
-    const moonPosition = moonStateSolver.positionFor(es);
+    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es);
 
     return Radians.between(moonPosition, earthsShadowPosition);
   }
@@ -54,7 +47,7 @@ export class Eclipses {
     const correctedFromJde = fromJde - PRELIMINARY_INTERVAL;
     const correctedToJde = toJde + PRELIMINARY_INTERVAL;
 
-    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunctions();
+    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunctions2();
 
     const sunMoonSeparations = JulianDay.forRange(correctedFromJde, correctedToJde, PRELIMINARY_INTERVAL)
       .map(EphemerisSeconds.fromJde)

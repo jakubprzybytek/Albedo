@@ -1,3 +1,12 @@
-import { StateWithPosition, StateWithPositionAndVelocity } from '@jpl/state';
+import { RectangularCoordinates } from '@astro/coords';
 
-export type { StateWithPosition, StateWithPositionAndVelocity };
+export type StateWithPosition = {
+  jde: number;
+  ephemerisSeconds: number;
+  tde: Date;
+  position: RectangularCoordinates;
+}
+
+export type StateWithPositionAndVelocity = StateWithPosition & {
+  velocity: RectangularCoordinates;
+}

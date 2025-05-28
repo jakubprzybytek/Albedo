@@ -2,6 +2,7 @@ import { JplBody } from "@jpl";
 import { Ephemeris } from "@astro/scripts/ephemeris";
 
 export * from './Separations';
+export * from './Separations2';
 
 export type SimpleSeparation = {
     jde: number;

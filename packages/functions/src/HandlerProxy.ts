@@ -16,10 +16,10 @@ export const Success = <T>(data: T): LambdaResponse<T> => ({ data: data, statusC
 
 export const Failure = (message: string): LambdaResponse<ErrorResponse> => ({ data: { message }, statusCode: 400 });
 
-export const lambdaHandler = <T>(lambda: LambdaType<T>): APIGatewayProxyHandlerV2 => {
+export function lambdaHandler<T>(lambda: LambdaType<T>): APIGatewayProxyHandlerV2 {
     return async function (event: APIGatewayProxyEventV2) {
         try {
-            const response = await lambda(event);
+            const response = lambda(event);
             return {
                 statusCode: response.statusCode,
                 headers: { 'Content-Type': 'application/json' },

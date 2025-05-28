@@ -2,7 +2,6 @@ import { JplBodyId } from "@jpl";
 import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } from "@jpl/kernel";
 import { Forest, TreeNode } from "@jpl/kernel/tree";
 import { RectangularCoordinates } from "@astro/coords";
-import { StateSolver } from "..";
 import { PositionAndTrueVelocityCalculator, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "../chebyshev";
 
 type SpkNode = {
@@ -21,9 +20,9 @@ export class StateSolver2 {
       this.collectSpkCollection(rootTreeNode, []);
     }
 
-    for (const [objectId, node] of this.spk) {
-      console.log(objectId, node.observerBodyId, node.allBodies);
-    }
+    // for (const [objectId, node] of this.spk) {
+    //   console.log(objectId, node.observerBodyId, node.allBodies);
+    // }
   }
 
   buildCalculator(spkKernelCollection: SpkKernelCollection): PositionAndVelocityCalculator {
@@ -53,6 +52,7 @@ export class StateSolver2 {
   }
 
   calculateDirectPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
+    // console.log(targetBodyId, observerBodyId);
     let resultingPosition = RectangularCoordinates.ZERO;
 
     let currentBodyId: JplBodyId | undefined = targetBodyId;

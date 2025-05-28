@@ -19,4 +19,12 @@ describe("EphemerisSeconds", () => {
     it("should calculate from days", () => {
         expect(EphemerisSeconds.fromDays(1)).toBe(86400.0);
     });
+
+    it("should calculate to days", () => {
+        expect(EphemerisSeconds.toDays(86400.0)).toBe(1);
+    });
+
+    it("should generate range", () => {
+        expect(EphemerisSeconds.forRange(1, 10, 2)).toEqual([1, 3, 5, 7, 9]);
+    });
 });

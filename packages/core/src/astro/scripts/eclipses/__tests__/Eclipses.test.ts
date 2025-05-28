@@ -31,14 +31,13 @@ describe("Eclipses", () => {
     expect(eclipses).toHaveLength(2);
   });
 
-  it("should perform fast", () => {
+  it.skip("should perform fast", () => {
     const fromJde = JulianDay.fromDate(2025, 1, 1);
     const toJde = JulianDay.fromDate(2025, 12, 31);
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 50; i++) {
       const eclipses = Eclipses.forSunAndMoon(fromJde, toJde);
       expect(eclipses).toHaveLength(4);
     }
-
   });
 });

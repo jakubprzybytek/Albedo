@@ -10,6 +10,10 @@ export class EphemerisSeconds {
         return EphemerisSeconds.fromJde(JulianDay.fromDate(year, month, day));
     }
 
+    static fromDateTime(year: number, month: number, day: number, hours: number, minutes: number, seconds: number): number {
+        return EphemerisSeconds.fromJde(JulianDay.fromDateTime(year, month, day, hours, minutes, seconds));
+    }
+
     static fromDateObject(tbd: Date): number {
         return EphemerisSeconds.fromJde(JulianDay.fromDateObject(tbd));
     }
@@ -24,5 +28,19 @@ export class EphemerisSeconds {
 
     static fromDays(days: number): number {
         return days * this.SECONDS_PER_JULIAN_DAY;
+    }
+
+    static toDays(es: number): number {
+        return es / this.SECONDS_PER_JULIAN_DAY;
+    }
+
+    static forRange(fromEs: number, toEs: number, interval: number): number[] {
+        const esArray: number[] = [];
+        let currentEs = fromEs;
+        while (currentEs <= toEs) {
+            esArray.push(currentEs);
+            currentEs += interval;
+        }
+        return esArray;
     }
 }

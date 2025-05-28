@@ -1,29 +1,26 @@
 export class TimeSpan {
 
-    from: number;
+  readonly from: number;
+  readonly to: number;
 
-    to: number;
+  constructor(from: number, to: number) {
+    this.from = from;
+    this.to = to;
+  }
 
-    constructor(from: number, to: number) {
-        this.from = from;
-        this.to = to;
+  inside(time: number): boolean {
+    return time >= this.from && time <= this.to;
+  }
+
+  overlaps(timeSpan: TimeSpan): boolean {
+    return this.from <= timeSpan.to && timeSpan.from <= this.to;
+  }
+
+  normalizeFor(time: number): number {
+    if (time < this.from || time > this.to) {
+      throw new Error(`Cannot normalize ${time} for ${this}`);
     }
 
-
-    inside(jd: number): boolean {
-        return jd >= this.from && jd <= this.to;
-    }
-
-    overlaps(timeSpan: TimeSpan): boolean {
-        return this.from <= timeSpan.to && timeSpan.from <= this.to;
-    }
-
-    normalizeFor(jd: number): number {
-
-        if (jd < this.from || jd > this.to) {
-            throw new Error(`Cannot normalize ${jd} for ${this}`);
-        }
-
-        return (jd - this.from) * 2 / (this.to - this.from) - 1;
-    }
+    return (time - this.from) * 2 / (this.to - this.from) - 1;
+  }
 }
