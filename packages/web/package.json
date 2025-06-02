@@ -16,7 +16,7 @@
     "@mui/icons-material": "^7.0.2",
     "@mui/lab": "^7.0.0-beta.11",
     "@mui/material": "^7.0.2",
-    "@mui/x-date-pickers": "^8.0.0",
+    "@mui/x-date-pickers": "^8.5.0",
     "@react-router/node": "^7.6.0",
     "@react-router/serve": "^7.5.1",
     "aws-amplify": "^6.14.3",
