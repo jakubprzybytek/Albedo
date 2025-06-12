@@ -2,9 +2,9 @@ import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '@astro';
-import { Separations, SeparationWithBodies } from '@astro/scripts';
+import { Separation2, Separations2 } from '@astro/scripts';
 import { JplBody } from '@jpl';
-import { GetSeparationsResponseType } from ".";
+import { kernelRepository } from "@jpl/data/de440.full";
 
 type GetSeparationsParams = {
     target: JplBody;
@@ -22,7 +22,7 @@ const parseGetSeparationsParams: (event: APIGatewayProxyEventV2) => GetSeparatio
     interval: mandatoryFloat(event, 'interval')
 });
 
-export const handler = lambdaHandler<GetSeparationsResponseType>(event => {
+export const handler = lambdaHandler<Separation2[]>(event => {
     const { target, observer, fromTde, toTde, interval } = parseGetSeparationsParams(event);
 
     const fromJde = JulianDay.fromDateObject(fromTde);
@@ -30,7 +30,8 @@ export const handler = lambdaHandler<GetSeparationsResponseType>(event => {
 
     console.log(`Compute separations for '${target.name}' w.r.t. '${observer.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${interval} day(s)`);
 
-    const separations = Separations.for(target, observer, fromJde, toJde, interval)
+    const seprationScripts = new Separations2(kernelRepository.stateSolver2());
+    const separations = seprationScripts.for(target.id, observer.id, fromJde, toJde, interval);
 
     console.log(`Computed ${separations.length} separations`);
 

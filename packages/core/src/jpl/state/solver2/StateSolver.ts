@@ -63,8 +63,12 @@ export class StateSolver2 {
       }
 
       if (spkNode.calculator !== undefined) {
-        const position = spkNode.calculator.positionFor(ephemerisSeconds);
-        resultingPosition = resultingPosition.add(position);
+        try {
+          const position = spkNode.calculator.positionFor(ephemerisSeconds);
+          resultingPosition = resultingPosition.add(position);
+        } catch (error) {
+          throw Error(`Cannot calculate position for bodyId='${currentBodyId}'`, { cause: error });
+        }
       }
 
       currentBodyId = spkNode.observerBodyId;

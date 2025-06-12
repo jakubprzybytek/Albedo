@@ -5,8 +5,12 @@ import { JulianDay } from "@astro";
 import { Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
+import { StateSolver2 } from "@jpl/state/solver2";
+import { timeProperties } from "../utils/time";
 
 const PRELIMINARY_INTERVAL = 1;
+const PRELIMINARY_INTERVAL_ES = EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+
 const PRELIMINARY_ANGLE_RANGE = Radians.fromDegrees(16);
 
 const DETAILED_ANGLE_RANGE = Radians.fromDegrees(1.5);
@@ -17,7 +21,7 @@ type Separation = {
 }
 
 
-function simpleSunMoonFunctions2() {
+function simpleSunMoonFunctions() {
   const stateSolver = kernelRepository.stateSolver2();
 
   function sunAndMoonAngle(es: number) {
@@ -43,11 +47,18 @@ function simpleSunMoonFunctions2() {
 }
 
 export class Eclipses {
-  static forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
+
+  readonly stateSolver: StateSolver2;
+
+  constructor(stateSolver: StateSolver2) {
+    this.stateSolver = stateSolver;
+  }
+
+  forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
     const correctedFromJde = fromJde - PRELIMINARY_INTERVAL;
     const correctedToJde = toJde + PRELIMINARY_INTERVAL;
 
-    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunctions2();
+    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunctions();
 
     const sunMoonSeparations = JulianDay.forRange(correctedFromJde, correctedToJde, PRELIMINARY_INTERVAL)
       .map(EphemerisSeconds.fromJde)
@@ -63,16 +74,15 @@ export class Eclipses {
     const sunEclipses = minimums
       .filter(minSeparation => minSeparation.separation < PRELIMINARY_ANGLE_RANGE)
       .map<Eclipse>(separation => {
-        const a = separation.es - EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+        const a = separation.es - PRELIMINARY_INTERVAL_ES;
         const b = separation.es;
-        const c = separation.es + EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+        const c = separation.es + PRELIMINARY_INTERVAL_ES;
         const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(sunAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
+        const eventJde = EphemerisSeconds.toJde(eventEs);
         return {
           type: EclipseType.SunEclipse,
-          jde: EphemerisSeconds.toJde(eventEs),
-          eventTimeRangeWidthSeconds: resultRangeWidth,
-          tde: JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)),
+          ...timeProperties(eventEs),
           separation: minSeparation,
           positionAngle: NaN
         }
@@ -82,16 +92,15 @@ export class Eclipses {
       .filter(separation => separation.separation > Math.PI - PRELIMINARY_ANGLE_RANGE)
       .map<Eclipse>(separation => {
         // console.log(`jde: ${separation.jde}, date=${JulianDay.toDateTime(separation.jde).toISOString()}, angle=${Radians.toDegrees(separation.separation)}°`);
-        const a = separation.es - EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+        const a = separation.es - PRELIMINARY_INTERVAL_ES;
         const b = separation.es;
-        const c = separation.es + EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+        const c = separation.es + PRELIMINARY_INTERVAL_ES;
         const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(earthsShadowAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
+        const eventJde = EphemerisSeconds.toJde(eventEs);
         return {
           type: EclipseType.MoonEclipse,
-          jde: EphemerisSeconds.toJde(eventEs),
-          eventTimeRangeWidthSeconds: resultRangeWidth,
-          tde: JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)),
+          ...timeProperties(eventEs),
           separation: minSeparation,
           positionAngle: NaN
         }
@@ -99,11 +108,11 @@ export class Eclipses {
 
     const eclipses = [...sunEclipses, ...moonEclipses]
       .filter(eclipse => eclipse.separation < DETAILED_ANGLE_RANGE)
-      .sort((a, b) => a.jde - b.jde);
+      .sort((a, b) => a.es - b.es);
 
-    eclipses.forEach(eclipse =>
-      console.log(`${eclipse.type}: jde= ${eclipse.jde}, date=${JulianDay.toDateTime(eclipse.jde).toISOString()}, date range=${eclipse.eventTimeRangeWidthSeconds}, angle=${Radians.toDegrees(eclipse.separation)}°`)
-    );
+    eclipses.forEach(eclipse => {
+      console.log(`${eclipse.type}: jde= ${eclipse.jde}, date=${eclipse.tde.toISOString()}, angle=${Radians.toDegrees(eclipse.separation)}°`);
+    });
 
     return eclipses;
   }

@@ -4,6 +4,9 @@ import { JplBody } from "@jpl";
 import { StateWithPosition } from "@jpl/state";
 import { Separation, SeparationWithBodies, SimpleSeparation } from '.';
 
+/**
+ * @deprecated The method should not be used
+ */
 export class Separations {
   static fromEphemerides(firstBodyEphemerides: Ephemeris[], secondBodyEphemerides: Ephemeris[]): Separation[] {
     return firstBodyEphemerides

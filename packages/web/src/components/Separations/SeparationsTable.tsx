@@ -8,11 +8,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { formatDegrees } from '../../utils';
-import AstronomicalCoords from '../../common/AstronomicalCoordinates';
-import type { SeparationWithBodies } from '@/sdk/GetSeparations';
+import type { Separation } from '@/sdk/GetSeparations';
 
 type SeparationsTablePropsType = {
-  separations: SeparationWithBodies[];
+  separations: Separation[];
 }
 
 export default function SeparationsTable({ separations }: SeparationsTablePropsType): JSX.Element {
@@ -28,27 +27,18 @@ export default function SeparationsTable({ separations }: SeparationsTablePropsT
         <TableHead>
           <TableRow>
             <TableCell>Time</TableCell>
-            <TableCell align="center">First body</TableCell>
-            <TableCell align="center">Second body</TableCell>
             <TableCell align="right">Separation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {separations.map((separation) => (
             <TableRow key={separation.jde} sx={{
-              '&:last-child td, &:last-child th': { border: 0 }
+              '&:last-child td, &:last-child th': { border: 0 },
+              '& span': { display: 'block' }
             }}>
               <TableCell>
                 <span>{separation.jde} (JDE)</span>
                 <span><>{separation.tde} (TDE)</></span>
-              </TableCell>
-              <TableCell align="center">
-                {separation.firstBody.info.name}
-                <AstronomicalCoords coords={separation.firstBody.ephemeris.coords} />
-              </TableCell>
-              <TableCell align="center">
-                {separation.secondBody.info.name}
-                <AstronomicalCoords coords={separation.secondBody.ephemeris.coords} />
               </TableCell>
               <TableCell align="right">
                 {formatDegrees(separation.separation)}

@@ -1,7 +1,9 @@
 import { Radians } from "@astro/coords";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver2 } from "@jpl/state/solver2";
-import { SimpleSeparation } from '.';
+import { SeparationWithPositions, Separation2 } from '.';
+import { JulianDay } from "@astro/JulianDay";
+import { timeProperties } from "../utils/time";
 
 export class Separations2 {
 
@@ -12,17 +14,34 @@ export class Separations2 {
   }
 
   static buildSeparationFunction(stateSolver: StateSolver2, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
-    return (es: number) => Radians.between(
+    return (es: number): number => Radians.between(
       stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es),
       stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es)
     );
   }
 
-  for(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromEs: number, toEs: number, interval: number): SimpleSeparation[] {
+  static buildPositionsAndSeparationFunction(stateSolver: StateSolver2, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
+    return (es: number): SeparationWithPositions => {
+      const firstBodyPosition = stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es);
+      const secondBodyPosition = stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es);
+      return {
+        es,
+        firstBodyPosition,
+        secondBodyPosition,
+        separation: Radians.between(
+          stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es),
+          stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es)
+        )
+      }
+    }
+  }
+
+  for(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Separation2[] {
     const separationFunction = Separations2.buildSeparationFunction(this.stateSolver, targetBodyId, observerBodyId);
-    return EphemerisSeconds.forRange(fromEs, toEs, interval)
-      .map<SimpleSeparation>(es => ({
-        jde: EphemerisSeconds.toJde(es),
+    return JulianDay.forRange(fromJde, toJde, interval)
+      .map(EphemerisSeconds.fromJde)
+      .map<Separation2>(es => ({
+        ...timeProperties(es),
         separation: separationFunction(es)
       }));
   }

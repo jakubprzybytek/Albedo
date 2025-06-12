@@ -5,12 +5,13 @@ import { Radians, RectangularCoordinates } from '@astro/coords';
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { createPairs } from '@astro/utils/Pairs';
-import { States, Separations2, Ephemerides2 } from '@astro/scripts';
-import { Conjunction } from '.';
+import { States, Separations2, Ephemerides2, timeProperties } from '@astro/scripts';
+import { Conjunction2 } from '.';
 
 const PRELIMINARY_INTERVAL = 1;
+const PRELIMINARY_INTERVAL_ES = EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
 
-const SEPARATION_THRESHOLD = Radians.fromDegrees(2);
+const SEPARATION_THRESHOLD = Radians.fromDegrees(1);
 
 type TimedSeparation = {
   es: number;
@@ -21,11 +22,14 @@ export class Conjunctions2 {
 
   readonly stateSolver: StateSolver2;
 
+  readonly ephemerides: Ephemerides2;
+
   constructor(stateSolver: StateSolver2) {
     this.stateSolver = stateSolver;
+    this.ephemerides = new Ephemerides2(this.stateSolver);
   }
 
-  for(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction[] {
+  for(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction2[] {
     const bodies = bodyIdies
       .map(jplBodyFromId)
       .filter((jplBody): jplBody is JplBody => !!jplBody);
@@ -33,12 +37,10 @@ export class Conjunctions2 {
     const esArray = JulianDay.forRange(fromJde - PRELIMINARY_INTERVAL, toJde + PRELIMINARY_INTERVAL, PRELIMINARY_INTERVAL)
       .map(EphemerisSeconds.fromJde);
 
-    const ephemerides = new Ephemerides2(this.stateSolver);
-
     const positionsByBody = bodyIdies
       .reduce((acc, bodyId) => acc.set(bodyId, esArray.map(States.buildPositionFunction(this.stateSolver, bodyId))), new Map<JplBodyId, RectangularCoordinates[]>());
 
-    const conjuctions: Conjunction[] = [];
+    const conjuctions: Conjunction2[] = [];
 
     for (const [firstBody, secondBody] of createPairs(bodies)) {
       const firstBodyPositions = positionsByBody.get(firstBody.id);
@@ -59,9 +61,9 @@ export class Conjunctions2 {
         .filter(separation => separation.separation < separationLimit)
         .map<TimedSeparation>(separation => {
           // console.log(`jde: ${separation.jde}, date=${JulianDay.toDateTime(separation.jde).toISOString()}, angle=${Radians.toDegrees(separation.separation)}°`);
-          const a = separation.es - EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+          const a = separation.es - PRELIMINARY_INTERVAL_ES;
           const b = separation.es;
-          const c = separation.es + EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+          const c = separation.es + PRELIMINARY_INTERVAL_ES;
           const separationFunction = Separations2.buildSeparationFunction(this.stateSolver, firstBody.id, secondBody.id);
           const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
           // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
@@ -70,19 +72,17 @@ export class Conjunctions2 {
             separation: minSeparation
           }
         })
-        .map<Conjunction>(separation => ({
-          jde: EphemerisSeconds.toJde(separation.es),
-          tde: JulianDay.toDateTime(EphemerisSeconds.toJde(separation.es)),
+        .map<Conjunction2>(separation => ({
+          ...timeProperties(separation.es),
           firstBody: {
             info: firstBody,
-            ephemeris: ephemerides.single(firstBody.id, separation.es)
+            coords: this.ephemerides.single(firstBody.id, separation.es)
           },
           secondBody: {
             info: secondBody,
-            ephemeris: ephemerides.single(secondBody.id, separation.es)
+            coords: this.ephemerides.single(secondBody.id, separation.es)
           },
           separation: separation.separation,
-          positionAngle: NaN
         }))
         .forEach(conjuction => conjuctions.push(conjuction));
     }
@@ -90,7 +90,7 @@ export class Conjunctions2 {
     return conjuctions;
   }
 
-  all(fromJde: number, toJde: number): Conjunction[] {
+  all(fromJde: number, toJde: number): Conjunction2[] {
     const bodies = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
     return this.for(bodies, fromJde, toJde, SEPARATION_THRESHOLD);
   }

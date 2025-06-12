@@ -38,7 +38,8 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
         <TableBody>
           {conjunctions.map((conjunction) => (
             <TableRow key={`${conjunction.jde}-${conjunction.firstBody.info.id}-${conjunction.secondBody.info.id}`} sx={{
-              '&:last-child td, &:last-child th': { border: 0 }
+              '&:last-child td, &:last-child th': { border: 0 },
+              '& span': { display: 'block' }
             }}>
               <TableCell>
                 <span>{conjunction.jde} (JDE)</span>
@@ -46,11 +47,11 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
               </TableCell>
               <TableCell align="center">
                 {conjunction.firstBody.info.name}
-                <AstronomicalCoords coords={conjunction.firstBody.ephemeris.coords} />
+                <AstronomicalCoords coords={conjunction.firstBody.coords} />
               </TableCell>
               <TableCell align="center">
                 {conjunction.secondBody.info.name}
-                <AstronomicalCoords coords={conjunction.secondBody.ephemeris.coords} />
+                <AstronomicalCoords coords={conjunction.secondBody.coords} />
               </TableCell>
               <TableCell align="right">
                 {formatDegrees(conjunction.separation)}

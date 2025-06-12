@@ -1,7 +1,7 @@
 import { get } from "aws-amplify/api";
-import type { SeparationWithBodies } from '@lambda/separations';
+import type { Separation } from '@lambda/separations';
 
-export type { SeparationWithBodies };
+export type { Separation };
 
 export type SeparationsQuery = {
     target: string;
@@ -11,7 +11,7 @@ export type SeparationsQuery = {
     interval: number;
 };
 
-export default async function getSeparations(query: SeparationsQuery): Promise<SeparationWithBodies[]> {
+export default async function getSeparations(query: SeparationsQuery): Promise<Separation[]> {
     const path = '/api/separations';
     const params = {
         ...query,
@@ -24,5 +24,5 @@ export default async function getSeparations(query: SeparationsQuery): Promise<S
     }).response;
 
     const bodyJson = await body.json() as any;
-    return bodyJson as SeparationWithBodies[];
+    return bodyJson as Separation[];
 }

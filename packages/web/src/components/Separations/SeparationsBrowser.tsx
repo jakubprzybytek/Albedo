@@ -6,7 +6,7 @@ import Tab from '@mui/material/Tab';
 import SeparationsQueryForm from './SeparationsQueryForm';
 import SeparationsTable from './SeparationsTable';
 import SeparationsChart from "./SeparationsChart";
-import type { SeparationsQuery, SeparationWithBodies } from "@/sdk/GetSeparations";
+import type { SeparationsQuery, Separation } from "@/sdk/GetSeparations";
 import useQuery from "@/forms/useQuery";
 import getSeparations from "@/sdk/GetSeparations";
 
@@ -31,8 +31,8 @@ function TabPanel(props: TabPanelProps) {
 export default function SeparationsBrowser(): JSX.Element {
   const [openedTab, setOpenedTab] = useState(0);
 
-  const [separations, setSeparations] = useState<SeparationWithBodies[]>([]);
-  const query = useQuery<SeparationsQuery, SeparationWithBodies[]>(fetchData, setSeparations);
+  const [separations, setSeparations] = useState<Separation[]>([]);
+  const query = useQuery<SeparationsQuery, Separation[]>(fetchData, setSeparations);
 
   async function fetchData(params: SeparationsQuery) {
     return await getSeparations(params);

@@ -1,5 +1,3 @@
-import type { SeparationWithBodies } from "@astro/scripts";
+import type { Separation2 } from "@astro/scripts";
 
-export type { SeparationWithBodies };
-
-export type GetSeparationsResponseType = SeparationWithBodies[];
+export type { Separation2 };

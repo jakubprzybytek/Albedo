@@ -50,6 +50,9 @@ function separationFunction(bodies: JplBodyId[]) {
   return buildSeparationFunctionfor;
 }
 
+/**
+ * @deprecated The method should not be used
+ */
 export class Conjunctions {
 
   static for(bodies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction[] {

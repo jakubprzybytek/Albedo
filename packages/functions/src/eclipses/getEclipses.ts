@@ -3,30 +3,33 @@ import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate } from '../LambdaParams';
 import { JulianDay } from '@astro';
 import { Eclipses, Eclipse } from '@astro/scripts';
+import { EphemerisSeconds } from "@jpl";
+import { kernelRepository } from "@jpl/data/de440.full";
 
 type GetEclipsesParams = {
-    fromTde: Date;
-    toTde: Date;
+  fromTde: Date;
+  toTde: Date;
 }
 
 const parseGetEcilipsesParams: (event: APIGatewayProxyEventV2) => GetEclipsesParams = (event: APIGatewayProxyEventV2) => ({
-    fromTde: mandatoryDate(event, 'fromTde'),
-    toTde: mandatoryDate(event, 'toTde'),
+  fromTde: mandatoryDate(event, 'fromTde'),
+  toTde: mandatoryDate(event, 'toTde'),
 });
 
 export type GetEclipsesReturnType = Eclipse[];
 
 export const handler = lambdaHandler<GetEclipsesReturnType>(event => {
-    const { fromTde, toTde } = parseGetEcilipsesParams(event);
+  const { fromTde, toTde } = parseGetEcilipsesParams(event);
 
-    const fromJde = JulianDay.fromDateObject(fromTde);
-    const toJde = JulianDay.fromDateObject(toTde);
+  const fromJde = JulianDay.fromDateObject(fromTde);
+  const toJde = JulianDay.fromDateObject(toTde);
 
-    console.log(`Find eclipses between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
-    
-    const eclipses = Eclipses.forSunAndMoon(fromJde, toJde);
+  console.log(`Find eclipses between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
 
-    console.log(`Found ${eclipses.length} eclipses.`);
+  const eclipseScripts = new Eclipses(kernelRepository.stateSolver2());
+  const eclipses = eclipseScripts.forSunAndMoon(fromJde, toJde);
 
-    return Success(eclipses);
+  console.log(`Found ${eclipses.length} eclipses.`);
+
+  return Success(eclipses);
 });
