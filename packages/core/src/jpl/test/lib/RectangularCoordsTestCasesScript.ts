@@ -30,7 +30,7 @@ export function runRectangularCoordsTestCases(targetBodyId: JplBodyId, observerB
 
         try {
             const positionDifferences = data.map(state => {
-                const computedPosition = stateSolver.positionFor(EphemerisSeconds.fromDateObject(state.tbd));
+                const computedPosition = stateSolver.positionFor(EphemerisSeconds.fromDateTimeObject(state.tbd));
                 const expectedPosition = new RectangularCoordinates(state.x, state.y, state.z);
 
                 return expectedPosition.subtract(computedPosition).length();
@@ -43,7 +43,7 @@ export function runRectangularCoordsTestCases(targetBodyId: JplBodyId, observerB
 
         try {
             const velocityDifferences = data.map(state => {
-                const computedVelocity = stateSolver.velocityFor(EphemerisSeconds.fromDateObject(state.tbd));
+                const computedVelocity = stateSolver.velocityFor(EphemerisSeconds.fromDateTimeObject(state.tbd));
                 const expectedVelocity = new RectangularCoordinates(state.speed_x, state.speed_y, state.speed_z);
 
                 return expectedVelocity.subtract(computedVelocity).length();

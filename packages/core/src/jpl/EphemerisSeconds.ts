@@ -11,11 +11,12 @@ export class EphemerisSeconds {
     }
 
     static fromDateTime(year: number, month: number, day: number, hours: number, minutes: number, seconds: number): number {
-        return EphemerisSeconds.fromJde(JulianDay.fromDateTime(year, month, day, hours, minutes, seconds));
+        const es = EphemerisSeconds.fromDate(year, month, day);
+        return es + (hours * 3600 + minutes * 60 + seconds);
     }
 
-    static fromDateObject(tbd: Date): number {
-        return EphemerisSeconds.fromJde(JulianDay.fromDateObject(tbd));
+    static fromDateTimeObject(tbd: Date): number {
+        return EphemerisSeconds.fromDateTime(tbd.getUTCFullYear(), tbd.getUTCMonth() + 1, tbd.getUTCDate(), tbd.getUTCHours(), tbd.getUTCMinutes(), tbd.getUTCSeconds());
     }
 
     static fromJde(jde: number): number {

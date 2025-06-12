@@ -8,10 +8,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import AstronomicalCoords from '../../common/AstronomicalCoordinates';
-import type { Ephemeris } from '@/sdk/GetEphemerides';
+import type { Ephemeris2 } from '@/sdk/GetEphemerides';
 
 type EphemerisTablePropsType = {
-  ephemerides: Ephemeris[];
+  ephemerides: Ephemeris2[];
 }
 
 export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType): JSX.Element {

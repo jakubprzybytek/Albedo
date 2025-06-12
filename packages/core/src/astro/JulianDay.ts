@@ -44,6 +44,10 @@ export class JulianDay {
         return this.fromDate(date.getFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
     }
 
+    static fromDateTimeObject(date: Date): number {
+        return this.fromDateTime(date.getFullYear(), date.getUTCMonth() + 1, date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+    }
+
     static forRange(jdFrom: number, jdTo: number, interval: number): number[] {
         const julianDays: number[] = [];
         let currentJd = jdFrom;
