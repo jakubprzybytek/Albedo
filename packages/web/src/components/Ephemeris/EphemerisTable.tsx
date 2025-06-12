@@ -37,7 +37,7 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
             }}>
               <TableCell>
                 <div>{ephemeris.jde} (JDE)</div>
-                <div>{ephemeris.ephemerisSeconds} [ES]</div>
+                <div>{ephemeris.es} [ES]</div>
                 <div><>{ephemeris.tde} (TDE)</></div>
               </TableCell>
               <TableCell align="right">
