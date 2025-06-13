@@ -8,8 +8,7 @@ import { createPairs } from '@astro/utils/Pairs';
 import { States, Separations2, Ephemerides2, timeProperties } from '@astro/scripts';
 import { Conjunction2 } from '.';
 
-const PRELIMINARY_INTERVAL = 1;
-const PRELIMINARY_INTERVAL_ES = EphemerisSeconds.fromDays(PRELIMINARY_INTERVAL);
+const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
 const SEPARATION_THRESHOLD = Radians.fromDegrees(1);
 
@@ -34,8 +33,9 @@ export class Conjunctions2 {
       .map(jplBodyFromId)
       .filter((jplBody): jplBody is JplBody => !!jplBody);
 
-    const esArray = JulianDay.forRange(fromJde - PRELIMINARY_INTERVAL, toJde + PRELIMINARY_INTERVAL, PRELIMINARY_INTERVAL)
-      .map(EphemerisSeconds.fromJde);
+    const correctedFromEs = EphemerisSeconds.fromJde(fromJde) - PRELIMINARY_INTERVAL;
+    const correctedToEs = EphemerisSeconds.fromJde(toJde) + PRELIMINARY_INTERVAL;
+    const esArray = EphemerisSeconds.forRange(correctedFromEs, correctedToEs, PRELIMINARY_INTERVAL);
 
     const positionsByBody = bodyIdies
       .reduce((acc, bodyId) => acc.set(bodyId, esArray.map(States.buildPositionFunction(this.stateSolver, bodyId))), new Map<JplBodyId, RectangularCoordinates[]>());
@@ -61,9 +61,9 @@ export class Conjunctions2 {
         .filter(separation => separation.separation < separationLimit)
         .map<TimedSeparation>(separation => {
           // console.log(`jde: ${separation.jde}, date=${JulianDay.toDateTime(separation.jde).toISOString()}, angle=${Radians.toDegrees(separation.separation)}°`);
-          const a = separation.es - PRELIMINARY_INTERVAL_ES;
+          const a = separation.es - PRELIMINARY_INTERVAL;
           const b = separation.es;
-          const c = separation.es + PRELIMINARY_INTERVAL_ES;
+          const c = separation.es + PRELIMINARY_INTERVAL;
           const separationFunction = Separations2.buildSeparationFunction(this.stateSolver, firstBody.id, secondBody.id);
           const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
           // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);

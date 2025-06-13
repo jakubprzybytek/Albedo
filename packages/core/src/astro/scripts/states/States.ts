@@ -19,8 +19,8 @@ export class States {
     return this.stateSolver.positionFor(targetBodyId, observerBodyId, es);
   }
 
-  positions(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromEs: number, toEs: number, interval: number): PositionInTime[] {
-    return EphemerisSeconds.forRange(fromEs, toEs, interval)
+  positions(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromEs: number, toEs: number, intervalEs: number): PositionInTime[] {
+    return EphemerisSeconds.forRange(fromEs, toEs, intervalEs)
       .map<PositionInTime>(es => ({
         es,
         coords: this.stateSolver.positionFor(targetBodyId, observerBodyId, es)

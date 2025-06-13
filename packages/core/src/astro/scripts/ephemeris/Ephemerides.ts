@@ -37,8 +37,10 @@ export class Ephemerides2 {
   }
 
   simple(tagetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Ephemeris2[] {
-    return JulianDay.forRange(fromJde, toJde, interval)
-      .map(EphemerisSeconds.fromJde)
+    const fromEs = EphemerisSeconds.fromJde(fromJde);
+    const toEs = EphemerisSeconds.fromJde(toJde);
+    const itnervalEs = EphemerisSeconds.fromDays(interval);
+    return EphemerisSeconds.forRange(fromEs, toEs, itnervalEs)
       .map(es => ({
         ...timeProperties(es),
         coords: AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es))

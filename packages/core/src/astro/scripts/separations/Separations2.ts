@@ -38,8 +38,10 @@ export class Separations2 {
 
   for(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Separation2[] {
     const separationFunction = Separations2.buildSeparationFunction(this.stateSolver, targetBodyId, observerBodyId);
-    return JulianDay.forRange(fromJde, toJde, interval)
-      .map(EphemerisSeconds.fromJde)
+    const fromEs = EphemerisSeconds.fromJde(fromJde);
+    const toEs = EphemerisSeconds.fromJde(toJde);
+    const itnervalEs = EphemerisSeconds.fromDays(interval);
+    return EphemerisSeconds.forRange(fromEs, toEs, itnervalEs)
       .map<Separation2>(es => ({
         ...timeProperties(es),
         separation: separationFunction(es)
