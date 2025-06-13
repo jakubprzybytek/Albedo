@@ -4,7 +4,6 @@ import { States } from "../States";
 import { kernelRepository } from "@jpl/data/de440.testData";
 import { loadWcgSTateVectorCsv } from "@astro/utils/WcgStateVectorCsvReader";
 import { RectangularCoordinates } from "@math";
-import { JulianDay } from "@astro/JulianDay";
 
 describe("States", () => {
   const states = new States(kernelRepository.stateSolver2());

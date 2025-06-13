@@ -1,31 +1,34 @@
 import { average } from 'simple-statistics';
-import { AstronomicalCoordinates, JulianDay, Radians } from '../../../astro/coords';
-import { Ephemerides } from '../../../astro/ephemeris';
-import { JplBodyId } from '../..';
+import { AstronomicalCoordinates, Radians } from '@astro/coords';
+import { Ephemerides2 } from '@astro/scripts';
+import { EphemerisSeconds, JplBodyId } from '@jpl';
+import { kernelRepository } from '@jpl/data/de440.full';
 import { AstronomicalCoordsData } from './WebGeocalcCSV';
 
 type Stats = {
-    separationAverage?: number;
-    error?: any;
+  separationAverage?: number;
+  error?: any;
 };
 
 export function runAstronomicalCoordsTestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: AstronomicalCoordsData[]): Stats {
-    const stats: Stats = {};
+  const epherisScripts = new Ephemerides2(kernelRepository.stateSolver2());
+  
+  const stats: Stats = {};
 
-    try {
-        const separations = data.map((testCase) => {
-            const jde = JulianDay.fromDateObject(testCase.tbd);
-            const computedEphemeris = Ephemerides.simple(targetBodyId, jde, jde, 1)[0].coords;
-            const expectedEphemeris = new AstronomicalCoordinates(Radians.fromDegrees(testCase.rightAscension), Radians.fromDegrees(testCase.declination));
+  try {
+    const separations = data.map((testCase) => {
+      const es = EphemerisSeconds.fromDateTimeObject(testCase.tbd);
+      const computedEphemeris = epherisScripts.single(targetBodyId, es);
+      const expectedEphemeris = new AstronomicalCoordinates(Radians.fromDegrees(testCase.rightAscension), Radians.fromDegrees(testCase.declination));
 
-            return Radians.separation(expectedEphemeris, computedEphemeris);
-        })
+      return Radians.separation(expectedEphemeris, computedEphemeris);
+    })
 
-        stats.separationAverage = average(separations);
+    stats.separationAverage = average(separations);
 
-    } catch (e: any) {
-        stats.error = e;
-    }
+  } catch (e: any) {
+    stats.error = e;
+  }
 
-    return stats;
+  return stats;
 };

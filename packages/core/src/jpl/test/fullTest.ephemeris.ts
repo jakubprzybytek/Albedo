@@ -53,7 +53,7 @@ async function testSuite(folder: string, fileNamePrefix: string, description: st
 }
 
 export async function runEphemerisTestSuite() {
-    await testSuite('./api/jpl/test/ephemeris-reference', 'WGC_StateVector', 'Computing ephemeris with standard configuration for corrections (light time and star aberration corrections)');
+    await testSuite('./src/jpl/test/ephemeris-reference', 'WGC_StateVector', 'Computing ephemeris with standard configuration for corrections (light time and star aberration corrections)');
 }
 
 (async () => {
