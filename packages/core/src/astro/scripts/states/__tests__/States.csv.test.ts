@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { EphemerisSeconds, JplBodyId } from "@jpl";
+import path from "node:path";
+import { describe, it } from "vitest";
+import { JplBodyId } from "@jpl";
 import { States } from "../States";
 import { kernelRepository } from "@jpl/data/de440.testData";
 import { loadWcgSTateVectorCsv } from "@astro/utils/WcgStateVectorCsvReader";
@@ -9,7 +10,7 @@ describe("States", () => {
   const states = new States(kernelRepository.stateSolver2());
 
   it("should compare results with csv file", () => {
-    const wgcStateVectorFile = loadWcgSTateVectorCsv("packages/core/src/astro/scripts/states/__tests__/WGC_StateVector_20250612141620.csv");
+    const wgcStateVectorFile = loadWcgSTateVectorCsv(path.join(__dirname, 'WGC_StateVector_20250612141620.csv'));
 
     for (const stateRow of wgcStateVectorFile) {
       const position = states.position(JplBodyId.Moon, JplBodyId.EarthMoonBarycenter, stateRow.es);

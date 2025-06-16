@@ -1,5 +1,5 @@
-import { runStatesTestSuite } from "./fullTest.states";
-import { runEphemerisTestSuite } from "./fullTest.ephemeris";
+import { runStatesTestSuite } from "./suites/states/fullTest.states";
+import { runEphemerisTestSuite } from "./suites/ephemeris/fullTest.ephemeris";
 
 (async () => {
     await runStatesTestSuite();

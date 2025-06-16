@@ -1,8 +1,9 @@
 import { readdirSync, readFileSync } from "node:fs";
-import { jplBodyFromString } from "..";
-import { Radians } from "../../astro/coords";
-import { runAstronomicalCoordsTestCases } from "./lib/AstronomicalCoordsTestCasesScript";
-import { readAstronomicalCoordsFromWebGeocalcCSVFile } from "./lib/WebGeocalcCSV";
+import path from "node:path";
+import { jplBodyFromString } from "@jpl";
+import { Radians } from "@astro/coords";
+import { runAstronomicalCoordsTestCases } from "./AstronomicalCoordsTestCasesScript";
+import { readAstronomicalCoordsFromWebGeocalcCSVFile } from "../../lib/WebGeocalcCSV";
 
 function findWebGeocalcCSVFiles(folder: string, fileNamePrefix: string): string[] {
     return readdirSync(folder)
@@ -23,7 +24,7 @@ async function testSuite(folder: string, fileNamePrefix: string, description: st
 
     console.log('## Results\n');
     console.log(`Test suites: ${testFileNames.length}\n`);
-    console.log('| Target body | Observer body | Test cases | Avg ephemeris difference [°]  | File name |');
+    console.log('| Target body | Observer body | Test cases | Avg ephemeris difference [°]    | File name |');
     console.log('| ----------- | ------------- | ---------- | ------------------------------- | --------- |');
 
     for (const testFileName of testFileNames) {
@@ -53,9 +54,9 @@ async function testSuite(folder: string, fileNamePrefix: string, description: st
 }
 
 export async function runEphemerisTestSuite() {
-    await testSuite('./src/jpl/test/ephemeris-reference', 'WGC_StateVector', 'Computing ephemeris with standard configuration for corrections (light time and star aberration corrections)');
+    await testSuite(path.join(__dirname, 'data/ephemeris-reference'), 'WGC_StateVector', 'Computing ephemeris with standard configuration for corrections (light time and star aberration corrections)');
 }
 
-(async () => {
-    await runEphemerisTestSuite();
-})();
+// (async () => {
+//     await runEphemerisTestSuite();
+// })();

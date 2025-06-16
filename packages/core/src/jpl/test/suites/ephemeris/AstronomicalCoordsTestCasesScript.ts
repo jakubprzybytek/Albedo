@@ -3,7 +3,7 @@ import { AstronomicalCoordinates, Radians } from '@astro/coords';
 import { Ephemerides2 } from '@astro/scripts';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { kernelRepository } from '@jpl/data/de440.full';
-import { AstronomicalCoordsData } from './WebGeocalcCSV';
+import { AstronomicalCoordsData } from '../../lib/WebGeocalcCSV';
 
 type Stats = {
   separationAverage?: number;

@@ -1,9 +1,9 @@
 import { average } from 'simple-statistics';
-import { RectangularCoordsData } from './WebGeocalcCSV';
 import { RectangularCoordinates } from '@astro/coords';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { CorrectionType } from '@jpl/state/solvers';
 import { kernelRepository } from '@jpl/data/de440.full';
+import { RectangularCoordsData } from '../../lib/WebGeocalcCSV';
 
 export type SolverOptions = {
     corrections: CorrectionType[];

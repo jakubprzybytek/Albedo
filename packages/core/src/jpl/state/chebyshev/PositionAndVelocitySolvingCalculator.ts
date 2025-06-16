@@ -17,7 +17,7 @@ export class PositionAndVelocitySolvingCalculator implements PositionAndVelocity
         const record = this.positionChebyshevRecords.find(record => record.timeSpan.inside(ephemerisSeconds));
 
         if (record === undefined) {
-            throw new Error(`No position Chebyshev records found for jde=${ephemerisSeconds}`);
+            throw new Error(`No position Chebyshev records found for es=${ephemerisSeconds}`);
         }
 
         const normalizedTime = record.timeSpan.normalizeFor(ephemerisSeconds);

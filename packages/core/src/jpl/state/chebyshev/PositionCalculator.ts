@@ -19,7 +19,7 @@ export class PositionCalculator {
                 .find(record => record.timeSpan.inside(ephemerisSeconds));
 
             if (foundRecord === undefined) {
-                throw new Error(`No position Chebyshev records found for jde=${ephemerisSeconds}`);
+                throw new Error(`No position Chebyshev records found for es=${ephemerisSeconds}`);
             }
 
             this.cachedPositionChebyshevRecord = foundRecord;

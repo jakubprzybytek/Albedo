@@ -1,8 +1,9 @@
 import { readdirSync, readFileSync } from "node:fs";
-import { jplBodyFromString } from "..";
-import { CorrectionType } from "../state/solvers";
-import { runRectangularCoordsTestCases, SolverOptions } from './lib/RectangularCoordsTestCasesScript';
-import { readRectangularCoordsFromWebGeocalcCSVFile } from "./lib/WebGeocalcCSV";
+import path from "node:path";
+import { jplBodyFromString } from "@jpl";
+import { CorrectionType } from "@jpl/state/solvers";
+import { runRectangularCoordsTestCases, SolverOptions } from './RectangularCoordsTestCasesScript';
+import { readRectangularCoordsFromWebGeocalcCSVFile } from "../../lib/WebGeocalcCSV";
 
 function findWebGeocalcCSVFiles(folder: string, fileNamePrefix: string): string[] {
     return readdirSync(folder)
@@ -24,12 +25,12 @@ async function testSuite(folder: string, fileNamePrefix: string, solverOptions: 
 
     console.log('## Results\n');
     console.log(`Test suites: ${testFileNames.length}\n`);
-    console.log('| Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name |');
-    console.log('| ----------- | ------------- | ---------- | ---------------------- | ------------------------- | --------- |');
+    console.log('| Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name | Kernels |');
+    console.log('| ----------- | ------------- | ---------- | ---------------------- | ------------------------- | --------- | ------- |');
 
     for (const testFileName of testFileNames) {
         const fileContent = readFileSync(testFileName).toString();
-        const { targetBodyName, observerBodyName, data } = await readRectangularCoordsFromWebGeocalcCSVFile(fileContent);
+        const { targetBodyName, observerBodyName, kernels, data } = await readRectangularCoordsFromWebGeocalcCSVFile(fileContent);
 
         const targetBodyId = jplBodyFromString(targetBodyName)?.id;
         if (targetBodyId === undefined) {
@@ -50,19 +51,19 @@ async function testSuite(folder: string, fileNamePrefix: string, solverOptions: 
 
         console.log(`| ${targetBodyName} | ${observerBodyName} | ${data.length}`
             + ` | ${positionSummary} | ${velocitySummary}`
-            + ` | ${fileName} |`);
+            + ` | ${fileName} | ${kernels.join(', ')} |`);
     }
 }
 
 export async function runStatesTestSuite() {
-    await testSuite('./src/jpl/test/states-reference-uncorrected', 'WGC_StateVector', { corrections: [] },
+    await testSuite(path.join(__dirname, 'data/states-reference-uncorrected'), 'WGC_StateVector', { corrections: [] },
         'Computing body states without any corrections');
-    await testSuite('./src/jpl/test/states-reference-lightTimeCorrected', 'WGC_StateVector', { corrections: [CorrectionType.LightTime] },
+    await testSuite(path.join(__dirname, 'data/states-reference-lightTimeCorrected'), 'WGC_StateVector', { corrections: [CorrectionType.LightTime] },
         'Computing body states with light time correction applied');
-    await testSuite('./src/jpl/test/states-reference-starAberrationCorrected', 'WGC_StateVector', { corrections: [CorrectionType.LightTime, CorrectionType.StarAbberation] },
+    await testSuite(path.join(__dirname, 'data/states-reference-starAberrationCorrected'), 'WGC_StateVector', { corrections: [CorrectionType.LightTime, CorrectionType.StarAbberation] },
         'Computing body states with star aberration and light time correction applied');
 }
 
-(async () => {
-    await runStatesTestSuite();
-})();
+// (async () => {
+//     await runStatesTestSuite();
+// })();
