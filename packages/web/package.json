@@ -9,14 +9,14 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^6.11.0",
+    "@aws-amplify/ui-react": "^6.11.2",
     "@date-io/date-fns": "^3.2.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.2",
     "@mui/lab": "^7.0.0-beta.11",
     "@mui/material": "^7.0.2",
-    "@mui/x-date-pickers": "^8.0.0",
+    "@mui/x-date-pickers": "^8.5.1",
     "@react-router/node": "^7.6.0",
     "@react-router/serve": "^7.5.1",
     "aws-amplify": "^6.14.3",
