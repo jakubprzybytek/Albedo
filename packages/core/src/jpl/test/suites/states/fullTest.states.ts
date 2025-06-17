@@ -7,12 +7,13 @@ import { readRectangularCoordsFromWebGeocalcCSVFile } from "../../lib/WebGeocalc
 import { runState2TestCases } from "./State2TestCasesScript";
 import { buildStateTestCaseRunner } from './StateTestCasesScript';
 import { buildReportWriter, findFiles, ReportWriter } from "@jpl/test/lib/Files";
+import { formatDistanceStrict } from "date-fns";
 
 async function testSuite(testCaseFileNames: string[], writer: ReportWriter, stateTestCaseRunner: StateTestCaseRunner, description: string) {
   writer(`## ${description}\n`);
 
-  writer('| Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name | Kernels |');
-  writer('| ----------- | ------------- | ---------- | ---------------------- | ------------------------- | --------- | ------- |');
+  writer('| Target body | Observer body | Test cases | Time span | Interval | Avg postion error [km] | Avg velocity error [km/s] | File name | Kernels |');
+  writer('| ----------- | ------------- | ---------- | --------- | -------- | ---------------------- | ------------------------- | --------- | ------- |');
 
   for (const testFileName of testCaseFileNames) {
     const fileContent = readFileSync(testFileName).toString();
@@ -28,6 +29,9 @@ async function testSuite(testCaseFileNames: string[], writer: ReportWriter, stat
       throw Error(`Cannot parse body name to JplBodyId: ${observerBodyName}`);
     }
 
+    const timeSpan = formatDistanceStrict(data[data.length - 1].tbd, data[0].tbd);
+    const timeInterval = formatDistanceStrict(data[1].tbd, data[0].tbd);
+
     const stats = stateTestCaseRunner(targetBodyId, observerBodyId, data);
 
     const positionSummary = stats.positionDifferenceAverage?.toPrecision(4) || stats.positionComputationError;
@@ -35,7 +39,7 @@ async function testSuite(testCaseFileNames: string[], writer: ReportWriter, stat
 
     var fileName = /[^/]*$/.exec(testFileName)?.[0] || testFileName;
 
-    writer(`| ${targetBodyName} | ${observerBodyName} | ${data.length}`
+    writer(`| ${targetBodyName} | ${observerBodyName} | ${data.length} | ${timeSpan} | ${timeInterval}`
       + ` | ${positionSummary} | ${velocitySummary}`
       + ` | ${fileName} | ${kernels.join(', ')} |`);
   }

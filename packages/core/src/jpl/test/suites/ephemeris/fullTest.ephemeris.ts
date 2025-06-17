@@ -5,12 +5,13 @@ import { Radians } from "@astro/coords";
 import { runEphemerisTestCases } from "./EphemerisTestCasesScript";
 import { readAstronomicalCoordsFromWebGeocalcCSVFile } from "../../lib/WebGeocalcCSV";
 import { buildReportWriter, findFiles, ReportWriter } from "@jpl/test/lib/Files";
+import { formatDistanceStrict } from "date-fns";
 
 async function testSuite(testCaseFileNames: string[], writer: ReportWriter, description: string) {
   writer(`## ${description}\n`);
 
-  writer('| Target body | Observer body | Test cases | Avg ephemeris difference [°]    | File name |');
-  writer('| ----------- | ------------- | ---------- | ------------------------------- | --------- |');
+  writer('| Target body | Observer body | Test cases | Time span | Interval | Avg ephemeris difference [°]    | File name |');
+  writer('| ----------- | ------------- | ---------- | --------- | -------- | ------------------------------- | --------- |');
 
   for (const testFileName of testCaseFileNames) {
     const fileContent = readFileSync(testFileName).toString();
@@ -26,13 +27,16 @@ async function testSuite(testCaseFileNames: string[], writer: ReportWriter, desc
       throw Error(`Cannot parse body name to JplBodyId: ${observerBodyName}`);
     }
 
+    const timeSpan = formatDistanceStrict(data[data.length - 1].tbd, data[0].tbd);
+    const timeInterval = formatDistanceStrict(data[1].tbd, data[0].tbd);
+
     const stats = runEphemerisTestCases(targetBodyId, observerBodyId, data);
 
     const separationSummary = stats.separationAverage ? Radians.toDegrees(stats.separationAverage).toPrecision(4) : stats.error;
 
     var fileName = /[^/]*$/.exec(testFileName)?.[0] || testFileName;
 
-    writer(`| ${targetBodyName} | ${observerBodyName} | ${data.length}`
+    writer(`| ${targetBodyName} | ${observerBodyName} | ${data.length} | ${timeSpan} | ${timeInterval}`
       + ` | ${separationSummary}`
       + ` | ${fileName} |`);
   }
