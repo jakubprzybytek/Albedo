@@ -2,6 +2,7 @@ import { runStatesTestSuite } from "./suites/states/fullTest.states";
 import { runEphemerisTestSuite } from "./suites/ephemeris/fullTest.ephemeris";
 
 (async () => {
-    await runStatesTestSuite();
-    await runEphemerisTestSuite();
+  const timestamp = new Date().toISOString().replace(/\..+/, '').replace(/[:.-]/g, '');
+  await runStatesTestSuite(timestamp);
+  await runEphemerisTestSuite(timestamp);
 })();

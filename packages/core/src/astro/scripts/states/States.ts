@@ -27,4 +27,8 @@ export class States {
       }));
   }
 
+  velocity(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number): RectangularCoordinates {
+    throw new Error('Velocity calculation not implemented yet!');
+  }
+
 }

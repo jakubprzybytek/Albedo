@@ -1,67 +1,85 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { jplBodyFromString } from "@jpl";
 import { CorrectionType } from "@jpl/state/solvers";
-import { runRectangularCoordsTestCases, SolverOptions } from './RectangularCoordsTestCasesScript';
+import { StateTestCaseRunner } from ".";
 import { readRectangularCoordsFromWebGeocalcCSVFile } from "../../lib/WebGeocalcCSV";
+import { runState2TestCases } from "./State2TestCasesScript";
+import { buildStateTestCaseRunner } from './StateTestCasesScript';
+import { buildReportWriter, findFiles, ReportWriter } from "@jpl/test/lib/Files";
 
-function findWebGeocalcCSVFiles(folder: string, fileNamePrefix: string): string[] {
-    return readdirSync(folder)
-        .filter((fileName) => fileName.startsWith(fileNamePrefix))
-        .map((fileName) => `${folder}/${fileName}`);
-}
+async function testSuite(testCaseFileNames: string[], writer: ReportWriter, stateTestCaseRunner: StateTestCaseRunner, description: string) {
+  writer(`## ${description}\n`);
 
-async function testSuite(folder: string, fileNamePrefix: string, solverOptions: SolverOptions, description: string) {
-    console.log('# Test cases\n');
+  writer('| Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name | Kernels |');
+  writer('| ----------- | ------------- | ---------- | ---------------------- | ------------------------- | --------- | ------- |');
 
-    console.log('## Overview\n');
-    console.log(`${description}\n`);
+  for (const testFileName of testCaseFileNames) {
+    const fileContent = readFileSync(testFileName).toString();
+    const { targetBodyName, observerBodyName, kernels, data } = await readRectangularCoordsFromWebGeocalcCSVFile(fileContent);
 
-    console.log('## Details\n');
-    console.log(`Folder: \`${folder}\`, file name prefix: \`${fileNamePrefix}\`\n`);
-    console.log(`Corrections: ${solverOptions.corrections.length === 0 ? '*none*' : solverOptions.corrections}\n`);
-
-    const testFileNames = findWebGeocalcCSVFiles(folder, fileNamePrefix);
-
-    console.log('## Results\n');
-    console.log(`Test suites: ${testFileNames.length}\n`);
-    console.log('| Target body | Observer body | Test cases | Avg postion error [km] | Avg velocity error [km/s] | File name | Kernels |');
-    console.log('| ----------- | ------------- | ---------- | ---------------------- | ------------------------- | --------- | ------- |');
-
-    for (const testFileName of testFileNames) {
-        const fileContent = readFileSync(testFileName).toString();
-        const { targetBodyName, observerBodyName, kernels, data } = await readRectangularCoordsFromWebGeocalcCSVFile(fileContent);
-
-        const targetBodyId = jplBodyFromString(targetBodyName)?.id;
-        if (targetBodyId === undefined) {
-            throw Error(`Cannot parse body name to JplBodyId: ${targetBodyName}`);
-        }
-
-        const observerBodyId = jplBodyFromString(observerBodyName)?.id;
-        if (observerBodyId === undefined) {
-            throw Error(`Cannot parse body name to JplBodyId: ${observerBodyName}`);
-        }
-
-        const stats = runRectangularCoordsTestCases(targetBodyId, observerBodyId, data, solverOptions);
-
-        const positionSummary = stats.positionDifferenceAverage?.toPrecision(4) || stats.positionComputationError;
-        const velocitySummary = stats.velocityDifferenceAverage?.toPrecision(4) || stats.velocityComputationError;
-
-        var fileName = /[^/]*$/.exec(testFileName)?.[0] || testFileName;
-
-        console.log(`| ${targetBodyName} | ${observerBodyName} | ${data.length}`
-            + ` | ${positionSummary} | ${velocitySummary}`
-            + ` | ${fileName} | ${kernels.join(', ')} |`);
+    const targetBodyId = jplBodyFromString(targetBodyName)?.id;
+    if (targetBodyId === undefined) {
+      throw Error(`Cannot parse body name to JplBodyId: ${targetBodyName}`);
     }
+
+    const observerBodyId = jplBodyFromString(observerBodyName)?.id;
+    if (observerBodyId === undefined) {
+      throw Error(`Cannot parse body name to JplBodyId: ${observerBodyName}`);
+    }
+
+    const stats = stateTestCaseRunner(targetBodyId, observerBodyId, data);
+
+    const positionSummary = stats.positionDifferenceAverage?.toPrecision(4) || stats.positionComputationError;
+    const velocitySummary = stats.velocityDifferenceAverage?.toPrecision(4) || stats.velocityComputationError;
+
+    var fileName = /[^/]*$/.exec(testFileName)?.[0] || testFileName;
+
+    writer(`| ${targetBodyName} | ${observerBodyName} | ${data.length}`
+      + ` | ${positionSummary} | ${velocitySummary}`
+      + ` | ${fileName} | ${kernels.join(', ')} |`);
+  }
 }
 
-export async function runStatesTestSuite() {
-    await testSuite(path.join(__dirname, 'data/states-reference-uncorrected'), 'WGC_StateVector', { corrections: [] },
-        'Computing body states without any corrections');
-    await testSuite(path.join(__dirname, 'data/states-reference-lightTimeCorrected'), 'WGC_StateVector', { corrections: [CorrectionType.LightTime] },
-        'Computing body states with light time correction applied');
-    await testSuite(path.join(__dirname, 'data/states-reference-starAberrationCorrected'), 'WGC_StateVector', { corrections: [CorrectionType.LightTime, CorrectionType.StarAbberation] },
-        'Computing body states with star aberration and light time correction applied');
+export async function runStatesTestSuite(timestamp: string) {
+  const { append, flush } = buildReportWriter('states', timestamp);
+
+  append('# State\n');
+
+  await testSuite(
+    findFiles(path.join(__dirname, 'data/states-reference-uncorrected'), 'WGC_StateVector'),
+    append,
+    buildStateTestCaseRunner({ corrections: [] }),
+    'State without correction'
+  );
+  await testSuite(findFiles(path.join(__dirname, 'data/states-reference-lightTimeCorrected'), 'WGC_StateVector'),
+    append,
+    buildStateTestCaseRunner({ corrections: [CorrectionType.LightTime] }),
+    'State with light time correction applied'
+  );
+  await testSuite(findFiles(path.join(__dirname, 'data/states-reference-starAberrationCorrected'), 'WGC_StateVector'),
+    append,
+    buildStateTestCaseRunner({ corrections: [CorrectionType.LightTime, CorrectionType.StarAbberation] }),
+    'State with star aberration and light time correction applied'
+  );
+
+  await testSuite(findFiles(path.join(__dirname, 'data/states-reference-uncorrected'), 'WGC_StateVector'),
+    append,
+    runState2TestCases,
+    'State without correction. New State Solver.'
+  );
+  await testSuite(findFiles(path.join(__dirname, 'data/states-reference-lightTimeCorrected'), 'WGC_StateVector'),
+    append,
+    runState2TestCases,
+    'State with light time correction applied. New State Solver.'
+  );
+  await testSuite(findFiles(path.join(__dirname, 'data/states-reference-starAberrationCorrected'), 'WGC_StateVector'),
+    append,
+    runState2TestCases,
+    'State with star aberration and light time correction applied. New State Solver.'
+  );
+
+  flush();
 }
 
 // (async () => {

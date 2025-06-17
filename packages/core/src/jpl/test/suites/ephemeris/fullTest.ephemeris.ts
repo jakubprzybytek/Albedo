@@ -1,60 +1,55 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { jplBodyFromString } from "@jpl";
 import { Radians } from "@astro/coords";
-import { runAstronomicalCoordsTestCases } from "./AstronomicalCoordsTestCasesScript";
+import { runEphemerisTestCases } from "./EphemerisTestCasesScript";
 import { readAstronomicalCoordsFromWebGeocalcCSVFile } from "../../lib/WebGeocalcCSV";
+import { buildReportWriter, findFiles, ReportWriter } from "@jpl/test/lib/Files";
 
-function findWebGeocalcCSVFiles(folder: string, fileNamePrefix: string): string[] {
-    return readdirSync(folder)
-        .filter((fileName) => fileName.startsWith(fileNamePrefix))
-        .map((fileName) => `${folder}/${fileName}`);
-}
+async function testSuite(testCaseFileNames: string[], writer: ReportWriter, description: string) {
+  writer(`## ${description}\n`);
 
-async function testSuite(folder: string, fileNamePrefix: string, description: string) {
-    console.log('# Test cases\n');
+  writer('| Target body | Observer body | Test cases | Avg ephemeris difference [°]    | File name |');
+  writer('| ----------- | ------------- | ---------- | ------------------------------- | --------- |');
 
-    console.log('## Overview\n');
-    console.log(`${description}\n`);
+  for (const testFileName of testCaseFileNames) {
+    const fileContent = readFileSync(testFileName).toString();
+    const { targetBodyName, observerBodyName, data } = await readAstronomicalCoordsFromWebGeocalcCSVFile(fileContent);
 
-    console.log('## Details\n');
-    console.log(`Folder: \`${folder}\`, file name prefix: \`${fileNamePrefix}\`\n`);
-
-    const testFileNames = findWebGeocalcCSVFiles(folder, fileNamePrefix);
-
-    console.log('## Results\n');
-    console.log(`Test suites: ${testFileNames.length}\n`);
-    console.log('| Target body | Observer body | Test cases | Avg ephemeris difference [°]    | File name |');
-    console.log('| ----------- | ------------- | ---------- | ------------------------------- | --------- |');
-
-    for (const testFileName of testFileNames) {
-        const fileContent = readFileSync(testFileName).toString();
-        const { targetBodyName, observerBodyName, data } = await readAstronomicalCoordsFromWebGeocalcCSVFile(fileContent);
-
-        const targetBodyId = jplBodyFromString(targetBodyName)?.id;
-        if (targetBodyId === undefined) {
-            throw Error(`Cannot parse body name to JplBodyId: ${targetBodyName}`);
-        }
-
-        const observerBodyId = jplBodyFromString(observerBodyName)?.id;
-        if (observerBodyId === undefined) {
-            throw Error(`Cannot parse body name to JplBodyId: ${observerBodyName}`);
-        }
-
-        const stats = runAstronomicalCoordsTestCases(targetBodyId, observerBodyId, data);
-
-        const separationSummary = stats.separationAverage ? Radians.toDegrees(stats.separationAverage).toPrecision(4) : stats.error;
-
-        var fileName = /[^/]*$/.exec(testFileName)?.[0] || testFileName;
-
-        console.log(`| ${targetBodyName} | ${observerBodyName} | ${data.length}`
-            + ` | ${separationSummary}`
-            + ` | ${fileName} |`);
+    const targetBodyId = jplBodyFromString(targetBodyName)?.id;
+    if (targetBodyId === undefined) {
+      throw Error(`Cannot parse body name to JplBodyId: ${targetBodyName}`);
     }
+
+    const observerBodyId = jplBodyFromString(observerBodyName)?.id;
+    if (observerBodyId === undefined) {
+      throw Error(`Cannot parse body name to JplBodyId: ${observerBodyName}`);
+    }
+
+    const stats = runEphemerisTestCases(targetBodyId, observerBodyId, data);
+
+    const separationSummary = stats.separationAverage ? Radians.toDegrees(stats.separationAverage).toPrecision(4) : stats.error;
+
+    var fileName = /[^/]*$/.exec(testFileName)?.[0] || testFileName;
+
+    writer(`| ${targetBodyName} | ${observerBodyName} | ${data.length}`
+      + ` | ${separationSummary}`
+      + ` | ${fileName} |`);
+  }
 }
 
-export async function runEphemerisTestSuite() {
-    await testSuite(path.join(__dirname, 'data/ephemeris-reference'), 'WGC_StateVector', 'Computing ephemeris with standard configuration for corrections (light time and star aberration corrections)');
+export async function runEphemerisTestSuite(timestamp: string) {
+  const { append, flush } = buildReportWriter('ephemeris', timestamp);
+
+  append('# Ephemeris\n');
+
+  await testSuite(
+    findFiles(path.join(__dirname, 'data/ephemeris-reference'), 'WGC_StateVector'),
+    append,
+    'Computing ephemeris with standard configuration for corrections (light time and star aberration corrections)'
+  );
+
+  flush();
 }
 
 // (async () => {

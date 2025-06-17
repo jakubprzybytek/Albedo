@@ -10,7 +10,7 @@ type Stats = {
   error?: any;
 };
 
-export function runAstronomicalCoordsTestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: AstronomicalCoordsData[]): Stats {
+export function runEphemerisTestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: AstronomicalCoordsData[]): Stats {
   const epherisScripts = new Ephemerides2(kernelRepository.stateSolver2());
   
   const stats: Stats = {};
