@@ -4,7 +4,7 @@ import { kernelRepository } from '@jpl/data/de440.full';
 import { Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
-import { StateSolver2 } from "@jpl/state/solver2";
+import { StateSolver2, CorrectionType2 } from "@jpl/state/solver2";
 import { timeProperties } from "../utils/time";
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
@@ -23,17 +23,17 @@ function simpleSunMoonFunctions() {
   const stateSolver = kernelRepository.stateSolver2();
 
   function sunAndMoonAngle(es: number) {
-    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es);
-    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es);
+    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType2.NONE);
+    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType2.NONE);
 
     return Radians.between(sunPosition, moonPosition);
   }
 
   function earthsShadowAndMoonAngle(es: number) {
-    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es);
+    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType2.NONE);
     const earthsShadowPosition = sunPosition.negate();
 
-    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es);
+    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType2.NONE);
 
     return Radians.between(moonPosition, earthsShadowPosition);
   }
@@ -75,7 +75,6 @@ export class Eclipses {
         const c = separation.es + PRELIMINARY_INTERVAL;
         const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(sunAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
-        const eventJde = EphemerisSeconds.toJde(eventEs);
         return {
           type: EclipseType.SunEclipse,
           ...timeProperties(eventEs),
@@ -91,9 +90,8 @@ export class Eclipses {
         const a = separation.es - PRELIMINARY_INTERVAL;
         const b = separation.es;
         const c = separation.es + PRELIMINARY_INTERVAL;
-        const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(earthsShadowAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
+        const [eventEs, minSeparation, _resultRangeWidth, _iterations] = localMinimum(earthsShadowAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
-        const eventJde = EphemerisSeconds.toJde(eventEs);
         return {
           type: EclipseType.MoonEclipse,
           ...timeProperties(eventEs),

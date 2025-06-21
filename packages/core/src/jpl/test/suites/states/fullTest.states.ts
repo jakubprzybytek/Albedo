@@ -4,10 +4,11 @@ import { jplBodyFromString } from "@jpl";
 import { CorrectionType } from "@jpl/state/solvers";
 import { StateTestCaseRunner } from ".";
 import { readRectangularCoordsFromWebGeocalcCSVFile } from "../../lib/WebGeocalcCSV";
-import { runState2TestCases } from "./State2TestCasesScript";
+import { buildState2TestCaseRunner } from "./State2TestCasesScript";
 import { buildStateTestCaseRunner } from './StateTestCasesScript';
 import { buildReportWriter, findFiles, ReportWriter } from "@jpl/test/lib/Files";
 import { formatDistanceStrict } from "date-fns";
+import { CorrectionType2 } from "@jpl/state/solver2";
 
 async function testSuite(testCaseFileNames: string[], writer: ReportWriter, stateTestCaseRunner: StateTestCaseRunner, state2TestCaseRunner: StateTestCaseRunner, description: string) {
   writer(`## ${description}\n`);
@@ -42,7 +43,7 @@ async function testSuite(testCaseFileNames: string[], writer: ReportWriter, stat
     const positionSummary2 = stats2.positionDifferenceAverage?.toPrecision(4) || stats2.positionComputationError;
     const velocitySummary2 = stats2.velocityDifferenceAverage?.toPrecision(4) || stats2.velocityComputationError;
 
-    var fileName = /[^/]*$/.exec(testFileName)?.[0] || testFileName;
+    const fileName = /[^/]*$/.exec(testFileName)?.[0] || testFileName;
 
     writer(`| ${targetBodyName} | ${observerBodyName} | ${data.length} | ${timeSpan} | ${timeInterval}`
       + ` | ${positionSummary} | ${velocitySummary}`
@@ -60,19 +61,19 @@ export async function runStatesTestSuite(timestamp: string) {
     findFiles(path.join(__dirname, 'data/states-reference-uncorrected'), 'WGC_StateVector'),
     append,
     buildStateTestCaseRunner({ corrections: [] }),
-    runState2TestCases,
+    buildState2TestCaseRunner(CorrectionType2.NONE),
     'State without correction'
   );
   await testSuite(findFiles(path.join(__dirname, 'data/states-reference-lightTimeCorrected'), 'WGC_StateVector'),
     append,
     buildStateTestCaseRunner({ corrections: [CorrectionType.LightTime] }),
-    runState2TestCases,
+    buildState2TestCaseRunner(CorrectionType2.LIGHT_TIME),
     'State with light time correction applied'
   );
   await testSuite(findFiles(path.join(__dirname, 'data/states-reference-starAberrationCorrected'), 'WGC_StateVector'),
     append,
     buildStateTestCaseRunner({ corrections: [CorrectionType.LightTime, CorrectionType.StarAbberation] }),
-    runState2TestCases,
+    buildState2TestCaseRunner(CorrectionType2.NONE),
     'State with star aberration and light time correction applied'
   );
 

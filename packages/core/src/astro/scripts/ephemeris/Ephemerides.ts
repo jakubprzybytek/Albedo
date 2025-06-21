@@ -4,7 +4,6 @@ import { States } from '@jpl/state';
 import { States as States2, timeProperties } from '@astro/scripts';
 import { StateSolver2 } from '@jpl/state/solver2';
 import { Ephemeris, Ephemeris2 } from '.';
-import { JulianDay } from '@astro/JulianDay';
 
 /**
  * @deprecated The method should not be used

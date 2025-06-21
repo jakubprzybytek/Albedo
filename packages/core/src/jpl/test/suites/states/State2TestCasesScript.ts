@@ -5,8 +5,15 @@ import { kernelRepository } from '@jpl/data/de440.full';
 import { RectangularCoordsData } from '../../lib/WebGeocalcCSV';
 import { States } from '@astro/scripts';
 import { TestSuiteStats } from '.';
+import { CorrectionType2 } from '@jpl/state/solver2';
 
-export function runState2TestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: RectangularCoordsData[]): TestSuiteStats {
+export function buildState2TestCaseRunner(correction: CorrectionType2) {
+  return (targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: RectangularCoordsData[]) => {
+    return runState2TestCases(targetBodyId, observerBodyId, data, correction);
+  }
+}
+
+export function runState2TestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: RectangularCoordsData[], correction: CorrectionType2): TestSuiteStats {
 
   const stats: TestSuiteStats = {};
 
@@ -15,14 +22,14 @@ export function runState2TestCases(targetBodyId: JplBodyId, observerBodyId: JplB
 
     try {
       const positionDifferences = data.map(state => {
-        const computedPosition = stateScipts.position(targetBodyId, observerBodyId, EphemerisSeconds.fromDateTimeObject(state.tbd));
+        const computedPosition = stateScipts.position(targetBodyId, observerBodyId, EphemerisSeconds.fromDateTimeObject(state.tbd), correction);
         const expectedPosition = new RectangularCoordinates(state.x, state.y, state.z);
 
         return expectedPosition.subtract(computedPosition).length();
       });
 
       stats.positionDifferenceAverage = average(positionDifferences);
-    } catch (e: any) {
+    } catch (e) {
       stats.positionComputationError = e;
     }
 
@@ -35,10 +42,10 @@ export function runState2TestCases(targetBodyId: JplBodyId, observerBodyId: JplB
       });
 
       stats.velocityDifferenceAverage = average(velocityDifferences);
-    } catch (e: any) {
+    } catch (e) {
       stats.velocityComputationError = e;
     }
-  } catch (e: any) {
+  } catch (e) {
     stats.positionComputationError = e;
     stats.velocityComputationError = e;
   }

@@ -1,8 +1,9 @@
-import { JplBodyId } from "@jpl";
+import { JplBodyId, SPEED_OF_LIGHT } from "@jpl";
 import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } from "@jpl/kernel";
 import { Forest, TreeNode } from "@jpl/kernel/tree";
 import { RectangularCoordinates } from "@astro/coords";
 import { PositionAndTrueVelocityCalculator, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "../chebyshev";
+import { CorrectionType2 } from ".";
 
 type SpkNode = {
   targetBodyId: JplBodyId;
@@ -52,7 +53,6 @@ export class StateSolver2 {
   }
 
   calculateDirectPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
-    // console.log(targetBodyId, observerBodyId);
     let resultingPosition = RectangularCoordinates.ZERO;
 
     let currentBodyId: JplBodyId | undefined = targetBodyId;
@@ -83,11 +83,11 @@ export class StateSolver2 {
     }
 
     let i = 0;
-    for (; i < firstBodyIdies.length && i < secondBodyIdies.length && firstBodyIdies[i] === secondBodyIdies[i]; i++) { }
+    for (; i < firstBodyIdies.length && i < secondBodyIdies.length && firstBodyIdies[i] === secondBodyIdies[i]; i++) { /* empty */ }
     return firstBodyIdies[i - 1];
   }
 
-  positionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
+  uncorrectedPositionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
     const targetsAllTransientBodies = this.spk.get(targetBodyId)?.allBodies;
     const obeserversAllTransientBodies = this.spk.get(observerBodyId)?.allBodies;
 
@@ -107,6 +107,30 @@ export class StateSolver2 {
     return targetBodyPosition.subtract(observerBodyPosition);
   }
 
+  positionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): RectangularCoordinates {
+    switch (correction) {
+      case CorrectionType2.NONE: {
+        return this.uncorrectedPositionFor(targetBodyId, observerBodyId, ephemerisSeconds);
+      }
+
+      case CorrectionType2.LIGHT_TIME: {
+        const targetPosition = this.uncorrectedPositionFor(targetBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
+        const observerPosition = this.uncorrectedPositionFor(observerBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
+
+        const observerToTargetCoords = targetPosition.subtract(observerPosition);
+        const lightTime = observerToTargetCoords.length() / SPEED_OF_LIGHT;
+
+        const correctedTargetPostion = this.uncorrectedPositionFor(targetBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds - lightTime);
+        return correctedTargetPostion.subtract(observerPosition);
+      }
+
+      default: {
+        return this.uncorrectedPositionFor(targetBodyId, observerBodyId, ephemerisSeconds);
+      }
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   velocityFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
     throw new Error("Method not implemented.");
   }

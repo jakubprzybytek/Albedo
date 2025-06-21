@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { EphemerisSeconds, jplBodyFromString } from "@jpl";
+import { jplBodyFromString } from "@jpl";
 import { kernelRepository } from "@jpl/data/de440.full";
 import { JulianDay } from "@astro";
 import { AstronomicalCoordinates } from "@astro/coords";

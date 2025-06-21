@@ -1,9 +1,8 @@
 import { Radians } from "@astro/coords";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
-import { StateSolver2 } from "@jpl/state/solver2";
-import { SeparationWithPositions, Separation2 } from '.';
-import { JulianDay } from "@astro/JulianDay";
+import { StateSolver2, CorrectionType2 } from "@jpl/state/solver2";
 import { timeProperties } from "../utils/time";
+import { SeparationWithPositions, Separation2 } from '.';
 
 export class Separations2 {
 
@@ -15,22 +14,22 @@ export class Separations2 {
 
   static buildSeparationFunction(stateSolver: StateSolver2, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
     return (es: number): number => Radians.between(
-      stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es),
-      stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es)
+      stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType2.NONE),
+      stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType2.NONE)
     );
   }
 
   static buildPositionsAndSeparationFunction(stateSolver: StateSolver2, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
     return (es: number): SeparationWithPositions => {
-      const firstBodyPosition = stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es);
-      const secondBodyPosition = stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es);
+      const firstBodyPosition = stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType2.NONE);
+      const secondBodyPosition = stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType2.NONE);
       return {
         es,
         firstBodyPosition,
         secondBodyPosition,
         separation: Radians.between(
-          stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es),
-          stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es)
+          stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType2.NONE),
+          stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType2.NONE)
         )
       }
     }
