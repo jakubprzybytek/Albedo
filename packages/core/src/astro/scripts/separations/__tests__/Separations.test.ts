@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { EphemerisSeconds, JplBodyId } from "@jpl";
+import { JplBodyId } from "@jpl";
 import { kernelRepository } from "@jpl/data/de440.testData";
 import { JulianDay } from "@astro";
 import { Separations2 } from "../Separations2";

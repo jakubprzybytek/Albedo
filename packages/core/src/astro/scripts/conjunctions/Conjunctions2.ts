@@ -1,4 +1,3 @@
-import { JulianDay } from '@astro';
 import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { StateSolver2 } from '@jpl/state/solver2';
 import { Radians, RectangularCoordinates } from '@astro/coords';
