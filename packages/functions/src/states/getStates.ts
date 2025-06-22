@@ -40,9 +40,9 @@ export const handler = lambdaHandler<StateWithPositionAndVelocity[]>((event: API
   
   const states = stateScripts.positions(target.id, observer.id, fromEs, toEs, intervalEs)
   .map<StateWithPositionAndVelocity>(positionInTime => {
-      const jde = EphemerisSeconds.fromJde(positionInTime.es);
+      const jde = EphemerisSeconds.toJde(positionInTime.es);
       return {
-        ephemerisSeconds: positionInTime.es,
+        es: positionInTime.es,
         jde: jde,
         tde: JulianDay.toDateTime(jde),
         position: positionInTime.coords,

@@ -28,6 +28,7 @@ export default tseslint.config(
       sourceType: 'module', // Allows for the use of imports
       globals: {
         console: 'readonly',
+        __dirname: 'readonly'
       }
     }
   }

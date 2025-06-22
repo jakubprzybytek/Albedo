@@ -52,8 +52,8 @@ export default function StatesTable({ states }: StatesTablePropsType): JSX.Eleme
                             '& span': { display: 'block' }
                         }}>
                             <TableCell>
+                                <span>{state.es} [ES]</span>
                                 <span>{state.jde} (JDE)</span>
-                                <span>{state.ephemerisSeconds} [ES]</span>
                                 <span><>{state.tde} (TDE)</></span>
                             </TableCell>
                             <TableCell align="right">

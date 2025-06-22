@@ -3,8 +3,12 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
-import QueryPanel from "../../forms/QueryPanel";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select, { type SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import QuerySubmit from "@/forms/QuerySubmit";
+import QueryPanel from "@/forms/QueryPanel";
 import type { StatesQuery } from "@/sdk/GetStates";
 import type { ManagedQuery } from "@/forms/useQuery";
 
@@ -18,6 +22,7 @@ export default function StatesQueryForm({ query }: StatesQueryFormParams): JSX.E
   const [fromTde, setFromTde] = useState<Date | null>(new Date());
   const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 1));
   const [interval, setInterval] = useState(1);
+  const [correction, setCorrection] = useState('LT');
 
   function handleSubmit() {
     query.submit({
@@ -25,7 +30,8 @@ export default function StatesQueryForm({ query }: StatesQueryFormParams): JSX.E
       observer,
       fromTde: fromTde ? format(fromTde, 'yyyy-MM-dd') : '',
       toTde: toTde ? format(toTde, 'yyyy-MM-dd') : '',
-      interval
+      interval,
+      correction
     });
   }
 
@@ -63,6 +69,18 @@ export default function StatesQueryForm({ query }: StatesQueryFormParams): JSX.E
               setInterval(Number(event.target.value));
             }}
           />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <FormControl sx={{ }} size="small" fullWidth>
+            <InputLabel id="correction-label">Correction</InputLabel>
+            <Select labelId="correction-label" label="Correction"
+              value={correction}
+              onChange={(event: SelectChangeEvent) => setCorrection(event.target.value)}>
+              <MenuItem value="NONE">None</MenuItem>
+              <MenuItem value="LT">Light Time</MenuItem>
+              <MenuItem value="LT+S">Light Time and Stellar Abberation</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
         <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
       </Grid>

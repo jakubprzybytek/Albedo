@@ -9,6 +9,7 @@ export type StatesQuery = {
     fromTde: string;
     toTde: string;
     interval: number;
+    correction: string;
 };
 
 export default async function getStates(query: StatesQuery): Promise<StateWithPositionAndVelocity[]> {

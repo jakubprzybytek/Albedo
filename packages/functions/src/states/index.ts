@@ -1,8 +1,8 @@
 import { RectangularCoordinates } from '@astro/coords';
 
 export type StateWithPosition = {
+  es: number;
   jde: number;
-  ephemerisSeconds: number;
   tde: Date;
   position: RectangularCoordinates;
 }
