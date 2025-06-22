@@ -21,7 +21,7 @@ export default tseslint.config(
       "no-unused-vars": "off",
     },
     extends: [
-      ...tseslint.configs.recommended,
+      ...tseslint.configs.recommendedTypeChecked,
     ],
     languageOptions: {
       ecmaVersion: 'latest', // Allows for the parsing of modern ECMAScript features
@@ -29,6 +29,10 @@ export default tseslint.config(
       globals: {
         console: 'readonly',
         __dirname: 'readonly'
+      },
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       }
     }
   }

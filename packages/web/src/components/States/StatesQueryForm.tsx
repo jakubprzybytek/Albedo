@@ -9,7 +9,7 @@ import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import QuerySubmit from "@/forms/QuerySubmit";
 import QueryPanel from "@/forms/QueryPanel";
-import type { StatesQuery } from "@/sdk/GetStates";
+import type { StatesQuery } from "@/sdk/States";
 import type { ManagedQuery } from "@/forms/useQuery";
 
 type StatesQueryFormParams = {

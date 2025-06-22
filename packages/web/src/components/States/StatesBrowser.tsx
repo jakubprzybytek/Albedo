@@ -2,7 +2,7 @@ import { useState, type JSX } from "react";
 import StatesQueryForm from './StatesQueryForm';
 import StatesTable from './StatesTable';
 import useQuery from "@/forms/useQuery";
-import getStates, { type StatesQuery, type StateWithPositionAndVelocity } from "@/sdk/GetStates";
+import getStates, { type StatesQuery, type StateWithPositionAndVelocity } from "@/sdk/States";
 import { Stack } from "@mui/material";
 
 export default function StatesBrowser(): JSX.Element {
