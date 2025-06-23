@@ -3,7 +3,7 @@ import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } fro
 import { Forest, TreeNode } from "@jpl/kernel/tree";
 import { RectangularCoordinates } from "@astro/coords";
 import { PositionAndTrueVelocityCalculator, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "../chebyshev";
-import { CorrectionType2 } from ".";
+import { CorrectionType2, State } from ".";
 
 type SpkNode = {
   targetBodyId: JplBodyId;
@@ -11,6 +11,11 @@ type SpkNode = {
   allBodies: JplBodyId[];
   calculator?: PositionAndVelocityCalculator;
 };
+
+type Position = {
+  coords: RectangularCoordinates;
+  lightTime: number;
+}
 
 export class StateSolver2 {
 
@@ -87,7 +92,7 @@ export class StateSolver2 {
     return firstBodyIdies[i - 1];
   }
 
-  uncorrectedPositionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
+  computeUncorrectedPositionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
     const targetsAllTransientBodies = this.spk.get(targetBodyId)?.allBodies;
     const obeserversAllTransientBodies = this.spk.get(observerBodyId)?.allBodies;
 
@@ -107,32 +112,43 @@ export class StateSolver2 {
     return targetBodyPosition.subtract(observerBodyPosition);
   }
 
-  positionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): RectangularCoordinates {
+  computePositionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): Position {
     switch (correction) {
-      case CorrectionType2.NONE: {
-        return this.uncorrectedPositionFor(targetBodyId, observerBodyId, ephemerisSeconds);
-      }
 
       case CorrectionType2.LIGHT_TIME: {
-        const targetPosition = this.uncorrectedPositionFor(targetBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
-        const observerPosition = this.uncorrectedPositionFor(observerBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
+        const targetPosition = this.computeUncorrectedPositionFor(targetBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
+        const observerPosition = this.computeUncorrectedPositionFor(observerBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
 
         const observerToTargetCoords = targetPosition.subtract(observerPosition);
         const lightTime = observerToTargetCoords.length() / SPEED_OF_LIGHT;
 
-        const correctedTargetPostion = this.uncorrectedPositionFor(targetBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds - lightTime);
-        return correctedTargetPostion.subtract(observerPosition);
+        const correctedTargetPostion = this.computeUncorrectedPositionFor(targetBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds - lightTime);
+        return {
+          coords: correctedTargetPostion.subtract(observerPosition),
+          lightTime
+        }
       }
 
       default: {
-        return this.uncorrectedPositionFor(targetBodyId, observerBodyId, ephemerisSeconds);
+        return {
+          coords: this.computeUncorrectedPositionFor(targetBodyId, observerBodyId, ephemerisSeconds),
+          lightTime: 0
+        }
       }
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  velocityFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
-    throw new Error("Method not implemented.");
+  positionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): RectangularCoordinates {
+    const { coords } = this.computePositionFor(targetBodyId, observerBodyId, ephemerisSeconds, correction);
+    return coords;
+  }
+
+  stateFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): State {
+    const { coords: position, lightTime } = this.computePositionFor(targetBodyId, observerBodyId, ephemerisSeconds, correction);
+    return {
+      position,
+      lightTime
+    }
   }
 
 }

@@ -64,6 +64,7 @@ export class Conjunctions2 {
           const b = separation.es;
           const c = separation.es + PRELIMINARY_INTERVAL;
           const separationFunction = Separations2.buildSeparationFunction(this.stateSolver, firstBody.id, secondBody.id);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
           // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
           return {

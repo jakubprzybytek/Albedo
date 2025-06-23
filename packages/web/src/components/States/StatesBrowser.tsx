@@ -1,13 +1,13 @@
 import { useState, type JSX } from "react";
+import { Stack } from "@mui/material";
 import StatesQueryForm from './StatesQueryForm';
 import StatesTable from './StatesTable';
 import useQuery from "@/forms/useQuery";
-import getStates, { type StatesQuery, type StateWithPositionAndVelocity } from "@/sdk/States";
-import { Stack } from "@mui/material";
+import getStates, { type StatesQuery, type StateResult } from "@/sdk/States";
 
 export default function StatesBrowser(): JSX.Element {
-  const [states, setStates] = useState<StateWithPositionAndVelocity[]>([]);
-  const query = useQuery<StatesQuery, StateWithPositionAndVelocity[]>(fetchData, setStates);
+  const [states, setStates] = useState<StateResult[]>([]);
+  const query = useQuery<StatesQuery, StateResult[]>(fetchData, setStates);
 
   async function fetchData(params: StatesQuery) {
     return await getStates(params);

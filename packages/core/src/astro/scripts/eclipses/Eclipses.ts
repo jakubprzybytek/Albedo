@@ -73,6 +73,7 @@ export class Eclipses {
         const a = separation.es - PRELIMINARY_INTERVAL;
         const b = separation.es;
         const c = separation.es + PRELIMINARY_INTERVAL;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(sunAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
         return {
@@ -90,6 +91,7 @@ export class Eclipses {
         const a = separation.es - PRELIMINARY_INTERVAL;
         const b = separation.es;
         const c = separation.es + PRELIMINARY_INTERVAL;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [eventEs, minSeparation, _resultRangeWidth, _iterations] = localMinimum(earthsShadowAndMoonAngle, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
         return {

@@ -38,7 +38,7 @@ export class RectangularCoordinates {
             this.z / value
         );
     }
-    length() {
+    length(): number {
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 

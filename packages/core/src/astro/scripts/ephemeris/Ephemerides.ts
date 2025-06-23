@@ -2,7 +2,7 @@ import { AstronomicalCoordinates } from '@astro/coords';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { States } from '@jpl/state';
 import { States as States2, timeProperties } from '@astro/scripts';
-import { StateSolver2 } from '@jpl/state/solver2';
+import { CorrectionType2, StateSolver2 } from '@jpl/state/solver2';
 import { Ephemeris, Ephemeris2 } from '.';
 
 /**
@@ -32,7 +32,7 @@ export class Ephemerides2 {
   }
 
   single(tagetBodyId: JplBodyId, es: number): AstronomicalCoordinates {
-    return AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es))
+    return AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType2.NONE))
   }
 
   simple(tagetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Ephemeris2[] {
@@ -42,7 +42,7 @@ export class Ephemerides2 {
     return EphemerisSeconds.forRange(fromEs, toEs, itnervalEs)
       .map(es => ({
         ...timeProperties(es),
-        coords: AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es))
+        coords: AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType2.NONE))
       }));
   }
 };

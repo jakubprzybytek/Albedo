@@ -8,64 +8,72 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { RectangularCoordinates } from "@astro/coords";
-import type { StateWithPositionAndVelocity } from '@lambda/states';
+import type { StateResult } from '@/sdk/States';
 
 type VectoryDisplayPropsType = {
-    coords: RectangularCoordinates;
+  coords: RectangularCoordinates;
 }
 
 function VectorDisplay({ coords }: VectoryDisplayPropsType): JSX.Element {
-    return (
-        <>
-            <span>x: {coords.x.toFixed(6)}</span>
-            <span>y: {coords.y.toFixed(6)}</span>
-            <span>z: {coords.z.toFixed(6)}</span>
-        </>
-    );
+  return (
+    <>
+      <span>x: {coords.x.toFixed(6)}</span>
+      <span>y: {coords.y.toFixed(6)}</span>
+      <span>z: {coords.z.toFixed(6)}</span>
+    </>
+  );
 }
 
 type StatesTablePropsType = {
-    states: StateWithPositionAndVelocity[];
+  states: StateResult[];
 }
 
 export default function StatesTable({ states }: StatesTablePropsType): JSX.Element {
-    const theme = useTheme();
+  const theme = useTheme();
 
-    return (
-        <TableContainer component={Paper} sx={{
-            width: 'auto',
-            backgroundColor: theme.palette.grey[200],
-            '& td, & th': { borderColor: theme.palette.grey[400] }
-        }}>
-            <Table size="small" aria-label="a dense table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Time</TableCell>
-                        <TableCell align="center">Position</TableCell>
-                        <TableCell align="right">Velocity</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {states.map((state) => (
-                        <TableRow key={state.jde} sx={{
-                            '&:last-child td, &:last-child th': { border: 0 },
-                            '& span': { display: 'block' }
-                        }}>
-                            <TableCell>
-                                <span>{state.es} [ES]</span>
-                                <span>{state.jde} (JDE)</span>
-                                <span><>{state.tde} (TDE)</></span>
-                            </TableCell>
-                            <TableCell align="right">
-                                <VectorDisplay coords={state.position} />
-                            </TableCell>
-                            <TableCell align="right">
-                                <VectorDisplay coords={state.velocity} />
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
+  return (
+    <TableContainer component={Paper} sx={{
+      width: 'auto',
+      backgroundColor: theme.palette.grey[200],
+      '& td, & th': { borderColor: theme.palette.grey[400] }
+    }}>
+      <Table size="small" aria-label="a dense table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Time</TableCell>
+            <TableCell align="center">Position [Km]</TableCell>
+            <TableCell align="center">Distance [Km]</TableCell>
+            <TableCell align="center">Velocity [Km]</TableCell>
+            <TableCell align="right">Light time [s]</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {states.map((state) => (
+            <TableRow key={state.jde} sx={{
+              '&:last-child td, &:last-child th': { border: 0 },
+              '& span': { display: 'block' }
+            }}>
+              <TableCell>
+                <span>{state.es} [ES]</span>
+                <span>{state.jde} (JDE)</span>
+                <span><>{state.tde} (TDE)</></span>
+              </TableCell>
+              <TableCell align="center">
+                <VectorDisplay coords={state.position} />
+              </TableCell>
+              <TableCell align="center">
+                {state.distance}
+              </TableCell>
+              <TableCell align="center">
+                <VectorDisplay coords={state.velocity} />
+              </TableCell>
+              <TableCell align="right">
+                {state.lightTime}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 }

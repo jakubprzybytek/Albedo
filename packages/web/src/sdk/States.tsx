@@ -1,7 +1,7 @@
 import { get } from "aws-amplify/api";
-import type { StateWithPositionAndVelocity } from '@lambda/states';
+import type { StateResult } from '@lambda/states';
 
-export type { StateWithPositionAndVelocity };
+export type { StateResult };
 
 export type StatesQuery = {
     target: string;
@@ -12,7 +12,7 @@ export type StatesQuery = {
     correction: string;
 };
 
-export default async function getStates(query: StatesQuery): Promise<StateWithPositionAndVelocity[]> {
+export default async function getStates(query: StatesQuery): Promise<StateResult[]> {
     const path = '/api/states';
     const params = {
         ...query,
@@ -25,5 +25,5 @@ export default async function getStates(query: StatesQuery): Promise<StateWithPo
     }).response;
 
     const bodyJson = await body.json() as any;
-    return bodyJson as StateWithPositionAndVelocity[];
+    return bodyJson as StateResult[];
 }
