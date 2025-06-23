@@ -11,6 +11,8 @@ import { formatDuration, intervalToDuration } from 'date-fns';
 import { RectangularCoordinates } from "@astro/coords";
 import type { StateResult } from '@/sdk/States';
 
+const decimalFormat = new Intl.NumberFormat('pl-PL')
+
 type VectoryDisplayPropsType = {
   coords: RectangularCoordinates;
 }
@@ -63,14 +65,16 @@ export default function StatesTable({ states }: StatesTablePropsType): JSX.Eleme
                 <VectorDisplay coords={state.position} />
               </TableCell>
               <TableCell align="center">
-                {state.distance}
+                <span>{state.distanceAU.toFixed(2)} AU</span>
+                <span>{decimalFormat.format(state.distance)} km</span>                
+                <span>({state.distance} km)</span>                
               </TableCell>
               <TableCell align="center">
                 <VectorDisplay coords={state.velocity} />
               </TableCell>
               <TableCell align="right">
                 <span>{formatDuration(intervalToDuration({ start: 0, end: (state.lightTime ?? 0) * 1000 }))}</span>
-                <span>({state.lightTime}s)</span>
+                <span>({state.lightTime} s)</span>
               </TableCell>
             </TableRow>
           ))}

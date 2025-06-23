@@ -5,6 +5,7 @@ export type StateResult = StateInTime & {
   jde: number;
   tde: Date;
   distance: number;
+  distanceAU: number;
   velocity: RectangularCoordinates;
 }
 

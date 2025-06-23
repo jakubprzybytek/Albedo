@@ -1,7 +1,7 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody, mandatoryString } from '../LambdaParams';
-import { EphemerisSeconds, JplBody } from '@jpl';
+import { AU, EphemerisSeconds, JplBody } from '@jpl';
 import { stringToCorrectionType } from "@jpl/state/solver2";
 import { kernelRepository } from "@jpl/data/de440.full";
 import { JulianDay } from '@astro';
@@ -50,12 +50,14 @@ export const handler = lambdaHandler<StateResult[]>((event: APIGatewayProxyEvent
   const states = stateScripts.states(target.id, observer.id, fromEs, toEs, intervalEs, correction)
     .map<StateResult>(state => {
       const jde = EphemerisSeconds.toJde(state.es);
+      const distance = state.position.length();
       return {
         es: state.es,
         jde: jde,
         tde: JulianDay.toDateTime(jde),
         position: state.position,
-        distance: state.position.length(),
+        distance: distance,
+        distanceAU: distance / AU,
         velocity: new RectangularCoordinates(0, 0, 0),
         lightTime: state.lightTime
       }
