@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { formatDuration, intervalToDuration } from 'date-fns';
 import { RectangularCoordinates } from "@astro/coords";
 import type { StateResult } from '@/sdk/States';
 
@@ -44,7 +45,7 @@ export default function StatesTable({ states }: StatesTablePropsType): JSX.Eleme
             <TableCell align="center">Position [Km]</TableCell>
             <TableCell align="center">Distance [Km]</TableCell>
             <TableCell align="center">Velocity [Km]</TableCell>
-            <TableCell align="right">Light time [s]</TableCell>
+            <TableCell align="right">Light time</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -68,7 +69,8 @@ export default function StatesTable({ states }: StatesTablePropsType): JSX.Eleme
                 <VectorDisplay coords={state.velocity} />
               </TableCell>
               <TableCell align="right">
-                {state.lightTime}
+                <span>{formatDuration(intervalToDuration({ start: 0, end: (state.lightTime ?? 0) * 1000 }))}</span>
+                <span>({state.lightTime}s)</span>
               </TableCell>
             </TableRow>
           ))}
