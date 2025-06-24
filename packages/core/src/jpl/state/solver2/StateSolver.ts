@@ -108,19 +108,23 @@ export class StateSolver2 {
     return targetBodyPosition.subtract(observerBodyPosition);
   }
 
-  calculateLightTimeCorrectedPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number) {
-    const targetPosition = this.computeUncorrectedPosition(targetBodyId, JplBodyId.SolarSystemBarycenter, es);
+  calculateLightTimeCorrectedPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, iterations: number): Position {
     const observerPosition = this.computeUncorrectedPosition(observerBodyId, JplBodyId.SolarSystemBarycenter, es);
 
-    const observerToTargetCoords = targetPosition.subtract(observerPosition);
-    const lightTime = observerToTargetCoords.length() / SPEED_OF_LIGHT;
+    let lightTime = 0;
+    let targetPosition: RectangularCoordinates = RectangularCoordinates.ZERO;
+    let observerToTargetCoords: RectangularCoordinates = RectangularCoordinates.ZERO;
 
-    const correctedTargetPostion = this.computeUncorrectedPosition(targetBodyId, JplBodyId.SolarSystemBarycenter, es - lightTime);
-    const correctedObserverToTargetCoords = correctedTargetPostion.subtract(observerPosition);
+    for (let i = 0; i < iterations; i++) {
+      targetPosition = this.computeUncorrectedPosition(targetBodyId, JplBodyId.SolarSystemBarycenter, es - lightTime);
+
+      observerToTargetCoords = targetPosition.subtract(observerPosition);
+      lightTime = observerToTargetCoords.length() / SPEED_OF_LIGHT;
+    }
 
     return {
-      coords: correctedObserverToTargetCoords,
-      lightTime: correctedObserverToTargetCoords.length() / SPEED_OF_LIGHT
+      coords: observerToTargetCoords,
+      lightTime
     }
   }
 
@@ -128,7 +132,11 @@ export class StateSolver2 {
     switch (correction) {
 
       case CorrectionType2.LIGHT_TIME: {
-        return this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds);
+        return this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 2);
+      }
+
+      case CorrectionType2.CONVERGED_NEWTONIAN_LIGHT_TIME: {
+        return this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 4);
       }
 
       default: {

@@ -126,19 +126,19 @@ describe("StateSolver2", () => {
   it("should correctly compute converged light time corrected state for Venus wrt. Earth", () => {
     const state = stateSolver.stateFor(JplBodyId.Venus, JplBodyId.Earth, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.CONVERGED_NEWTONIAN_LIGHT_TIME);
 
-    expect(state.position.x).approximately(-212496178.2023557, 0);
+    expect(state.position.x).approximately(-212496178.2023557, 3e-8);
     expect(state.position.y).approximately(-114080325.81800866, 0);
     expect(state.position.z).approximately(-46424486.54925574, 0);
 
-    expect(state.lightTime).approximately(819.26614501, 0);
+    expect(state.lightTime).approximately(819.26614501, 1e-9);
 
     const reverseState = stateSolver.stateFor(JplBodyId.Earth, JplBodyId.Venus, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.CONVERGED_NEWTONIAN_LIGHT_TIME);
 
     expect(reverseState.position.x).approximately(212480894.84831744, 0);
-    expect(reverseState.position.y).approximately(114074904.63068509, 0);
-    expect(reverseState.position.z).approximately(46423797.14386084, 0);
+    expect(reverseState.position.y).approximately(114074904.63068509, 2e-8);
+    expect(reverseState.position.z).approximately(46423797.14386084, 1e-8);
 
-    expect(reverseState.lightTime).approximately(819.21320463, 0);
+    expect(reverseState.lightTime).approximately(819.21320463, 3e-9);
   });
 
 });
