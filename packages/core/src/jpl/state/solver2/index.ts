@@ -5,6 +5,7 @@ export * from './StateSolver';
 export enum CorrectionType2 {
   NONE = 'NONE',
   LIGHT_TIME = 'LT',
+  CONVERGED_NEWTONIAN_LIGHT_TIME = 'CN',
   LIGHT_TIME_AND_STAR_ABBERATION = 'LT+S'
 };
 

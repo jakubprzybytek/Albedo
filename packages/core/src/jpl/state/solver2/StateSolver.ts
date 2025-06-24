@@ -25,10 +25,6 @@ export class StateSolver2 {
     for (const rootTreeNode of kernel.trees.values()) {
       this.collectSpkCollection(rootTreeNode, []);
     }
-
-    // for (const [objectId, node] of this.spk) {
-    //   console.log(objectId, node.observerBodyId, node.allBodies);
-    // }
   }
 
   buildCalculator(spkKernelCollection: SpkKernelCollection): PositionAndVelocityCalculator {
@@ -92,7 +88,7 @@ export class StateSolver2 {
     return firstBodyIdies[i - 1];
   }
 
-  computeUncorrectedPositionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
+  computeUncorrectedPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
     const targetsAllTransientBodies = this.spk.get(targetBodyId)?.allBodies;
     const obeserversAllTransientBodies = this.spk.get(observerBodyId)?.allBodies;
 
@@ -112,26 +108,32 @@ export class StateSolver2 {
     return targetBodyPosition.subtract(observerBodyPosition);
   }
 
-  computePositionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): Position {
+  calculateLightTimeCorrectedPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number) {
+    const targetPosition = this.computeUncorrectedPosition(targetBodyId, JplBodyId.SolarSystemBarycenter, es);
+    const observerPosition = this.computeUncorrectedPosition(observerBodyId, JplBodyId.SolarSystemBarycenter, es);
+
+    const observerToTargetCoords = targetPosition.subtract(observerPosition);
+    const lightTime = observerToTargetCoords.length() / SPEED_OF_LIGHT;
+
+    const correctedTargetPostion = this.computeUncorrectedPosition(targetBodyId, JplBodyId.SolarSystemBarycenter, es - lightTime);
+    const correctedObserverToTargetCoords = correctedTargetPostion.subtract(observerPosition);
+
+    return {
+      coords: correctedObserverToTargetCoords,
+      lightTime: correctedObserverToTargetCoords.length() / SPEED_OF_LIGHT
+    }
+  }
+
+  computePosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): Position {
     switch (correction) {
 
       case CorrectionType2.LIGHT_TIME: {
-        const targetPosition = this.computeUncorrectedPositionFor(targetBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
-        const observerPosition = this.computeUncorrectedPositionFor(observerBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
-
-        const observerToTargetCoords = targetPosition.subtract(observerPosition);
-        const lightTime = observerToTargetCoords.length() / SPEED_OF_LIGHT;
-
-        const correctedTargetPostion = this.computeUncorrectedPositionFor(targetBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds - lightTime);
-        return {
-          coords: correctedTargetPostion.subtract(observerPosition),
-          lightTime
-        }
+        return this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds);
       }
 
       default: {
         return {
-          coords: this.computeUncorrectedPositionFor(targetBodyId, observerBodyId, ephemerisSeconds),
+          coords: this.computeUncorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds),
           lightTime: 0
         }
       }
@@ -139,12 +141,12 @@ export class StateSolver2 {
   }
 
   positionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): RectangularCoordinates {
-    const { coords } = this.computePositionFor(targetBodyId, observerBodyId, ephemerisSeconds, correction);
+    const { coords } = this.computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
     return coords;
   }
 
   stateFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): State {
-    const { coords: position, lightTime } = this.computePositionFor(targetBodyId, observerBodyId, ephemerisSeconds, correction);
+    const { coords: position, lightTime } = this.computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
     return {
       position,
       lightTime
