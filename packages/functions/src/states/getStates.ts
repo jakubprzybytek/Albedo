@@ -5,7 +5,6 @@ import { AU, EphemerisSeconds, JplBody } from '@jpl';
 import { stringToCorrectionType } from "@jpl/state/solver2";
 import { kernelRepository } from "@jpl/data/de440.full";
 import { JulianDay } from '@astro';
-import { RectangularCoordinates } from "@astro/coords";
 import { States } from "@astro/scripts";
 import { StateResult } from ".";
 
@@ -58,7 +57,8 @@ export const handler = lambdaHandler<StateResult[]>((event: APIGatewayProxyEvent
         position: state.position,
         distance: distance,
         distanceAU: distance / AU,
-        velocity: new RectangularCoordinates(0, 0, 0),
+        velocity: state.velocity,
+        speed: state.velocity.length(),
         lightTime: state.lightTime
       }
     });

@@ -46,7 +46,8 @@ export default function StatesTable({ states }: StatesTablePropsType): JSX.Eleme
             <TableCell>Time</TableCell>
             <TableCell align="center">Position [Km]</TableCell>
             <TableCell align="center">Distance [Km]</TableCell>
-            <TableCell align="center">Velocity [Km]</TableCell>
+            <TableCell align="center">Velocity [Km/s]</TableCell>
+            <TableCell align="center">Speed [Km/s]</TableCell>
             <TableCell align="right">Light time</TableCell>
           </TableRow>
         </TableHead>
@@ -71,6 +72,9 @@ export default function StatesTable({ states }: StatesTablePropsType): JSX.Eleme
               </TableCell>
               <TableCell align="center">
                 <VectorDisplay coords={state.velocity} />
+              </TableCell>
+              <TableCell align="center">
+                {state.speed.toFixed(6)}
               </TableCell>
               <TableCell align="right">
                 <span>{formatDuration(intervalToDuration({ start: 0, end: (state.lightTime ?? 0) * 1000 }))}</span>
