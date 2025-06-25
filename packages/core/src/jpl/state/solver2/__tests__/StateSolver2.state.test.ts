@@ -7,7 +7,7 @@ describe("StateSolver2", () => {
 
   const stateSolver = kernelRepository.stateSolver2();
 
-  // ---------------------- Earth wrt. Solar Barycenter ----------------------
+  // ---------------------- Earth wrt. Solar Barycenter ---------------------- 
 
   it("should correctly compute uncorrected state for Earth wrt. Solar Barycenter", () => {
     const state = stateSolver.stateFor(JplBodyId.Earth, JplBodyId.SolarSystemBarycenter, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.NONE);
@@ -16,6 +16,10 @@ describe("StateSolver2", () => {
     expect(state.position.y).approximately(36856589.50987644, 0);
     expect(state.position.z).approximately(15977853.64250682, 3e-9);
 
+    expect(state.velocity.x).approximately(-8.28800013, 5e-9);
+    expect(state.velocity.y).approximately(26.26862274, 2e-9);
+    expect(state.velocity.z).approximately(11.38875394, 4e-9);
+
     expect(state.lightTime).approximately(0, 0);
 
     const reverseState = stateSolver.stateFor(JplBodyId.SolarSystemBarycenter, JplBodyId.Earth, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.NONE);
@@ -23,6 +27,10 @@ describe("StateSolver2", () => {
     expect(reverseState.position.x).approximately(-143811325.04688266, 3e-8);
     expect(reverseState.position.y).approximately(-36856589.50987644, 0);
     expect(reverseState.position.z).approximately(-15977853.64250682, 3e-9);
+
+    expect(reverseState.velocity.x).approximately(8.28800013, 5e-9);
+    expect(reverseState.velocity.y).approximately(-26.26862274, 2e-9);
+    expect(reverseState.velocity.z).approximately(-11.38875394, 4e-9);
 
     expect(reverseState.lightTime).approximately(0, 0);
   });

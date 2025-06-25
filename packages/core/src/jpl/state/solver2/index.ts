@@ -16,5 +16,6 @@ export function stringToCorrectionType(correctionString: string): CorrectionType
 
 export type State = {
   position: RectangularCoordinates;
+  velocity: RectangularCoordinates;
   lightTime?: number;
 };

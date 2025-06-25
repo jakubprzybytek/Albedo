@@ -23,11 +23,11 @@ export class StateSolver2 {
 
   constructor(kernel: Forest<JplBodyId, SpkKernelCollection>) {
     for (const rootTreeNode of kernel.trees.values()) {
-      this.collectSpkCollection(rootTreeNode, []);
+      this.#collectSpkCollection(rootTreeNode, []);
     }
   }
 
-  buildCalculator(spkKernelCollection: SpkKernelCollection): PositionAndVelocityCalculator {
+  #buildCalculator(spkKernelCollection: SpkKernelCollection): PositionAndVelocityCalculator {
     switch (spkKernelCollection.dataType) {
       case DataType.ChebyshevPosition:
         return new PositionAndVelocitySolvingCalculator(spkKernelCollection.data);
@@ -36,24 +36,24 @@ export class StateSolver2 {
     }
   }
 
-  collectSpkCollection(kernelTreeNode: TreeNode<JplBodyId, SpkKernelCollection>, allParentBodies: JplBodyId[]) {
+  #collectSpkCollection(kernelTreeNode: TreeNode<JplBodyId, SpkKernelCollection>, allParentBodies: JplBodyId[]) {
     const allBodies = [...allParentBodies, kernelTreeNode.value];
 
     const newSpkNode: SpkNode = {
       targetBodyId: kernelTreeNode.value,
       observerBodyId: kernelTreeNode.incomingEdge?.centerBodyId,
       allBodies: [...allBodies],
-      calculator: kernelTreeNode.incomingEdge ? this.buildCalculator(kernelTreeNode.incomingEdge) : undefined
+      calculator: kernelTreeNode.incomingEdge ? this.#buildCalculator(kernelTreeNode.incomingEdge) : undefined
     }
 
     this.spk.set(kernelTreeNode.value, newSpkNode);
 
     for (const childTreeNode of kernelTreeNode.children.values()) {
-      this.collectSpkCollection(childTreeNode, allBodies);
+      this.#collectSpkCollection(childTreeNode, allBodies);
     }
   }
 
-  calculateDirectPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
+  #calculateDirectPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
     let resultingPosition = RectangularCoordinates.ZERO;
 
     let currentBodyId: JplBodyId | undefined = targetBodyId;
@@ -78,6 +78,31 @@ export class StateSolver2 {
     return resultingPosition;
   }
 
+  #calculateDirectVelocity(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
+    let resultingPosition = RectangularCoordinates.ZERO;
+
+    let currentBodyId: JplBodyId | undefined = targetBodyId;
+    while (currentBodyId !== undefined && currentBodyId !== observerBodyId) {
+      const spkNode = this.spk.get(currentBodyId);
+      if (spkNode === undefined) {
+        throw new Error(`Cannot find node for targetId='${currentBodyId}'`);
+      }
+
+      if (spkNode.calculator !== undefined) {
+        try {
+          const position = spkNode.calculator.velocityFor(ephemerisSeconds);
+          resultingPosition = resultingPosition.add(position);
+        } catch (error) {
+          throw Error(`Cannot calculate position for bodyId='${currentBodyId}'`, { cause: error });
+        }
+      }
+
+      currentBodyId = spkNode.observerBodyId;
+    };
+
+    return resultingPosition;
+  }
+
   findCommonAncestor(firstBodyIdies: JplBodyId[], secondBodyIdies: JplBodyId[]): JplBodyId | undefined {
     if (firstBodyIdies[0] !== secondBodyIdies[0]) {
       return undefined;
@@ -88,7 +113,7 @@ export class StateSolver2 {
     return firstBodyIdies[i - 1];
   }
 
-  computeUncorrectedPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
+  #computeUncorrectedPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
     const targetsAllTransientBodies = this.spk.get(targetBodyId)?.allBodies;
     const obeserversAllTransientBodies = this.spk.get(observerBodyId)?.allBodies;
 
@@ -102,21 +127,21 @@ export class StateSolver2 {
       throw new Error(`Bodies '${targetBodyId}' and '${observerBodyId}' don't have common ancestor!`);
     }
 
-    const targetBodyPosition = this.calculateDirectPosition(targetBodyId, commonAncestor, ephemerisSeconds);
-    const observerBodyPosition = this.calculateDirectPosition(observerBodyId, commonAncestor, ephemerisSeconds);
+    const targetBodyPosition = this.#calculateDirectPosition(targetBodyId, commonAncestor, ephemerisSeconds);
+    const observerBodyPosition = this.#calculateDirectPosition(observerBodyId, commonAncestor, ephemerisSeconds);
 
     return targetBodyPosition.subtract(observerBodyPosition);
   }
 
-  calculateLightTimeCorrectedPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, iterations: number): Position {
-    const observerPosition = this.computeUncorrectedPosition(observerBodyId, JplBodyId.SolarSystemBarycenter, es);
+  #calculateLightTimeCorrectedPosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, iterations: number): Position {
+    const observerPosition = this.#computeUncorrectedPosition(observerBodyId, JplBodyId.SolarSystemBarycenter, es);
 
     let lightTime = 0;
     let targetPosition: RectangularCoordinates = RectangularCoordinates.ZERO;
     let observerToTargetCoords: RectangularCoordinates = RectangularCoordinates.ZERO;
 
     for (let i = 0; i < iterations; i++) {
-      targetPosition = this.computeUncorrectedPosition(targetBodyId, JplBodyId.SolarSystemBarycenter, es - lightTime);
+      targetPosition = this.#computeUncorrectedPosition(targetBodyId, JplBodyId.SolarSystemBarycenter, es - lightTime);
 
       observerToTargetCoords = targetPosition.subtract(observerPosition);
       lightTime = observerToTargetCoords.length() / SPEED_OF_LIGHT;
@@ -128,35 +153,57 @@ export class StateSolver2 {
     }
   }
 
-  computePosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): Position {
+  #computePosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): Position {
     switch (correction) {
 
       case CorrectionType2.LIGHT_TIME: {
-        return this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 2);
+        return this.#calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 2);
       }
 
       case CorrectionType2.CONVERGED_NEWTONIAN_LIGHT_TIME: {
-        return this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 4);
+        return this.#calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 4);
       }
 
       default: {
         return {
-          coords: this.computeUncorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds),
+          coords: this.#computeUncorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds),
           lightTime: 0
         }
       }
     }
   }
 
+  #computeVelocity(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
+    const targetsAllTransientBodies = this.spk.get(targetBodyId)?.allBodies;
+    const obeserversAllTransientBodies = this.spk.get(observerBodyId)?.allBodies;
+
+    if (targetsAllTransientBodies === undefined || obeserversAllTransientBodies === undefined) {
+      throw new Error(`Cannot find spk collection either for '${targetBodyId}' or '${observerBodyId}'`);
+    }
+
+    const commonAncestor = this.findCommonAncestor(targetsAllTransientBodies, obeserversAllTransientBodies);
+
+    if (commonAncestor === undefined) {
+      throw new Error(`Bodies '${targetBodyId}' and '${observerBodyId}' don't have common ancestor!`);
+    }
+
+    const targetBodyPosition = this.#calculateDirectVelocity(targetBodyId, commonAncestor, ephemerisSeconds);
+    const observerBodyPosition = this.#calculateDirectVelocity(observerBodyId, commonAncestor, ephemerisSeconds);
+
+    return targetBodyPosition.subtract(observerBodyPosition);
+  }
+
   positionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): RectangularCoordinates {
-    const { coords } = this.computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
+    const { coords } = this.#computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
     return coords;
   }
 
   stateFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): State {
-    const { coords: position, lightTime } = this.computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
+    const { coords: position, lightTime } = this.#computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
+    const velocity = this.#computeVelocity(targetBodyId, observerBodyId, ephemerisSeconds - lightTime);
     return {
       position,
+      velocity,
       lightTime
     }
   }

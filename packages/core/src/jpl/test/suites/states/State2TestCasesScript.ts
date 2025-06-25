@@ -2,8 +2,7 @@ import { average } from 'simple-statistics';
 import { RectangularCoordinates } from '@astro/coords';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { kernelRepository } from '@jpl/data/de440.full';
-import { RectangularCoordsData } from '../../lib/WebGeocalcCSV';
-import { States } from '@astro/scripts';
+import { RectangularCoordsData } from '@jpl/test/lib/WebGeocalcCSV';
 import { TestSuiteStats } from '.';
 import { CorrectionType2 } from '@jpl/state/solver2';
 
@@ -18,29 +17,25 @@ export function runState2TestCases(targetBodyId: JplBodyId, observerBodyId: JplB
   const stats: TestSuiteStats = {};
 
   try {
-    const stateScipts = new States(kernelRepository.stateSolver2());
+    const stateSolver = kernelRepository.stateSolver2();
 
     try {
-      const positionDifferences = data.map(state => {
-        const computedPosition = stateScipts.position(targetBodyId, observerBodyId, EphemerisSeconds.fromDateTimeObject(state.tbd), correction);
+      const differences = data.map(state => {
+        const computedState = stateSolver.stateFor(targetBodyId, observerBodyId, EphemerisSeconds.fromDateTimeObject(state.tbd), correction);
+
         const expectedPosition = new RectangularCoordinates(state.x, state.y, state.z);
-
-        return expectedPosition.subtract(computedPosition).length();
-      });
-
-      stats.positionDifferenceAverage = average(positionDifferences);
-    } catch (e) {
-      stats.positionComputationError = e;
-    }
-
-    try {
-      const velocityDifferences = data.map(state => {
-        const computedVelocity = stateScipts.velocity(targetBodyId, observerBodyId, EphemerisSeconds.fromDateTimeObject(state.tbd));
         const expectedVelocity = new RectangularCoordinates(state.speed_x, state.speed_y, state.speed_z);
 
-        return expectedVelocity.subtract(computedVelocity).length();
+        return [
+          expectedPosition.subtract(computedState.position).length(),
+          expectedVelocity.subtract(computedState.velocity).length()
+        ];
       });
 
+      const positionDifferences = differences.map(d => d[0]);
+      const velocityDifferences = differences.map(d => d[1]);
+
+      stats.positionDifferenceAverage = average(positionDifferences);
       stats.velocityDifferenceAverage = average(velocityDifferences);
     } catch (e) {
       stats.velocityComputationError = e;
