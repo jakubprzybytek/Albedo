@@ -21,7 +21,7 @@ export class SpkKernelRepository {
 
         const recordWidth = EphemerisSeconds.toDays(newCollection.data[0].timeSpan.to - newCollection.data[0].timeSpan.from);
 
-        console.log(`SPK registered for '${body?.name}(${body?.id})' w.r.t. '${centerBody?.name}(${centerBody?.id})' for ${fromTde}(${fromJde}) - ${toTde}${toJde} / ${recordWidth} days per record`);
+        console.log(`SPK registered for '${body?.name}(${body?.id})' w.r.t. '${centerBody?.name}(${centerBody?.id})' for ${fromTde}(${fromJde}) - ${toTde}(${toJde}) / ${recordWidth} days per record. Datr type: ${newCollection.dataType}.`);
 
         const existingCollection = this.spkKernel.findEdge(newCollection.centerBodyId, newCollection.bodyId);
 

@@ -78,6 +78,7 @@ export default function StatesQueryForm({ query }: StatesQueryFormParams): JSX.E
               onChange={(event: SelectChangeEvent) => setCorrection(event.target.value)}>
               <MenuItem value="NONE">None</MenuItem>
               <MenuItem value="LT">Light Time</MenuItem>
+              <MenuItem value="CN">Converged Newtonian Light Time</MenuItem>
               <MenuItem value="LT+S">Light Time and Stellar Abberation</MenuItem>
             </Select>
           </FormControl>
