@@ -173,7 +173,7 @@ export class StateSolver2 {
     }
   }
 
-  #computeVelocity(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number): RectangularCoordinates {
+  #computeVelocity(targetBodyId: JplBodyId, observerBodyId: JplBodyId, targetEphemerisSeconds: number, observerEphemerisSeconds: number): RectangularCoordinates {
     const targetsAllTransientBodies = this.spk.get(targetBodyId)?.allBodies;
     const obeserversAllTransientBodies = this.spk.get(observerBodyId)?.allBodies;
 
@@ -187,8 +187,8 @@ export class StateSolver2 {
       throw new Error(`Bodies '${targetBodyId}' and '${observerBodyId}' don't have common ancestor!`);
     }
 
-    const targetBodyPosition = this.#calculateDirectVelocity(targetBodyId, commonAncestor, ephemerisSeconds);
-    const observerBodyPosition = this.#calculateDirectVelocity(observerBodyId, commonAncestor, ephemerisSeconds);
+    const targetBodyPosition = this.#calculateDirectVelocity(targetBodyId, commonAncestor, targetEphemerisSeconds);
+    const observerBodyPosition = this.#calculateDirectVelocity(observerBodyId, commonAncestor, observerEphemerisSeconds);
 
     return targetBodyPosition.subtract(observerBodyPosition);
   }
@@ -200,7 +200,7 @@ export class StateSolver2 {
 
   stateFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): State {
     const { coords: position, lightTime } = this.#computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
-    const velocity = this.#computeVelocity(targetBodyId, observerBodyId, ephemerisSeconds - lightTime);
+    const velocity = this.#computeVelocity(targetBodyId, observerBodyId, ephemerisSeconds - lightTime, ephemerisSeconds);
     return {
       position,
       velocity,

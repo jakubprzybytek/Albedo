@@ -64,6 +64,10 @@ describe("StateSolver2", () => {
     expect(state.position.y).approximately(-220341.79779477, 2e-9);
     expect(state.position.z).approximately(-119833.86746624, 1e-9);
 
+    expect(state.velocity.x).approximately(0.61117702, 3e-9);
+    expect(state.velocity.y).approximately(0.71471102, 5e-9);
+    expect(state.velocity.z).approximately(0.23678987, 5e-9);
+
     expect(state.lightTime).approximately(0, 0);
 
     const reverseState = stateSolver.stateFor(JplBodyId.Earth, JplBodyId.Moon, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.NONE);
@@ -71,6 +75,10 @@ describe("StateSolver2", () => {
     expect(reverseState.position.x).approximately(-317255.79483133, 1e-9);
     expect(reverseState.position.y).approximately(220341.79779477, 2e-9);
     expect(reverseState.position.z).approximately(119833.86746624, 1e-9);
+
+    expect(reverseState.velocity.x).approximately(-0.61117702, 3e-9);
+    expect(reverseState.velocity.y).approximately(-0.71471102, 5e-9);
+    expect(reverseState.velocity.z).approximately(-0.23678987, 5e-9);
 
     expect(reverseState.lightTime).approximately(0, 0);
   });
@@ -82,6 +90,10 @@ describe("StateSolver2", () => {
     expect(state.position.y).approximately(-220378.19901913, 2e-8);
     expect(state.position.z).approximately(-119849.55062936, 3e-9);
 
+    expect(state.velocity.x).approximately(0.61118783, 1e-5);
+    expect(state.velocity.y).approximately(0.71470935, 2e-7);
+    expect(state.velocity.z).approximately(0.23678894, 1e-7);
+
     expect(state.lightTime).approximately(1.34913492, 5e-9);
 
     const reverseState = stateSolver.stateFor(JplBodyId.Earth, JplBodyId.Moon, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.LIGHT_TIME);
@@ -89,6 +101,10 @@ describe("StateSolver2", () => {
     expect(reverseState.position.x).approximately(-317244.61410716, 2e-9);
     expect(reverseState.position.y).approximately(220306.36073307, 8e-9);
     expect(reverseState.position.z).approximately(119818.50373818, 1e-8);
+
+    expect(reverseState.velocity.x).approximately(-0.61116877, 1e-5);
+    expect(reverseState.velocity.y).approximately(-0.71471083, 1e-6);
+    expect(reverseState.velocity.z).approximately(-0.23678978, 1e-7);
 
     expect(reverseState.lightTime).approximately(1.34891733, 1e-9);
   });
@@ -102,6 +118,10 @@ describe("StateSolver2", () => {
     expect(state.position.y).approximately(-114096424.71648255, 0);
     expect(state.position.z).approximately(-46433127.17153619, 8e-9);
 
+    expect(state.velocity.x).approximately(35.23097452, 5e-9);
+    expect(state.velocity.y).approximately(-45.91566415, 4e-9);
+    expect(state.velocity.z).approximately(-21.93421529, 3e-9);
+
     expect(state.lightTime).approximately(0, 0);
 
     const reverseState = stateSolver.stateFor(JplBodyId.Earth, JplBodyId.Venus, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.NONE);
@@ -109,6 +129,12 @@ describe("StateSolver2", () => {
     expect(reverseState.position.x).approximately(212474107.12560332, 0);
     expect(reverseState.position.y).approximately(114096424.71648255, 0);
     expect(reverseState.position.z).approximately(46433127.17153619, 8e-9);
+
+    expect(reverseState.velocity.x).approximately(-35.23097452, 5e-9);
+    expect(reverseState.velocity.y).approximately(45.91566415, 4e-9);
+    expect(reverseState.velocity.z).approximately(21.93421529, 3e-9);
+
+    expect(state.lightTime).approximately(0, 0);
 
     expect(reverseState.lightTime).approximately(0, 0);
   });
@@ -120,6 +146,10 @@ describe("StateSolver2", () => {
     expect(state.position.y).approximately(-114080326.47248125, 0);
     expect(state.position.z).approximately(-46424486.90050933, 0);
 
+    expect(state.velocity.x).approximately(35.22558917, 5e-4);
+    expect(state.velocity.y).approximately(-45.92268669, 4e-4);
+    expect(state.velocity.z).approximately(-21.93703436, 3e-4);
+
     expect(state.lightTime).approximately(819.26614366, 3e-9);
 
     const reverseState = stateSolver.stateFor(JplBodyId.Earth, JplBodyId.Venus, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.LIGHT_TIME);
@@ -127,6 +157,10 @@ describe("StateSolver2", () => {
     expect(reverseState.position.x).approximately(212480895.01100355, 0);
     expect(reverseState.position.y).approximately(114074904.11474073, 0);
     expect(reverseState.position.z).approximately(46423796.92017328, 1e-8);
+
+    expect(reverseState.velocity.x).approximately(-35.22643388, 2e-4);
+    expect(reverseState.velocity.y).approximately(45.91728205, 5e-4);
+    expect(reverseState.velocity.z).approximately(21.93491815, 2e-4);
 
     expect(reverseState.lightTime).approximately(819.21320416, 4e-9);
   });
