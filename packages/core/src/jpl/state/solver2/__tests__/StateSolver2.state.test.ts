@@ -146,9 +146,12 @@ describe("StateSolver2", () => {
     expect(state.position.y).approximately(-114080326.47248125, 0);
     expect(state.position.z).approximately(-46424486.90050933, 0);
 
-    expect(state.velocity.x).approximately(35.22558917, 5e-4);
-    expect(state.velocity.y).approximately(-45.92268669, 4e-4);
-    expect(state.velocity.z).approximately(-21.93703436, 3e-4);
+    // expect(state.velocity.x).approximately(35.22558917, 5e-4);
+    // expect(state.velocity.y).approximately(-45.92268669, 4e-4);
+    // expect(state.velocity.z).approximately(-21.93703436, 3e-4);
+    expect(state.velocity.x).approximately(35.22558917, 2e-6);
+    expect(state.velocity.y).approximately(-45.92268669, 2e-7);
+    expect(state.velocity.z).approximately(-21.93703436, 1e-7);
 
     expect(state.lightTime).approximately(819.26614366, 3e-9);
 
