@@ -1,6 +1,3 @@
-import { Readable } from 'stream';
-import { parse, Parser } from 'csv-parse';
-
 export type RectangularCoordsData = {
   tbd: Date;
   distance: number;
@@ -40,32 +37,48 @@ const OBSERVER_BODY_NAME_REGEX = /"Observer","([\w ]+)"/;
 const CSV_ROW_REGEX = /^(.+,){9,10}.+$/gm;
 const KERNELS_REGEX = /"Kernels Used"(.*)/s;
 
-const headersForRectangularCoords = ['tbd', 'distance', 'speed', 'x', 'y', 'z', 'speed_x', 'speed_y', 'speed_z', 'target_tbd', 'light_time'];
-const headersForAstronomicalCoords = ['tbd', 'rightAscension', 'declination', 'range', 'speed_rightAscension', 'speed_declination', 'speed_range', 'speed', 'target_tbd', 'light_time'];
+function parseRectangularCoordsRow(row: string): RectangularCoordsData {
+  const values = row.split(',');
 
-const numberHeaders = ['distance', 'speed', 'x', 'y', 'z', 'speed_x', 'speed_y', 'speed_z', 'rightAscension', 'declination', 'range', 'speed_rightAscension', 'speed_declination', 'speed_range', 'light_time'];
-const dateHeaders = ['tbd', 'target_tbd'];
+  if (values.length != 11) {
+    throw new Error(`Invalid state row format, expected 10 columns, got ${values.length}`);
+  }
 
-function createCSVParser(headers: string[]): Parser {
-  return parse({
-    delimiter: ',',
-    columns: headers,
-    fromLine: 2,
-    //skipRecordsWithError: true,
-    cast: (columnValue, context) => {
-      if (typeof context.column == 'string') {
-        if (numberHeaders.includes(context.column)) {
-          return parseFloat(columnValue);
-        }
+  return {
+    tbd: new Date(Date.parse(values[0].replace(' TDB', ' UTC'))),
+    distance: parseFloat(values[1]),
+    speed: parseFloat(values[2]),
+    x: parseFloat(values[3]),
+    y: parseFloat(values[4]),
+    z: parseFloat(values[5]),
+    speed_x: parseFloat(values[6]),
+    speed_y: parseFloat(values[7]),
+    speed_z: parseFloat(values[8]),
+    target_tbd: new Date(Date.parse(values[9].replace(' TDB', ' UTC'))),
+    light_time: parseFloat(values[10])
+  }
+}
 
-        if (dateHeaders.includes(context.column)) {
-          return new Date(Date.parse(columnValue.replace(' TDB', ' UTC')));
-        }
-      }
-      return columnValue;
-    }
-  })
-};
+function parseAstronomicalCoordsRow(row: string): AstronomicalCoordsData {
+  const values = row.split(',');
+
+  if (values.length != 10) {
+    throw new Error(`Invalid state row format, expected 10 columns, got ${values.length}`);
+  }
+
+  return {
+    tbd: new Date(Date.parse(values[0].replace(' TDB', ' UTC'))),
+    rightAscension: parseFloat(values[1]),
+    declination: parseFloat(values[2]),
+    range: parseFloat(values[3]),
+    speed_rightAscension: parseFloat(values[4]),
+    speed_declination: parseFloat(values[5]),
+    speed_range: parseFloat(values[6]),
+    speed: parseFloat(values[7]),
+    target_tbd: new Date(Date.parse(values[8].replace(' TDB', ' UTC'))),
+    light_time: parseFloat(values[9])
+  }
+}
 
 function toFancyLowerCase(name: string): string {
   return name.split(' ')
@@ -73,7 +86,7 @@ function toFancyLowerCase(name: string): string {
     .join(' ');
 }
 
-export async function readCSVFile<T>(fileContent: string, parser: Parser): Promise<WebGeocalcCSVFileContent<T>> {
+export async function readCSVFile<T>(fileContent: string, parser: (row: string) => any): Promise<WebGeocalcCSVFileContent<T>> {
   const targetBodyNameMatch = TARGET_BODY_NAME_REGEX.exec(fileContent);
   if (targetBodyNameMatch === null) {
     throw Error("Target name not found!");
@@ -84,8 +97,8 @@ export async function readCSVFile<T>(fileContent: string, parser: Parser): Promi
     throw Error("Observer name not found!");
   }
 
-  const statesMatch = fileContent.match(CSV_ROW_REGEX);
-  if (statesMatch === null) {
+  const stateMatches = fileContent.match(CSV_ROW_REGEX);
+  if (stateMatches === null) {
     throw Error("State rows not found!");
   }
 
@@ -98,15 +111,9 @@ export async function readCSVFile<T>(fileContent: string, parser: Parser): Promi
   const targetBodyName = toFancyLowerCase(targetBodyNameMatch[1]);
   const observerBodyName = toFancyLowerCase(observerBodyNameMatch[1]);
 
-  const csvContent = new Readable();
-  csvContent.push(statesMatch.join('\n'));
-  csvContent.push(null);
-
-  const parserPipe = csvContent.pipe(parser);
-
   const data: T[] = [];
-  for await (const state of parserPipe) {
-    data.push(state);
+  for (let i = 1; i < stateMatches.length; i++) {
+    data.push(parser(stateMatches[i]));
   }
 
   return {
@@ -118,9 +125,9 @@ export async function readCSVFile<T>(fileContent: string, parser: Parser): Promi
 }
 
 export async function readRectangularCoordsFromWebGeocalcCSVFile(fileContent: string): Promise<WebGeocalcCSVFileContent<RectangularCoordsData>> {
-  return readCSVFile(fileContent, createCSVParser(headersForRectangularCoords))
+  return readCSVFile(fileContent, parseRectangularCoordsRow)
 }
 
 export async function readAstronomicalCoordsFromWebGeocalcCSVFile(fileContent: string): Promise<WebGeocalcCSVFileContent<AstronomicalCoordsData>> {
-  return readCSVFile(fileContent, createCSVParser(headersForAstronomicalCoords))
+  return readCSVFile(fileContent, parseAstronomicalCoordsRow)
 }
