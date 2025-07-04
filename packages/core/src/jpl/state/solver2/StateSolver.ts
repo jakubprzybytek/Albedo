@@ -200,15 +200,15 @@ export class StateSolver2 {
 
   stateFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): State {
     const { coords: position, lightTime } = this.#computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
-    // const velocity = this.#computeVelocity(targetBodyId, observerBodyId, ephemerisSeconds - lightTime, ephemerisSeconds);
+    const velocity = this.#computeVelocity(targetBodyId, observerBodyId, ephemerisSeconds - lightTime, ephemerisSeconds);
 
-    const { coords: position1, lightTime: lightTime1 } = this.#computePosition(targetBodyId, observerBodyId, ephemerisSeconds - 20, correction);
-    const { coords: position2, lightTime: lightTime2 } = this.#computePosition(targetBodyId, observerBodyId, ephemerisSeconds + 20, correction);
-    const velocity = new RectangularCoordinates(
-      (position2.x - position1.x) / (2 * 20),
-      (position2.y - position1.y) / (2 * 20),
-      (position2.z - position1.z) / (2 * 20)
-    );
+    // const { coords: position1, lightTime: lightTime1 } = this.#computePosition(targetBodyId, observerBodyId, ephemerisSeconds - 20, correction);
+    // const { coords: position2, lightTime: lightTime2 } = this.#computePosition(targetBodyId, observerBodyId, ephemerisSeconds + 20, correction);
+    // const velocity = new RectangularCoordinates(
+    //   (position2.x - position1.x) / (2 * 20),
+    //   (position2.y - position1.y) / (2 * 20),
+    //   (position2.z - position1.z) / (2 * 20)
+    // );
     return {
       position,
       velocity,
