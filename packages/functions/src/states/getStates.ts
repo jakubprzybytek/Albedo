@@ -40,7 +40,7 @@ export const handler = lambdaHandler<StateResult[]>((event: APIGatewayProxyEvent
 
   console.log(`Compute states for '${target.name}' w.r.t. '${observer.name}' between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde}) in interval of ${interval} day(s) and correction: '${correction}'`);
 
-  const stateScripts = new States(kernelRepository.stateSolver2());
+  const stateScripts = new States(kernelRepository.StateSolver());
 
   const fromEs = EphemerisSeconds.fromJde(fromJde);
   const toEs = EphemerisSeconds.fromJde(toJde);

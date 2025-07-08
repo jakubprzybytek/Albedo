@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { JplBodyId } from "@jpl";
 import { kernelRepository } from '@jpl/data/de440.testData';
 
-describe("StateSolver2", () => {
+describe("StateSolver", () => {
 
-  const stateSolver = kernelRepository.stateSolver2();
+  const stateSolver = kernelRepository.StateSolver();
 
   it("should find common ancestor", () => {
     expect(stateSolver.findCommonAncestor([], [])).toEqual(undefined);

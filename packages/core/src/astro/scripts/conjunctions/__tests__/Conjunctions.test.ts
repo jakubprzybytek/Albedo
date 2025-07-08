@@ -3,10 +3,10 @@ import { AstronomicalCoordinates } from "@astro/coords";
 import { describe, it, expect } from "vitest";
 import { jplBodyFromString } from "@jpl";
 import { kernelRepository } from "@jpl/data/de440.full";
-import { Conjunctions2 } from "../Conjunctions2";
+import { Conjunctions } from "../Conjunctions2";
 
-describe("Conjunctions2", () => {
-  const conjuctionScripts = new Conjunctions2(kernelRepository.stateSolver2());
+describe("Conjunctions", () => {
+  const conjuctionScripts = new Conjunctions(kernelRepository.StateSolver());
 
   it("should compute conjunctions for all bodies", () => {
     const fromJde = JulianDay.fromDate(2022, 2, 1);

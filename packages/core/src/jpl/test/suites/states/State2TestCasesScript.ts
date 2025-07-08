@@ -4,20 +4,20 @@ import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { kernelRepository } from '@jpl/data/de440.full';
 import { RectangularCoordsData } from '@jpl/test/lib/WebGeocalcCSV';
 import { TestSuiteStats } from '.';
-import { CorrectionType2 } from '@jpl/state/solver2';
+import { CorrectionType } from '@jpl/state/solver2';
 
-export function buildState2TestCaseRunner(correction: CorrectionType2) {
+export function buildState2TestCaseRunner(correction: CorrectionType) {
   return (targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: RectangularCoordsData[]) => {
     return runState2TestCases(targetBodyId, observerBodyId, data, correction);
   }
 }
 
-export function runState2TestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: RectangularCoordsData[], correction: CorrectionType2): TestSuiteStats {
+export function runState2TestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: RectangularCoordsData[], correction: CorrectionType): TestSuiteStats {
 
   const stats: TestSuiteStats = {};
 
   try {
-    const stateSolver = kernelRepository.stateSolver2();
+    const stateSolver = kernelRepository.StateSolver();
 
     try {
       const differences = data.map(state => {

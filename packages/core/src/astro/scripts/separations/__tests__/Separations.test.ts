@@ -2,10 +2,10 @@ import { describe, it, expect } from "vitest";
 import { JplBodyId } from "@jpl";
 import { kernelRepository } from "@jpl/data/de440.testData";
 import { JulianDay } from "@astro";
-import { Separations2 } from "../Separations2";
+import { Separations } from "../Separations2";
 
 describe("Separations", () => {
-  const separationScripts = new Separations2(kernelRepository.stateSolver2());
+  const separationScripts = new Separations(kernelRepository.StateSolver());
 
   it("should compute separations for Moon and Venus", () => {
     const fromEs = JulianDay.fromDate(2019, 10, 8);

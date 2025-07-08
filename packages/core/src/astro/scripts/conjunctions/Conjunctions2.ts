@@ -3,8 +3,8 @@ import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { createPairs } from '@astro/utils/Pairs';
 import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
-import { StateSolver2 } from '@jpl/state';
-import { States, Separations2, Ephemerides2, timeProperties } from '@astro/scripts';
+import { StateSolver } from '@jpl/state';
+import { States, Separations, Ephemerides, timeProperties } from '@astro/scripts';
 import { Conjunction2 } from '.';
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
@@ -16,15 +16,15 @@ type TimedSeparation = {
   separation: number;
 }
 
-export class Conjunctions2 {
+export class Conjunctions {
 
-  readonly stateSolver: StateSolver2;
+  readonly stateSolver: StateSolver;
 
-  readonly ephemerides: Ephemerides2;
+  readonly ephemerides: Ephemerides;
 
-  constructor(stateSolver: StateSolver2) {
+  constructor(stateSolver: StateSolver) {
     this.stateSolver = stateSolver;
-    this.ephemerides = new Ephemerides2(this.stateSolver);
+    this.ephemerides = new Ephemerides(this.stateSolver);
   }
 
   for(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction2[] {
@@ -66,7 +66,7 @@ export class Conjunctions2 {
           const a = separation.es - PRELIMINARY_INTERVAL;
           const b = separation.es;
           const c = separation.es + PRELIMINARY_INTERVAL;
-          const separationFunction = Separations2.buildSeparationFunction(this.stateSolver, firstBody.id, secondBody.id);
+          const separationFunction = Separations.buildSeparationFunction(this.stateSolver, firstBody.id, secondBody.id);
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
           // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);

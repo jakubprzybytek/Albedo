@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
-import { CorrectionType2 } from "@jpl/state";
+import { CorrectionType } from "@jpl/state";
 import { kernelRepository } from "@jpl/data/de440.testData";
 import { States } from "../States";
 
 describe("States", () => {
-  const states = new States(kernelRepository.stateSolver2());
+  const states = new States(kernelRepository.StateSolver());
 
   it("should compute position for Moon w.r.t. Earth", () => {
-    const position = states.position(JplBodyId.Moon, JplBodyId.Earth, EphemerisSeconds.fromDateTime(2019, 10, 9, 1, 0, 0), CorrectionType2.NONE);
+    const position = states.position(JplBodyId.Moon, JplBodyId.Earth, EphemerisSeconds.fromDateTime(2019, 10, 9, 1, 0, 0), CorrectionType.NONE);
 
     expect(position.x).approximately(319443.56365777, 1e-5);
     expect(position.y).approximately(-217760.06303164, 1e-5);
@@ -19,7 +19,7 @@ describe("States", () => {
     const fromEs = EphemerisSeconds.fromDateTime(2019, 10, 9, 1, 0, 0);
     const toEs = EphemerisSeconds.fromDateTime(2019, 10, 9, 1, 0, 0);
 
-    const [position] = states.positions(JplBodyId.Moon, JplBodyId.Earth, fromEs, toEs, 1, CorrectionType2.NONE);
+    const [position] = states.positions(JplBodyId.Moon, JplBodyId.Earth, fromEs, toEs, 1, CorrectionType.NONE);
 
     expect(position.es).equals(fromEs);
     expect(position.coords.x).approximately(319443.56365777, 1e-5);
@@ -31,7 +31,7 @@ describe("States", () => {
     const fromEs = EphemerisSeconds.fromDateTime(2019, 10, 9, 1, 0, 0);
     const toEs = EphemerisSeconds.fromDateTime(2019, 10, 9, 1, 0, 0);
 
-    const [state] = states.states(JplBodyId.Moon, JplBodyId.Earth, fromEs, toEs, 1, CorrectionType2.NONE);
+    const [state] = states.states(JplBodyId.Moon, JplBodyId.Earth, fromEs, toEs, 1, CorrectionType.NONE);
 
     expect(state.es).equals(fromEs);
     expect(state.position.x).approximately(319443.56365777, 1e-5);

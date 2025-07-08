@@ -2,12 +2,12 @@ import { describe, it, expect } from "vitest";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { JulianDay } from "@astro";
 import { Radians } from "@astro/coords";
-import { Ephemerides2 } from "@astro/scripts";
+import { Ephemerides } from "@astro/scripts";
 import { kernelRepository } from "@jpl/data/de440.testData";
 
 describe("Ephemerides", () => {
 
-  const ephemerisScripts = new Ephemerides2(kernelRepository.stateSolver2());
+  const ephemerisScripts = new Ephemerides(kernelRepository.StateSolver());
 
   it("should compute single ephemeis for Venus", () => {
     const es = EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 10));

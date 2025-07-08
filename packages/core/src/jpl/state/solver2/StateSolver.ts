@@ -2,7 +2,7 @@ import { Radians, RectangularCoordinates } from "@astro/coords";
 import { JplBodyId, SPEED_OF_LIGHT } from "@jpl";
 import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } from "@jpl/kernel";
 import { Forest, TreeNode } from "@jpl/kernel/tree";
-import { CorrectionType2, State } from "@jpl/state";
+import { CorrectionType, State } from "@jpl/state";
 import { PositionAndTrueVelocityCalculator, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "@jpl/state/chebyshev";
 
 type SpkNode = {
@@ -17,7 +17,7 @@ type Position = {
   lightTime: number;
 }
 
-export class StateSolver2 {
+export class StateSolver {
 
   readonly spk = new Map<JplBodyId, SpkNode>();
 
@@ -153,18 +153,18 @@ export class StateSolver2 {
     }
   }
 
-  private computePosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): Position {
+  private computePosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType): Position {
     switch (correction) {
 
-      case CorrectionType2.LIGHT_TIME: {
+      case CorrectionType.LIGHT_TIME: {
         return this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 2);
       }
 
-      case CorrectionType2.CONVERGED_NEWTONIAN_LIGHT_TIME: {
+      case CorrectionType.CONVERGED_NEWTONIAN_LIGHT_TIME: {
         return this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 4);
       }
 
-      case CorrectionType2.LIGHT_TIME_AND_STAR_ABBERATION: {
+      case CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION: {
         const { coords: observetToTargetPosition, lightTime} = this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 2);
         const observerVelocity = this.calculateDirectVelocity(observerBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
 
@@ -208,12 +208,12 @@ export class StateSolver2 {
     return targetBodyVelocity.subtract(observerBodyVelocity);
   }
 
-  positionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): RectangularCoordinates {
+  positionFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType): RectangularCoordinates {
     const { coords } = this.computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
     return coords;
   }
 
-  stateFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType2): State {
+  stateFor(targetBodyId: JplBodyId, observerBodyId: JplBodyId, ephemerisSeconds: number, correction: CorrectionType): State {
     const { coords: position, lightTime } = this.computePosition(targetBodyId, observerBodyId, ephemerisSeconds, correction);
     const velocity = this.computeVelocity(targetBodyId, observerBodyId, ephemerisSeconds - lightTime, ephemerisSeconds);
 

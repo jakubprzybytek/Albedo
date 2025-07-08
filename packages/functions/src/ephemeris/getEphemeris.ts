@@ -2,7 +2,7 @@ import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '@astro';
-import { Ephemerides, Ephemerides2, Ephemeris, Ephemeris2 } from '@astro/scripts';
+import { Ephemerides, Ephemerides, Ephemeris, Ephemeris2 } from '@astro/scripts';
 import { JplBody, JplBodyId } from '@jpl';
 import { kernelRepository } from "@jpl/data/de440.full";
 
@@ -32,7 +32,7 @@ export const handler = lambdaHandler<Ephemeris2[]>(event => {
 
     console.log(`Compute ephemerides for '${target.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${interval} day(s)`);
 
-    const ephemerisScripts = new Ephemerides2(kernelRepository.stateSolver2());
+    const ephemerisScripts = new Ephemerides(kernelRepository.StateSolver());
     const ephemerides = ephemerisScripts.simple(target.id, fromJde, toJde, interval);
 
     return Success(ephemerides);

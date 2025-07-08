@@ -2,7 +2,7 @@ import { Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
-import { StateSolver2, CorrectionType2 } from '@jpl/state';
+import { StateSolver, CorrectionType } from '@jpl/state';
 import { kernelRepository } from '@jpl/data/de440.full';
 import { timeProperties } from '@astro/scripts/utils/time';
 import { Eclipse, EclipseType } from ".";
@@ -19,20 +19,20 @@ type Separation = {
 }
 
 function simpleSunMoonFunctions() {
-  const stateSolver = kernelRepository.stateSolver2();
+  const stateSolver = kernelRepository.StateSolver();
 
   function sunAndMoonAngle(es: number) {
-    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType2.NONE);
-    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType2.NONE);
+    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE);
+    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE);
 
     return Radians.between(sunPosition, moonPosition);
   }
 
   function earthsShadowAndMoonAngle(es: number) {
-    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType2.NONE);
+    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE);
     const earthsShadowPosition = sunPosition.negate();
 
-    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType2.NONE);
+    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE);
 
     return Radians.between(moonPosition, earthsShadowPosition);
   }
@@ -45,9 +45,9 @@ function simpleSunMoonFunctions() {
 
 export class Eclipses {
 
-  readonly stateSolver: StateSolver2;
+  readonly stateSolver: StateSolver;
 
-  constructor(stateSolver: StateSolver2) {
+  constructor(stateSolver: StateSolver) {
     this.stateSolver = stateSolver;
   }
 

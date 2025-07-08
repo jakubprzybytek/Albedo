@@ -2,7 +2,7 @@ import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate } from '../LambdaParams';
 import { JulianDay } from '@astro';
-import { Conjunctions2, Conjunction2 } from '@astro/scripts';
+import { Conjunctions, Conjunction2 } from '@astro/scripts';
 import { kernelRepository } from "@jpl/data/de440.full";
 import { Conjunction } from ".";
 import { EphemerisSeconds } from "@jpl";
@@ -25,7 +25,7 @@ export const handler = lambdaHandler<Conjunction[]>(event => {
 
   console.log(`Compute conjunctions for between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
 
-  const conjunctionScripts = new Conjunctions2(kernelRepository.stateSolver2());
+  const conjunctionScripts = new Conjunctions(kernelRepository.StateSolver());
   const conjunctions = conjunctionScripts.all(fromJde, toJde);
 
   console.log(`Found ${conjunctions.length} conjunctions.`);

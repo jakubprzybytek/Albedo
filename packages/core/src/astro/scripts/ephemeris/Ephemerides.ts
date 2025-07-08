@@ -1,22 +1,22 @@
 import { AstronomicalCoordinates } from '@astro/coords';
 import { States, timeProperties } from '@astro/scripts';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
-import { CorrectionType2, StateSolver2 } from '@jpl/state';
+import { CorrectionType, StateSolver } from '@jpl/state';
 import { Ephemeris2 } from '.';
 
-export class Ephemerides2 {
+export class Ephemerides {
 
-  readonly stateSolver: StateSolver2;
+  readonly stateSolver: StateSolver;
 
   readonly stateScripts: States;
 
-  constructor(stateSolver: StateSolver2) {
+  constructor(stateSolver: StateSolver) {
     this.stateSolver = stateSolver;
     this.stateScripts = new States(this.stateSolver);
   }
 
   single(tagetBodyId: JplBodyId, es: number): AstronomicalCoordinates {
-    return AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType2.NONE))
+    return AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType.NONE))
   }
 
   simple(tagetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Ephemeris2[] {
@@ -26,7 +26,7 @@ export class Ephemerides2 {
     return EphemerisSeconds.forRange(fromEs, toEs, itnervalEs)
       .map(es => ({
         ...timeProperties(es),
-        coords: AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType2.NONE))
+        coords: AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType.NONE))
       }));
   }
 };

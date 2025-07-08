@@ -1,6 +1,6 @@
 import { average } from 'simple-statistics';
 import { AstronomicalCoordinates, Radians } from '@astro/coords';
-import { Ephemerides2 } from '@astro/scripts';
+import { Ephemerides } from '@astro/scripts';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { kernelRepository } from '@jpl/data/de440.full';
 import { AstronomicalCoordsData } from '../../lib/WebGeocalcCSV';
@@ -11,7 +11,7 @@ type Stats = {
 };
 
 export function runEphemerisTestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: AstronomicalCoordsData[]): Stats {
-  const epherisScripts = new Ephemerides2(kernelRepository.stateSolver2());
+  const epherisScripts = new Ephemerides(kernelRepository.StateSolver());
   
   const stats: Stats = {};
 

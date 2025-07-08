@@ -8,7 +8,7 @@ import { buildState2TestCaseRunner } from "./State2TestCasesScript";
 import { buildStateTestCaseRunner } from './StateTestCasesScript';
 import { buildReportWriter, findFiles, ReportWriter } from "@jpl/test/lib/Files";
 import { formatDistanceStrict } from "date-fns";
-import { CorrectionType2 } from "@jpl/state/solver2";
+import { CorrectionType } from "@jpl/state/solver2";
 
 async function testSuite(testCaseFileNames: string[], writer: ReportWriter, stateTestCaseRunner: StateTestCaseRunner, state2TestCaseRunner: StateTestCaseRunner, description: string) {
   writer(`## ${description}\n`);
@@ -61,19 +61,19 @@ export async function runStatesTestSuite(timestamp: string) {
     findFiles(path.join(__dirname, 'data/states-reference-uncorrected'), 'WGC_StateVector'),
     append,
     buildStateTestCaseRunner({ corrections: [] }),
-    buildState2TestCaseRunner(CorrectionType2.NONE),
+    buildState2TestCaseRunner(CorrectionType.NONE),
     'State without correction'
   );
   await testSuite(findFiles(path.join(__dirname, 'data/states-reference-lightTimeCorrected'), 'WGC_StateVector'),
     append,
     buildStateTestCaseRunner({ corrections: [CorrectionType.LightTime] }),
-    buildState2TestCaseRunner(CorrectionType2.LIGHT_TIME),
+    buildState2TestCaseRunner(CorrectionType.LIGHT_TIME),
     'State with light time correction applied'
   );
   await testSuite(findFiles(path.join(__dirname, 'data/states-reference-starAberrationCorrected'), 'WGC_StateVector'),
     append,
     buildStateTestCaseRunner({ corrections: [CorrectionType.LightTime, CorrectionType.StarAbberation] }),
-    buildState2TestCaseRunner(CorrectionType2.LIGHT_TIME_AND_STAR_ABBERATION),
+    buildState2TestCaseRunner(CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION),
     'State with star aberration and light time correction applied'
   );
 
