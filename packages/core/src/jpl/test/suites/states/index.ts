@@ -3,9 +3,9 @@ import { RectangularCoordsData } from "@jpl/test/lib/WebGeocalcCSV";
 
 export type TestSuiteStats = {
   positionDifferenceAverage?: number;
-  positionComputationError?: any;
+  positionComputationError?: string;
   velocityDifferenceAverage?: number;
-  velocityComputationError?: any;
+  velocityComputationError?: string;
 };
 
 export type StateTestCaseRunner = (targetBodyId: JplBodyId, observerBodyId: JplBodyId, data: RectangularCoordsData[]) => TestSuiteStats;

@@ -38,7 +38,7 @@ function runStateTestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, d
 
       stats.positionDifferenceAverage = average(positionDifferences);
     } catch (e) {
-      stats.positionComputationError = e;
+      stats.positionComputationError = e as string;
     }
 
     try {
@@ -51,11 +51,11 @@ function runStateTestCases(targetBodyId: JplBodyId, observerBodyId: JplBodyId, d
 
       stats.velocityDifferenceAverage = average(velocityDifferences);
     } catch (e) {
-      stats.velocityComputationError = e;
+      stats.velocityComputationError = e as string;
     }
   } catch (e) {
-    stats.positionComputationError = e;
-    stats.velocityComputationError = e;
+    stats.positionComputationError = e as string;
+    stats.velocityComputationError = e as string;
   }
 
   return stats;

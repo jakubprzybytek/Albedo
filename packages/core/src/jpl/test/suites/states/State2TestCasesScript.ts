@@ -38,11 +38,11 @@ export function runState2TestCases(targetBodyId: JplBodyId, observerBodyId: JplB
       stats.positionDifferenceAverage = average(positionDifferences);
       stats.velocityDifferenceAverage = average(velocityDifferences);
     } catch (e) {
-      stats.velocityComputationError = e;
+      stats.velocityComputationError = e as string;
     }
   } catch (e) {
-    stats.positionComputationError = e;
-    stats.velocityComputationError = e;
+    stats.positionComputationError = e as string;
+    stats.velocityComputationError = e as string;
   }
 
   return stats;
