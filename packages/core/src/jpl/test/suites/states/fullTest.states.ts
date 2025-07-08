@@ -73,7 +73,7 @@ export async function runStatesTestSuite(timestamp: string) {
   await testSuite(findFiles(path.join(__dirname, 'data/states-reference-starAberrationCorrected'), 'WGC_StateVector'),
     append,
     buildStateTestCaseRunner({ corrections: [CorrectionType.LightTime, CorrectionType.StarAbberation] }),
-    buildState2TestCaseRunner(CorrectionType2.NONE),
+    buildState2TestCaseRunner(CorrectionType2.LIGHT_TIME_AND_STAR_ABBERATION),
     'State with star aberration and light time correction applied'
   );
 

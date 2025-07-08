@@ -111,7 +111,7 @@ describe("StateSolver2", () => {
 
   // ---------------------- Venus wrt. Earth ----------------------
 
-  it("should correctly compute uncorrected state for Venus wrt. Earth", () => {
+  it("should correctly compute state for Venus wrt. Earth: uncorrected", () => {
     const state = stateSolver.stateFor(JplBodyId.Venus, JplBodyId.Earth, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.NONE);
 
     expect(state.position.x).approximately(-212474107.12560332, 0);
@@ -139,19 +139,16 @@ describe("StateSolver2", () => {
     expect(reverseState.lightTime).approximately(0, 0);
   });
 
-  it("should correctly compute light time corrected state for Venus wrt. Earth", () => {
+  it("should correctly compute state for Venus wrt. Earth: light time corrected", () => {
     const state = stateSolver.stateFor(JplBodyId.Venus, JplBodyId.Earth, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.LIGHT_TIME);
 
     expect(state.position.x).approximately(-212496177.30534464, 6e-8);
     expect(state.position.y).approximately(-114080326.47248125, 0);
     expect(state.position.z).approximately(-46424486.90050933, 0);
 
-    // expect(state.velocity.x).approximately(35.22558917, 5e-4);
-    // expect(state.velocity.y).approximately(-45.92268669, 4e-4);
-    // expect(state.velocity.z).approximately(-21.93703436, 3e-4);
-    expect(state.velocity.x).approximately(35.22558917, 2e-6);
-    expect(state.velocity.y).approximately(-45.92268669, 2e-7);
-    expect(state.velocity.z).approximately(-21.93703436, 1e-7);
+    expect(state.velocity.x).approximately(35.22558917, 5e-4);
+    expect(state.velocity.y).approximately(-45.92268669, 4e-4);
+    expect(state.velocity.z).approximately(-21.93703436, 3e-4);
 
     expect(state.lightTime).approximately(819.26614366, 3e-9);
 
@@ -168,7 +165,7 @@ describe("StateSolver2", () => {
     expect(reverseState.lightTime).approximately(819.21320416, 4e-9);
   });
 
-  it("should correctly compute converged light time corrected state for Venus wrt. Earth", () => {
+  it("should correctly compute state for Venus wrt. Earth: converged light time corrected", () => {
     const state = stateSolver.stateFor(JplBodyId.Venus, JplBodyId.Earth, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.CONVERGED_NEWTONIAN_LIGHT_TIME);
 
     expect(state.position.x).approximately(-212496178.2023557, 3e-8);
@@ -184,6 +181,32 @@ describe("StateSolver2", () => {
     expect(reverseState.position.z).approximately(46423797.14386084, 1e-8);
 
     expect(reverseState.lightTime).approximately(819.21320463, 3e-9);
+  });
+
+  it("should correctly compute state for Venus wrt. Earth: light time and star aberration corrected", () => {
+    const state = stateSolver.stateFor(JplBodyId.Venus, JplBodyId.Earth, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.LIGHT_TIME_AND_STAR_ABBERATION);
+
+    expect(state.position.x).approximately(-212508057.9749429, 6e-8);
+    expect(state.position.y).approximately(-114061538.40538892, 3e-7);
+    expect(state.position.z).approximately(-46416268.63226115, 1e-8);
+
+    expect(state.velocity.x).approximately(35.22080413, 5e-3);
+    expect(state.velocity.y).approximately(-45.92598905, 4e-3);
+    expect(state.velocity.z).approximately(-21.93850053, 2e-3);
+
+    expect(state.lightTime).approximately(819.26614366, 1e-8);
+
+    const reverseState = stateSolver.stateFor(JplBodyId.Earth, JplBodyId.Venus, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType2.LIGHT_TIME_AND_STAR_ABBERATION);
+
+    expect(reverseState.position.x).approximately(212494325.1819659, 1e-6);
+    expect(reverseState.position.y).approximately(114054169.42693253, 2e-7);
+    expect(reverseState.position.z).approximately(46413269.82387052, 5e-8);
+
+    expect(reverseState.velocity.x).approximately(-35.22127253, 6e-3);
+    expect(reverseState.velocity.y).approximately(45.92154901, 1e-2);
+    expect(reverseState.velocity.z).approximately(21.93648380, 2e-3);
+
+    expect(reverseState.lightTime).approximately(819.21320416, 1e-8);
   });
 
 });
