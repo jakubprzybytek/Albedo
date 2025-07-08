@@ -1,7 +1,7 @@
 import { Radians } from "@astro/coords";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
-import { StateSolver2, CorrectionType2 } from "@jpl/state/solver2";
-import { timeProperties } from "../utils/time";
+import { StateSolver2, CorrectionType2 } from "@jpl/state";
+import { timeProperties } from "@astro/scripts/utils/time";
 import { SeparationWithPositions, Separation2 } from '.';
 
 export class Separations2 {

@@ -1,9 +1,9 @@
-import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
-import { StateSolver2 } from '@jpl/state/solver2';
 import { Radians, RectangularCoordinates } from '@astro/coords';
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { createPairs } from '@astro/utils/Pairs';
+import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
+import { StateSolver2 } from '@jpl/state';
 import { States, Separations2, Ephemerides2, timeProperties } from '@astro/scripts';
 import { Conjunction2 } from '.';
 
@@ -37,7 +37,10 @@ export class Conjunctions2 {
     const esArray = EphemerisSeconds.forRange(correctedFromEs, correctedToEs, PRELIMINARY_INTERVAL);
 
     const positionsByBody = bodyIdies
-      .reduce((acc, bodyId) => acc.set(bodyId, esArray.map(States.buildPositionFunction(this.stateSolver, bodyId))), new Map<JplBodyId, RectangularCoordinates[]>());
+      .reduce(
+        (acc, bodyId) => acc.set(bodyId, esArray.map(States.buildPositionFunction(this.stateSolver, bodyId))),
+        new Map<JplBodyId, RectangularCoordinates[]>()
+      );
 
     const conjuctions: Conjunction2[] = [];
 

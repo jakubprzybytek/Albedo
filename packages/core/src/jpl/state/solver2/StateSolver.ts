@@ -1,9 +1,9 @@
+import { Radians, RectangularCoordinates } from "@astro/coords";
 import { JplBodyId, SPEED_OF_LIGHT } from "@jpl";
 import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } from "@jpl/kernel";
 import { Forest, TreeNode } from "@jpl/kernel/tree";
-import { Radians, RectangularCoordinates } from "@astro/coords";
-import { PositionAndTrueVelocityCalculator, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "../chebyshev";
-import { CorrectionType2, State } from ".";
+import { CorrectionType2, State } from "@jpl/state";
+import { PositionAndTrueVelocityCalculator, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "@jpl/state/chebyshev";
 
 type SpkNode = {
   targetBodyId: JplBodyId;

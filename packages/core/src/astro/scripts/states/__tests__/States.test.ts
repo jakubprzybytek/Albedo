@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
-import { CorrectionType2 } from "@jpl/state/solver2";
+import { CorrectionType2 } from "@jpl/state";
 import { kernelRepository } from "@jpl/data/de440.testData";
 import { States } from "../States";
 

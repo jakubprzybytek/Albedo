@@ -1,4 +1,4 @@
-import { State } from '@jpl/state/solver2';
+import { State } from '@jpl/state';
 import { RectangularCoordinates } from '@math';
 
 export * from './States';

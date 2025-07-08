@@ -1,9 +1,8 @@
-import { SpkKernelCollection } from './';
-import { EphemerisSeconds, JplBodyId, jplBodyFromId } from '..';
-import { Forest } from './tree';
-import { StateSolverBuilder } from '../state/solvers';
-import { StateSolver2 } from '@jpl/state/solver2/StateSolver';
 import { JulianDay } from '@astro';
+import { EphemerisSeconds, JplBodyId, jplBodyFromId } from '@jpl';
+import { SpkKernelCollection } from '.';
+import { Forest } from './tree';
+import { StateSolver2 } from '@jpl/state/solver2/StateSolver';
 
 export class SpkKernelRepository {
 
@@ -34,10 +33,6 @@ export class SpkKernelRepository {
 
     registerSpkKernelCollections(newCollections: SpkKernelCollection[]) {
         newCollections.forEach(collection => this.registerSpkKernelCollection(collection));
-    }
-
-    stateSolverBuilder(): StateSolverBuilder {
-        return new StateSolverBuilder(this);
     }
 
     stateSolver2(): StateSolver2 {

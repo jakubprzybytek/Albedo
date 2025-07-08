@@ -1,11 +1,11 @@
-import { Eclipse, EclipseType } from ".";
-import { EphemerisSeconds, JplBodyId } from "@jpl";
-import { kernelRepository } from '@jpl/data/de440.full';
 import { Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
-import { StateSolver2, CorrectionType2 } from "@jpl/state/solver2";
-import { timeProperties } from "../utils/time";
+import { EphemerisSeconds, JplBodyId } from "@jpl";
+import { StateSolver2, CorrectionType2 } from '@jpl/state';
+import { kernelRepository } from '@jpl/data/de440.full';
+import { timeProperties } from '@astro/scripts/utils/time';
+import { Eclipse, EclipseType } from ".";
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
@@ -17,7 +17,6 @@ type Separation = {
   es: number;
   separation: number;
 }
-
 
 function simpleSunMoonFunctions() {
   const stateSolver = kernelRepository.stateSolver2();

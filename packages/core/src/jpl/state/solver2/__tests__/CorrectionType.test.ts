@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CorrectionType2, stringToCorrectionType } from "..";
+import { CorrectionType2, stringToCorrectionType } from "../..";
 
 describe("CorrectionType", () => {
 

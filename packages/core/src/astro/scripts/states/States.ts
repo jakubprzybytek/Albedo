@@ -1,5 +1,5 @@
 import { EphemerisSeconds, JplBodyId } from "@jpl";
-import { StateSolver2, CorrectionType2 } from "@jpl/state/solver2";
+import { StateSolver2, CorrectionType2 } from "@jpl/state";
 import { RectangularCoordinates } from "@math";
 import { PositionInTime, StateInTime } from ".";
 
