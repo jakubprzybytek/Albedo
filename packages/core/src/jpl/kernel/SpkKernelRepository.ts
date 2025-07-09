@@ -2,7 +2,7 @@ import { JulianDay } from '@astro';
 import { EphemerisSeconds, JplBodyId, jplBodyFromId } from '@jpl';
 import { SpkKernelCollection } from '.';
 import { Forest } from './tree';
-import { StateSolver } from '@jpl/state/solver2/StateSolver';
+import { StateSolver } from '@jpl/state';
 
 export class SpkKernelRepository {
 

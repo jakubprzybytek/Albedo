@@ -3,7 +3,6 @@ import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate } from '../LambdaParams';
 import { JulianDay } from '@astro';
 import { Eclipses, Eclipse } from '@astro/scripts';
-import { EphemerisSeconds } from "@jpl";
 import { kernelRepository } from "@jpl/data/de440.full";
 
 type GetEclipsesParams = {

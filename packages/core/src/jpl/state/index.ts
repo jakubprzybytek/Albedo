@@ -1,6 +1,6 @@
 import { RectangularCoordinates } from "@astro/coords";
 
-export { StateSolver } from "./solver2/StateSolver";
+export { StateSolver } from "./solver/StateSolver";
 
 export type State = {
   position: RectangularCoordinates;
