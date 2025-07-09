@@ -1,6 +1,6 @@
 import { RectangularCoordinates } from "@math";
 
-export * from './Separations2';
+export * from './Separations';
 
 export type Separation2 = {
   es: number;

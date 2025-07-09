@@ -1,7 +1,7 @@
 import { AstronomicalCoordinates } from "@math";
 import { JplBody } from "@jpl";
 
-export * from './Conjunctions2';
+export * from './Conjunctions';
 
 export type Conjunction2 = {
   es: number;

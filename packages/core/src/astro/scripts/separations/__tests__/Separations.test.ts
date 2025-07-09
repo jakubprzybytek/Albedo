@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { JplBodyId } from "@jpl";
 import { kernelRepository } from "@jpl/data/de440.testData";
 import { JulianDay } from "@astro";
-import { Separations } from "../Separations2";
+import { Separations } from "../Separations";
 
 describe("Separations", () => {
   const separationScripts = new Separations(kernelRepository.StateSolver());
