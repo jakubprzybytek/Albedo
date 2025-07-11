@@ -11,3 +11,8 @@ body {
     color-scheme: dark;
   }
 }
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
