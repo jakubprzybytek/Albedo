@@ -15,6 +15,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { pl } from 'date-fns/locale/pl';
+import '@aws-amplify/ui-react/styles.css';
 
 console.log(`User pool: ${import.meta.env.VITE_USER_POOL_ID}`);
 console.log(`User client pool: ${import.meta.env.VITE_USER_POOL_CLIENT_ID}`);

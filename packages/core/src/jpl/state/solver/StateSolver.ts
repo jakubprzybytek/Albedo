@@ -1,7 +1,6 @@
 import { Radians, RectangularCoordinates } from "@astro/coords";
 import { JplBodyId, SPEED_OF_LIGHT } from "@jpl";
 import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } from "@jpl/kernel";
-import { Forest, TreeNode } from "@jpl/kernel/tree";
 import { CorrectionType, State } from "@jpl/state";
 import { PositionAndTrueVelocityCalculator, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "@jpl/state/chebyshev";
 
@@ -21,10 +20,34 @@ export class StateSolver {
 
   readonly spk = new Map<JplBodyId, SpkNode>();
 
-  constructor(kernel: Forest<JplBodyId, SpkKernelCollection>) {
-    for (const rootTreeNode of kernel.trees.values()) {
-      this.collectSpkCollection(rootTreeNode, []);
+  constructor(kernels: SpkKernelCollection[]) {
+    const centerBodies = kernels.reduce((acc, kernel) => acc.set(kernel.bodyId, kernel.centerBodyId), new Map<JplBodyId, JplBodyId>);
+
+    this.spk.set(JplBodyId.SolarSystemBarycenter, {
+      targetBodyId: JplBodyId.SolarSystemBarycenter,
+      allBodies: [JplBodyId.SolarSystemBarycenter]
+    });
+
+    for (let kernel of kernels) {
+      const newSpkNode: SpkNode = {
+        targetBodyId: kernel.bodyId,
+        observerBodyId: kernel.centerBodyId,
+        allBodies: this.collectParentBodies(kernel.bodyId, centerBodies),
+        calculator: this.buildCalculator(kernel)
+      }
+      this.spk.set(kernel.bodyId, newSpkNode);
     }
+  }
+
+  private collectParentBodies(targetBodyId: JplBodyId, centerBodies: Map<JplBodyId, JplBodyId>): JplBodyId[] {
+    const parentBodies: JplBodyId[] = [targetBodyId];
+    let bodyId = targetBodyId;
+    let centerBody;
+    while ((centerBody = centerBodies.get(bodyId)) !== undefined) {
+      parentBodies.push(centerBody);
+      bodyId = centerBody;
+    }
+    return parentBodies.reverse();
   }
 
   private buildCalculator(spkKernelCollection: SpkKernelCollection): PositionAndVelocityCalculator {
@@ -33,23 +56,6 @@ export class StateSolver {
         return new PositionAndVelocitySolvingCalculator(spkKernelCollection.data);
       case DataType.ChebyshevPositionAndVelocity:
         return new PositionAndTrueVelocityCalculator(spkKernelCollection.data as PositionAndVelocityChebyshevRecord[]);
-    }
-  }
-
-  private collectSpkCollection(kernelTreeNode: TreeNode<JplBodyId, SpkKernelCollection>, allParentBodies: JplBodyId[]) {
-    const allBodies = [...allParentBodies, kernelTreeNode.value];
-
-    const newSpkNode: SpkNode = {
-      targetBodyId: kernelTreeNode.value,
-      observerBodyId: kernelTreeNode.incomingEdge?.centerBodyId,
-      allBodies: [...allBodies],
-      calculator: kernelTreeNode.incomingEdge ? this.buildCalculator(kernelTreeNode.incomingEdge) : undefined
-    }
-
-    this.spk.set(kernelTreeNode.value, newSpkNode);
-
-    for (const childTreeNode of kernelTreeNode.children.values()) {
-      this.collectSpkCollection(childTreeNode, allBodies);
     }
   }
 
@@ -165,7 +171,7 @@ export class StateSolver {
       }
 
       case CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION: {
-        const { coords: observetToTargetPosition, lightTime} = this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 2);
+        const { coords: observetToTargetPosition, lightTime } = this.calculateLightTimeCorrectedPosition(targetBodyId, observerBodyId, ephemerisSeconds, 2);
         const observerVelocity = this.calculateDirectVelocity(observerBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
 
         const angle = Radians.between(observerVelocity, observetToTargetPosition);
