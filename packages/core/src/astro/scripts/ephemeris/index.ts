@@ -2,7 +2,7 @@ import { AstronomicalCoordinates } from '@astro/coords';
 
 export * from './Ephemerides';
 
-export type Ephemeris2 = {
+export type Ephemeris = {
     es: number;
     jde: number;
     tde: Date;

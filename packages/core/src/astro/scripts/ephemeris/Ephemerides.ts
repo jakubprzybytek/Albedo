@@ -2,7 +2,7 @@ import { AstronomicalCoordinates } from '@astro/coords';
 import { States, timeProperties } from '@astro/scripts';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { CorrectionType, StateSolver } from '@jpl/state';
-import { Ephemeris2 } from '.';
+import { Ephemeris } from '.';
 
 export class Ephemerides {
 
@@ -19,7 +19,7 @@ export class Ephemerides {
     return AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType.NONE))
   }
 
-  simple(tagetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Ephemeris2[] {
+  simple(tagetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Ephemeris[] {
     const fromEs = EphemerisSeconds.fromJde(fromJde);
     const toEs = EphemerisSeconds.fromJde(toJde);
     const itnervalEs = EphemerisSeconds.fromDays(interval);
