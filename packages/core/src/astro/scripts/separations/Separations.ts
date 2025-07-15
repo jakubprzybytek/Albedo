@@ -2,7 +2,7 @@ import { Radians } from "@astro/coords";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from "@jpl/state";
 import { timeProperties } from "@astro/scripts/utils/time";
-import { SeparationWithPositions, Separation2 } from '.';
+import { Separation2 } from '.';
 
 export class Separations {
 
@@ -14,26 +14,26 @@ export class Separations {
 
   static buildSeparationFunction(stateSolver: StateSolver, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
     return (es: number): number => Radians.between(
-      stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType.NONE),
-      stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType.NONE)
+      stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION),
+      stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
     );
   }
 
-  static buildPositionsAndSeparationFunction(stateSolver: StateSolver, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
-    return (es: number): SeparationWithPositions => {
-      const firstBodyPosition = stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType.NONE);
-      const secondBodyPosition = stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType.NONE);
-      return {
-        es,
-        firstBodyPosition,
-        secondBodyPosition,
-        separation: Radians.between(
-          stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType.NONE),
-          stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType.NONE)
-        )
-      }
-    }
-  }
+  // static buildPositionsAndSeparationFunction(stateSolver: StateSolver, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
+  //   return (es: number): SeparationWithPositions => {
+  //     const firstBodyPosition = stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType.NONE);
+  //     const secondBodyPosition = stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType.NONE);
+  //     return {
+  //       es,
+  //       firstBodyPosition,
+  //       secondBodyPosition,
+  //       separation: Radians.between(
+  //         stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType.NONE),
+  //         stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType.NONE)
+  //       )
+  //     }
+  //   }
+  // }
 
   for(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Separation2[] {
     const separationFunction = Separations.buildSeparationFunction(this.stateSolver, targetBodyId, observerBodyId);

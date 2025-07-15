@@ -16,18 +16,18 @@ describe("Conjunctions", () => {
     expect(conjunctions).toHaveLength(1);
 
     expect(conjunctions[0]).toEqual({
-      es: 699507509.4788908,
-      jde: 2459641.1517300797,
-      tde: new Date('2022-03-02T15:38:29.000Z'),
+      es: 699507671.7832242,
+      jde: 2459641.153608602,
+      tde: new Date('2022-03-02T15:41:11.000Z'),
       firstBody: {
         info: jplBodyFromString('Mercury'),
-        coords: new AstronomicalCoordinates(5.612524627528013, -0.2917585367986864)
+        coords: new AstronomicalCoordinates(5.612402662674604, -0.29178842348138884)
       },
       secondBody: {
         info: jplBodyFromString('Saturn'),
-        coords: new AstronomicalCoordinates(5.609555483374938, -0.28039555253075243)
+        coords: new AstronomicalCoordinates(5.60943612310782, -0.2804312279610099)
       },
-      separation: 0.011714567835536118,
+      separation: 0.011708338626390445,
     });
   });
 });

@@ -7,8 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import AstronomicalCoords from '@/common/AstronomicalCoordinates';
 import { formatDegrees } from '../../utils';
-import type { Eclipse } from '@/sdk/Eclipses';
+import { EclipseType } from '@/sdk/Eclipses';
+import { type Eclipse } from '@/sdk/Eclipses';
+import EclipseDrawing from './EclipseDrawing';
 
 type EclipsesTablePropsType = {
   eclipses: Eclipse[];
@@ -27,8 +30,11 @@ export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX
         <TableHead>
           <TableRow>
             <TableCell>Type</TableCell>
-            <TableCell>Time</TableCell>
+            <TableCell align="center">Time</TableCell>
+            <TableCell align="center">Sun Ephemeris</TableCell>
+            <TableCell align="center">Moon / Moonshadow Ephemeris</TableCell>
             <TableCell align="center">Separation</TableCell>
+            <TableCell align="right">Drawing</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -43,8 +49,20 @@ export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX
                 <div>{eclipse.jde} (JDE)</div>
                 <div><>{eclipse.tde} (TDE)</></div>
               </TableCell>
+              <TableCell>
+                <AstronomicalCoords coords={eclipse.sunEphemeris.coords} />
+              </TableCell>
+              <TableCell>
+                {eclipse.type === EclipseType.SunEclipse && <AstronomicalCoords coords={eclipse.moonEphemeris.coords} />}
+                {eclipse.type === EclipseType.MoonEclipse && <AstronomicalCoords coords={eclipse.moonShadowEphemeris.coords} />}
+              </TableCell>
               <TableCell align="right">
                 {formatDegrees(eclipse.separation)}
+              </TableCell>
+              <TableCell>
+                <div style={{ width: '100px', height: '100px' }}>
+                  <EclipseDrawing eclipse={eclipse} />
+                </div>
               </TableCell>
             </TableRow>
           ))}

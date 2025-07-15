@@ -18,7 +18,7 @@ export function runEphemerisTestCases(targetBodyId: JplBodyId, observerBodyId: J
   try {
     const separations = data.map((testCase) => {
       const es = EphemerisSeconds.fromDateTimeObject(testCase.tbd);
-      const computedEphemeris = epherisScripts.single(targetBodyId, es);
+      const computedEphemeris = epherisScripts.coordinatesForBody(targetBodyId, es);
       const expectedEphemeris = new AstronomicalCoordinates(Radians.fromDegrees(testCase.rightAscension), Radians.fromDegrees(testCase.declination));
 
       return Radians.separation(expectedEphemeris, computedEphemeris);

@@ -1,4 +1,4 @@
-import { Radians } from "@astro/coords";
+import { AstronomicalCoordinates, Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
@@ -6,6 +6,7 @@ import { StateSolver, CorrectionType } from '@jpl/state';
 import { kernelRepository } from '@jpl/data/de440.full';
 import { timeProperties } from '@astro/scripts/utils/time';
 import { Eclipse, EclipseType } from ".";
+import { Ephemerides } from "../ephemeris";
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
@@ -47,8 +48,11 @@ export class Eclipses {
 
   readonly stateSolver: StateSolver;
 
+  readonly ephemerides: Ephemerides;
+
   constructor(stateSolver: StateSolver) {
     this.stateSolver = stateSolver;
+    this.ephemerides = new Ephemerides(stateSolver);
   }
 
   forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
@@ -78,8 +82,9 @@ export class Eclipses {
         return {
           type: EclipseType.SunEclipse,
           ...timeProperties(eventEs),
+          sunEphemeris: this.ephemerides.detailedCoordinatesForBody(JplBodyId.Sun, eventEs),
+          moonEphemeris: this.ephemerides.detailedCoordinatesForBody(JplBodyId.Moon, eventEs),
           separation: minSeparation,
-          positionAngle: NaN
         }
       });
 
@@ -96,8 +101,12 @@ export class Eclipses {
         return {
           type: EclipseType.MoonEclipse,
           ...timeProperties(eventEs),
+          sunEphemeris: this.ephemerides.detailedCoordinatesForBody(JplBodyId.Sun, eventEs),
+          moonShadowEphemeris:  {
+            coords: new AstronomicalCoordinates(0, 0),
+            angularSize: 0
+          },
           separation: minSeparation,
-          positionAngle: NaN
         }
       });
 

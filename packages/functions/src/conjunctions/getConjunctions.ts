@@ -2,10 +2,9 @@ import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate } from '../LambdaParams';
 import { JulianDay } from '@astro';
-import { Conjunctions, Conjunction2 } from '@astro/scripts';
+import { Conjunctions } from '@astro/scripts';
 import { kernelRepository } from "@jpl/data/de440.full";
 import { Conjunction } from ".";
-import { EphemerisSeconds } from "@jpl";
 
 type GetConjunctionsParams = {
   fromTde: Date;

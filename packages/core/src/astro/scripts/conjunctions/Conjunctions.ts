@@ -79,11 +79,11 @@ export class Conjunctions {
           ...timeProperties(separation.es),
           firstBody: {
             info: firstBody,
-            coords: this.ephemerides.single(firstBody.id, separation.es)
+            coords: this.ephemerides.coordinatesForBody(firstBody.id, separation.es)
           },
           secondBody: {
             info: secondBody,
-            coords: this.ephemerides.single(secondBody.id, separation.es)
+            coords: this.ephemerides.coordinatesForBody(secondBody.id, separation.es)
           },
           separation: separation.separation,
         }))

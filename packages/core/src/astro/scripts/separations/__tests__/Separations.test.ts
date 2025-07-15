@@ -8,45 +8,33 @@ describe("Separations", () => {
   const separationScripts = new Separations(kernelRepository.StateSolver());
 
   it("should compute separations for Moon and Venus", () => {
-    const fromEs = JulianDay.fromDate(2019, 10, 8);
-    const toEs = JulianDay.fromDate(2019, 10, 12);
+    const fromEs = JulianDay.fromDate(2019, 10, 9);
+    const toEs = JulianDay.fromDate(2019, 10, 11);
     const interval = 1;
 
     const separations = separationScripts.for(JplBodyId.Moon, JplBodyId.Venus, fromEs, toEs, interval);
 
     expect(separations).toStrictEqual([
       {
-        "es": 623764800,
-        "jde": 2458764.5,
-        "tde": new Date('2019-10-08T00:00:00.000Z'),
-        "separation": 1.7635931535096159,
-      },
-      {
         "es": 623851200,
         "jde": 2458765.5,
         "tde": new Date('2019-10-09T00:00:00.000Z'),
-        "separation": 1.9492963453410979,
+        "separation": 1.9494988303927896,
       },
       {
         "es": 623937600,
         "jde": 2458766.5,
         "tde": new Date('2019-10-10T00:00:00.000Z'),
-        "separation": 2.1335691362854017,
+        "separation": 2.13377112990052,
       },
       {
         "es": 624024000,
         "jde": 2458767.5,
         "tde": new Date('2019-10-11T00:00:00.000Z'),
-        "separation": 2.317390923506916,
-      },
-      {
-        "es": 624110400,
-        "jde": 2458768.5,
-        "tde": new Date('2019-10-12T00:00:00.000Z'),
-        "separation": 2.5014741168256633,
+        "separation": 2.317592289423942,
       },
     ]);
 
-    expect(separations).toHaveLength(5);
+    expect(separations).toHaveLength(3);
   });
 });

@@ -9,12 +9,22 @@ describe("Ephemerides", () => {
 
   const ephemerisScripts = new Ephemerides(kernelRepository.StateSolver());
 
-  it("should compute single ephemeis for Venus", () => {
-    const es = EphemerisSeconds.fromJde(JulianDay.fromDate(2019, 10, 10));
-    const ephemeris = ephemerisScripts.single(JplBodyId.Venus, es);
+  it("should compute astronomical coodinates for Venus", () => {
+    const es = EphemerisSeconds.fromDate(2019, 10, 10);
+    const ephemeris = ephemerisScripts.coordinatesForBody(JplBodyId.Venus, es);
 
-    expect(Radians.toDegrees(ephemeris.rightAscension)).approximately(209.40961679, 1e-8);
-    expect(Radians.toDegrees(ephemeris.declination)).toBeCloseTo(-11.36545552, 0);
+    expect(Radians.toDegrees(ephemeris.rightAscension)).approximately(209.39848483, 3e-9);
+    expect(Radians.toDegrees(ephemeris.declination)).toBeCloseTo(-11.36105059, 0);
+  });
+
+  it("should compute detailed astronomical coodinates for Venus", () => {
+    const es = EphemerisSeconds.fromDate(2019, 10, 10);
+    const ephemeris = ephemerisScripts.detailedCoordinatesForBody(JplBodyId.Venus, es);
+
+    expect(Radians.toDegrees(ephemeris.coords.rightAscension)).approximately(209.39848483, 3e-9);
+    expect(Radians.toDegrees(ephemeris.coords.declination)).toBeCloseTo(-11.36105059, 0);
+
+    expect(Radians.toDegrees(ephemeris.angularSize)).toBeCloseTo(0, 0);
   });
 
   it("should compute simple ephemeis for Venus", () => {
@@ -29,7 +39,7 @@ describe("Ephemerides", () => {
       tde: new Date('2019-10-10T00:00:00.000Z'),
     });
 
-    expect(Radians.toDegrees(coords.rightAscension)).approximately(209.40961679, 1e-8);
-    expect(Radians.toDegrees(coords.declination)).toBeCloseTo(-11.36545552, 0);
+    expect(Radians.toDegrees(coords.rightAscension)).approximately(209.39848483, 3e-9);
+    expect(Radians.toDegrees(coords.declination)).toBeCloseTo(-11.36105059, 0);
   });
 });
