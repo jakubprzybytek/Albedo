@@ -7,7 +7,6 @@
     "typecheck": "tsc -noEmit"
   },
   "devDependencies": {
-    "@types/node": "^20",
     "@types/aws-lambda": "^8.10.147"
   }
 }
