@@ -3,6 +3,7 @@ import { States, timeProperties } from '@astro/scripts';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { CorrectionType, StateSolver } from '@jpl/state';
 import { DetailedCoordinates, Ephemeris } from '.';
+import { Bodies } from 'src/catalogues/Bodies';
 
 export class Ephemerides {
 
@@ -15,28 +16,20 @@ export class Ephemerides {
     this.stateScripts = new States(this.stateSolver);
   }
 
-  coordinatesForBody(tagetBodyId: JplBodyId, es: number): AstronomicalCoordinates {
-    const position = this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
+  coordinatesForBody(targetBodyId: JplBodyId, es: number): AstronomicalCoordinates {
+    const position = this.stateScripts.position(targetBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
     return AstronomicalCoordinates.fromRectangular(position);
   }
 
-  detailedCoordinatesForBody(tagetBodyId: JplBodyId, es: number): DetailedCoordinates {
-    const position = this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
-    let objectDiameter = 0;
-    switch (tagetBodyId) {
-      case JplBodyId.Sun:
-        objectDiameter = 1392684; // in km
-        break;
-      case JplBodyId.Moon:
-        objectDiameter = 3474.8; // in km
-        break;
-    }
+  detailedCoordinatesForBody(targetBodyId: JplBodyId, es: number): DetailedCoordinates {
+    const position = this.stateScripts.position(targetBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
 
-    const angularSize = objectDiameter / position.length(); // in radians
-
+    const objectDiameterKm = (Bodies[targetBodyId as keyof typeof Bodies].equatorialRadiusKm ?? 0) * 2;
+    const angularSize = Radians.angularSize(objectDiameterKm, position.length());
+    
     return {
       coords: AstronomicalCoordinates.fromRectangular(position),
-      angularSize: Radians.toDegrees(angularSize)
+      angularSizeDeg: Radians.toDegrees(angularSize)
     }
   }
 

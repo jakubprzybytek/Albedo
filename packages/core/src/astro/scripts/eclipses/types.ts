@@ -1,8 +1,15 @@
+import { AstronomicalCoordinates } from "@astro/coords";
 import { DetailedCoordinates } from "@astro/scripts";
 
 export enum EclipseType {
   SunEclipse = 'SunEclipse',
   MoonEclipse = 'MoonEclipse'
+}
+
+export type EarthShadowCoordinates = {
+  coords: AstronomicalCoordinates;
+  umbraAngularSizeDeg: number;
+  penumbraAngularSizeDeg: number;
 }
 
 export type CommonEclipseProperties = {
@@ -16,12 +23,12 @@ export type SunEclipse = {
   readonly type: EclipseType.SunEclipse;
   readonly sunEphemeris: DetailedCoordinates;
   readonly moonEphemeris: DetailedCoordinates;
-}
+} & CommonEclipseProperties;
 
 export type MoonEclipse = {
   readonly type: EclipseType.MoonEclipse;
-  readonly sunEphemeris: DetailedCoordinates;
-  readonly moonShadowEphemeris: DetailedCoordinates;
-}
+  readonly moonEphemeris: DetailedCoordinates;
+  readonly earthShadowEphemeris: EarthShadowCoordinates;
+} & CommonEclipseProperties;
 
-export type Eclipse = (SunEclipse | MoonEclipse) & CommonEclipseProperties;
+export type Eclipse = SunEclipse | MoonEclipse;

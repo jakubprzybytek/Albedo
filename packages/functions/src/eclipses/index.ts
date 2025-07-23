@@ -1,3 +1,1 @@
-import { Eclipse, EclipseType } from '@astro/scripts/eclipses/types';
-export type { Eclipse };
-export { EclipseType };
+export { EclipseType, Eclipse, SunEclipse, MoonEclipse } from '@astro/scripts/eclipses/types';

@@ -5,8 +5,9 @@ import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from '@jpl/state';
 import { kernelRepository } from '@jpl/data/de440.full';
 import { timeProperties } from '@astro/scripts/utils/time';
-import { Eclipse, EclipseType } from ".";
+import { Eclipse, EclipseType, MoonEclipse, SunEclipse } from ".";
 import { Ephemerides } from "../ephemeris";
+import { Bodies } from "src/catalogues/Bodies";
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
@@ -44,6 +45,37 @@ function simpleSunMoonFunctions() {
   }
 }
 
+function computeMoonAndEarthShadowEphemeris(stateSolver: StateSolver, es: number): Pick<MoonEclipse, 'moonEphemeris' | 'earthShadowEphemeris'> {
+  const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
+  const earthsShadowPosition = sunPosition.negate();
+
+  const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
+
+  const sunRadius = Bodies[JplBodyId.Sun].equatorialRadiusKm;
+  const sunDiameter = sunRadius * 2;
+  const distanceToSun = sunPosition.length();
+
+  const earthRadius = Bodies[JplBodyId.Earth].equatorialRadiusKm;
+  const earthDiameter = earthRadius * 2;
+
+  const distanceToMoon = moonPosition.length();
+
+  const umbraAngularSizeKm = earthRadius - (distanceToMoon / distanceToSun) * (sunRadius - earthRadius);
+  const penumbraAngularSizeKm = distanceToMoon * (sunDiameter + earthDiameter) / distanceToSun + earthDiameter;
+
+  return {
+    moonEphemeris: {
+      coords: AstronomicalCoordinates.fromRectangular(moonPosition),
+      angularSizeDeg: Radians.toDegrees(Radians.angularSize(Bodies[JplBodyId.Moon].equatorialRadiusKm * 2, distanceToMoon))
+    },
+    earthShadowEphemeris: {
+      coords: AstronomicalCoordinates.fromRectangular(earthsShadowPosition),
+      umbraAngularSizeDeg: Radians.toDegrees(Radians.angularSize(umbraAngularSizeKm, distanceToMoon)),
+      penumbraAngularSizeDeg: Radians.toDegrees(Radians.angularSize(penumbraAngularSizeKm, distanceToMoon))
+    }
+  };
+}
+
 export class Eclipses {
 
   readonly stateSolver: StateSolver;
@@ -72,7 +104,7 @@ export class Eclipses {
 
     const sunEclipses = minimums
       .filter(minSeparation => minSeparation.separation < PRELIMINARY_ANGLE_RANGE)
-      .map<Eclipse>(separation => {
+      .map<SunEclipse>(separation => {
         const a = separation.es - PRELIMINARY_INTERVAL;
         const b = separation.es;
         const c = separation.es + PRELIMINARY_INTERVAL;
@@ -90,7 +122,7 @@ export class Eclipses {
 
     const moonEclipses = maximums
       .filter(separation => separation.separation > Math.PI - PRELIMINARY_ANGLE_RANGE)
-      .map<Eclipse>(separation => {
+      .map<MoonEclipse>(separation => {
         // console.log(`jde: ${separation.jde}, date=${JulianDay.toDateTime(separation.jde).toISOString()}, angle=${Radians.toDegrees(separation.separation)}°`);
         const a = separation.es - PRELIMINARY_INTERVAL;
         const b = separation.es;
@@ -101,11 +133,7 @@ export class Eclipses {
         return {
           type: EclipseType.MoonEclipse,
           ...timeProperties(eventEs),
-          sunEphemeris: this.ephemerides.detailedCoordinatesForBody(JplBodyId.Sun, eventEs),
-          moonShadowEphemeris:  {
-            coords: new AstronomicalCoordinates(0, 0),
-            angularSize: 0
-          },
+          ...computeMoonAndEarthShadowEphemeris(this.stateSolver, eventEs),
           separation: minSeparation,
         }
       });

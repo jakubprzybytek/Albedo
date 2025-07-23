@@ -61,4 +61,8 @@ export class Radians {
         return Math.acos((first.x * second.x + first.y * second.y + first.z * second.z) / (first.length() * second.length()));
     }
     
+    static angularSize(diameter: number, distance: number): number {
+        return 2 * Math.atan(diameter / (2 * distance));
+        // return diameter / distance; // in radians
+    }
 }

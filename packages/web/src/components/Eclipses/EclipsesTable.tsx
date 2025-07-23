@@ -10,11 +10,37 @@ import Paper from '@mui/material/Paper';
 import AstronomicalCoords from '@/common/AstronomicalCoordinates';
 import { formatDegrees } from '../../utils';
 import { EclipseType } from '@/sdk/Eclipses';
-import { type Eclipse } from '@/sdk/Eclipses';
+import type { Eclipse, MoonEclipse, SunEclipse } from '@/sdk/Eclipses';
 import EclipseDrawing from './EclipseDrawing';
 
 type EclipsesTablePropsType = {
   eclipses: Eclipse[];
+}
+
+function SunEclipseCells({ eclipse }: { eclipse: SunEclipse }) {
+  return (
+    <>
+      <TableCell>
+        <AstronomicalCoords coords={eclipse.sunEphemeris.coords} />
+      </TableCell>
+      <TableCell>
+        <AstronomicalCoords coords={eclipse.moonEphemeris.coords} />
+      </TableCell>
+    </>
+  );
+}
+
+function MoonEclipseCells({ eclipse }: { eclipse: MoonEclipse }) {
+  return (
+    <>
+      <TableCell>
+        <AstronomicalCoords coords={eclipse.moonEphemeris.coords} />
+      </TableCell>
+      <TableCell>
+        <AstronomicalCoords coords={eclipse.earthShadowEphemeris.coords} />
+      </TableCell>
+    </>
+  );
 }
 
 export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX.Element {
@@ -31,8 +57,8 @@ export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX
           <TableRow>
             <TableCell>Type</TableCell>
             <TableCell align="center">Time</TableCell>
-            <TableCell align="center">Sun Ephemeris</TableCell>
-            <TableCell align="center">Moon / Moonshadow Ephemeris</TableCell>
+            <TableCell align="center">Sun / Moon Ephemeris</TableCell>
+            <TableCell align="center">Moon / Earthshadow Ephemeris</TableCell>
             <TableCell align="center">Separation</TableCell>
             <TableCell align="right">Drawing</TableCell>
           </TableRow>
@@ -49,17 +75,12 @@ export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX
                 <div>{eclipse.jde} (JDE)</div>
                 <div><>{eclipse.tde} (TDE)</></div>
               </TableCell>
-              <TableCell>
-                <AstronomicalCoords coords={eclipse.sunEphemeris.coords} />
-              </TableCell>
-              <TableCell>
-                {eclipse.type === EclipseType.SunEclipse && <AstronomicalCoords coords={eclipse.moonEphemeris.coords} />}
-                {eclipse.type === EclipseType.MoonEclipse && <AstronomicalCoords coords={eclipse.moonShadowEphemeris.coords} />}
-              </TableCell>
-              <TableCell align="right">
+              {eclipse.type === EclipseType.SunEclipse && <SunEclipseCells eclipse={eclipse} />}
+              {eclipse.type === EclipseType.MoonEclipse && <MoonEclipseCells eclipse={eclipse} />}
+              <TableCell align="left">
                 {formatDegrees(eclipse.separation)}
               </TableCell>
-              <TableCell>
+              <TableCell align="right">
                 <div style={{ width: '100px', height: '100px' }}>
                   <EclipseDrawing eclipse={eclipse} />
                 </div>
