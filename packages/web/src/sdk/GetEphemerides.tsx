@@ -1,7 +1,7 @@
 import { get } from "aws-amplify/api";
-import type { Ephemeris } from '@lambda/ephemeris';
+import type { DetailedEphemeris } from "@astro/scripts";
 
-export type { Ephemeris };
+export type { DetailedEphemeris };
 
 export type EphemeridesQuery = {
     target: string;
@@ -10,7 +10,7 @@ export type EphemeridesQuery = {
     interval: number;
 };
 
-export default async function getEphemerides(query: EphemeridesQuery): Promise<Ephemeris[]> {
+export default async function getEphemerides(query: EphemeridesQuery): Promise<DetailedEphemeris[]> {
     const path = '/api/ephemeris';
     const params = {
         ...query,
@@ -23,5 +23,5 @@ export default async function getEphemerides(query: EphemeridesQuery): Promise<E
     }).response;
 
     const bodyJson = await body.json() as any;
-    return bodyJson as Ephemeris[];
+    return bodyJson as DetailedEphemeris[];
 }

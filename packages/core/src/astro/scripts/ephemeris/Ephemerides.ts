@@ -2,7 +2,7 @@ import { AstronomicalCoordinates, Radians } from '@astro/coords';
 import { States, timeProperties } from '@astro/scripts';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { CorrectionType, StateSolver } from '@jpl/state';
-import { DetailedCoordinates, Ephemeris } from '.';
+import { DetailedCoordinates, DetailedEphemeris } from '.';
 import { Bodies } from 'src/catalogues/Bodies';
 
 export class Ephemerides {
@@ -26,21 +26,21 @@ export class Ephemerides {
 
     const objectDiameterKm = (Bodies[targetBodyId as keyof typeof Bodies].equatorialRadiusKm ?? 0) * 2;
     const angularSize = Radians.angularSize(objectDiameterKm, position.length());
-    
+
     return {
       coords: AstronomicalCoordinates.fromRectangular(position),
       angularSizeDeg: Radians.toDegrees(angularSize)
     }
   }
 
-  simple(tagetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Ephemeris[] {
+  simple(tagetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): DetailedEphemeris[] {
     const fromEs = EphemerisSeconds.fromJde(fromJde);
     const toEs = EphemerisSeconds.fromJde(toJde);
     const itnervalEs = EphemerisSeconds.fromDays(interval);
     return EphemerisSeconds.forRange(fromEs, toEs, itnervalEs)
       .map(es => ({
         ...timeProperties(es),
-        coords: AstronomicalCoordinates.fromRectangular(this.stateScripts.position(tagetBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION))
+        ...this.detailedCoordinatesForBody(tagetBodyId, es)
       }));
   }
 };

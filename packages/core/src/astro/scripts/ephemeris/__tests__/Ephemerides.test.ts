@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { JulianDay } from "@astro";
 import { Radians } from "@astro/coords";
-import { Ephemerides } from "@astro/scripts";
+import { DetailedEphemeris, Ephemerides } from "@astro/scripts";
 import { kernelRepository } from "@jpl/data/de440.testData";
 
 describe("Ephemerides", () => {
@@ -37,7 +37,8 @@ describe("Ephemerides", () => {
       es: 623937600,
       jde: 2458766.5,
       tde: new Date('2019-10-10T00:00:00.000Z'),
-    });
+      angularSizeDeg: 0.002828533209611105
+    } as Omit<DetailedEphemeris, 'coords'>);
 
     expect(Radians.toDegrees(coords.rightAscension)).approximately(209.39848483, 3e-9);
     expect(Radians.toDegrees(coords.declination)).toBeCloseTo(-11.36105059, 0);
