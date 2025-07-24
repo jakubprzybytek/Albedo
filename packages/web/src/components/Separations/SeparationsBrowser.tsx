@@ -3,30 +3,13 @@ import Stack from "@mui/material/Stack";
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import TabPanel from "@/common/tabs/TabPanel";
 import SeparationsQueryForm from './SeparationsQueryForm';
 import SeparationsTable from './SeparationsTable';
 import SeparationsChart from "./SeparationsChart";
 import type { SeparationsQuery, Separation } from "@/sdk/GetSeparations";
 import useQuery from "@/forms/useQuery";
 import getSeparations from "@/sdk/GetSeparations";
-
-interface TabPanelProps {
-  index: number;
-  value: number;
-  children?: React.ReactNode;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index } = props;
-
-  return (
-    <div hidden={value !== index}>
-      {value === index && (<>
-        {children}
-      </>)}
-    </div>
-  );
-}
 
 export default function SeparationsBrowser(): JSX.Element {
   const [openedTab, setOpenedTab] = useState(0);

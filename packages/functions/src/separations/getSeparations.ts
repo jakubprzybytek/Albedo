@@ -2,7 +2,7 @@ import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '@astro';
-import { Separation2, Separations } from '@astro/scripts';
+import { Separation, Separations } from '@astro/scripts';
 import { JplBody } from '@jpl';
 import { kernelRepository } from "@jpl/data/de440.full";
 
@@ -22,7 +22,7 @@ const parseGetSeparationsParams: (event: APIGatewayProxyEventV2) => GetSeparatio
     interval: mandatoryFloat(event, 'interval')
 });
 
-export const handler = lambdaHandler<Separation2[]>(event => {
+export const handler = lambdaHandler<Separation[]>(event => {
     const { target, observer, fromTde, toTde, interval } = parseGetSeparationsParams(event);
 
     const fromJde = JulianDay.fromDateObject(fromTde);

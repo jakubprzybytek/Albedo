@@ -1,3 +1,3 @@
-import type { Separation2 } from "@astro/scripts";
+import type { Separation } from "@astro/scripts";
 
-export type { Separation2 };
+export type { Separation };

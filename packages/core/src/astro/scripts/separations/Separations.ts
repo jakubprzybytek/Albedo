@@ -2,7 +2,7 @@ import { Radians } from "@astro/coords";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from "@jpl/state";
 import { timeProperties } from "@astro/scripts/utils/time";
-import { Separation2 } from '.';
+import { Separation } from '.';
 
 export class Separations {
 
@@ -35,13 +35,13 @@ export class Separations {
   //   }
   // }
 
-  for(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Separation2[] {
+  for(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): Separation[] {
     const separationFunction = Separations.buildSeparationFunction(this.stateSolver, targetBodyId, observerBodyId);
     const fromEs = EphemerisSeconds.fromJde(fromJde);
     const toEs = EphemerisSeconds.fromJde(toJde);
     const itnervalEs = EphemerisSeconds.fromDays(interval);
     return EphemerisSeconds.forRange(fromEs, toEs, itnervalEs)
-      .map<Separation2>(es => ({
+      .map<Separation>(es => ({
         ...timeProperties(es),
         separation: separationFunction(es)
       }));
