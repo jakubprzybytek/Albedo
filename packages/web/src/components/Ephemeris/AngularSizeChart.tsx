@@ -4,6 +4,26 @@ import Box from '@mui/material/Box';
 import DateAxisTick from '@/common/charts/DateAxisTick';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import type { DetailedEphemeris } from '@/sdk/GetEphemerides';
+import Card from '@mui/material/Card';
+import { CardContent, Typography } from '@mui/material';
+import { formatDegrees } from '@/utils';
+import { format } from 'date-fns';
+
+const CustomTooltip = ({ active, payload, label }) => {
+  const isVisible = active && payload && payload.length;
+  return (
+    <Card>
+      {isVisible && (
+        <CardContent sx={{ bp: 0 }}>
+          {/* <Typography gutterBottom>{format(label, 'yyyy-MM-dd HH:mm:ss')}</Typography> */}
+          <Typography gutterBottom>{label}</Typography>
+          <Typography color={payload[0].color}>{payload[0].name}: {formatDegrees(payload[0].value)}</Typography>
+          {/* <Typography>{JSON.stringify(payload)}</Typography> */}
+        </CardContent>
+      )}
+    </Card>
+  );
+};
 
 type AngularSizeChartPropsType = {
   ephemeris: DetailedEphemeris[];
@@ -18,8 +38,8 @@ export default function AngularSizeChart({ ephemeris }: AngularSizeChartPropsTyp
         <LineChart data={ephemeris}>
           <XAxis dataKey="tde" tick={<DateAxisTick />} />
           <YAxis width={30} />
-          <Tooltip />
-          <Line type="monotone" dataKey="angularSizeDeg" stroke="#8884d8" />
+          <Tooltip content={<CustomTooltip />} />
+          <Line type="monotone" name="Angular Size" dataKey="angularSizeDeg" stroke="#8884d8" />
         </LineChart>
       </ResponsiveContainer>
     </Box>

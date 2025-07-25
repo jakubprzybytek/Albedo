@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import Typography from '@mui/material/Typography';
-import { formatDegrees } from '../utils';
+import { formatDegrees } from '@/utils';
 
 type AngleParamType = {
     value: number;
