@@ -8,9 +8,7 @@ type DateAxisTickPropsType = {
   payload: any;
 }
 
-export default function DateAxisTick(props: any): JSX.Element {
-  const { x, y, stroke, payload } = props as DateAxisTickPropsType;
-
+export default function DateAxisTick({ x, y, stroke, payload }: DateAxisTickPropsType): JSX.Element {
   if (payload.value === 0 || payload.value === 'auto') {
     return (<></>);
   }

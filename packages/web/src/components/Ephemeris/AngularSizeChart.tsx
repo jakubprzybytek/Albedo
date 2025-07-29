@@ -2,14 +2,21 @@ import type { JSX } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import DateAxisTick from '@/common/charts/DateAxisTick';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
-import type { DetailedEphemeris } from '@/sdk/GetEphemerides';
 import Card from '@mui/material/Card';
-import { CardContent, Typography } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { formatDegrees } from '@/utils';
+import type { DetailedEphemeris } from '@/sdk/GetEphemerides';
 import { format } from 'date-fns';
 
-const CustomTooltip = ({ active, payload, label }) => {
+type TooltipProps = {
+  active: boolean;
+  payload: any[];
+  label: string;
+}
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
   const isVisible = active && payload && payload.length;
   return (
     <Card>
@@ -35,7 +42,7 @@ export default function AngularSizeChart({ ephemeris }: AngularSizeChartPropsTyp
   return (
     <Box sx={{ aspectRatio: { xs: '1', sm: '2' }, maxHeight: '70vh' }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={ephemeris}>
+        <LineChart data={ephemeris} margin={{ left: 30 }}>
           <XAxis dataKey="tde" tick={<DateAxisTick />} />
           <YAxis width={30} />
           <Tooltip content={<CustomTooltip />} />
