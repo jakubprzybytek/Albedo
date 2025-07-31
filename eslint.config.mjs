@@ -27,8 +27,9 @@ export default tseslint.config(
       ecmaVersion: 'latest', // Allows for the parsing of modern ECMAScript features
       sourceType: 'module', // Allows for the use of imports
       globals: {
+        __dirname: 'readonly',
         console: 'readonly',
-        __dirname: 'readonly'
+        process: 'readonly'
       },
       parserOptions: {
         projectService: true,

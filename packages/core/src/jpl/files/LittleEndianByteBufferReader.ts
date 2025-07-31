@@ -47,7 +47,7 @@ export class LittleEndianByteBufferReader {
         if (this.index + n > this.dataView.byteLength) {
             throw Error('Out of index error');
         }
-        var result = '';
+        let result = '';
         for (let i = 0; i < n; i++) {
             result += String.fromCharCode(this.dataView.getUint8(this.index + i));
         }

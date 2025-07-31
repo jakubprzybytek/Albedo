@@ -11,7 +11,8 @@
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
-    "listSpk": "npm run listSpk --prefix ./packages/core"
+    "listSpk": "npm run listSpk --prefix ./packages/core",
+    "listPck": "npm run listPck --prefix ./packages/core"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
