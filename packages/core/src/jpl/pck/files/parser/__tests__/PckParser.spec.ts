@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { describe, it, expect } from 'vitest';
 import { PckParser } from '../PckParser';
-import { loadFileTokens } from '../../TokenReader';
+import { loadFileTokens } from '../TokenReader';
 import { AssignementType } from '../PckParser';
 
 describe('PckParser', () => {

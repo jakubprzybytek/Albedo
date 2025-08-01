@@ -1,4 +1,4 @@
-import { Token, TokenProvider } from "../TokenReader";
+import { Token, TokenProvider } from "./TokenReader";
 
 export enum TokenName {
   EoF = "EoF",
@@ -86,24 +86,37 @@ export async function consumeToken(tokenProvider: TokenProvider, allowedTokens: 
 
   const regexTokens = allowedTokens.filter(token => token.parsingMethod === TokenParsingMethod.RegEx);
   const token: Token = currentToken.value;
-  const tokenValue = token.value;
+  const tokenStringValue = token.value;
 
-  for (const token of regexTokens) {
-    if (token.regex.test(tokenValue)) {
-      switch (token.type) {
+  for (const regexToken of regexTokens) {
+    if (regexToken.regex.test(tokenStringValue)) {
+
+      if (regexToken.type === TokenName.Directive) {
+        // mach token as directive only if it is the only token in line
+        if (token.line.trim() === tokenStringValue) {
+          return {
+            type: regexToken.type,
+            value: tokenStringValue
+          };
+        } else {
+          continue;
+        }
+      }
+
+      switch (regexToken.type) {
         case TokenName.Number:
           return {
-            type: token.type,
-            value: Number(tokenValue.replace("d", "e").replace("D", "e"))
+            type: regexToken.type,
+            value: Number(tokenStringValue.replace("d", "e").replace("D", "e"))
           };
         default:
           return {
-            type: token.type,
-            value: tokenValue
+            type: regexToken.type,
+            value: tokenStringValue
           };
       }
     }
   }
 
-  throw new Error(`Unexpected token: '${tokenValue}' at line ${token.lineNumber}, expected: ${allowedTokens.map(token => token.type).join(', ')}`);
+  throw new Error(`Unexpected token: '${tokenStringValue}' at line ${token.lineNumber}, expected: ${allowedTokens.map(token => token.type).join(', ')}`);
 }

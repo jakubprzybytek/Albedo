@@ -1,4 +1,4 @@
-import { loadFileTokens } from "./files/TokenReader";
+import { loadFileTokens } from "./files/parser/TokenReader";
 import { PckParser } from "./files/parser/PckParser";
 import { AssignementType } from "./files/parser/PckParser";
 

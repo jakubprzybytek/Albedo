@@ -1,4 +1,4 @@
-import { TokenProvider } from "../TokenReader";
+import { TokenProvider } from "./TokenReader";
 import { consumeToken, ResolvedToken, TokenName, VariableNameResolvedToken } from "./TokenProcessor";
 import { CommentToken, DirectiveToken, EoFToken, EqualSignToken, LeftParenthesisToken, NumberToken, RightParenthesisToken, VariableNameToken } from "./Tokens";
 

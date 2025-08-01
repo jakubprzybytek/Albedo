@@ -5,6 +5,7 @@ import { Readable } from 'stream';
 export type Token = {
   value: string;
   lineNumber: number;
+  line: string;
 }
 
 export type TokenProvider = AsyncIterableIterator<Token>;
@@ -34,7 +35,8 @@ export async function* loadStreamTokens(stream: Readable): TokenProvider {
         if (token) {
           yield {
             value: token,
-            lineNumber: lineIndex
+            lineNumber: lineIndex,
+            line: line
           };
         }
       }
