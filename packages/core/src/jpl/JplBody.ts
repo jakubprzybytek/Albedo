@@ -217,6 +217,10 @@ const jplBodiesByName = Object.fromEntries(
     jplBodies.map(jplBodyDetails => [jplBodyDetails.name, jplBodyDetails])
 );
 
+export function jplBodyIdFromId(id: number): JplBodyId | undefined {
+    return jplBodiesById[id]?.id;
+}
+
 export function jplBodyFromId(jplBodyId: JplBodyId): JplBody | undefined {
     return jplBodiesById[jplBodyId] || {
         id: jplBodyId,

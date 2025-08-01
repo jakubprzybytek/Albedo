@@ -36,7 +36,7 @@ const program = new Command();
 program
     .usage('<fileName>')
     .arguments('<fileName>')
-    .action(fileName => {
+    .action((fileName: string) => {
         ListSpkFileContent(fileName);
     })
     .parse(process.argv);

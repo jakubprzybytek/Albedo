@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { readPckFile } from "../pck/PckTextFileReader";
+import { readPckFile } from "../pck/files/PckTextFileReader";
 
 async function ListPckFileContent(fileName: string) {
   await readPckFile(fileName);

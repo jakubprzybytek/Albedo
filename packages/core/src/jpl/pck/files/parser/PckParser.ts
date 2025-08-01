@@ -7,19 +7,19 @@ export enum AssignementType {
   MultipleValues
 };
 
-type SingleValueAssignment = {
+export type SingleValueAssignment = {
   type: AssignementType.SingleValue;
   variableName: string;
   value: number;
 };
 
-type MultipleValuesAssignment = {
+export type MultipleValuesAssignment = {
   type: AssignementType.MultipleValues;
   variableName: string;
   values: number[];
 };
 
-type Assignment = SingleValueAssignment | MultipleValuesAssignment;
+export type Assignment = SingleValueAssignment | MultipleValuesAssignment;
 
 export class PckParser {
 
