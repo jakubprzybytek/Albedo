@@ -1,5 +1,5 @@
 import { State } from '@jpl/state';
-import { RectangularCoordinates } from '@math';
+import { RectangularCoordinates } from '@astro/coords';
 
 export * from './States';
 

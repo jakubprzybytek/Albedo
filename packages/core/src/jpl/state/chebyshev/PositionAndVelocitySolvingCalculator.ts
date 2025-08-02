@@ -1,7 +1,7 @@
-import { RectangularCoordinates } from '../../../astro/coords';
-import { ForwardLookingArray } from '../../utils';
-import { PositionChebyshevRecord } from '../../kernel';
-import { PositionAndVelocityCalculator, ChebyshevPolynomialExpander } from './';
+import { RectangularCoordinates } from "@astro/coords";
+import { ForwardLookingArray } from "@jpl/utils";
+import { PositionChebyshevRecord } from "@jpl/spk";
+import { PositionAndVelocityCalculator, ChebyshevPolynomialExpander } from '.';
 
 const DERIVATIVE_STEP_SIZE = 20.0; // seconds
 

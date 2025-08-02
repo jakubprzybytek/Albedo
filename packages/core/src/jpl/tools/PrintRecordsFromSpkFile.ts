@@ -2,7 +2,7 @@ import { openSync, closeSync } from 'node:fs';
 import { Command } from 'commander';
 import { JulianDay } from "@astro";
 import { JplBody, jplBodyFromString, EphemerisSeconds } from "..";
-import { PositionChebyshevRecord, PositionAndVelocityChebyshevRecord } from '../kernel';
+import { PositionChebyshevRecord, PositionAndVelocityChebyshevRecord } from '../spk';
 import { readSpkFileInformation, readSpkPositionChebyshevPolynomials, readSpkPositionAndVelocityChebyshevPolynomials, DataType } from "../files";
 
 function PrintRecordsFromSpkFile(fileName: string, body: JplBody, centerBody: JplBody, fromJde: number, toJde: number) {

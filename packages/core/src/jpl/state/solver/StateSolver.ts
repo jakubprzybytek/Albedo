@@ -1,6 +1,6 @@
 import { Radians, RectangularCoordinates } from "@astro/coords";
 import { JplBodyId, SPEED_OF_LIGHT } from "@jpl";
-import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } from "@jpl/kernel";
+import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } from "@jpl/spk";
 import { CorrectionType, State } from "@jpl/state";
 import { PositionAndTrueVelocityCalculator, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "@jpl/state/chebyshev";
 
@@ -28,7 +28,7 @@ export class StateSolver {
       allBodies: [JplBodyId.SolarSystemBarycenter]
     });
 
-    for (let kernel of kernels) {
+    for (const kernel of kernels) {
       const newSpkNode: SpkNode = {
         targetBodyId: kernel.bodyId,
         observerBodyId: kernel.centerBodyId,

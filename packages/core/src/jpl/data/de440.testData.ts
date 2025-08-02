@@ -1,4 +1,4 @@
-import { SpkKernelRepository, SpkKernelCollection, TimeSpan } from '../kernel';
+import { SpkKernelRepository, SpkKernelCollection, TimeSpan } from '../spk';
 
 // from: 2019-10-09T00:00:00.000Z
 // to: 2019-10-11T00:00:00.000Z

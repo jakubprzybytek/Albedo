@@ -1,6 +1,6 @@
-import { RectangularCoordinates } from '../../../astro/coords';
-import { PositionChebyshevRecord } from '../../kernel';
-import { ChebyshevPolynomialExpander } from './';
+import { RectangularCoordinates } from '@astro/coords';
+import { PositionChebyshevRecord } from '@jpl/spk';
+import { ChebyshevPolynomialExpander } from '.';
 
 export class PositionCalculator {
 

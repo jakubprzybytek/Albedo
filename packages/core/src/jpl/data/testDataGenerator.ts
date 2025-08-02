@@ -1,7 +1,7 @@
 import { openSync, writeSync, closeSync } from 'node:fs';
 import { JulianDay } from "@astro";
 import { JplBodyId, EphemerisSeconds } from "..";
-import { PositionAndVelocityChebyshevRecord, PositionChebyshevRecord, SpkKernelCollection, TimeSpan } from '../kernel';
+import { PositionAndVelocityChebyshevRecord, PositionChebyshevRecord, SpkKernelCollection, TimeSpan } from '../spk';
 import { SpkFileArrayInformation, readSpkFileInformation, readSpkPositionChebyshevPolynomials, readSpkPositionAndVelocityChebyshevPolynomials, DataType } from "../files";
 
 type BodiesPair = {

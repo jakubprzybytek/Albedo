@@ -1,6 +1,6 @@
-import { RectangularCoordinates } from '../../../astro/coords';
-import { ForwardLookingArray } from '../../utils';
-import { PositionAndVelocityChebyshevRecord } from '../../kernel';
+import { RectangularCoordinates } from "@astro/coords";
+import { ForwardLookingArray } from "@jpl/utils";
+import { PositionAndVelocityChebyshevRecord } from "@jpl/spk";
 import { PositionAndVelocityCalculator, ChebyshevPolynomialExpander } from '.';
 
 export class PositionAndTrueVelocityCalculator implements PositionAndVelocityCalculator {
