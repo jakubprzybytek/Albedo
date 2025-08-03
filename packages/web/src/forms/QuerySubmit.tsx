@@ -18,7 +18,7 @@ export default function QuerySubmit({ loading, success, error, onSubmit }: Query
         {error && <Alert severity="error">{error}</Alert>}
       </Grid>
       <Grid>
-        <Button variant="contained" size="small" loading={loading} onClick={onSubmit}>Submit</Button>
+        <Button variant="contained" size="small" className="submit" loading={loading} onClick={onSubmit}>Submit</Button>
       </Grid>
     </Grid>
   );

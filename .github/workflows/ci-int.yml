@@ -38,3 +38,10 @@ jobs:
 
       - name: Run Serverless Stack deploy
         run: npm run deploy -- --stage ${STAGE}
+
+      - name: Run E2E tests
+        run: npm run test:e2e --prefix packages/web
+        env:
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          TEST_BASE_URL: https://albedoonline.com

@@ -8,7 +8,6 @@ const QueryPanel = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   '& .MuiTextField-root': {
     width: '100%',
-    // backgroundColor: '#fff'
   },
 }));
 

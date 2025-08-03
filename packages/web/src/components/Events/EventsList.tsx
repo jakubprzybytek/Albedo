@@ -26,7 +26,7 @@ export default function EventsList({ events }: EventsListPropsType): JSX.Element
   return (
     <Box>
       {events.map(event => (
-        <Paper key={event.jde} sx={{ marginBottom: 1, backgroundColor: theme.palette.grey[200] }}>
+        <Paper key={event.jde} className='event' sx={{ marginBottom: 1, backgroundColor: theme.palette.grey[200] }}>
           <DisplayEvent type={event.type} event={event.data} />
         </Paper>
       ))}
