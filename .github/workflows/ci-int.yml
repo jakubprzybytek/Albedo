@@ -39,9 +39,13 @@ jobs:
       - name: Run Serverless Stack deploy
         run: npm run deploy -- --stage ${STAGE}
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: Run E2E tests
         run: npm run test:e2e --prefix packages/web
         env:
+          CI: true
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
           TEST_BASE_URL: https://albedoonline.com
