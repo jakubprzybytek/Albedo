@@ -14,15 +14,17 @@ function getTestCredentials() {
 }
 
 setup('authenticate', async ({ page }) => {
+  console.log('CI mode: ', process.env.CI);
+
   const credentials = getTestCredentials();
-  
+
   await page.goto('/');
-  
+
   await page.waitForSelector('input[name="username"]');
-  
+
   await page.fill('input[name="username"]', credentials.username);
   await page.fill('input[name="password"]', credentials.password);
-  
+
   await page.click('button[type="submit"]');
 
   await expect(page.getByText('Dashboard')).toBeVisible();
