@@ -4,7 +4,7 @@ import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams
 import { JulianDay } from '@astro';
 import { Separation, Separations } from '@astro/scripts';
 import { JplBody } from '@jpl';
-import { kernelRepository } from "@jpl/data/de440.full";
+import { kernels } from "@jpl/data/kernels.full";
 
 type GetSeparationsParams = {
     target: JplBody;
@@ -28,9 +28,9 @@ export const handler = lambdaHandler<Separation[]>(event => {
     const fromJde = JulianDay.fromDateObject(fromTde);
     const toJde = JulianDay.fromDateObject(toTde);
 
-    console.log(`Compute separations for '${target.name}' w.r.t. '${observer.name}' between ${fromTde}(${fromJde}) and ${toTde}(${toJde}) in interval of ${interval} day(s)`);
+    console.log(`Compute separations for '${target.name}' w.r.t. '${observer.name}' between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde}) in interval of ${interval} day(s)`);
 
-    const seprationScripts = new Separations(kernelRepository.StateSolver());
+    const seprationScripts = new Separations(kernels.stateSolver());
     const separations = seprationScripts.for(target.id, observer.id, fromJde, toJde, interval);
 
     console.log(`Computed ${separations.length} separations`);

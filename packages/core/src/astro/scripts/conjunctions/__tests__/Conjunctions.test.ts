@@ -2,11 +2,11 @@ import { JulianDay } from "@astro";
 import { AstronomicalCoordinates } from "@astro/coords";
 import { describe, it, expect } from "vitest";
 import { jplBodyFromString } from "@jpl";
-import { kernelRepository } from "@jpl/data/de440.full";
+import { kernels } from "@jpl/data/kernels.full";
 import { Conjunctions } from "../Conjunctions";
 
 describe("Conjunctions", () => {
-  const conjuctionScripts = new Conjunctions(kernelRepository.StateSolver());
+  const conjuctionScripts = new Conjunctions(kernels.stateSolver());
 
   it("should compute conjunctions for all bodies", () => {
     const fromJde = JulianDay.fromDate(2022, 2, 1);

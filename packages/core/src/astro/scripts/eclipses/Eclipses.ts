@@ -3,7 +3,6 @@ import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from '@jpl/state';
-import { kernelRepository } from '@jpl/data/de440.full';
 import { timeProperties } from '@astro/scripts/utils/time';
 import { Eclipse, EclipseType, MoonEclipse, SunEclipse } from ".";
 import { Ephemerides } from "../ephemeris";
@@ -20,8 +19,7 @@ type Separation = {
   separation: number;
 }
 
-function simpleSunMoonFunctions() {
-  const stateSolver = kernelRepository.StateSolver();
+function simpleSunMoonFunctions(stateSolver: StateSolver) {
 
   function sunAndMoonAngle(es: number) {
     const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE);
@@ -88,7 +86,7 @@ export class Eclipses {
   }
 
   forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
-    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunctions();
+    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunctions(this.stateSolver);
 
     const correctedFromEs = EphemerisSeconds.fromJde(fromJde) - PRELIMINARY_INTERVAL;
     const correctedToEs = EphemerisSeconds.fromJde(toJde) + PRELIMINARY_INTERVAL;

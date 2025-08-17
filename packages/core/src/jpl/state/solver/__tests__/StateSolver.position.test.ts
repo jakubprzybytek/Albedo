@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { EphemerisSeconds, JplBodyId } from '@jpl';
-import { kernelRepository } from '@jpl/data/de440.testData';
+import { kernels } from "@jpl/data/kernels.testData";
 import { CorrectionType } from "@jpl/state";
 
 describe("StateSolver", () => {
 
-  const stateSolver = kernelRepository.StateSolver();
+  const stateSolver = kernels.stateSolver();
 
   it("should correctly compute uncorrected state for Earth wrt. Solar Barycenter", () => {
     const position = stateSolver.positionFor(JplBodyId.Earth, JplBodyId.SolarSystemBarycenter, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType.NONE);

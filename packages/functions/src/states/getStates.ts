@@ -4,7 +4,7 @@ import { mandatoryFloat, mandatoryDate, mandatoryJplBody, mandatoryString } from
 import { JulianDay } from '@astro';
 import { AU, EphemerisSeconds, JplBody } from '@jpl';
 import { stringToCorrectionType } from "@jpl/state";
-import { kernelRepository } from "@jpl/data/de440.full";
+import { kernels } from "@jpl/data/kernels.full";
 import { States } from "@astro/scripts";
 import { StateResult } from ".";
 
@@ -40,7 +40,7 @@ export const handler = lambdaHandler<StateResult[]>((event: APIGatewayProxyEvent
 
   console.log(`Compute states for '${target.name}' w.r.t. '${observer.name}' between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde}) in interval of ${interval} day(s) and correction: '${correction}'`);
 
-  const stateScripts = new States(kernelRepository.StateSolver());
+  const stateScripts = new States(kernels.stateSolver());
 
   const fromEs = EphemerisSeconds.fromJde(fromJde);
   const toEs = EphemerisSeconds.fromJde(toJde);

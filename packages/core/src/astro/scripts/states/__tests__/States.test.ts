@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { CorrectionType } from "@jpl/state";
-import { kernelRepository } from "@jpl/data/de440.testData";
+import { kernels } from "@jpl/data/kernels.testData";
 import { States } from "../States";
 
 describe("States", () => {
-  const states = new States(kernelRepository.StateSolver());
+  const states = new States(kernels.stateSolver());
 
   it("should compute position for Moon w.r.t. Earth", () => {
     const position = states.position(JplBodyId.Moon, JplBodyId.Earth, EphemerisSeconds.fromDateTime(2019, 10, 9, 1, 0, 0), CorrectionType.NONE);

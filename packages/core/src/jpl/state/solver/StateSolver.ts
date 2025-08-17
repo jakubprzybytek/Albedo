@@ -1,6 +1,6 @@
 import { Radians, RectangularCoordinates } from "@astro/coords";
 import { JplBodyId, SPEED_OF_LIGHT } from "@jpl";
-import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } from "@jpl/spk";
+import { DataType, PositionAndVelocityChebyshevRecord, SpkKernelCollection } from "@jpl/kernels/spk";
 import { CorrectionType, State } from "@jpl/state";
 import { PositionAndTrueVelocityCalculator, PositionAndVelocityCalculator, PositionAndVelocitySolvingCalculator } from "@jpl/state/chebyshev";
 

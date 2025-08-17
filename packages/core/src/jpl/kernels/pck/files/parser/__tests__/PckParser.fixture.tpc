@@ -1,0 +1,11 @@
+First text section
+
+\begindata
+
+BODY399_A         = 2
+
+BODY399_RADII     = ( 6378.1366   6378.1366   6356.7519 )
+
+\begintext
+
+Last text section and EoF

@@ -4,7 +4,7 @@ import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams
 import { JulianDay } from '@astro';
 import { Ephemerides, Ephemeris } from '@astro/scripts';
 import { JplBody, JplBodyId } from '@jpl';
-import { kernelRepository } from "@jpl/data/de440.full";
+import { kernels } from "@jpl/data/kernels.full";
 
 type GetEphemeridesParams = {
     target: JplBody;
@@ -32,7 +32,7 @@ export const handler = lambdaHandler<Ephemeris[]>(event => {
 
     console.log(`Compute ephemerides for '${target.name}' between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde}) in interval of ${interval} day(s)`);
 
-    const ephemerisScripts = new Ephemerides(kernelRepository.StateSolver());
+    const ephemerisScripts = new Ephemerides(kernels.stateSolver());
     const ephemerides = ephemerisScripts.simple(target.id, fromJde, toJde, interval);
 
     return Success(ephemerides);

@@ -1,0 +1,63 @@
+import { JplBodyId } from "@jpl/JplBody";
+import { PckRepository } from "@jpl/kernels/pck";
+
+const objectRadii: Map<JplBodyId, number[]> = new Map();
+
+objectRadii.set(JplBodyId.Sun, [695700, 695700, 695700]);
+objectRadii.set(JplBodyId.Mercury, [2440.53, 2440.53, 2438.26]);
+objectRadii.set(JplBodyId.Venus, [6051.8, 6051.8, 6051.8]);
+objectRadii.set(JplBodyId.Earth, [6378.1366, 6378.1366, 6356.7519]);
+objectRadii.set(JplBodyId.Mars, [3396.19, 3396.19, 3376.2]);
+objectRadii.set(JplBodyId.Jupiter, [71492, 71492, 66854]);
+objectRadii.set(JplBodyId.Saturn, [60268, 60268, 54364]);
+objectRadii.set(JplBodyId.Uranus, [25559, 25559, 24973]);
+objectRadii.set(JplBodyId.Neptune, [24764, 24764, 24341]);
+objectRadii.set(JplBodyId.Pluto, [1188.3, 1188.3, 1188.3]);
+objectRadii.set(JplBodyId.Moon, [1737.4, 1737.4, 1737.4]);
+objectRadii.set(JplBodyId.Phobos, [13, 11.4, 9.1]);
+objectRadii.set(JplBodyId.Deimos, [7.8, 6, 5.1]);
+objectRadii.set(JplBodyId.Io, [1829.4, 1819.4, 1815.7]);
+objectRadii.set(JplBodyId.Europa, [1562.6, 1560.3, 1559.5]);
+objectRadii.set(JplBodyId.Ganymede, [2631.2, 2631.2, 2631.2]);
+objectRadii.set(JplBodyId.Callisto, [2410.3, 2410.3, 2410.3]);
+objectRadii.set(JplBodyId.Amalthea, [125, 73, 64]);
+objectRadii.set(JplBodyId.Thebe, [58, 49, 42]);
+objectRadii.set(JplBodyId.Adrastea, [10, 8, 7]);
+objectRadii.set(JplBodyId.Metis, [30, 20, 17]);
+objectRadii.set(JplBodyId.Mimas, [207.8, 196.7, 190.6]);
+objectRadii.set(JplBodyId.Enceladus, [256.6, 251.4, 248.3]);
+objectRadii.set(JplBodyId.Tethys, [538.4, 528.3, 526.3]);
+objectRadii.set(JplBodyId.Dione, [563.4, 561.3, 559.6]);
+objectRadii.set(JplBodyId.Rhea, [765, 763.1, 762.4]);
+objectRadii.set(JplBodyId.Titan, [2575.15, 2574.78, 2574.47]);
+objectRadii.set(JplBodyId.Hyperion, [180.1, 133, 102.7]);
+objectRadii.set(JplBodyId.Iapetus, [745.7, 745.7, 712.1]);
+objectRadii.set(JplBodyId.Phoebe, [109.4, 108.5, 101.8]);
+objectRadii.set(JplBodyId.Helene, [22.5, 19.6, 13.3]);
+objectRadii.set(JplBodyId.Telesto, [16.3, 11.8, 9.8]);
+objectRadii.set(JplBodyId.Calypso, [15.3, 9.3, 6.3]);
+objectRadii.set(JplBodyId.Methone, [1.94, 1.29, 1.21]);
+objectRadii.set(JplBodyId.Polydeuces, [1.5, 1.2, 1]);
+objectRadii.set(JplBodyId.Cordelia, [13, 13, 13]);
+objectRadii.set(JplBodyId.Ophelia, [15, 15, 15]);
+objectRadii.set(JplBodyId.Bianca, [21, 21, 21]);
+objectRadii.set(JplBodyId.Cressida, [31, 31, 31]);
+objectRadii.set(JplBodyId.Desdemona, [27, 27, 27]);
+objectRadii.set(JplBodyId.Juliet, [42, 42, 42]);
+objectRadii.set(JplBodyId.Portia, [54, 54, 54]);
+objectRadii.set(JplBodyId.Rosalind, [27, 27, 27]);
+objectRadii.set(JplBodyId.Belinda, [33, 33, 33]);
+objectRadii.set(JplBodyId.Puck, [77, 77, 77]);
+objectRadii.set(JplBodyId.Triton, [1352.6, 1352.6, 1352.6]);
+objectRadii.set(JplBodyId.Nereid, [170, 170, 170]);
+objectRadii.set(JplBodyId.Naid, [29, 29, 29]);
+objectRadii.set(JplBodyId.Thalassa, [40, 40, 40]);
+objectRadii.set(JplBodyId.Despina, [74, 74, 74]);
+objectRadii.set(JplBodyId.Galatea, [79, 79, 79]);
+objectRadii.set(JplBodyId.Larissa, [96, 96, 96]);
+objectRadii.set(JplBodyId.Proteus, [218, 208, 201]);
+objectRadii.set(JplBodyId.Charon, [606, 606, 606]);
+
+export const pckRepository: PckRepository = new PckRepository();
+
+pckRepository.registerPckVariables(objectRadii)

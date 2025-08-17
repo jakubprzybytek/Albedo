@@ -13,8 +13,9 @@ function getTestCredentials() {
   return { username, password };
 }
 
-setup('authenticate', async ({ page }) => {
-  console.log('CI mode: ', process.env.CI);
+setup('authenticate', async ({ page, baseURL }) => {
+  console.log('CI mode: ', process.env.CI ?? false);
+  console.log('Base URL: ', baseURL);
 
   const credentials = getTestCredentials();
 

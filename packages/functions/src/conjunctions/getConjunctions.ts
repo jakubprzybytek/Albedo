@@ -3,7 +3,7 @@ import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate } from '../LambdaParams';
 import { JulianDay } from '@astro';
 import { Conjunctions } from '@astro/scripts';
-import { kernelRepository } from "@jpl/data/de440.full";
+import { kernels } from "@jpl/data/kernels.full";
 import { Conjunction } from ".";
 
 type GetConjunctionsParams = {
@@ -24,7 +24,7 @@ export const handler = lambdaHandler<Conjunction[]>(event => {
 
   console.log(`Compute conjunctions for between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
 
-  const conjunctionScripts = new Conjunctions(kernelRepository.StateSolver());
+  const conjunctionScripts = new Conjunctions(kernels.stateSolver());
   const conjunctions = conjunctionScripts.all(fromJde, toJde);
 
   console.log(`Found ${conjunctions.length} conjunctions.`);

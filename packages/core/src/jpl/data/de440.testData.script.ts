@@ -1,5 +1,6 @@
-import { JplBodyId } from "..";
-import { readMultipleSpkCollections, printSpkCollections } from "./testDataGenerator";
+import { JplBodyId } from "@jpl";
+import { printSpkCollections } from "./lib/spk/printSpkCollections";
+import { readMultipleSpkCollections } from "./lib/spk/readMultipleSpkCollections";
 
 const from = new Date('2019-10-09');
 const to = new Date('2019-10-11');

@@ -1,12 +1,12 @@
 import { describe, it, expect } from "vitest";
 import { AstronomicalCoordinates } from "@math";
 import { JulianDay } from "@astro";
-import { kernelRepository } from "@jpl/data/de440.full";
+import { kernels } from "@jpl/data/kernels.full";
 import { Eclipses, EclipseType } from "@astro/scripts";
 import { EphemerisSeconds } from "@jpl";
 
 describe("Eclipses", () => {
-  const eclipseScripts = new Eclipses(kernelRepository.StateSolver());
+  const eclipseScripts = new Eclipses(kernels.stateSolver());
 
   it("should find all eclipses", () => {
     const fromJde = JulianDay.fromDate(2025, 3, 1);

@@ -3,7 +3,7 @@ import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate } from '../LambdaParams';
 import { JulianDay } from '@astro';
 import { Eclipses, Eclipse } from '@astro/scripts';
-import { kernelRepository } from "@jpl/data/de440.full";
+import { kernels } from "@jpl/data/kernels.full";
 
 type GetEclipsesParams = {
   fromTde: Date;
@@ -25,7 +25,7 @@ export const handler = lambdaHandler<GetEclipsesReturnType>(event => {
 
   console.log(`Find eclipses between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
 
-  const eclipseScripts = new Eclipses(kernelRepository.StateSolver());
+  const eclipseScripts = new Eclipses(kernels.stateSolver());
   const eclipses = eclipseScripts.forSunAndMoon(fromJde, toJde);
 
   console.log(`Found ${eclipses.length} eclipses.`);
