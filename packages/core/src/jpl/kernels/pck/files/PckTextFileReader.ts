@@ -1,8 +1,8 @@
-import { loadFileTokens } from "./parser/TokenReader";
+import { createTokenReader } from "./parser/TokenReader";
 import { PckParser } from "./parser/PckParser";
 
 export async function readPckFile(pckFileName: string) {
-  const pckTokens = loadFileTokens(pckFileName);
+  const pckTokens = createTokenReader(pckFileName);
   const pckParser = new PckParser(pckTokens);
 
   await pckParser.parse();

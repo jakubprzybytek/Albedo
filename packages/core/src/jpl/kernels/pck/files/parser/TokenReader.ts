@@ -15,12 +15,12 @@ export type TokenProvider = AsyncIterableIterator<Token>;
  * @param pckFileName Path to the PCK file
  * @yields Individual tokens from the file
  */
-export async function* loadFileTokens(pckFileName: string): TokenProvider {
+export async function* createTokenReader(pckFileName: string): TokenProvider {
   const fileStream = fs.createReadStream(pckFileName, { encoding: 'utf8' });
-  yield* loadStreamTokens(fileStream);
+  yield* createTokenReaderFromStream(fileStream);
 }
 
-export async function* loadStreamTokens(stream: Readable): TokenProvider {
+export async function* createTokenReaderFromStream(stream: Readable): TokenProvider {
   const rl = readline.createInterface({
     input: stream,
     crlfDelay: Infinity // Handle Windows line endings

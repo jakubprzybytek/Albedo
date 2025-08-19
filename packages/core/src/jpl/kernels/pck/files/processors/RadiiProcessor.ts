@@ -12,8 +12,12 @@ export function extractRadiiInformation(assignments: Assignment[]): Map<JplBodyI
       const bodyId = parseInt(radiiVariableMatch[1]);
       const jplBodyId = jplBodyIdFromId(bodyId);
       if (jplBodyId) {
-        objectRadii.set(jplBodyId, assignment.type === AssignementType.MultipleValues ? assignment.values : [assignment.value]);
-        console.log(`Body ${bodyId}/${jplBodyId} radii: ${objectRadii.get(jplBodyId)?.join(', ')}`);
+        if (assignment.type === AssignementType.MultipleValues && assignment.values.length === 3) {
+          objectRadii.set(jplBodyId, assignment.values);
+        } else {
+          throw new Error(`Expecting ${assignment.variableName} to have value of type array and length 3, got value: ${assignment.type === AssignementType.MultipleValues ? assignment.values.toString() : assignment.value.toString()}`);
+        }
+        console.log(`Body ${bodyId}/${JplBodyId[jplBodyId]} radii: ${objectRadii.get(jplBodyId)?.toString()}`);
       }
     }
   }

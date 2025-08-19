@@ -1,13 +1,13 @@
 import * as path from 'path';
 import { describe, it, expect } from 'vitest';
 import { PckParser } from '../PckParser';
-import { loadFileTokens } from '../TokenReader';
+import { createTokenReader } from '../TokenReader';
 import { AssignementType } from '../PckParser';
 
 describe('PckParser', () => {
   it('should parse the fixture file correctly', async () => {
     const fixturePath = path.join(__dirname, 'PckParser.fixture.tpc');
-    const tokenProvider = loadFileTokens(fixturePath);
+    const tokenProvider = createTokenReader(fixturePath);
     const parser = new PckParser(tokenProvider);
 
     await parser.parse();

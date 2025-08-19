@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { Readable } from 'stream';
-import { loadStreamTokens } from "../TokenReader";
+import { createTokenReaderFromStream } from "../TokenReader";
 import { EoFToken, CommentToken, DirectiveToken, VariableNameToken, EqualSignToken, LeftParenthesisToken, NumberToken, RightParenthesisToken } from "../Tokens";
 import { consumeToken, TokenName } from "../TokenProcessor";
 
@@ -10,7 +10,7 @@ describe("TokenProcessor", () => {
     input.push('Hello world');
     input.push(null);
 
-    const tokenProvider = loadStreamTokens(input);
+    const tokenProvider = createTokenReaderFromStream(input);
     const allAllowedTokens = [CommentToken, EoFToken];
 
     expect(await consumeToken(tokenProvider, allAllowedTokens)).toStrictEqual({
@@ -34,7 +34,7 @@ describe("TokenProcessor", () => {
     input.push('Comment \\begindata\n');
     input.push(null);
 
-    const tokenProvider = loadStreamTokens(input);
+    const tokenProvider = createTokenReaderFromStream(input);
     const allAllowedTokens = [DirectiveToken, CommentToken, EoFToken];
 
     expect(await consumeToken(tokenProvider, allAllowedTokens)).toStrictEqual({
@@ -62,7 +62,7 @@ describe("TokenProcessor", () => {
     input.push('BODY399_RADII     = ( 6378.1366   -6378.1366    0.14947253587500003E+06 -3.897830d-10 )');
     input.push(null);
 
-    const tokenProvider = loadStreamTokens(input);
+    const tokenProvider = createTokenReaderFromStream(input);
 
     expect(await consumeToken(tokenProvider, [VariableNameToken])).toStrictEqual({
       type: TokenName.VariableName,

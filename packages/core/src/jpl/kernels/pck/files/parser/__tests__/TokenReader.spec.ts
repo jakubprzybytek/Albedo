@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { Readable } from 'stream';
-import { loadStreamTokens } from '../TokenReader';
+import { createTokenReaderFromStream } from '../TokenReader';
 
 describe("TokenReader", () => {
     it("should read tokens from stream", async () => {
@@ -8,7 +8,7 @@ describe("TokenReader", () => {
         input.push("  BODY399_RADII     = ( 6378.1366   6378.1366 \n  6356.7519 )");
         input.push(null);
 
-        const tokens = loadStreamTokens(input);
+        const tokens = createTokenReaderFromStream(input);
         
         expect((await tokens.next()).value).toStrictEqual({ value: "BODY399_RADII", lineNumber: 1, line: "  BODY399_RADII     = ( 6378.1366   6378.1366 " });
         expect((await tokens.next()).value).toStrictEqual({ value: "=", lineNumber: 1, line: "  BODY399_RADII     = ( 6378.1366   6378.1366 " });
