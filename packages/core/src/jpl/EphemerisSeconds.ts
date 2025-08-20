@@ -2,9 +2,11 @@ import { JulianDay } from "@astro";
 
 export class EphemerisSeconds {
 
-    private static J2000_EPOCH = 2451545.0;
+    private static J2000_EPOCH = 2451545;
 
-    private static SECONDS_PER_JULIAN_DAY = 86400.0;
+    static SECONDS_PER_JULIAN_DAY = 86400;
+    
+    static SECONDS_PER_JULIAN_CENTURY = 36525 * 86400;
 
     static fromDate(year: number, month: number, day: number): number {
         return EphemerisSeconds.fromJde(JulianDay.fromDate(year, month, day));

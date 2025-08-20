@@ -232,3 +232,13 @@ export function jplBodyFromId(jplBodyId: JplBodyId): JplBody | undefined {
 export function jplBodyFromString(input: string): JplBody | undefined {
     return jplBodiesByName[input];
 }
+
+export function getBarycenterIdForBodyId(jplBodyId: JplBodyId): JplBodyId | undefined {
+    if (jplBodyId < JplBodyId.Sun) {
+        return jplBodyId;
+    }
+    if (jplBodyId <= JplBodyId.Pluto) {
+        return Math.floor(jplBodyId / 100);
+    }
+    return undefined;
+}
