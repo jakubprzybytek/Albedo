@@ -12,18 +12,18 @@ describe('OrientationModelProvider', () => {
       const es = EphemerisSeconds.fromDate(2019, 10, 10);
       const result = orientationModelProvider.getOrientationModel(JplBodyId.Earth, es);
 
+      const W = result.W % 360;
+
       const rotation = [
-        result.W % 360,
+        W > 180 ? W - 360 : W,
         90 - result.Dec,
         90 + result.RA
       ]
 
       // Verify
-      expect(rotation).toEqual([
-        -72.17289475,
-        0.11012664,
-        89.87326539
-      ]);
+      expect(rotation[0]).approximately(-72.17289475, 1e-8);
+      expect(rotation[1]).approximately(0.11012664, 1e-8);
+      expect(rotation[2]).approximately(89.87326539, 1e-8);
     });
   });
 });

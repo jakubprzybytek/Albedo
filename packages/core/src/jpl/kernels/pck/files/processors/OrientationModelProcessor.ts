@@ -1,7 +1,7 @@
 import { AssignementType, Assignment } from "../parser/PckParser";
 import { JplBodyId, jplBodyIdFromId } from "@jpl";
 
-export type BodyOrientationModel = {
+export type BodyOrientationModelParameters = {
   poleRACoefficients: number[],
   poleDecCoefficients: number[],
   poleWCoefficients: number[],
@@ -10,12 +10,12 @@ export type BodyOrientationModel = {
   nutationPrecessionAnglesWCoefficients: number[],
 }
 
-export type BarycenterOrientationModel = {
+export type BarycenterOrientationModelParameters = {
   nutationPrecessionAnglesPolynomialsDegree: number, // 1 by default
   nutationPrecessionAnglesCoefficients: number[]
 }
 
-const EMPTY_BODY_ORIENTATION_MODEL: BodyOrientationModel = {
+const EMPTY_BODY_ORIENTATION_MODEL: BodyOrientationModelParameters = {
   poleRACoefficients: [],
   poleDecCoefficients: [],
   poleWCoefficients: [],
@@ -24,14 +24,14 @@ const EMPTY_BODY_ORIENTATION_MODEL: BodyOrientationModel = {
   nutationPrecessionAnglesWCoefficients: []
 }
 
-const EMPTY_BARYCENTER_ORIENTATION_MODEL: BarycenterOrientationModel = {
+const EMPTY_BARYCENTER_ORIENTATION_MODEL: BarycenterOrientationModelParameters = {
   nutationPrecessionAnglesPolynomialsDegree: 1,
   nutationPrecessionAnglesCoefficients: []
 }
 
 export type OrientationModel = {
-  bodies: Map<JplBodyId, BodyOrientationModel>,
-  barycenters: Map<JplBodyId, BarycenterOrientationModel>
+  bodies: Map<JplBodyId, BodyOrientationModelParameters>,
+  barycenters: Map<JplBodyId, BarycenterOrientationModelParameters>
 }
 
 const bodyVariableNameRegex = /^BODY(\d+)_(POLE_RA|POLE_DEC|PM|NUT_PREC_RA|NUT_PREC_DEC|NUT_PREC_PM)$/;
@@ -52,8 +52,8 @@ function validateArray(assignment: Assignment, minLength: number) {
 }
 
 export function extractOrientationModelInformation(assignments: Assignment[]): OrientationModel {
-  const bodiesOrientationModels: Map<JplBodyId, BodyOrientationModel> = new Map();
-  const barycentersOrientationModels: Map<JplBodyId, BarycenterOrientationModel> = new Map();
+  const bodiesOrientationModels: Map<JplBodyId, BodyOrientationModelParameters> = new Map();
+  const barycentersOrientationModels: Map<JplBodyId, BarycenterOrientationModelParameters> = new Map();
 
   for (const assignment of assignments) {
     const bodyModelVariableNameMatch = assignment.variableName.match(bodyVariableNameRegex);
@@ -67,7 +67,7 @@ export function extractOrientationModelInformation(assignments: Assignment[]): O
         if (!bodiesOrientationModels.has(jplBodyId)) {
           bodiesOrientationModels.set(jplBodyId, { ...EMPTY_BODY_ORIENTATION_MODEL });
         }
-        const orientationModel = bodiesOrientationModels.get(jplBodyId) as BodyOrientationModel;
+        const orientationModel = bodiesOrientationModels.get(jplBodyId) as BodyOrientationModelParameters;
 
         switch (fieldName) {
           case 'POLE_RA':
@@ -111,7 +111,7 @@ export function extractOrientationModelInformation(assignments: Assignment[]): O
         if (!barycentersOrientationModels.has(jplBodyId)) {
           barycentersOrientationModels.set(jplBodyId, { ...EMPTY_BARYCENTER_ORIENTATION_MODEL });
         }
-        const orientationModel = barycentersOrientationModels.get(jplBodyId) as BarycenterOrientationModel;
+        const orientationModel = barycentersOrientationModels.get(jplBodyId) as BarycenterOrientationModelParameters;
 
         switch (fieldName) {
           case 'MAX_PHASE_DEGREE':

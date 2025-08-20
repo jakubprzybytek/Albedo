@@ -2,6 +2,7 @@ import { StateSolver } from "@jpl/state";
 import { SpkKernelRepository } from "./spk";
 import { BodyGeometryProvider, PckRepository } from "./pck";
 import { OrientationModelProvider } from "./pck";
+import { BodyFixedFrame } from "@jpl/frames/BodyFixedFrame";
 
 export class KernelsRepository {
 
@@ -17,6 +18,10 @@ export class KernelsRepository {
 
   orientationModelProvider() {
     return new OrientationModelProvider(this.pckRepository);
+  }
+
+  bodyFixedFrame() {
+    return new BodyFixedFrame(this);
   }
 
 }

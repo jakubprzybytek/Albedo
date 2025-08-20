@@ -1,4 +1,4 @@
 export { PckRepository } from './PckRepository';
 export { BodyGeometryProvider } from './BodyGeometryProvider';
-export { OrientationModelProvider } from './OrientationModelProvider';
-export { BodyOrientationModel, BarycenterOrientationModel } from './files/processors/OrientationModelProcessor';
+export { OrientationModelProvider } from './orientationModel/OrientationModelProvider';
+export { BodyOrientationModelParameters as BodyOrientationModel, BarycenterOrientationModelParameters as BarycenterOrientationModel } from './files/processors/OrientationModelProcessor';
