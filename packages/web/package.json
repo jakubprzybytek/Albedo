@@ -22,7 +22,7 @@
     "@mui/lab": "^7.0.0-beta.11",
     "@mui/material": "^7.0.2",
     "@mui/x-date-pickers": "^8.5.1",
-    "@react-router/node": "^7.6.0",
+    "@react-router/node": "^7.8.2",
     "@react-router/serve": "^7.5.1",
     "aws-amplify": "^6.14.3",
     "date-fns": "^4.1.0",
