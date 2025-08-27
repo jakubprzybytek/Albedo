@@ -3,22 +3,7 @@
  * Based on JPL SPICE rotate.c, rotmat.c, and eul2m.c
  */
 
-export type Matrix3x3 = [
-  [number, number, number],
-  [number, number, number],
-  [number, number, number]
-];
-
-export type Matrix6x6 = [
-  [number, number, number, number, number, number],
-  [number, number, number, number, number, number],
-  [number, number, number, number, number, number],
-  [number, number, number, number, number, number],
-  [number, number, number, number, number, number],
-  [number, number, number, number, number, number]
-];
-
-export type Vector3 = [number, number, number];
+import { Matrix3x3, Matrix6x6, Vector3 } from "@jpl";
 
 export enum Axis {
   X = 1,

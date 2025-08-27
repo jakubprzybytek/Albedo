@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { EphemerisSeconds, JplBodyId, Vector3 } from "@jpl";
+import { EphemerisSeconds, JplBodyId, Matrix3x3, Vector3 } from "@jpl";
 import { kernels } from "@jpl/data/kernels.testData";
 
 function approximately(actual: Vector3, expected: Vector3, delta: number) {
@@ -8,48 +8,78 @@ function approximately(actual: Vector3, expected: Vector3, delta: number) {
   expect(actual[2]).approximately(expected[2], delta);
 }
 
+function approximately3x3(actual: Matrix3x3, expected: Matrix3x3, delta: number) {
+  console.log(actual)
+  approximately(actual[0], expected[0], delta);
+  approximately(actual[1], expected[1], delta);
+  approximately(actual[2], expected[2], delta);
+}
+
 // Test cases from: https://wgc.jpl.nasa.gov:8443/webgeocalc/#FrameTransformation
 describe('BodyFixed', () => {
 
-  describe('getRotation', () => {
-    it('should return rotation for Earth', () => {
+  describe('getRotationAngles', () => {
+    it('should return rotation angles for Earth', () => {
       const bodyFixedFrame = kernels.bodyFixedFrame();
 
       const es1 = EphemerisSeconds.fromDate(2019, 10, 10);
       const es2 = EphemerisSeconds.fromDate(2019, 10, 11);
       const es3 = EphemerisSeconds.fromDate(2019, 10, 12);
 
-      approximately(bodyFixedFrame.getRotation(JplBodyId.Earth, es1), [-72.17289475, 0.11012664, 89.87326539], 1e-8);
-      approximately(bodyFixedFrame.getRotation(JplBodyId.Earth, es2), [-71.18727125, 0.11014189, 89.87324784], 1e-8);
-      approximately(bodyFixedFrame.getRotation(JplBodyId.Earth, es3), [-70.20164775, 0.11015714, 89.87323029], 1e-8);
+      approximately(bodyFixedFrame.getRotationAngles(JplBodyId.Earth, es1), [-72.17289475, 0.11012664, 89.87326539], 1e-8);
+      approximately(bodyFixedFrame.getRotationAngles(JplBodyId.Earth, es2), [-71.18727125, 0.11014189, 89.87324784], 1e-8);
+      approximately(bodyFixedFrame.getRotationAngles(JplBodyId.Earth, es3), [-70.20164775, 0.11015714, 89.87323029], 1e-8);
+    });
+
+    it('should return rotation angles for Moon', () => {
+      const bodyFixedFrame = kernels.bodyFixedFrame();
+
+      const es1 = EphemerisSeconds.fromDate(2019, 10, 10);
+      const es2 = EphemerisSeconds.fromDate(2019, 10, 11);
+      const es3 = EphemerisSeconds.fromDate(2019, 10, 12);
+
+      approximately(bodyFixedFrame.getRotationAngles(JplBodyId.Moon, es1), [154.86483873, 23.80129410, -3.82071629], 1e-8);
+      approximately(bodyFixedFrame.getRotationAngles(JplBodyId.Moon, es2), [168.04679783, 23.80801176, -3.82564601], 1e-8);
+      approximately(bodyFixedFrame.getRotationAngles(JplBodyId.Moon, es3), [-178.77605679, 23.81506230, -3.82529824], 1e-8);
+    });
+
+    it('should return rotation angles for Mars', () => {
+      const bodyFixedFrame = kernels.bodyFixedFrame();
+
+      const es1 = EphemerisSeconds.fromDate(2019, 10, 10);
+      const es2 = EphemerisSeconds.fromDate(2019, 10, 11);
+      const es3 = EphemerisSeconds.fromDate(2019, 10, 12);
+
+      approximately(bodyFixedFrame.getRotationAngles(JplBodyId.Mars, es1), [103.08290492, 37.12572022, 47.65950925], 1e-8);
+      approximately(bodyFixedFrame.getRotationAngles(JplBodyId.Mars, es2), [93.97488994, 37.12572295, 47.65950463], 1e-8);
+      approximately(bodyFixedFrame.getRotationAngles(JplBodyId.Mars, es3), [84.86687495, 37.12572570, 47.65950004], 1e-8);
     });
   });
 
-  describe('getRotation', () => {
-    it('should return rotation for Moon', () => {
+  describe('getRotationMatrix', () => {
+    it.skip('should return rotation angles for Earth', () => {
       const bodyFixedFrame = kernels.bodyFixedFrame();
 
       const es1 = EphemerisSeconds.fromDate(2019, 10, 10);
       const es2 = EphemerisSeconds.fromDate(2019, 10, 11);
       const es3 = EphemerisSeconds.fromDate(2019, 10, 12);
 
-      approximately(bodyFixedFrame.getRotation(JplBodyId.Moon, es1), [154.86483873, 23.80129410, -3.82071629], 1e-8);
-      approximately(bodyFixedFrame.getRotation(JplBodyId.Moon, es2), [168.04679783, 23.80801176, -3.82564601], 1e-8);
-      approximately(bodyFixedFrame.getRotation(JplBodyId.Moon, es3), [-178.77605679, 23.81506230, -3.82529824], 1e-8);
+      approximately3x3(bodyFixedFrame.getRotationMatrix(JplBodyId.Earth, es1), [
+        [0.95265776, 0.30403923, -0.00182978],
+        [-0.30403866, 0.95265951, 0.00058843],
+        [0.00192207, -4.25149547E-06, 0.99999815]
+      ], 1e-8);
+      approximately3x3(bodyFixedFrame.getRotationMatrix(JplBodyId.Earth, es2), [
+        [0.94728697, 0.32038115, -0.00181964],
+        [-0.32038055, 0.94728872, 0.00061991],
+        [0.00192233, -4.25267300E-06, 0.99999815]
+      ], 1e-8);
+      approximately3x3(bodyFixedFrame.getRotationMatrix(JplBodyId.Earth, es3), [
+        [0.94163588, 0.33662827, -0.00180896],
+        [-0.33662764, 0.94163762, 0.00065121],
+        [0.00192260, -4.25385070E-06, 0.99999815]
+      ], 1e-8);
     });
-  });
 
-  describe('getRotation', () => {
-    it('should return rotation for Mars', () => {
-      const bodyFixedFrame = kernels.bodyFixedFrame();
-
-      const es1 = EphemerisSeconds.fromDate(2019, 10, 10);
-      const es2 = EphemerisSeconds.fromDate(2019, 10, 11);
-      const es3 = EphemerisSeconds.fromDate(2019, 10, 12);
-
-      approximately(bodyFixedFrame.getRotation(JplBodyId.Mars, es1), [103.08290492, 37.12572022, 47.65950925], 1e-8);
-      approximately(bodyFixedFrame.getRotation(JplBodyId.Mars, es2), [93.97488994, 37.12572295, 47.65950463], 1e-8);
-      approximately(bodyFixedFrame.getRotation(JplBodyId.Mars, es3), [84.86687495, 37.12572570, 47.65950004], 1e-8);
-    });
   });
 });
