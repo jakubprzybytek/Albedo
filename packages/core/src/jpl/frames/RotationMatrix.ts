@@ -126,6 +126,22 @@ export class RotationMatrix {
   }
 
   /**
+   * Multiply a 3x3 matrix by a 3D vector
+   * Equivalent to SPICE mxv() function
+   * 
+   * @param matrix 3x3 matrix
+   * @param vector 3D vector
+   * @returns Resulting 3D vector (matrix * vector)
+   */
+  static multiplyVector(matrix: Matrix3x3, vector: Vector3): Vector3 {
+    return [
+      matrix[0][0] * vector[0] + matrix[0][1] * vector[1] + matrix[0][2] * vector[2],
+      matrix[1][0] * vector[0] + matrix[1][1] * vector[1] + matrix[1][2] * vector[2],
+      matrix[2][0] * vector[0] + matrix[2][1] * vector[1] + matrix[2][2] * vector[2]
+    ];
+  }
+
+  /**
    * Create identity matrix
    */
   static identity(): Matrix3x3 {

@@ -1,12 +1,18 @@
 import { describe, it, expect } from "vitest";
 import { RotationMatrix, Axis } from '../RotationMatrix';
-import { Matrix3x3, Matrix6x6 } from "@jpl";
+import { Matrix3x3, Matrix6x6, Vector3 } from "@jpl";
 
 function expectMatrixToBeCloseTo(actual: Matrix3x3, expected: Matrix3x3, precision = 8) {
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       expect(actual[i][j]).toBeCloseTo(expected[i][j], precision);
     }
+  }
+}
+
+function expectVectorToBeCloseTo(actual: Vector3, expected: Vector3, precision = 8) {
+  for (let i = 0; i < 3; i++) {
+    expect(actual[i]).toBeCloseTo(expected[i], precision);
   }
 }
 
@@ -101,6 +107,111 @@ describe('RotationMatrix', () => {
       ];
 
       expectMatrixToBeCloseTo(result, expected);
+    });
+  });
+
+  describe('multiplyVector', () => {
+    it('should multiply identity matrix with any vector unchanged', () => {
+      const identity = RotationMatrix.identity();
+      const vector: Vector3 = [1, 2, 3];
+      const result = RotationMatrix.multiplyVector(identity, vector);
+
+      expectVectorToBeCloseTo(result, vector);
+    });
+
+    it('should multiply zero vector with any matrix to get zero vector', () => {
+      const matrix: Matrix3x3 = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+      ];
+      const zeroVector: Vector3 = [0, 0, 0];
+      const result = RotationMatrix.multiplyVector(matrix, zeroVector);
+
+      expectVectorToBeCloseTo(result, zeroVector);
+    });
+
+    it('should rotate vector by 90 degrees around Z-axis', () => {
+      const rotZ90 = RotationMatrix.rotate(Math.PI / 2, Axis.Z);
+      const vector: Vector3 = [1, 0, 0]; // X-axis unit vector
+      const result = RotationMatrix.multiplyVector(rotZ90, vector);
+      const expected: Vector3 = [0, -1, 0]; // Should become -Y-axis unit vector
+
+      expectVectorToBeCloseTo(result, expected);
+    });
+
+    it('should rotate vector by 90 degrees around X-axis', () => {
+      const rotX90 = RotationMatrix.rotate(Math.PI / 2, Axis.X);
+      const vector: Vector3 = [0, 1, 0]; // Y-axis unit vector
+      const result = RotationMatrix.multiplyVector(rotX90, vector);
+      const expected: Vector3 = [0, 0, -1]; // Should become -Z-axis unit vector
+
+      expectVectorToBeCloseTo(result, expected);
+    });
+
+    it('should rotate vector by 90 degrees around Y-axis', () => {
+      const rotY90 = RotationMatrix.rotate(Math.PI / 2, Axis.Y);
+      const vector: Vector3 = [1, 0, 0]; // X-axis unit vector
+      const result = RotationMatrix.multiplyVector(rotY90, vector);
+      const expected: Vector3 = [0, 0, 1]; // Should become Z-axis unit vector
+
+      expectVectorToBeCloseTo(result, expected);
+    });
+
+    it('should handle arbitrary matrix and vector multiplication', () => {
+      const matrix: Matrix3x3 = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+      ];
+      const vector: Vector3 = [1, 2, 3];
+      const result = RotationMatrix.multiplyVector(matrix, vector);
+      
+      // Manual calculation: 
+      // [1*1 + 2*2 + 3*3, 4*1 + 5*2 + 6*3, 7*1 + 8*2 + 9*3] = [14, 32, 50]
+      const expected: Vector3 = [14, 32, 50];
+
+      expectVectorToBeCloseTo(result, expected);
+    });
+
+    it('should preserve vector magnitude for rotation matrices', () => {
+      const rotation = RotationMatrix.rotate(Math.PI / 4, Axis.Z);
+      const vector: Vector3 = [3, 4, 5];
+      const originalMagnitude = Math.sqrt(vector[0]**2 + vector[1]**2 + vector[2]**2);
+      
+      const result = RotationMatrix.multiplyVector(rotation, vector);
+      const resultMagnitude = Math.sqrt(result[0]**2 + result[1]**2 + result[2]**2);
+
+      expect(resultMagnitude).toBeCloseTo(originalMagnitude, 10);
+    });
+
+    it('should handle negative vector components', () => {
+      const matrix: Matrix3x3 = [
+        [1, 0, 0],
+        [0, -1, 0],
+        [0, 0, 1]
+      ];
+      const vector: Vector3 = [-2, 3, -1];
+      const result = RotationMatrix.multiplyVector(matrix, vector);
+      const expected: Vector3 = [-2, -3, -1]; // Y component flipped
+
+      expectVectorToBeCloseTo(result, expected);
+    });
+
+    it('should handle fractional components correctly', () => {
+      const matrix: Matrix3x3 = [
+        [0.5, 0.5, 0],
+        [0.5, -0.5, 0],
+        [0, 0, 1]
+      ];
+      const vector: Vector3 = [2, 4, 1];
+      const result = RotationMatrix.multiplyVector(matrix, vector);
+      
+      // Manual calculation:
+      // [0.5*2 + 0.5*4 + 0*1, 0.5*2 + (-0.5)*4 + 0*1, 0*2 + 0*4 + 1*1] = [3, -1, 1]
+      const expected: Vector3 = [3, -1, 1];
+
+      expectVectorToBeCloseTo(result, expected);
     });
   });
 
