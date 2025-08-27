@@ -55,6 +55,17 @@ describe('RotationMatrix', () => {
 
       expectMatrixToBeCloseTo(result, expected);
     });
+
+    it('should create Pi/4 rotation about Z-axis', () => {
+      const result = RotationMatrix.rotate(Math.PI / 4, Axis.Z);
+      const expected: Matrix3x3 = [
+        [Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0],
+        [-Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0],
+        [0, 0, 1]
+      ];
+      
+      expectMatrixToBeCloseTo(result, expected);
+    });
   });
 
   describe('identity', () => {

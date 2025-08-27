@@ -1,6 +1,6 @@
 import { JplBodyId, Matrix3x3, Vector3 } from "@jpl";
 import { KernelsRepository } from "@jpl/kernels/KernelsRepository";
-import { RotationMatrix } from "./RotationMatrix";
+import { Axis, RotationMatrix } from "./RotationMatrix";
 import { Radians } from "@math";
 
 export class BodyFixedFrame {
@@ -28,10 +28,10 @@ export class BodyFixedFrame {
   getRotationMatrix(jplBodyId: JplBodyId, es: number): Matrix3x3 {
     const orientationModel = this.orientationModelProvider.getOrientationModel(jplBodyId, es);
 
-    return RotationMatrix.bodyFixedRotation(
-      Radians.fromDegrees(orientationModel.RA),
-      Radians.fromDegrees(orientationModel.Dec),
-      Radians.fromDegrees(orientationModel.W)
-    );
+    const RA = 90 + orientationModel.RA;
+    const Dec = 90 - orientationModel.Dec;
+    const W = orientationModel.W % 360;
+
+    return RotationMatrix.eulerToMatrix(Radians.fromDegrees(W), Radians.fromDegrees(Dec), Radians.fromDegrees(RA), Axis.Z, Axis.X, Axis.Z);
   }
 }

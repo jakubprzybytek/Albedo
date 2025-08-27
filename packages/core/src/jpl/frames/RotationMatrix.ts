@@ -100,24 +100,6 @@ export class RotationMatrix {
   }
 
   /**
-   * Create rotation matrix from body-fixed frame angles (RA, Dec, W)
-   * Common in planetary science applications
-   * 
-   * @param ra Right ascension of pole in radians
-   * @param dec Declination of pole in radians  
-   * @param w Prime meridian angle in radians
-   * @returns 3x3 rotation matrix
-   */
-  static bodyFixedRotation(ra: number, dec: number, w: number): Matrix3x3 {
-    // Convert to Euler angles: Z(RA+π/2) * X(π/2-Dec) * Z(W)
-    const angle3 = ra + Math.PI / 2;
-    const angle2 = Math.PI / 2 - dec;
-    const angle1 = w;
-
-    return this.eulerToMatrix(angle3, angle2, angle1, Axis.Z, Axis.X, Axis.Z);
-  }
-
-  /**
    * Multiply two 3x3 matrices
    * 
    * @param a First matrix
