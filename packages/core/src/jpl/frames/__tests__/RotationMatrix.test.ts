@@ -69,7 +69,7 @@ describe('RotationMatrix', () => {
         [-Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0],
         [0, 0, 1]
       ];
-      
+
       expectMatrixToBeCloseTo(result, expected);
     });
   });
@@ -166,7 +166,7 @@ describe('RotationMatrix', () => {
       ];
       const vector: Vector3 = [1, 2, 3];
       const result = RotationMatrix.multiplyVector(matrix, vector);
-      
+
       // Manual calculation: 
       // [1*1 + 2*2 + 3*3, 4*1 + 5*2 + 6*3, 7*1 + 8*2 + 9*3] = [14, 32, 50]
       const expected: Vector3 = [14, 32, 50];
@@ -177,10 +177,10 @@ describe('RotationMatrix', () => {
     it('should preserve vector magnitude for rotation matrices', () => {
       const rotation = RotationMatrix.rotate(Math.PI / 4, Axis.Z);
       const vector: Vector3 = [3, 4, 5];
-      const originalMagnitude = Math.sqrt(vector[0]**2 + vector[1]**2 + vector[2]**2);
-      
+      const originalMagnitude = Math.sqrt(vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2);
+
       const result = RotationMatrix.multiplyVector(rotation, vector);
-      const resultMagnitude = Math.sqrt(result[0]**2 + result[1]**2 + result[2]**2);
+      const resultMagnitude = Math.sqrt(result[0] ** 2 + result[1] ** 2 + result[2] ** 2);
 
       expect(resultMagnitude).toBeCloseTo(originalMagnitude, 10);
     });
@@ -206,7 +206,7 @@ describe('RotationMatrix', () => {
       ];
       const vector: Vector3 = [2, 4, 1];
       const result = RotationMatrix.multiplyVector(matrix, vector);
-      
+
       // Manual calculation:
       // [0.5*2 + 0.5*4 + 0*1, 0.5*2 + (-0.5)*4 + 0*1, 0*2 + 0*4 + 1*1] = [3, -1, 1]
       const expected: Vector3 = [3, -1, 1];
@@ -365,6 +365,30 @@ describe('RotationMatrix', () => {
       const inverse = RotationMatrix.invert(identity);
 
       expectMatrixToBeCloseTo(inverse, identity);
+    });
+
+    it('should return original vector when multiplying by a simple rotation matrix and then its inverse`', () => {
+      const vector: Vector3 = [1, 2, 3];
+
+      const rotation = RotationMatrix.rotate(Math.PI / 4, Axis.Z);
+      const product = RotationMatrix.multiplyVector(rotation, vector);
+
+      const inverseRotation = RotationMatrix.invert(rotation);
+      const result = RotationMatrix.multiplyVector(inverseRotation, product);
+
+      expectVectorToBeCloseTo(result, vector);
+    });
+
+    it('should return original vector when multiplying by a complex rotation matrix and then its inverse`', () => {
+      const vector: Vector3 = [1, 2, 3];
+
+      const rotation = RotationMatrix.eulerToMatrix(Math.PI / 2, Math.PI / 4, Math.PI / 3, Axis.Z, Axis.Y, Axis.X);
+      const product = RotationMatrix.multiplyVector(rotation, vector);
+
+      const inverseRotation = RotationMatrix.invert(rotation);
+      const result = RotationMatrix.multiplyVector(inverseRotation, product);
+
+      expectVectorToBeCloseTo(result, vector);
     });
   });
 
