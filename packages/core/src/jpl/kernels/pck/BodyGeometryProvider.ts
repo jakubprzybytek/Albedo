@@ -1,11 +1,11 @@
-import { JplBodyId } from "@jpl";
+import { JplBodyId, Vector3 } from "@jpl";
 import { PckRepository } from "./PckRepository";
 
 export class BodyGeometryProvider {
 
   constructor(private pckRepository: PckRepository) { }
 
-  getBodyRadii(jplBodyId: JplBodyId): number[] | undefined {
+  getBodyRadii(jplBodyId: JplBodyId): Vector3 | undefined {
     return this.pckRepository.getBodyRadii(jplBodyId);
   }
 }

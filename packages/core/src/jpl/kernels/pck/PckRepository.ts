@@ -1,19 +1,19 @@
-import { JplBodyId } from "@jpl";
+import { JplBodyId, Vector3 } from "@jpl";
 import { BarycenterOrientationModel, BodyOrientationModel } from ".";
 
 export class PckRepository {
 
-  private objectRadii: Map<JplBodyId, number[]> = new Map();
+  private objectRadii: Map<JplBodyId, Vector3> = new Map();
 
   private bodiesOrientationModels: Map<JplBodyId, BodyOrientationModel> = new Map();
 
   private barycentersOrientationModels: Map<JplBodyId, BarycenterOrientationModel> = new Map();
 
-  registerPckVariables(radii: Map<JplBodyId, number[]>) {
-    radii.forEach((value: number[], key: JplBodyId) => this.objectRadii.set(key, value));
+  registerPckVariables(radii: Map<JplBodyId, Vector3>) {
+    radii.forEach((value: Vector3, key: JplBodyId) => this.objectRadii.set(key, value));
   }
 
-  getBodyRadii(jplBodyId: JplBodyId): number[] | undefined {
+  getBodyRadii(jplBodyId: JplBodyId): Vector3 | undefined {
     return this.objectRadii.get(jplBodyId);
   }
 

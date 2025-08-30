@@ -1,3 +1,5 @@
+import { RectangularCoordinates } from "@math";
+
 /**
  * Converts geodetic coordinates to rectangular coordinates.
  * 
@@ -22,60 +24,56 @@ export function geodeticToRectangular(
     altitude: number,
     equatorialRadius: number,
     flattening: number
-): { x: number; y: number; z: number } {
+): RectangularCoordinates {
     // Input validation
     if (equatorialRadius <= 0) {
         throw new Error(`Equatorial radius must be greater than zero. Got: ${equatorialRadius}`);
     }
-    
+
     if (flattening >= 1) {
         throw new Error(`Flattening coefficient must be less than 1. Got: ${flattening}`);
     }
-    
+
     // Compute the polar radius of the spheroid
     const polarRadius = equatorialRadius - flattening * equatorialRadius;
-    
+
     // Precompute trigonometric values
     const cosPhi = Math.cos(latitude);
     const sinPhi = Math.sin(latitude);
     const cosLambda = Math.cos(longitude);
     const sinLambda = Math.sin(longitude);
-    
+
     // Compute scale factor for finding rectangular coordinates
     // of a point with altitude 0 but same geodetic lat/lon
     const big = Math.max(
         Math.abs(equatorialRadius * cosPhi),
         Math.abs(polarRadius * sinPhi)
     );
-    
+
     const x = equatorialRadius * cosPhi / big;
     const y = polarRadius * sinPhi / big;
     const scale = 1.0 / (big * Math.sqrt(x * x + y * y));
-    
+
     // Compute rectangular coordinates of the point with zero altitude
     const baseX = scale * equatorialRadius * equatorialRadius * cosLambda * cosPhi;
     const baseY = scale * equatorialRadius * equatorialRadius * sinLambda * cosPhi;
     const baseZ = scale * polarRadius * polarRadius * sinPhi;
-    
+
     // Compute the outward unit normal to the ellipsoid at the base point
     const normalX = baseX / (equatorialRadius * equatorialRadius);
     const normalY = baseY / (equatorialRadius * equatorialRadius);
     const normalZ = baseZ / (polarRadius * polarRadius);
-    
+
     // Normalize the normal vector
     const normalMagnitude = Math.sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ);
     const unitNormalX = normalX / normalMagnitude;
     const unitNormalY = normalY / normalMagnitude;
     const unitNormalZ = normalZ / normalMagnitude;
-    
+
     // Move along the normal to the input point (add altitude)
     const rectX = baseX + altitude * unitNormalX;
     const rectY = baseY + altitude * unitNormalY;
     const rectZ = baseZ + altitude * unitNormalZ;
-    
-    return {
-        x: rectX,
-        y: rectY,
-        z: rectZ
-    };
+
+    return new RectangularCoordinates(rectX, rectY, rectZ);
 }
