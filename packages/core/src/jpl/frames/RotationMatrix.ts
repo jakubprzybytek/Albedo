@@ -3,7 +3,7 @@
  * Based on JPL SPICE rotate.c, rotmat.c, and eul2m.c
  */
 
-import { Matrix3x3, Matrix6x6, Vector3 } from "@jpl";
+import { Matrix3x3, Matrix6x6, Vector3 } from "@astro/math";
 
 export enum Axis {
   X = 1,

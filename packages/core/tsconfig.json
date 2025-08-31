@@ -6,7 +6,6 @@
     "target": "ESNext",
     "baseUrl": ".",
     "paths": {
-        "@math": ["src/astro/coords"],
         "@astro": ["./src/astro"],
         "@astro/*": ["./src/astro/*"],
         "@jpl": ["./src/jpl"],

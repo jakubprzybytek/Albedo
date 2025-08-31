@@ -1,8 +1,8 @@
+import { Radians } from "@astro/coords";
 import { EphemerisSeconds } from "@jpl";
 import { BarycenterOrientationModel, BodyOrientationModel } from "../..";
 import { OrientationModel } from "..";
 import { calculatePolynomials } from ".";
-import { Radians } from "@math";
 
 export class NutationPrecessionOrientationModelCalculator {
   constructor(private bodyOrientationModelParameters: BodyOrientationModel, private barycenterOrientationModelParameters: BarycenterOrientationModel) { }

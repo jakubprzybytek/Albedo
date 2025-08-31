@@ -1,7 +1,8 @@
-import { JplBodyId, Matrix3x3, Vector3 } from "@jpl";
+import { Radians } from "@astro/coords";
+import { Matrix3x3, Vector3 } from "@astro/math";
+import { JplBodyId} from "@jpl";
 import { KernelsRepository } from "@jpl/kernels/KernelsRepository";
 import { Axis, RotationMatrix } from "./RotationMatrix";
-import { Radians } from "@math";
 
 export class BodyFixedFrame {
 
