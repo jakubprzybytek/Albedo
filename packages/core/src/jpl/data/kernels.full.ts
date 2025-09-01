@@ -1,5 +1,5 @@
 import { KernelsRepository } from "@jpl/kernels/KernelsRepository";
-import { kernelRepository } from "./de440.full";
-import { pckRepository } from "./pck00011";
+import { spkRepository } from "./spk/spk.full";
+import { pckRepository } from "./pck/pck00011";
 
-export const kernels = new KernelsRepository(kernelRepository, pckRepository);
+export const kernels = new KernelsRepository(spkRepository, pckRepository);

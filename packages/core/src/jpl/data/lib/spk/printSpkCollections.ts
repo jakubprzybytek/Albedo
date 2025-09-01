@@ -12,12 +12,12 @@ function replacer(this: any, key: string, value: any): any {
 
 export function printSpkCollections(outputFileName: string, spkCollectionsList: SpkKernelCollection[], from: Date, to: Date) {
   const fd = openSync(outputFileName, 'w');
-  writeSync(fd, "import { SpkKernelRepository, SpkKernelCollection, TimeSpan } from '../kernel';\n\n");
+  writeSync(fd, "import { SpkKernelRepository, SpkKernelCollection, TimeSpan } from '@jpl/kernels/spk';\n\n");
   writeSync(fd, `// from: ${from.toISOString()}\n`);
   writeSync(fd, `// to: ${to.toISOString()}\n\n`);
 
-  let kernelRepositorySnippet = 'export const kernelRepository: SpkKernelRepository = new SpkKernelRepository();\n'
-    + 'kernelRepository.registerSpkKernelCollections([\n';
+  let kernelRepositorySnippet = 'export const spkRepository: SpkKernelRepository = new SpkKernelRepository();\n'
+    + 'spkRepository.registerSpkKernelCollections([\n';
 
   spkCollectionsList.forEach(spkCollection => {
     const constName = `a_${spkCollection.bodyId}_wrt_${spkCollection.centerBodyId}`;

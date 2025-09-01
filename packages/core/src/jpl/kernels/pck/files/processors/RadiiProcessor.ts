@@ -17,7 +17,7 @@ export function extractRadiiInformation(assignments: Assignment[]): Map<JplBodyI
         } else {
           throw new Error(`Expecting ${assignment.variableName} to have value of type array and length 3, got value: ${assignment.type === AssignementType.MultipleValues ? assignment.values.toString() : assignment.value.toString()}`);
         }
-        console.log(`Body ${bodyId}/${JplBodyId[jplBodyId]} radii: ${objectRadii.get(jplBodyId)?.toString()}`);
+        // console.log(`Body ${bodyId}/${JplBodyId[jplBodyId]} radii: ${objectRadii.get(jplBodyId)?.toString()}`);
       }
     }
   }

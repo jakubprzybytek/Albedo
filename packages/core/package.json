@@ -7,8 +7,7 @@
     "typecheck": "tsc -noEmit",
     "listSpk": "ts-node src/jpl/tools/ListSpkFileContent.ts",
     "listPck": "ts-node src/jpl/tools/ListPckFileContent.ts",
-    "data:create:test": "ts-node src/jpl/data/de440.testData.script.ts",
-    "data:create:pck": "ts-node src/jpl/data/pck00011.script.ts",
+    "data:create": "ts-node src/jpl/data/kernels.scripts.ts",
     "test:full": "ts-node src/jpl/test/fullTest.ts"
   },
   "dependencies": {

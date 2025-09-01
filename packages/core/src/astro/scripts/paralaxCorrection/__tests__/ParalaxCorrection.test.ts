@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { Radians } from "@astro/coords";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
-import { kernels } from "@jpl/data/kernels.full";
+import { kernels } from "@jpl/data/kernels.testData";
 import { ParalaxCorrection } from "../ParalaxCorrection";
 import { CorrectionType } from "@jpl/state";
 import { States } from "@astro/scripts/states";

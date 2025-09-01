@@ -19,14 +19,15 @@ type Separation = {
   separation: number;
 }
 
-function simpleSunMoonFunctions(stateSolver: StateSolver) {
-
-  function sunAndMoonAngle(es: number) {
+function buildRoughAngleBetweenSunAndMoon(stateSolver: StateSolver) {
+  return (es: number) => {
     const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE);
     const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE);
-
     return Radians.between(sunPosition, moonPosition);
-  }
+  };
+}
+
+function simpleSunMoonFunctions(stateSolver: StateSolver) {
 
   function earthsShadowAndMoonAngle(es: number) {
     const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE);
@@ -38,7 +39,6 @@ function simpleSunMoonFunctions(stateSolver: StateSolver) {
   }
 
   return {
-    sunAndMoonAngle,
     earthsShadowAndMoonAngle
   }
 }
@@ -86,7 +86,7 @@ export class Eclipses {
   }
 
   forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
-    const { sunAndMoonAngle, earthsShadowAndMoonAngle } = simpleSunMoonFunctions(this.stateSolver);
+    const sunAndMoonAngle = buildRoughAngleBetweenSunAndMoon(this.stateSolver);
 
     const correctedFromEs = EphemerisSeconds.fromJde(fromJde) - PRELIMINARY_INTERVAL;
     const correctedToEs = EphemerisSeconds.fromJde(toJde) + PRELIMINARY_INTERVAL;
@@ -117,6 +117,8 @@ export class Eclipses {
           separation: minSeparation,
         }
       });
+
+    const { earthsShadowAndMoonAngle } = simpleSunMoonFunctions(this.stateSolver);
 
     const moonEclipses = maximums
       .filter(separation => separation.separation > Math.PI - PRELIMINARY_ANGLE_RANGE)

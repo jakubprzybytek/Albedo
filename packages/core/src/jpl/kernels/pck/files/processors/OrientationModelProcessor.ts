@@ -104,7 +104,6 @@ export function extractOrientationModelInformation(assignments: Assignment[]): O
     if (barycenterModelVariableNameMatch) {
       const bodyId = parseInt(barycenterModelVariableNameMatch[1]);
       const jplBodyId = jplBodyIdFromId(bodyId);
-      console.log(`Barycenter ${bodyId}`);
       const fieldName = barycenterModelVariableNameMatch[2];
 
       if (jplBodyId) {
@@ -128,7 +127,7 @@ export function extractOrientationModelInformation(assignments: Assignment[]): O
       }
     }
   }
-  console.log(barycentersOrientationModels);
+
   return {
     bodies: bodiesOrientationModels,
     barycenters: barycentersOrientationModels

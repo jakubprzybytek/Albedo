@@ -1,4 +1,5 @@
-import { JplBodyId, Vector3 } from "@jpl";
+import { Vector3 } from "@astro/math";
+import { JplBodyId } from "@jpl";
 import { BarycenterOrientationModel, BodyOrientationModel } from ".";
 
 export class PckRepository {
