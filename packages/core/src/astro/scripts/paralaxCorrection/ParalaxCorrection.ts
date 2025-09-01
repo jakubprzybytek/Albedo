@@ -1,5 +1,4 @@
-import { Radians, RectangularCoordinates } from "@astro/coords";
-import { Vector3 } from "@astro/math";
+import { RectangularCoordinates, Radians } from "@astro/coords";
 import { JplBodyId } from "@jpl";
 import { geodeticToRectangular } from "@jpl/coordinates";
 import { BodyFixedFrame, RotationMatrix } from "@jpl/frames";

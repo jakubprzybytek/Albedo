@@ -1,4 +1,4 @@
-import { RectangularCoordinates } from "@math";
+import { RectangularCoordinates } from "@astro/coords";
 
 /**
  * Converts geodetic coordinates to rectangular coordinates.

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { AstronomicalCoordinates } from "@math";
+import { AstronomicalCoordinates } from "@astro/coords";
 import { JulianDay } from "@astro";
 import { kernels } from "@jpl/data/kernels.full";
 import { Eclipses, EclipseType } from "@astro/scripts";

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
+import { Radians } from "@astro/coords";
 import { geodeticToRectangular } from '../Geodetic';
-import { Radians } from "@math";
 
 describe('geodeticToRectangular', () => {
     describe('input validation', () => {
