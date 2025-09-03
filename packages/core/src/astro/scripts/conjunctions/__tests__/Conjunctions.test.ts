@@ -6,7 +6,7 @@ import { kernels } from "@jpl/data/kernels.full";
 import { Conjunctions } from "../Conjunctions";
 
 describe("Conjunctions", () => {
-  const conjuctionScripts = new Conjunctions(kernels.stateSolver());
+  const conjuctionScripts = new Conjunctions(kernels);
 
   it("should compute conjunctions for all bodies", () => {
     const fromJde = JulianDay.fromDate(2022, 2, 1);

@@ -30,7 +30,7 @@ export const handler = lambdaHandler<Separation[]>(event => {
 
     console.log(`Compute separations for '${target.name}' w.r.t. '${observer.name}' between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde}) in interval of ${interval} day(s)`);
 
-    const seprationScripts = new Separations(kernels.stateSolver());
+    const seprationScripts = new Separations(kernels);
     const separations = seprationScripts.for(target.id, observer.id, fromJde, toJde, interval);
 
     console.log(`Computed ${separations.length} separations`);

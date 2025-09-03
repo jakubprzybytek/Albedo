@@ -25,7 +25,7 @@ export const handler = lambdaHandler<GetEclipsesReturnType>(event => {
 
   console.log(`Find eclipses between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
 
-  const eclipseScripts = new Eclipses(kernels.stateSolver());
+  const eclipseScripts = new Eclipses(kernels);
   const eclipses = eclipseScripts.forSunAndMoon(fromJde, toJde);
 
   console.log(`Found ${eclipses.length} eclipses.`);

@@ -6,7 +6,7 @@ import { Eclipses, EclipseType } from "@astro/scripts";
 import { EphemerisSeconds } from "@jpl";
 
 describe("Eclipses", () => {
-  const eclipseScripts = new Eclipses(kernels.stateSolver());
+  const eclipseScripts = new Eclipses(kernels);
 
   it("should find all eclipses", () => {
     const fromJde = JulianDay.fromDate(2025, 3, 1);

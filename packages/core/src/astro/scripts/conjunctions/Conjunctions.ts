@@ -4,6 +4,7 @@ import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio
 import { createPairs } from '@astro/utils/Pairs';
 import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { StateSolver } from '@jpl/state';
+import { KernelsRepository } from '@jpl/kernels';
 import { States, Separations, Ephemerides, timeProperties } from '@astro/scripts';
 import { Conjunction2 } from '.';
 
@@ -22,9 +23,9 @@ export class Conjunctions {
 
   readonly ephemerides: Ephemerides;
 
-  constructor(stateSolver: StateSolver) {
-    this.stateSolver = stateSolver;
-    this.ephemerides = new Ephemerides(this.stateSolver);
+  constructor(kernels: KernelsRepository) {
+    this.stateSolver = kernels.stateSolver();
+    this.ephemerides = new Ephemerides(kernels);
   }
 
   for(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction2[] {

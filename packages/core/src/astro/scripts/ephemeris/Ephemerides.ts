@@ -4,16 +4,17 @@ import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { CorrectionType, StateSolver } from '@jpl/state';
 import { DetailedCoordinates, DetailedEphemeris } from '.';
 import { Bodies } from 'src/catalogues/Bodies';
+import { KernelsRepository } from '@jpl/kernels';
 
 export class Ephemerides {
 
-  readonly stateSolver: StateSolver;
-
   readonly stateScripts: States;
 
-  constructor(stateSolver: StateSolver) {
-    this.stateSolver = stateSolver;
-    this.stateScripts = new States(this.stateSolver);
+  readonly stateSolver: StateSolver;
+
+  constructor(kernels: KernelsRepository) {
+    this.stateScripts = new States(kernels);
+    this.stateSolver = kernels.stateSolver();
   }
 
   coordinatesForBody(targetBodyId: JplBodyId, es: number): AstronomicalCoordinates {

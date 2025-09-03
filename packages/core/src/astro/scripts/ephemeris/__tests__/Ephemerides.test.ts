@@ -7,7 +7,7 @@ import { kernels } from "@jpl/data/kernels.testData";
 
 describe("Ephemerides", () => {
 
-  const ephemerisScripts = new Ephemerides(kernels.stateSolver());
+  const ephemerisScripts = new Ephemerides(kernels);
 
   it("should compute astronomical coodinates for Venus", () => {
     const es = EphemerisSeconds.fromDate(2019, 10, 10);

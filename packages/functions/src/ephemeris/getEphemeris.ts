@@ -32,7 +32,7 @@ export const handler = lambdaHandler<Ephemeris[]>(event => {
 
     console.log(`Compute ephemerides for '${target.name}' between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde}) in interval of ${interval} day(s)`);
 
-    const ephemerisScripts = new Ephemerides(kernels.stateSolver());
+    const ephemerisScripts = new Ephemerides(kernels);
     const ephemerides = ephemerisScripts.simple(target.id, fromJde, toJde, interval);
 
     return Success(ephemerides);

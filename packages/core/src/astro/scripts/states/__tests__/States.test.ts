@@ -5,7 +5,7 @@ import { kernels } from "@jpl/data/kernels.testData";
 import { States } from "../States";
 
 describe("States", () => {
-  const states = new States(kernels.stateSolver());
+  const states = new States(kernels);
 
   it("should compute position for Moon w.r.t. Earth", () => {
     const position = states.position(JplBodyId.Moon, JplBodyId.Earth, EphemerisSeconds.fromDateTime(2019, 10, 9, 1, 0, 0), CorrectionType.NONE);

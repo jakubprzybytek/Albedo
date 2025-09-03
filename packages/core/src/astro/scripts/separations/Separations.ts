@@ -3,13 +3,14 @@ import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from "@jpl/state";
 import { timeProperties } from "@astro/scripts/utils/time";
 import { Separation } from '.';
+import { KernelsRepository } from "@jpl/kernels";
 
 export class Separations {
 
   readonly stateSolver: StateSolver;
 
-  constructor(stateSolver: StateSolver) {
-    this.stateSolver = stateSolver;
+  constructor(kernels: KernelsRepository) {
+    this.stateSolver = kernels.stateSolver();
   }
 
   static buildSeparationFunction(stateSolver: StateSolver, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {

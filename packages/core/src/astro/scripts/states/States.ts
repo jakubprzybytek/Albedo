@@ -1,14 +1,15 @@
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from "@jpl/state";
-import { RectangularCoordinates } from "@math";
+import { RectangularCoordinates } from "@astro/coords";
 import { PositionInTime, StateInTime } from ".";
+import { KernelsRepository } from "@jpl/kernels";
 
 export class States {
 
   readonly stateSolver: StateSolver;
 
-  constructor(stateSolver: StateSolver) {
-    this.stateSolver = stateSolver;
+  constructor(kernels: KernelsRepository) {
+    this.stateSolver = kernels.stateSolver();
   }
 
   static buildPositionFunction(stateSolver: StateSolver, bodyId: JplBodyId) {

@@ -24,7 +24,7 @@ export const handler = lambdaHandler<Conjunction[]>(event => {
 
   console.log(`Compute conjunctions for between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
 
-  const conjunctionScripts = new Conjunctions(kernels.stateSolver());
+  const conjunctionScripts = new Conjunctions(kernels);
   const conjunctions = conjunctionScripts.all(fromJde, toJde);
 
   console.log(`Found ${conjunctions.length} conjunctions.`);

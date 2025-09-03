@@ -7,6 +7,7 @@
     "dev": "sst dev",
     "build": "sst build",
     "test": "vitest",
+    "test:e2e": "npm run test:e2e --prefix ./packages/web",
     "deploy": "sst deploy",
     "remove": "sst remove",
     "console": "sst console",

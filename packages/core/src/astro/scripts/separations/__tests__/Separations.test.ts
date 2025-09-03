@@ -5,7 +5,7 @@ import { JulianDay } from "@astro";
 import { Separations } from "../Separations";
 
 describe("Separations", () => {
-  const separationScripts = new Separations(kernels.stateSolver());
+  const separationScripts = new Separations(kernels);
 
   it("should compute separations for Moon and Venus", () => {
     const fromEs = JulianDay.fromDate(2019, 10, 9);

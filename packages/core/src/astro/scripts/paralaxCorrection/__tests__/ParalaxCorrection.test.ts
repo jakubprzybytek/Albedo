@@ -8,7 +8,7 @@ import { States } from "@astro/scripts/states";
 
 describe("paralaxCorrections", () => {
   const paralaxCorrections = new ParalaxCorrection(kernels);
-  const states = new States(kernels.stateSolver());
+  const states = new States(kernels);
 
   it("should compute Sun distance from azimuth for 0°N, 0°E", () => {
     const es = EphemerisSeconds.fromDateTime(2019, 10, 9, 11, 47, 18);
