@@ -8,20 +8,20 @@ import { Bodies } from "src/catalogues/Bodies";
 
 function buildEarthsShadowAndMoonAngle(stateSolver: StateSolver) {
   return (es: number) => {
-    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE);
+    const sunPosition = stateSolver.position(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE).coords;
     const earthsShadowPosition = sunPosition.negate();
 
-    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE);
+    const moonPosition = stateSolver.position(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE).coords;
 
     return Radians.between(moonPosition, earthsShadowPosition);
   }
 }
 
 function computeMoonAndEarthShadowEphemeris(stateSolver: StateSolver, es: number): Pick<MoonEclipse, 'moonEphemeris' | 'earthShadowEphemeris'> {
-  const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
+  const sunPosition = stateSolver.position(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
   const earthsShadowPosition = sunPosition.negate();
 
-  const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
+  const moonPosition = stateSolver.position(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
 
   const sunRadius = Bodies[JplBodyId.Sun].equatorialRadiusKm;
   const sunDiameter = sunRadius * 2;

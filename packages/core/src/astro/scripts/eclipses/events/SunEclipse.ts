@@ -8,8 +8,15 @@ import { Ephemerides } from "@astro/scripts";
 
 function buildRoughAngleBetweenSunAndMoon(stateSolver: StateSolver) {
   return (es: number) => {
-    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE);
-    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE);
+    const sunPosition = stateSolver.position(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE).coords;
+    const moonPosition = stateSolver.position(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE).coords;
+    
+    const moonPosition2 = stateSolver.position(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
+    const esAtMoon = es - moonPosition2.lightTime;
+
+    const sunFromMoonPosition2 = stateSolver.position(JplBodyId.Sun, JplBodyId.Moon, esAtMoon, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
+
+    
     return Radians.between(sunPosition, moonPosition);
   };
 }

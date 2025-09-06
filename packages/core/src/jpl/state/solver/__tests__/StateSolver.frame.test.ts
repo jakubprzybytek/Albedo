@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { EphemerisSeconds, JplBodyId, Matrix3x3, Vector3 } from '@jpl';
+import { Matrix3x3, Vector3 } from "@astro/math";
+import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { kernels } from "@jpl/data/kernels.testData";
 import { CorrectionType } from "@jpl/state";
 import { RotationMatrix } from "@jpl/frames/RotationMatrix";
@@ -13,7 +14,7 @@ describe("StateSolver", () => {
   it("should correctly compute state for Moon wrt. Earth", () => {
     const es = EphemerisSeconds.fromDate(2019, 10, 9);
 
-    const position = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE);
+    const position = stateSolver.position(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE).coords;
 
     expect(position.x).approximately(317255.79483133, 1e-9);
     expect(position.y).approximately(-220341.79779477, 2e-9);

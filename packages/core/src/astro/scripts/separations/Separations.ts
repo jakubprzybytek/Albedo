@@ -15,8 +15,8 @@ export class Separations {
 
   static buildSeparationFunction(stateSolver: StateSolver, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
     return (es: number): number => Radians.between(
-      stateSolver.positionFor(firstBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION),
-      stateSolver.positionFor(secondBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
+      stateSolver.position(firstBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords,
+      stateSolver.position(secondBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords
     );
   }
 

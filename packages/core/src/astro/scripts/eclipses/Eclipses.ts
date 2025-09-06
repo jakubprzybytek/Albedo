@@ -21,8 +21,8 @@ type Separation = {
 
 function buildRoughAngleBetweenSunAndMoon(stateSolver: StateSolver) {
   return (es: number) => {
-    const sunPosition = stateSolver.positionFor(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE);
-    const moonPosition = stateSolver.positionFor(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE);
+    const sunPosition = stateSolver.position(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.NONE).coords;
+    const moonPosition = stateSolver.position(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.NONE).coords;
     return Radians.between(sunPosition, moonPosition);
   };
 }
