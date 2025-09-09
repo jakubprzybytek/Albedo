@@ -35,8 +35,8 @@ export function localMinimum(f: (x: number) => number, a: number, b: number, c: 
 
   let iteration = 0;
   do {
-    let d = (b - a) > (c - b) ? a + omega * (b - a) : b + omega * (c - b);
-    let f_d = f(d);
+    const d = (b - a) > (c - b) ? a + omega * (b - a) : b + omega * (c - b);
+    const f_d = f(d);
 
     if (f_d < f_b) {
       if (d < b) {

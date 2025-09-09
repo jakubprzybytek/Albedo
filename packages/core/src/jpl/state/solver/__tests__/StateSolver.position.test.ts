@@ -93,7 +93,7 @@ describe("StateSolver", () => {
     expect(reversePosition.z).approximately(-46424486.90050933, 0);
   });
 
-  it.only("should compute position for Moon wrt. Earth: uncorrected", () => {
+  it("should compute position for Moon wrt. Earth: uncorrected", () => {
     const position = stateSolver.position(JplBodyId.Moon, JplBodyId.Earth, EphemerisSeconds.fromDate(2019, 10, 9), CorrectionType.NONE).coords;
 
     expect(position.x).approximately(317255.79483133, 1e-9);

@@ -13,8 +13,8 @@ type SpkNode = {
 
 type Position = {
   coords: RectangularCoordinates;
-  observerPositionWrtSSB: RectangularCoordinates;
-  targetPositionWrtSSB: RectangularCoordinates;
+  observerPositionWrtSSB?: RectangularCoordinates;
+  targetPositionWrtSSB?: RectangularCoordinates;
   lightTime: number;
 }
 
@@ -192,15 +192,8 @@ export class StateSolver {
       }
 
       default: {
-        const targetBodyPosition = this.calculateDirectPosition(targetBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
-        const observerBodyPosition = this.calculateDirectPosition(observerBodyId, JplBodyId.SolarSystemBarycenter, ephemerisSeconds);
-        console.log(targetBodyPosition.subtract(observerBodyPosition));
-        console.log(this.computeRelativePosition(targetBodyId, observerBodyId, ephemerisSeconds));
         return {
-          // coords: targetBodyPosition.subtract(observerBodyPosition),
           coords: this.computeRelativePosition(targetBodyId, observerBodyId, ephemerisSeconds),
-          observerPositionWrtSSB: observerBodyPosition,
-          targetPositionWrtSSB: targetBodyPosition,
           lightTime: 0
         }
       }
