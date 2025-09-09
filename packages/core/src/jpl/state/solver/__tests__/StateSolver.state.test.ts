@@ -3,7 +3,7 @@ import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { CorrectionType } from "@jpl/state";
 import { kernels } from "@jpl/data/kernels.testData";
 
-describe.only("StateSolver", () => {
+describe("StateSolver", () => {
 
   const stateSolver = kernels.stateSolver();
 
