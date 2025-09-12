@@ -16,19 +16,19 @@ describe("Eclipses", () => {
 
     expect(eclipses[0]).toEqual({
       type: EclipseType.MoonEclipse,
-      es: 795207639.9959486,
-      jde: 2460748.7921295827,
-      tde: new Date("2025-03-14T07:00:39.000Z"),
+      es: 795207640.3330325,
+      jde: 2460748.792133484,
+      tde: new Date("2025-03-14T07:00:40.000Z"),
       moonEphemeris: {
-        coords: new AstronomicalCoordinates(3.041711860760187, 0.049190155228928806),
-        angularSizeDeg: 0.4960573932804797,
+        coords: new AstronomicalCoordinates(3.0417125868370634, 0.049189759950241045),
+        angularSizeDeg: 0.4960573825281152,
       },
       earthShadowEphemeris: {
-        coords: new AstronomicalCoordinates(3.0389340446163278, 0.044399759055822184),
-        umbraAngularSizeDeg: 0.6446096386697163,
-        penumbraAngularSizeDeg: 2.3609303074779597
+        coords: new AstronomicalCoordinates(3.038934107002098, 0.044399732210667064),
+        umbraAngularSizeDeg: 0.6446096192235236,
+        penumbraAngularSizeDeg: 2.3609302674632917
       },
-      separation: 0.005525133562433181,
+      separation: 0.005525133946613238,
     });
 
     expect(eclipses[1]).toEqual({
@@ -45,6 +45,52 @@ describe("Eclipses", () => {
         angularSizeDeg: 0.5552523079421643,
       },
       separation: 0.01845852713317203,
+    });
+
+    expect(eclipses).toHaveLength(2);
+  });
+
+  it("should find all eclipses with paralax correction", () => {
+    const fromJde = JulianDay.fromDate(2025, 3, 1);
+    const toJde = JulianDay.fromDate(2025, 3, 31);
+
+    const eclipses = eclipseScripts.forSunAndMoon(fromJde, toJde, {
+      longitude: 51,
+      latitude: 17,
+      altitude: 50
+    });
+
+    expect(eclipses[0]).toEqual({
+      type: EclipseType.MoonEclipse,
+      es: 795207640.3330325,
+      jde: 2460748.792133484,
+      tde: new Date("2025-03-14T07:00:40.000Z"),
+      moonEphemeris: {
+        coords: new AstronomicalCoordinates(3.0417125868370634, 0.049189759950241045),
+        angularSizeDeg: 0.4960573825281152,
+      },
+      earthShadowEphemeris: {
+        coords: new AstronomicalCoordinates(3.038934107002098, 0.044399732210667064),
+        umbraAngularSizeDeg: 0.6446096192235236,
+        penumbraAngularSizeDeg: 2.3609302674632917
+      },
+      separation: 0.005525133946613238,
+    });
+
+    expect(eclipses[1]).toEqual({
+      type: EclipseType.SunEclipse,
+      es: 796520537.6059872,
+      jde: 2460763.987703773,
+      tde: new Date("2025-03-29T11:42:17.000Z"),
+      sunEphemeris: {
+        coords: new AstronomicalCoordinates(0.13914289791902149, 0.06004376256034589),
+        angularSizeDeg: 0.5336954245838649,
+      },
+      moonEphemeris: {
+        coords: new AstronomicalCoordinates(0.1383574897531506, 0.08066384621204688),
+        angularSizeDeg: 0.5553349796858507,
+      },
+      separation: 0.020947894163695174,
     });
 
     expect(eclipses).toHaveLength(2);

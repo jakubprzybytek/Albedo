@@ -1,12 +1,13 @@
-import { Radians } from "@astro/coords";
+import { ObserverLocation, Radians } from "@astro/coords";
 import { localExtremums } from "@astro/math";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from '@jpl/state';
 import { KernelsRepository } from "@jpl/kernels";
 import { Eclipse, MoonEclipse, SunEclipse } from ".";
 import { Ephemerides } from "../ephemeris";
-import { findSunEclipses } from "./events/SunEclipse";
+import { getSunEclipseFinder, getSunEclipseFinderWithParalaxCorrection } from "./events/SunEclipse";
 import { findMoonEclipses } from "./events/MoonEclipse";
+import { ParalaxCorrection } from "../paralaxCorrection/ParalaxCorrection";
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
@@ -33,12 +34,15 @@ export class Eclipses {
 
   readonly ephemerides: Ephemerides;
 
+  readonly paralaxCorrection: ParalaxCorrection;
+
   constructor(kernels: KernelsRepository) {
     this.stateSolver = kernels.stateSolver();
     this.ephemerides = new Ephemerides(kernels);
+    this.paralaxCorrection = new ParalaxCorrection(kernels);
   }
 
-  forSunAndMoon(fromJde: number, toJde: number): Eclipse[] {
+  forSunAndMoon(fromJde: number, toJde: number, observerLocation?: ObserverLocation): Eclipse[] {
     const sunAndMoonAngle = buildRoughAngleBetweenSunAndMoon(this.stateSolver);
 
     const correctedFromEs = EphemerisSeconds.fromJde(fromJde) - PRELIMINARY_INTERVAL;
@@ -51,15 +55,19 @@ export class Eclipses {
 
     const { minimums, maximums } = localExtremums(sunMoonSeparations, minSepration => minSepration.separation);
 
+    const findSunEclipse = observerLocation ?
+      getSunEclipseFinderWithParalaxCorrection(this.stateSolver, this.ephemerides, this.paralaxCorrection, observerLocation) :
+      getSunEclipseFinder(this.stateSolver, this.ephemerides);
+
     const sunEclipses = minimums
       .filter(minSeparation => minSeparation.separation < PRELIMINARY_ANGLE_RANGE)
       .map<SunEclipse>(separation =>
-        findSunEclipses(this.stateSolver, this.ephemerides, separation.es - PRELIMINARY_INTERVAL, separation.es + PRELIMINARY_INTERVAL));
+        findSunEclipse(separation.es - PRELIMINARY_INTERVAL, separation.es + PRELIMINARY_INTERVAL));
 
     const moonEclipses = maximums
       .filter(separation => separation.separation > Math.PI - PRELIMINARY_ANGLE_RANGE)
       .map<MoonEclipse>(separation =>
-        findMoonEclipses(this.stateSolver, separation.es - PRELIMINARY_INTERVAL, separation.es + PRELIMINARY_INTERVAL));
+        findMoonEclipses(this.stateSolver, separation.es - PRELIMINARY_INTERVAL * 1.5, separation.es + PRELIMINARY_INTERVAL * 1.5));
 
     const allEclipses = [...sunEclipses, ...moonEclipses]
       .filter(eclipse => eclipse.separation < DETAILED_ANGLE_RANGE)

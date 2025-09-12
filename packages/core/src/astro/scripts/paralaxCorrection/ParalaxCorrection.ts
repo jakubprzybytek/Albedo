@@ -1,4 +1,4 @@
-import { RectangularCoordinates, Radians } from "@astro/coords";
+import { RectangularCoordinates, Radians, ObserverLocation } from "@astro/coords";
 import { JplBodyId } from "@jpl";
 import { geodeticToRectangular } from "@jpl/coordinates";
 import { BodyFixedFrame, RotationMatrix } from "@jpl/frames";
@@ -15,7 +15,7 @@ export class ParalaxCorrection {
     this.bodyFixedFrame = kernels.bodyFixedFrame();
   }
 
-  observerPosition(longitudeDeg: number, latitudeDeg: number, altitude: number, es: number): RectangularCoordinates {
+  observerPosition(observerLocation: ObserverLocation, es: number): RectangularCoordinates {
     const bodyGeometry = this.bodyGeometryProvider.getBodyRadii(JplBodyId.Earth);
 
     if (bodyGeometry === undefined) {
@@ -25,7 +25,11 @@ export class ParalaxCorrection {
     const bodyRadius = bodyGeometry[0];
     const bodyFlattening = (bodyGeometry[0] - bodyGeometry[2]) / bodyGeometry[0];
 
-    const bodyFixedObserverPosition = geodeticToRectangular(Radians.fromDegrees(longitudeDeg), Radians.fromDegrees(latitudeDeg), altitude, bodyRadius, bodyFlattening);
+    const bodyFixedObserverPosition = geodeticToRectangular(
+      Radians.fromDegrees(observerLocation.longitude),
+      Radians.fromDegrees(observerLocation.latitude),
+      observerLocation.altitude,
+      bodyRadius, bodyFlattening);
 
     const bodyFixedRotationMatrix = this.bodyFixedFrame.getRotationMatrix(JplBodyId.Earth, es);
     const bodyFixedtoJ2000RotationMatrix = RotationMatrix.invert(bodyFixedRotationMatrix);

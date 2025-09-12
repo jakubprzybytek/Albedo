@@ -17,6 +17,11 @@ export function mandatoryFloat(event: APIGatewayProxyEventV2, paramName: string)
     return Number.parseFloat(numberString);
 }
 
+export function optionalFloat(event: APIGatewayProxyEventV2, paramName: string): number | undefined {
+    const numberString = event.queryStringParameters?.[paramName];
+    return numberString ? Number.parseFloat(numberString) : undefined;
+}
+
 export function mandatoryDate(event: APIGatewayProxyEventV2, paramName: string): Date {
     const dateString = event.queryStringParameters?.[paramName];
     if (dateString === undefined) {
