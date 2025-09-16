@@ -74,7 +74,7 @@ export class JulianDay {
         if (Z < 2299161.0) {
             A = Z;
         } else {
-            let alpha = Math.floor((Z - 1867216.25) / 36524.25);
+            const alpha = Math.floor((Z - 1867216.25) / 36524.25);
             A = Z + 1.0 + alpha - Math.floor(alpha / 4.0);
         }
 
@@ -83,8 +83,8 @@ export class JulianDay {
         const D = Math.floor(365.25 * C);
         const E = Math.floor((B - D) / 30.6001);
 
-        let month = Math.floor(E < 14.0 ? E - 1.0 : E - 13.0);
-        let year = Math.floor(C - (month > 2 ? 4716.0 : 4715.0));
+        const month = Math.floor(E < 14.0 ? E - 1.0 : E - 13.0);
+        const year = Math.floor(C - (month > 2 ? 4716.0 : 4715.0));
         let dayOfMonth = Math.floor(B - D - Math.floor(30.6001 * E));
 
         let hours = Math.floor(F * 24.0);

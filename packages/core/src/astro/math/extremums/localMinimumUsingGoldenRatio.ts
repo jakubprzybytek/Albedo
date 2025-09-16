@@ -25,6 +25,21 @@ export function localMinimum(f: (x: number) => number, a: number, b: number, c: 
   let f_b = f(b);
   let f_c = f(c);
 
+  // try to fix input points
+  if (f_b > f_a) {
+    c = b;
+    f_c = f_b;
+    b = a + (c - a) / 2;
+    f_b = f(b);
+  }
+
+  if (f_b > f_c) {
+    a = b;
+    f_a = f_b;
+    b = a + (c - a) / 2;
+    f_b = f(b);
+  }
+
   if (a > b || b > c) {
     throw new Error(`Parameters don't meet the condition: a=${a} < b=${b} < c=${c}`);
   }

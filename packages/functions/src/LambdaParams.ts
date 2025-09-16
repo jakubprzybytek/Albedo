@@ -1,5 +1,6 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { JplBody, jplBodyFromString } from '@jpl';
+import { parseISO } from 'date-fns';
 
 export function mandatoryString(event: APIGatewayProxyEventV2, paramName: string): string {
     const stringValue = event.queryStringParameters?.[paramName];
@@ -27,7 +28,8 @@ export function mandatoryDate(event: APIGatewayProxyEventV2, paramName: string):
     if (dateString === undefined) {
         throw Error(`Mandatory parameter missing '${paramName}'`);
     }
-    return new Date(dateString);
+    // return parse(dateString, "yyyy-MM-dd'T'HH:mm", new Date());
+    return parseISO(dateString);
 }
 
 export function mandatoryJplBody(event: APIGatewayProxyEventV2, paramName: string): JplBody {

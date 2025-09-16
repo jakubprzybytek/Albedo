@@ -24,9 +24,13 @@ export default function useQuery<QueryT, ResultsT>(
       setSuccessMessage(`Query submitted successfully in ${new Date().getTime() - startTime} ms!`);
       setErrorMessage(undefined);
       setResults(results);
-    } catch (error) {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage('Error submitting query: ' + error.message);
+      } else {
+        setErrorMessage('Error submitting query: ' + String(error));
+      }
       setSuccessMessage(undefined);
-      setErrorMessage('Error submitting query: ' + error);
     }
     setLoading(false);
   }

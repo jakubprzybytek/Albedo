@@ -3,7 +3,7 @@ export * from './RectangularCoordinates';
 export * from './AstronomicalCoordinates';
 
 export type ObserverLocation = {
-  longitude: number;
   latitude: number;
+  longitude: number;
   altitude: number;
 }

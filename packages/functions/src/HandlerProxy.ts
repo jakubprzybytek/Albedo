@@ -25,13 +25,13 @@ export function lambdaHandler<T>(lambda: LambdaType<T>): APIGatewayProxyHandlerV
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(response.data, anglesReplacer),
             };
-        } catch (e) {
+        } catch (e: unknown) {
             console.error(e);
             return {
                 statusCode: 500,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: e
+                    message: e instanceof Error ? e.message : String(e)
                 }),
             };
         }

@@ -10,6 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
 import type { EclipsesQuery } from "@/sdk/Eclipses";
 import type { ManagedQuery } from "@/forms/useQuery";
+import NumberField from "@/forms/NumberField";
 
 type EclipsesQueryFormParams = {
   query: ManagedQuery<EclipsesQuery>;
@@ -19,8 +20,8 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
   const [fromTde, setFromTde] = useState<Date | null>(new Date());
   const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 6));
   const [parallaxCorrectionEnabled, setParallaxCorrectionEnabled] = useState(false);
-  const [longitude, setLongitude] = useState(51);
   const [latitude, setLatitude] = useState(17);
+  const [longitude, setLongitude] = useState(51);
   const [altitude, setAltitude] = useState(50);
 
   function handleSubmit() {
@@ -28,8 +29,8 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
       fromTde: fromTde ? format(fromTde, 'yyyy-MM-dd') : '',
       toTde: toTde ? format(toTde, 'yyyy-MM-dd') : '',
       ...(parallaxCorrectionEnabled && {
-        longitude,
         latitude,
+        longitude,
         altitude
       }),
     });
@@ -51,40 +52,22 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
           <FormControlLabel control={<Checkbox checked={parallaxCorrectionEnabled} onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label="Longitude" size="small" type="number"
-            slotProps={{
-              input: { startAdornment: <InputAdornment position="start">°</InputAdornment> },
-            }}
+          <NumberField label="Latitude"
             disabled={!parallaxCorrectionEnabled}
-            value={longitude}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setLongitude(Number(event.target.value));
-            }}
-          />
+            value={latitude} setValue={setLatitude}
+            startAdornment="°" />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label="Latitude" size="small"
-            slotProps={{
-              input: { startAdornment: <InputAdornment position="start">°</InputAdornment> },
-            }}
+          <NumberField label="Longitude"
             disabled={!parallaxCorrectionEnabled}
-            value={latitude}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setLatitude(Number(event.target.value));
-            }}
-          />
+            value={longitude} setValue={setLongitude}
+            startAdornment="°" />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label="Altitude" size="small"
-            slotProps={{
-              input: { startAdornment: <InputAdornment position="start">m</InputAdornment> },
-            }}
+          <NumberField label="Altitude"
             disabled={!parallaxCorrectionEnabled}
-            value={altitude}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setAltitude(Number(event.target.value));
-            }}
-          />
+            value={altitude} setValue={setAltitude}
+            startAdornment="m" />
         </Grid>
       </Grid>
       <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />

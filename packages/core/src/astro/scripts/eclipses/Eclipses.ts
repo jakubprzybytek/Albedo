@@ -61,13 +61,21 @@ export class Eclipses {
 
     const sunEclipses = minimums
       .filter(minSeparation => minSeparation.separation < PRELIMINARY_ANGLE_RANGE)
-      .map<SunEclipse>(separation =>
-        findSunEclipse(separation.es - PRELIMINARY_INTERVAL, separation.es + PRELIMINARY_INTERVAL));
+      .map<SunEclipse>(separation => {
+        try {
+          return findSunEclipse(separation.es - PRELIMINARY_INTERVAL, separation.es + PRELIMINARY_INTERVAL);
+        } catch (error) {
+          const fromTde = EphemerisSeconds.toDateObject(separation.es - PRELIMINARY_INTERVAL);
+          const toTde = EphemerisSeconds.toDateObject(separation.es + PRELIMINARY_INTERVAL);
+          console.error(`Error finding sun eclipse between ${fromTde.toISOString()}(${separation.es - PRELIMINARY_INTERVAL}) and ${toTde.toISOString()}(${separation.es + PRELIMINARY_INTERVAL})`, error);
+          throw error;
+        }
+      });
 
     const moonEclipses = maximums
       .filter(separation => separation.separation > Math.PI - PRELIMINARY_ANGLE_RANGE)
       .map<MoonEclipse>(separation =>
-        findMoonEclipses(this.stateSolver, separation.es - PRELIMINARY_INTERVAL * 1.5, separation.es + PRELIMINARY_INTERVAL * 1.5));
+        findMoonEclipses(this.stateSolver, separation.es - PRELIMINARY_INTERVAL, separation.es + PRELIMINARY_INTERVAL));
 
     const allEclipses = [...sunEclipses, ...moonEclipses]
       .filter(eclipse => eclipse.separation < DETAILED_ANGLE_RANGE)

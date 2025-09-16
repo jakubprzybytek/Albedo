@@ -16,19 +16,19 @@ describe("Eclipses", () => {
 
     expect(eclipses[0]).toEqual({
       type: EclipseType.MoonEclipse,
-      es: 795207640.3330325,
-      jde: 2460748.792133484,
-      tde: new Date("2025-03-14T07:00:40.000Z"),
+      es: 795207639.9959486,
+      jde: 2460748.7921295827,
+      tde: new Date("2025-03-14T07:00:39.000Z"),
       moonEphemeris: {
-        coords: new AstronomicalCoordinates(3.0417125868370634, 0.049189759950241045),
-        angularSizeDeg: 0.4960573825281152,
+        coords: new AstronomicalCoordinates(3.041711860760187, 0.049190155228928806),
+        angularSizeDeg: 0.4960573932804797,
       },
       earthShadowEphemeris: {
-        coords: new AstronomicalCoordinates(3.038934107002098, 0.044399732210667064),
-        umbraAngularSizeDeg: 0.6446096192235236,
-        penumbraAngularSizeDeg: 2.3609302674632917
+        coords: new AstronomicalCoordinates(3.0389340446163278, 0.044399759055822184),
+        umbraAngularSizeDeg: 0.6446096386697163,
+        penumbraAngularSizeDeg: 2.3609303074779597
       },
-      separation: 0.005525133946613238,
+      separation: 0.005525133562433181,
     });
 
     expect(eclipses[1]).toEqual({
@@ -62,19 +62,19 @@ describe("Eclipses", () => {
 
     expect(eclipses[0]).toEqual({
       type: EclipseType.MoonEclipse,
-      es: 795207640.3330325,
-      jde: 2460748.792133484,
-      tde: new Date("2025-03-14T07:00:40.000Z"),
+      es: 795207639.9959486,
+      jde: 2460748.7921295827,
+      tde: new Date("2025-03-14T07:00:39.000Z"),
       moonEphemeris: {
-        coords: new AstronomicalCoordinates(3.0417125868370634, 0.049189759950241045),
-        angularSizeDeg: 0.4960573825281152,
+        coords: new AstronomicalCoordinates(3.041711860760187, 0.049190155228928806),
+        angularSizeDeg: 0.4960573932804797,
       },
       earthShadowEphemeris: {
-        coords: new AstronomicalCoordinates(3.038934107002098, 0.044399732210667064),
-        umbraAngularSizeDeg: 0.6446096192235236,
-        penumbraAngularSizeDeg: 2.3609302674632917
+        coords: new AstronomicalCoordinates(3.0389340446163278, 0.044399759055822184),
+        umbraAngularSizeDeg: 0.6446096386697163,
+        penumbraAngularSizeDeg: 2.3609303074779597
       },
-      separation: 0.005525133946613238,
+      separation: 0.005525133562433181,
     });
 
     expect(eclipses[1]).toEqual({

@@ -28,12 +28,12 @@ function buildAngleCalculatorBetweenSunAndMoonWithParalaxCorrection(stateSolver:
   };
 }
 
-function buildSunEclipseFinder(ephemerides: Ephemerides, angleCalculator: (es: number) => number) {
+function buildSunEclipseFinder(ephemerides: Ephemerides, separationCalculator: (es: number) => number) {
   return (fromEs: number, toEs: number): SunEclipse => {
     const midPointEs = fromEs + (toEs - fromEs) / 2;
-    const [eventEs, minSeparation, minSeparationEs, iterations] = localMinimum(angleCalculator, fromEs, midPointEs, toEs, { maxResultRangeWidth: 1, maxIterations: 40 });
+    const [eventEs, minSeparation, minSeparationEs, iterations] = localMinimum(separationCalculator, fromEs, midPointEs, toEs, { maxResultRangeWidth: 1, maxIterations: 40 });
 
-    console.log(`SunEclipse: es= ${eventEs}, angle=${minSeparation}, minSeparationEs=${minSeparationEs}, iterations=${iterations}`);
+    console.log(`SunEclipse: es= ${eventEs}, separation=${minSeparation}, minSeparationEs=${minSeparationEs}, iterations=${iterations}`);
 
     return {
       type: EclipseType.SunEclipse,

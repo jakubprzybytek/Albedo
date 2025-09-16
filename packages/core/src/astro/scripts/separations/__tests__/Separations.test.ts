@@ -37,4 +37,35 @@ describe("Separations", () => {
 
     expect(separations).toHaveLength(3);
   });
+
+  it("should compute separations with parallax correction for Moon and Venus", () => {
+    const fromEs = JulianDay.fromDate(2019, 10, 9);
+    const toEs = JulianDay.fromDate(2019, 10, 11);
+    const interval = 1;
+
+    const separations = separationScripts.for(JplBodyId.Moon, JplBodyId.Venus, fromEs, toEs, interval, { longitude: 51, latitude: 17, altitude: 50 });
+
+    expect(separations).toStrictEqual([
+      {
+        "es": 623851200,
+        "jde": 2458765.5,
+        "tde": new Date('2019-10-09T00:00:00.000Z'),
+        "separation": 1.934415789044704,
+      },
+      {
+        "es": 623937600,
+        "jde": 2458766.5,
+        "tde": new Date('2019-10-10T00:00:00.000Z'),
+        "separation": 2.118136919936431,
+      },
+      {
+        "es": 624024000,
+        "jde": 2458767.5,
+        "tde": new Date('2019-10-11T00:00:00.000Z'),
+        "separation": 2.3019495737139444,
+      },
+    ]);
+
+    expect(separations).toHaveLength(3);
+  });
 });

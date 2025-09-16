@@ -41,7 +41,6 @@ export const handler = lambdaHandler<GetEclipsesReturnType>(event => {
     (observerLocation ? ` for observer at ${observerLocation.longitude}°, ${observerLocation.latitude}°, ${observerLocation.altitude}m` : ''));
 
   const eclipses = eclipseScripts.forSunAndMoon(fromJde, toJde, observerLocation);
-
   console.log(`Found ${eclipses.length} eclipses.`);
 
   return Success(eclipses);

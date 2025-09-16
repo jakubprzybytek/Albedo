@@ -5,7 +5,7 @@ export class EphemerisSeconds {
     private static J2000_EPOCH = 2451545;
 
     static SECONDS_PER_JULIAN_DAY = 86400;
-    
+
     static SECONDS_PER_JULIAN_CENTURY = 36525 * 86400;
 
     static fromDate(year: number, month: number, day: number): number {
@@ -27,6 +27,10 @@ export class EphemerisSeconds {
 
     static toJde(ephemerisSeconds: number): number {
         return ephemerisSeconds / EphemerisSeconds.SECONDS_PER_JULIAN_DAY + EphemerisSeconds.J2000_EPOCH;
+    }
+
+    static toDateObject(ephemerisSeconds: number): Date {
+        return JulianDay.toDateTime(EphemerisSeconds.toJde(ephemerisSeconds));
     }
 
     static fromDays(days: number): number {
