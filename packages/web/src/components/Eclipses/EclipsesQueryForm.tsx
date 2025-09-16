@@ -54,19 +54,19 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
         <Grid size={{ xs: 12, sm: 4 }}>
           <NumberField label="Latitude"
             disabled={!parallaxCorrectionEnabled}
-            value={latitude} setValue={setLatitude}
+            value={latitude} onChange={setLatitude}
             startAdornment="°" />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
           <NumberField label="Longitude"
             disabled={!parallaxCorrectionEnabled}
-            value={longitude} setValue={setLongitude}
+            value={longitude} onChange={setLongitude}
             startAdornment="°" />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
           <NumberField label="Altitude"
             disabled={!parallaxCorrectionEnabled}
-            value={altitude} setValue={setAltitude}
+            value={altitude} onChange={setAltitude}
             startAdornment="m" />
         </Grid>
       </Grid>

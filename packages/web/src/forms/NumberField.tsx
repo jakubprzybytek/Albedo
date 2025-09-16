@@ -1,16 +1,16 @@
-import { useState, type JSX } from "react";
+import { useState, type JSX, type Dispatch, type SetStateAction } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
 type NumberFieldParams = {
   label: string;
   value: number;
-  setValue: (value: number) => void;
+  onChange: Dispatch<SetStateAction<number>>;
   disabled: boolean;
   startAdornment?: string;
 };
 
-export default function NumberField({ label, value, setValue, disabled, startAdornment }: NumberFieldParams): JSX.Element {
+export default function NumberField({ label, value, onChange, disabled, startAdornment }: NumberFieldParams): JSX.Element {
   const [valueString, setValueString] = useState(value.toString());
   const [error, setError] = useState(false);
 
@@ -22,7 +22,7 @@ export default function NumberField({ label, value, setValue, disabled, startAdo
     setError(isError);
 
     if (!isError) {
-      setValue(Number(value));
+      onChange(Number(value));
     }
   }
 

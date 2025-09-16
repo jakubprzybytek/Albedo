@@ -3,13 +3,13 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import InputAdornment from "@mui/material/InputAdornment";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { addMonths, format, set } from 'date-fns';
 import QueryPanel from "@/forms/QueryPanel";
 import type { ManagedQuery } from "@/forms/useQuery";
 import type { SeparationsQuery } from "@/sdk/GetSeparations";
 import QuerySubmit from "@/forms/QuerySubmit";
+import NumberField from "@/forms/NumberField";
 
 type SeparationsQueryFormParams = {
   query: ManagedQuery<SeparationsQuery>;
@@ -82,40 +82,22 @@ export default function SeparationsQueryForm({ query }: SeparationsQueryFormPara
           <FormControlLabel control={<Checkbox checked={parallaxCorrectionEnabled} onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label="Longitude" size="small" type="number"
-            slotProps={{
-              input: { startAdornment: <InputAdornment position="start">°</InputAdornment> },
-            }}
+          <NumberField label="Latitude"
             disabled={!parallaxCorrectionEnabled}
-            value={longitude}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setLongitude(Number(event.target.value));
-            }}
-          />
+            value={latitude} onChange={setLatitude}
+            startAdornment="°" />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label="Latitude" size="small"
-            slotProps={{
-              input: { startAdornment: <InputAdornment position="start">°</InputAdornment> },
-            }}
+          <NumberField label="Longitude"
             disabled={!parallaxCorrectionEnabled}
-            value={latitude}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setLatitude(Number(event.target.value));
-            }}
-          />
+            value={longitude} onChange={setLongitude}
+            startAdornment="°" />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label="Altitude" size="small"
-            slotProps={{
-              input: { startAdornment: <InputAdornment position="start">m</InputAdornment> },
-            }}
+          <NumberField label="Altitude"
             disabled={!parallaxCorrectionEnabled}
-            value={altitude}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setAltitude(Number(event.target.value));
-            }}
-          />
+            value={altitude} onChange={setAltitude}
+            startAdornment="m" />
         </Grid>
         <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
       </Grid>
