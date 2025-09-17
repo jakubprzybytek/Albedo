@@ -3,14 +3,15 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
 type NumberFieldParams = {
+  disabled: boolean;
   label: string;
+  startAdornment?: string;
   value: number;
   onChange: Dispatch<SetStateAction<number>>;
-  disabled: boolean;
-  startAdornment?: string;
+  validationUpdate: (valid: boolean) => void;
 };
 
-export default function NumberField({ label, value, onChange, disabled, startAdornment }: NumberFieldParams): JSX.Element {
+export default function NumberField({ label, value, onChange, disabled, startAdornment, validationUpdate }: NumberFieldParams): JSX.Element {
   const [valueString, setValueString] = useState(value.toString());
   const [error, setError] = useState(false);
 
@@ -20,6 +21,7 @@ export default function NumberField({ label, value, onChange, disabled, startAdo
 
     const isError = !value || isNaN(Number(value));
     setError(isError);
+    validationUpdate(!isError);
 
     if (!isError) {
       onChange(Number(value));
@@ -33,6 +35,7 @@ export default function NumberField({ label, value, onChange, disabled, startAdo
       }}
       disabled={disabled}
       error={error}
+      helperText={error ? "Please enter a valid number" : undefined}
       value={valueString}
       onChange={handleChange}
     />

@@ -2,14 +2,12 @@ import { useState, type JSX } from "react";
 import Grid from '@mui/material/Grid';
 import QueryPanel from "@/forms/QueryPanel";
 import QuerySubmit from "@/forms/QuerySubmit";
-import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import InputAdornment from "@mui/material/InputAdornment";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
 import type { EclipsesQuery } from "@/sdk/Eclipses";
-import type { ManagedQuery } from "@/forms/useQuery";
+import { type ManagedQuery, useValidation } from "@/forms";
 import NumberField from "@/forms/NumberField";
 
 type EclipsesQueryFormParams = {
@@ -23,6 +21,8 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
   const [latitude, setLatitude] = useState(17);
   const [longitude, setLongitude] = useState(51);
   const [altitude, setAltitude] = useState(50);
+
+  const { updateValidation, isValid } = useValidation();
 
   function handleSubmit() {
     query.submit({
@@ -52,25 +52,30 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
           <FormControlLabel control={<Checkbox checked={parallaxCorrectionEnabled} onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <NumberField label="Latitude"
+          <NumberField label="Latitude" startAdornment="°"
             disabled={!parallaxCorrectionEnabled}
             value={latitude} onChange={setLatitude}
-            startAdornment="°" />
+            validationUpdate={updateValidation('latitude')}
+          />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <NumberField label="Longitude"
+          <NumberField label="Longitude" startAdornment="°"
             disabled={!parallaxCorrectionEnabled}
             value={longitude} onChange={setLongitude}
-            startAdornment="°" />
+            validationUpdate={updateValidation('longitude')}
+          />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <NumberField label="Altitude"
+          <NumberField label="Altitude" startAdornment="m"
             disabled={!parallaxCorrectionEnabled}
             value={altitude} onChange={setAltitude}
-            startAdornment="m" />
+            validationUpdate={updateValidation('altitude')} />
         </Grid>
       </Grid>
-      <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
+      <QuerySubmit loading={query.loading} disabled={!isValid()}
+        success={query.successMessage}
+        error={query.errorMessage}
+        onSubmit={handleSubmit} />
     </QueryPanel>
   );
 }
