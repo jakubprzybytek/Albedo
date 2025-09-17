@@ -1,4 +1,5 @@
 import { useState, type JSX } from "react";
+import Stack from "@mui/material/Stack";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -23,8 +24,8 @@ export default function SeparationsQueryForm({ query }: SeparationsQueryFormPara
   const [toTde, setToTde] = useState<Date | null>(addMonths(set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }), 1));
   const [interval, setInterval] = useState(1);
   const [parallaxCorrectionEnabled, setParallaxCorrectionEnabled] = useState(false);
-  const [longitude, setLongitude] = useState(51);
-  const [latitude, setLatitude] = useState(17);
+  const [longitude, setLongitude] = useState(17);
+  const [latitude, setLatitude] = useState(51);
   const [altitude, setAltitude] = useState(50);
 
   const { updateValidation, isValid } = useValidation();
@@ -46,67 +47,75 @@ export default function SeparationsQueryForm({ query }: SeparationsQueryFormPara
 
   return (
     <QueryPanel>
-      <Grid container rowSpacing={2} columnSpacing={1}>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <TextField label="Target" size="small"
-            value={target}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setTarget(event.target.value);
-            }}
-          />
+      <Stack spacing={2}>
+        <Grid container rowSpacing={2} columnSpacing={1}>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <TextField label="Target" size="small"
+              value={target}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setTarget(event.target.value);
+              }}
+            />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <TextField label="Observer" size="small"
+              value={observer}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setObserver(event.target.value);
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <TextField label="Observer" size="small"
-            value={observer}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setObserver(event.target.value);
-            }}
-          />
+        <Grid container rowSpacing={2} columnSpacing={1}>
+          <Grid size={{ xs: 8, sm: 4 }}>
+            <DateTimePicker label="From (TDE)" sx={{ width: '100%', '& > div': { height: 40 } }}
+              value={fromTde}
+              onChange={(newValue) => setFromTde(newValue)} />
+          </Grid>
+          <Grid size={{ xs: 8, sm: 4 }}>
+            <DateTimePicker label="To (TDE)" sx={{ width: '100%', '& > div': { height: 40 } }}
+              value={toTde}
+              onChange={(newValue) => setToTde(newValue)} />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <TextField label="Interval" size="small" type="number"
+              value={interval}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setInterval(Number(event.target.value));
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <DateTimePicker label="From (TDE)" sx={{ '& > div': { height: 40 } }}
-            value={fromTde}
-            onChange={(newValue) => setFromTde(newValue)} />
+        <Grid container rowSpacing={1} columnSpacing={1}>
+          <Grid size={12}>
+            <FormControlLabel control={<Checkbox size="small" sx={{ paddingTop: 0, paddingBottom: 0 }}
+              checked={parallaxCorrectionEnabled}
+              onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
+          </Grid>
+          <Grid size={{ xs: 4, sm: 3 }}>
+            <NumberField label="Latitude (N)" startAdornment="°"
+              disabled={!parallaxCorrectionEnabled}
+              value={latitude} onChange={setLatitude}
+              validationUpdate={updateValidation('latitude')} />
+          </Grid>
+          <Grid size={{ xs: 4, sm: 3 }}>
+            <NumberField label="Longitude (E)" startAdornment="°"
+              disabled={!parallaxCorrectionEnabled}
+              value={longitude} onChange={setLongitude}
+              validationUpdate={updateValidation('longitude')} />
+          </Grid>
+          <Grid size={{ xs: 4, sm: 3 }}>
+            <NumberField label="Altitude" startAdornment="m"
+              disabled={!parallaxCorrectionEnabled}
+              value={altitude} onChange={setAltitude}
+              validationUpdate={updateValidation('altitude')} />
+          </Grid>
+          <QuerySubmit loading={query.loading} disabled={!isValid()}
+            success={query.successMessage}
+            error={query.errorMessage}
+            onSubmit={handleSubmit} />
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <DateTimePicker label="To (TDE)" sx={{ '& > div': { height: 40 } }}
-            value={toTde}
-            onChange={(newValue) => setToTde(newValue)} />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label="Interval" size="small" type="number"
-            value={interval}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setInterval(Number(event.target.value));
-            }}
-          />
-        </Grid>
-        <Grid size={12}>
-          <FormControlLabel control={<Checkbox checked={parallaxCorrectionEnabled} onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <NumberField label="Latitude" startAdornment="°"
-            disabled={!parallaxCorrectionEnabled}
-            value={latitude} onChange={setLatitude}
-            validationUpdate={updateValidation('latitude')} />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <NumberField label="Longitude" startAdornment="°"
-            disabled={!parallaxCorrectionEnabled}
-            value={longitude} onChange={setLongitude}
-            validationUpdate={updateValidation('longitude')} />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <NumberField label="Altitude" startAdornment="m"
-            disabled={!parallaxCorrectionEnabled}
-            value={altitude} onChange={setAltitude}
-            validationUpdate={updateValidation('altitude')} />
-        </Grid>
-        <QuerySubmit loading={query.loading} disabled={!isValid()}
-          success={query.successMessage}
-          error={query.errorMessage}
-          onSubmit={handleSubmit} />
-      </Grid>
+      </Stack>
     </QueryPanel>
   );
 }
