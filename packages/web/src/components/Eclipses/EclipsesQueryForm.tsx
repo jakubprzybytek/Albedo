@@ -40,7 +40,6 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
   return (
     <QueryPanel>
       <Stack spacing={1}>
-
         <Grid container columnSpacing={1}>
           <Grid size={{ xs: 6, sm: 4 }}>
             <DatePicker label="From (TDE)" sx={{ width: '100%', '& > div': { height: 40 } }}

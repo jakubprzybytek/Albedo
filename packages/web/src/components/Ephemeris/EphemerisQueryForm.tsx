@@ -1,4 +1,5 @@
 import { useState, type JSX } from "react";
+import Stack from "@mui/material/Stack";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -29,35 +30,40 @@ export default function EphemerisQueryForm({ query }: EphemerisQueryFormParams):
 
   return (
     <QueryPanel>
-      <Grid container rowSpacing={2} columnSpacing={1}>
-        <Grid size={12}>
-          <TextField label="Target" size="small"
-            value={target}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setTarget(event.target.value);
-            }}
-          />
+      <Stack spacing={2}>
+
+        <Grid container rowSpacing={2} columnSpacing={1}>
+          <Grid size={6}>
+            <TextField label="Target" size="small"
+              value={target}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setTarget(event.target.value);
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <DatePicker label="From (TDE)" sx={{ '& > div': { height: 40 } }}
-            value={fromTde}
-            onChange={(newValue) => setFromTde(newValue)} />
+        <Grid container rowSpacing={1} columnSpacing={1}>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <DatePicker label="From (TDE)" sx={{ width: '100%', '& > div': { height: 40 } }}
+              value={fromTde}
+              onChange={(newValue) => setFromTde(newValue)} />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <DatePicker label="To (TDE)" sx={{ width: '100%', '& > div': { height: 40 } }}
+              value={toTde}
+              onChange={(newValue) => setToTde(newValue)} />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <TextField label="Interval" size="small" type="number"
+              value={interval}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setInterval(Number(event.target.value));
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <DatePicker label="To (TDE)" sx={{ '& > div': { height: 40 } }}
-            value={toTde}
-            onChange={(newValue) => setToTde(newValue)} />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label="Interval" size="small" type="number"
-            value={interval}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setInterval(Number(event.target.value));
-            }}
-          />
-        </Grid>
-        <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
-      </Grid>
+      </Stack>
+      <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
     </QueryPanel >
   );
 }

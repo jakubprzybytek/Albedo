@@ -11,6 +11,7 @@ import QuerySubmit from "@/forms/QuerySubmit";
 import QueryPanel from "@/forms/QueryPanel";
 import type { StatesQuery } from "@/sdk/States";
 import type { ManagedQuery } from "@/forms/useQuery";
+import { Stack } from "@mui/material";
 
 type StatesQueryFormParams = {
   query: ManagedQuery<StatesQuery>;
@@ -37,54 +38,60 @@ export default function StatesQueryForm({ query }: StatesQueryFormParams): JSX.E
 
   return (
     <QueryPanel>
-      <Grid container rowSpacing={2} columnSpacing={1}>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <TextField label="Target" size="small"
-            value={target}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setTarget(event.target.value);
-            }}
-          />
+      <Stack spacing={2}>
+        <Grid container columnSpacing={1}>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <TextField label="Target" size="small"
+              value={target}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setTarget(event.target.value);
+              }}
+            />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <TextField label="Observer" size="small"
+              value={observer}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setObserver(event.target.value);
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <TextField label="Observer" size="small"
-            value={observer}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setObserver(event.target.value);
-            }}
-          />
+        <Grid container rowSpacing={1} columnSpacing={1}>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <DatePicker label="From (TDE)" sx={{ width: '100%', '& > div': { height: 40 } }}
+              value={fromTde} onChange={(newValue) => setFromTde(newValue)} />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <DatePicker label="To (TDE)" sx={{ width: '100%', '& > div': { height: 40 } }}
+              value={toTde} onChange={(newValue) => setToTde(newValue)} />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <TextField label="Interval" size="small" type="number"
+              value={interval}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setInterval(Number(event.target.value));
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <DatePicker label="From (TDE)" sx={{ '& > div': { height: 40 } }}
-            value={fromTde} onChange={(newValue) => setFromTde(newValue)} />
+        <Grid container>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl sx={{}} size="small" fullWidth>
+              <InputLabel id="correction-label">Correction</InputLabel>
+              <Select labelId="correction-label" label="Correction"
+                value={correction}
+                onChange={(event: SelectChangeEvent) => setCorrection(event.target.value)}>
+                <MenuItem value="NONE">None</MenuItem>
+                <MenuItem value="LT">Light Time</MenuItem>
+                <MenuItem value="CN">Converged Newtonian Light Time</MenuItem>
+                <MenuItem value="LT+S">Light Time and Stellar Abberation</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <DatePicker label="To (TDE)" sx={{ '& > div': { height: 40 } }}
-            value={toTde} onChange={(newValue) => setToTde(newValue)} />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label="Interval" size="small" type="number"
-            value={interval}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setInterval(Number(event.target.value));
-            }}
-          />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <FormControl sx={{ }} size="small" fullWidth>
-            <InputLabel id="correction-label">Correction</InputLabel>
-            <Select labelId="correction-label" label="Correction"
-              value={correction}
-              onChange={(event: SelectChangeEvent) => setCorrection(event.target.value)}>
-              <MenuItem value="NONE">None</MenuItem>
-              <MenuItem value="LT">Light Time</MenuItem>
-              <MenuItem value="CN">Converged Newtonian Light Time</MenuItem>
-              <MenuItem value="LT+S">Light Time and Stellar Abberation</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
-      </Grid>
+      </Stack>
+      <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
     </QueryPanel>
   );
 }

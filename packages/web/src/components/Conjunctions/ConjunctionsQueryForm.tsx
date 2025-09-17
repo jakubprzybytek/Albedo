@@ -24,13 +24,13 @@ export default function ConjunctionsQueryForm({ query }: ConjunctionsQueryFormPa
 
   return (
     <QueryPanel>
-      <Grid container rowSpacing={2} columnSpacing={1}>
-        <Grid size={{ xs: 12, sm: 4 }}>
+      <Grid container columnSpacing={1}>
+        <Grid size={{ xs: 6, sm: 4 }}>
           <DatePicker label="From (TDE)" sx={{ '& > div': { height: 40 } }}
             value={fromTde}
             onChange={(newValue) => setFromTde(newValue)} />
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
+        <Grid size={{ xs: 6, sm: 4 }}>
           <DatePicker label="To (TDE)" sx={{ '& > div': { height: 40 } }}
             value={toTde} onChange={(newValue) => setToTde(newValue)} />
         </Grid>
