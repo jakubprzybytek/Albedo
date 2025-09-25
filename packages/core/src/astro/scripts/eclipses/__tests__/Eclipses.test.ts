@@ -79,18 +79,18 @@ describe("Eclipses", () => {
 
     expect(eclipses[1]).toEqual({
       type: EclipseType.SunEclipse,
-      es: 796520537.6059872,
-      jde: 2460763.987703773,
-      tde: new Date("2025-03-29T11:42:17.000Z"),
+      es: 796520502.7603303,
+      jde: 2460763.9873004667,
+      tde: new Date("2025-03-29T11:41:42.000Z"),
       sunEphemeris: {
-        coords: new AstronomicalCoordinates(0.13914289791902149, 0.06004376256034589),
-        angularSizeDeg: 0.5336954245838649,
+        coords: new AstronomicalCoordinates(0.1391364884269545, 0.060041020601183714),
+        angularSizeDeg: 0.5336954861690085,
       },
       moonEphemeris: {
-        coords: new AstronomicalCoordinates(0.1383574897531506, 0.08066384621204688),
-        angularSizeDeg: 0.5553349796858507,
+        coords: new AstronomicalCoordinates(0.1382633286775636, 0.08061316700001137),
+        angularSizeDeg: 0.5553341075415,
       },
-      separation: 0.020947894163695174,
+      separation: 0.02091419600799461,
     });
 
     expect(eclipses).toHaveLength(2);

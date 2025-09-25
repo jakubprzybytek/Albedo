@@ -28,7 +28,7 @@ export class ParalaxCorrection {
     const bodyFixedObserverPosition = geodeticToRectangular(
       Radians.fromDegrees(observerLocation.longitude),
       Radians.fromDegrees(observerLocation.latitude),
-      observerLocation.altitude,
+      observerLocation.altitude / 1000,
       bodyRadius, bodyFlattening);
 
     const bodyFixedRotationMatrix = this.bodyFixedFrame.getRotationMatrix(JplBodyId.Earth, es);

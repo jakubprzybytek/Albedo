@@ -27,8 +27,8 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
 
   function handleSubmit() {
     query.submit({
-      fromTde: fromTde ? format(fromTde, 'yyyy-MM-dd') : '',
-      toTde: toTde ? format(toTde, 'yyyy-MM-dd') : '',
+      fromTde: fromTde ? format(fromTde, "yyyy-MM-dd'T'00:00'Z'") : '',
+      toTde: toTde ? format(toTde, "yyyy-MM-dd'T'00:00'Z'") : '',
       ...(parallaxCorrectionEnabled && {
         latitude,
         longitude,

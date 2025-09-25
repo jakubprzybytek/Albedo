@@ -31,7 +31,7 @@ export const handler = lambdaHandler<GetEclipsesReturnType>(event => {
   const toJde = JulianDay.fromDateObject(toTde);
 
   const eclipseScripts = new Eclipses(kernels);
-  const observerLocation: ObserverLocation | undefined = longitude && latitude && altitude ? {
+  const observerLocation: ObserverLocation | undefined = longitude !== undefined && latitude !== undefined && altitude !== undefined ? {
     longitude,
     latitude,
     altitude

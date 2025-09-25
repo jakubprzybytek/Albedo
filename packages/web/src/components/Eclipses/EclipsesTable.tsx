@@ -78,7 +78,8 @@ export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX
               {eclipse.type === EclipseType.SunEclipse && <SunEclipseCells eclipse={eclipse} />}
               {eclipse.type === EclipseType.MoonEclipse && <MoonEclipseCells eclipse={eclipse} />}
               <TableCell align="left">
-                {formatDegrees(eclipse.separation)}
+                <div>{eclipse.separation.toFixed(9)}</div>
+                <div>{formatDegrees(eclipse.separation)}</div>
               </TableCell>
               <TableCell align="right">
                 <div style={{ width: '100px', height: '100px' }}>
