@@ -22,7 +22,7 @@ export default function MainLayout({ title, children }: MainLayoutParams): JSX.E
             </head> */}
             <Navigation title={title} />
             <Toolbar />
-            <Box component="main" bgcolor={theme.palette.background.default} sx={{ minHeight: '100vh' }}>
+            <Box component="main" sx={{ minHeight: '100vh' }}>
                 {children}
             </Box>
         </>

@@ -7,12 +7,16 @@ html,
 body {
   margin: 0;
 
-  @media (prefers-color-scheme: dark) {
+  /* @media (prefers-color-scheme: dark) {
     color-scheme: dark;
-  }
+  } */
 }
 
 a {
   color: var(--color-primary);
   text-decoration: none;
+}
+
+.event-card-content {
+  padding-top: 8px;
 }

@@ -1,10 +1,10 @@
 import type { JSX } from 'react';
 import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
+import Skeleton from '@mui/material/Skeleton';
 import { type Event } from './EventsBrowser';
 import DisplayEvent from './event/DisplayEvent';
-import { Skeleton, Stack } from '@mui/material';
 
 type EventsListPropsType = {
   events: Event[];
@@ -24,12 +24,12 @@ export default function EventsList({ events }: EventsListPropsType): JSX.Element
   }
 
   return (
-    <Box>
+    <Stack spacing={1}>
       {events.map(event => (
-        <Paper key={event.jde} className='event' sx={{ marginBottom: 1, backgroundColor: theme.palette.grey[200] }}>
+        <Paper key={event.jde} className='event' variant='outlined' sx={{ padding: 1, backgroundColor: theme.palette.grey[200] }}>
           <DisplayEvent type={event.type} event={event.data} />
         </Paper>
       ))}
-    </Box>
+    </Stack>
   );
 }

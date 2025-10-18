@@ -11,10 +11,10 @@ type ConjunctionEventParamType = {
 export default function ConjunctionEvent({ conjunction }: ConjunctionEventParamType): JSX.Element {
   return (
     <>
-      <Typography variant="subtitle2" sx={{ padding: 1 }}>
+      <Typography variant="subtitle2">
         <>{new Date(conjunction.tde).toLocaleString('pl-pl')} CET/CEST</>
       </Typography>
-      <Typography sx={{ pb: 1, pr: 1, pl: 1 }}>
+      <Typography className='event-card-content'>
         <>Conjunction between <BodyChip bodyId={conjunction.firstBody.info.id} /> and <BodyChip bodyId={conjunction.secondBody.info.id} /> with a sepration of <Angle value={conjunction.separation} />.</>
       </Typography>
     </>
