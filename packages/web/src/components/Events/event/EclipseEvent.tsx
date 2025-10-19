@@ -8,7 +8,6 @@ import type { Eclipse } from '@/sdk/Eclipses';
 import { EclipseType } from '@/sdk/Eclipses';
 import { JplBodyId } from '@jpl';
 import EclipseDrawing from '@/components/Eclipses/EclipseDrawing';
-import { formatDegrees } from '@/utils';
 
 type EclipseEventParamType = {
   eclipse: Eclipse;
@@ -30,10 +29,13 @@ export default function EclipseEvent({ eclipse }: EclipseEventParamType): JSX.El
           </Typography>
           {eclipse.type == EclipseType.SunEclipse && <>
             <Typography>
-              <BodyChip bodyId={JplBodyId.Sun} /> angular size: {formatDegrees(eclipse.sunEphemeris.angularSizeDeg)}
+              Sun angular size: <Angle value={eclipse.sunEphemeris.angularSizeDeg} />. Moon angular size: <Angle value={eclipse.moonEphemeris.angularSizeDeg} />.
             </Typography>
+          </>}
+          {eclipse.type == EclipseType.MoonEclipse && <>
             <Typography>
-              <BodyChip bodyId={JplBodyId.Moon} /> angular size: {formatDegrees(eclipse.moonEphemeris.angularSizeDeg)}
+              Moon angular size: <Angle value={eclipse.moonEphemeris.angularSizeDeg} />.
+              Earth shadow umbra angular size: <Angle value={eclipse.earthShadowEphemeris.umbraAngularSizeDeg} />, penumbra angular size: <Angle value={eclipse.earthShadowEphemeris.penumbraAngularSizeDeg} />.
             </Typography>
           </>}
         </Stack>
