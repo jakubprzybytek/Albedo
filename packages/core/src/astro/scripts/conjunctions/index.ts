@@ -1,4 +1,4 @@
-import { AstronomicalCoordinates } from "@math";
+import { AstronomicalCoordinates } from "@astro/coords";
 import { JplBody } from "@jpl";
 
 export * from './Conjunctions';

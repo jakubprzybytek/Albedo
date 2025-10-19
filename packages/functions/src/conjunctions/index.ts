@@ -1,16 +1,3 @@
-import { AstronomicalCoordinates } from "@astro/coords";
-import { JplBody } from "@jpl";
+import { Conjunction2 } from "@astro/scripts";
 
-export type Conjunction = {
-    jde: number;
-    tde: Date;
-    firstBody: {
-        info: JplBody;
-        coords: AstronomicalCoordinates;
-    }
-    secondBody: {
-        info: JplBody;
-        coords: AstronomicalCoordinates;
-    }
-    separation: number;
-};
+export { Conjunction2 };
