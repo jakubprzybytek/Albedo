@@ -4,7 +4,7 @@ import { mandatoryDate } from '../LambdaParams';
 import { JulianDay } from '@astro';
 import { Conjunctions } from '@astro/scripts';
 import { kernels } from "@jpl/data/kernels.full";
-import { Conjunction2 } from ".";
+import { Conjunction } from ".";
 
 type GetConjunctionsParams = {
   fromTde: Date;
@@ -16,7 +16,7 @@ const parseGetConjunctionsParams: (event: APIGatewayProxyEventV2) => GetConjunct
   toTde: mandatoryDate(event, 'toTde'),
 });
 
-export const handler = lambdaHandler<Conjunction2[]>(event => {
+export const handler = lambdaHandler<Conjunction[]>(event => {
   const { fromTde, toTde } = parseGetConjunctionsParams(event);
 
   const fromJde = JulianDay.fromDateObject(fromTde);

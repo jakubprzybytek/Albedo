@@ -1,19 +1,19 @@
-import { AstronomicalCoordinates } from "@astro/coords";
+import { DetailedCoordinates } from "../ephemeris";
 import { JplBody } from "@jpl";
 
 export * from './Conjunctions';
 
-export type Conjunction2 = {
+export type Conjunction = {
   es: number;
   jde: number;
   tde: Date;
   firstBody: {
     info: JplBody;
-    coords: AstronomicalCoordinates;
+    ephemeris: DetailedCoordinates;
   }
   secondBody: {
     info: JplBody;
-    coords: AstronomicalCoordinates;
+    ephemeris: DetailedCoordinates;
   }
   separation: number;
 };

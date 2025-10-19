@@ -1,3 +1,3 @@
-import { Conjunction2 } from "@astro/scripts";
+import { Conjunction } from "@astro/scripts";
 
-export { Conjunction2 };
+export { Conjunction };

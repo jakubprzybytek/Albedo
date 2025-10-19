@@ -17,6 +17,10 @@ a {
   text-decoration: none;
 }
 
+.full-width {
+  width: 100%;
+}
+
 .event-card-content {
   padding-top: 8px;
 }

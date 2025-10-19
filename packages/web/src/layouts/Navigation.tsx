@@ -121,10 +121,10 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
             <Divider />
             <List>
               {menuItems.map(menuItem => (
-                <ListItem key={menuItem.link} disablePadding>
-                  <ListItemButton sx={{ textAlign: 'center' }}>
-                    <Link to={menuItem.link}><ListItemText primary={menuItem.label} /></Link>
-                  </ListItemButton>
+                <ListItem key={menuItem.link}>
+                  <Link className='full-width' to={menuItem.link}>
+                    <ListItemText primary={menuItem.label} sx={{ width: '100%' }} />
+                  </Link>
                 </ListItem>
               ))}
             </List>

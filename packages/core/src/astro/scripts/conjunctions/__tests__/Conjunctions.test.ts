@@ -21,11 +21,17 @@ describe("Conjunctions", () => {
       tde: new Date('2022-03-02T15:41:11.000Z'),
       firstBody: {
         info: jplBodyFromString('Mercury'),
-        coords: new AstronomicalCoordinates(5.612402662674604, -0.29178842348138884)
+        ephemeris: {
+          angularSizeDeg: 0.0016003565105987547,
+          coords: new AstronomicalCoordinates(5.612402662674604, -0.29178842348138884)
+        }
       },
       secondBody: {
         info: jplBodyFromString('Saturn'),
-        coords: new AstronomicalCoordinates(5.60943612310782, -0.2804312279610099)
+        ephemeris: {
+          angularSizeDeg: 0.004270090309423578,
+          coords: new AstronomicalCoordinates(5.60943612310782, -0.2804312279610099)
+        }
       },
       separation: 0.011708338626390445,
     });

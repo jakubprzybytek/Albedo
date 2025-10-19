@@ -6,7 +6,7 @@ import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { StateSolver } from '@jpl/state';
 import { KernelsRepository } from '@jpl/kernels';
 import { States, Separations, Ephemerides, timeProperties } from '@astro/scripts';
-import { Conjunction2 } from '.';
+import { Conjunction } from '.';
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
@@ -28,7 +28,7 @@ export class Conjunctions {
     this.ephemerides = new Ephemerides(kernels);
   }
 
-  for(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction2[] {
+  for(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction[] {
     const bodies = bodyIdies
       .map(jplBodyFromId)
       .filter((jplBody): jplBody is JplBody => !!jplBody);
@@ -43,7 +43,7 @@ export class Conjunctions {
         new Map<JplBodyId, RectangularCoordinates[]>()
       );
 
-    const conjuctions: Conjunction2[] = [];
+    const conjuctions: Conjunction[] = [];
 
     for (const [firstBody, secondBody] of createPairs(bodies)) {
       const firstBodyPositions = positionsByBody.get(firstBody.id);
@@ -76,15 +76,15 @@ export class Conjunctions {
             separation: minSeparation
           }
         })
-        .map<Conjunction2>(separation => ({
+        .map<Conjunction>(separation => ({
           ...timeProperties(separation.es),
           firstBody: {
             info: firstBody,
-            coords: this.ephemerides.coordinatesForBody(firstBody.id, separation.es)
+            ephemeris: this.ephemerides.detailedCoordinatesForBody(firstBody.id, separation.es)
           },
           secondBody: {
             info: secondBody,
-            coords: this.ephemerides.coordinatesForBody(secondBody.id, separation.es)
+            ephemeris: this.ephemerides.detailedCoordinatesForBody(secondBody.id, separation.es)
           },
           separation: separation.separation,
         }))
@@ -94,7 +94,7 @@ export class Conjunctions {
     return conjuctions;
   }
 
-  all(fromJde: number, toJde: number): Conjunction2[] {
+  all(fromJde: number, toJde: number): Conjunction[] {
     const bodies = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
     return this.for(bodies, fromJde, toJde, SEPARATION_THRESHOLD);
   }

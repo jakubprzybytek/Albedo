@@ -47,11 +47,13 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
               </TableCell>
               <TableCell align="center">
                 {conjunction.firstBody.info.name}
-                <AstronomicalCoords coords={conjunction.firstBody.coords} />
+                <AstronomicalCoords coords={conjunction.firstBody.ephemeris.coords} />
+                Size: {formatDegrees(conjunction.firstBody.ephemeris.angularSizeDeg)}
               </TableCell>
               <TableCell align="center">
                 {conjunction.secondBody.info.name}
-                <AstronomicalCoords coords={conjunction.secondBody.coords} />
+                <AstronomicalCoords coords={conjunction.secondBody.ephemeris.coords} />
+                Size: {formatDegrees(conjunction.secondBody.ephemeris.angularSizeDeg)}
               </TableCell>
               <TableCell align="right">
                 {formatDegrees(conjunction.separation)}
