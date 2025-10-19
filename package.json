@@ -20,7 +20,7 @@
     "aws-cdk-lib": "2.179.0",
     "constructs": "10.3.0",
     "eslint": "^9.29.0",
-    "sst": "2.48.5",
+    "sst": "3.17.19",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
