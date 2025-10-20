@@ -10,7 +10,7 @@ import { Conjunction } from '.';
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
-const SEPARATION_THRESHOLD = Radians.fromDegrees(0.5);
+const SEPARATION_THRESHOLD = Radians.fromDegrees(1);
 
 type TimedSeparation = {
   es: number;

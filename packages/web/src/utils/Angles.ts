@@ -20,7 +20,7 @@ export function formatDegrees(angle: number): string {
 }
 
 export function formatArcSeconds(angle: number): string {
-  let arcSeconds = angle * 3600.0;
+  const arcSeconds = angle * 3600.0;
   if (arcSeconds < 60.0) {
     return arcSeconds.toFixed(2) + '"';
   } else {

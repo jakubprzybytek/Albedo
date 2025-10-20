@@ -1,9 +1,10 @@
 import { JulianDay } from "@astro";
 import { AstronomicalCoordinates } from "@astro/coords";
 import { describe, it, expect } from "vitest";
-import { jplBodyFromString } from "@jpl";
+import { JplBody, jplBodyFromString } from "@jpl";
 import { kernels } from "@jpl/data/kernels.full";
 import { Conjunctions } from "../Conjunctions";
+import { Conjunction } from "..";
 
 describe("Conjunctions", () => {
   const conjuctionScripts = new Conjunctions(kernels);
@@ -15,25 +16,25 @@ describe("Conjunctions", () => {
 
     expect(conjunctions).toHaveLength(1);
 
-    expect(conjunctions[0]).toEqual({
+    expect(conjunctions[0]).toStrictEqual({
       es: 699507671.7832242,
       jde: 2459641.153608602,
       tde: new Date('2022-03-02T15:41:11.000Z'),
       firstBody: {
-        info: jplBodyFromString('Mercury'),
+        info: jplBodyFromString('Mercury') as JplBody,
         ephemeris: {
           angularSizeDeg: 0.0016003565105987547,
           coords: new AstronomicalCoordinates(5.612402662674604, -0.29178842348138884)
         }
       },
       secondBody: {
-        info: jplBodyFromString('Saturn'),
+        info: jplBodyFromString('Saturn') as JplBody,
         ephemeris: {
           angularSizeDeg: 0.004270090309423578,
           coords: new AstronomicalCoordinates(5.60943612310782, -0.2804312279610099)
         }
       },
       separation: 0.011708338626390445,
-    });
+    } satisfies Conjunction);
   });
 });
