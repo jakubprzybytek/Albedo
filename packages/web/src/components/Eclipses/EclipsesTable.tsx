@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -82,9 +83,9 @@ export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX
                 <div>{formatDegrees(eclipse.separation)}</div>
               </TableCell>
               <TableCell align="right">
-                <div style={{ width: '100px', height: '100px' }}>
+                <Box width="100px" height="100px" marginLeft="auto">
                   <EclipseDrawing eclipse={eclipse} />
-                </div>
+                </Box>
               </TableCell>
             </TableRow>
           ))}

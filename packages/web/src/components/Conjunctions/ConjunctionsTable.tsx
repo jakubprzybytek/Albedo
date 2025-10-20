@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,12 +9,17 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { formatDegrees } from '../../utils';
-import AstronomicalCoords from '../../common/AstronomicalCoordinates';
+import AstronomicalCoords from '@/common/AstronomicalCoordinates';
+import ConjunctionDrawing from './ConjunctionDrawing';
 import type { Conjunction } from '@/sdk/Conjunctions';
-// import BodyChip from 'common/BodyChip';
 
 type ConjunctionsTablePropsType = {
   conjunctions: Conjunction[];
+}
+
+function separationFactor(conjunction: Conjunction): number {
+  const averageAngularSize = (conjunction.firstBody.ephemeris.angularSizeDeg + conjunction.secondBody.ephemeris.angularSizeDeg) / 2;
+  return conjunction.separation / averageAngularSize;
 }
 
 export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePropsType): JSX.Element {
@@ -33,6 +38,7 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
             <TableCell align="center">First body</TableCell>
             <TableCell align="center">Second body</TableCell>
             <TableCell align="right">Separation</TableCell>
+            <TableCell align="right">Drawing</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -57,6 +63,12 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
               </TableCell>
               <TableCell align="right">
                 {formatDegrees(conjunction.separation)}
+                <span>Sep. factor: {separationFactor(conjunction).toFixed(1)}</span>
+              </TableCell>
+              <TableCell align="right">
+                <Box width="100px" height="100px" marginLeft="auto">
+                  <ConjunctionDrawing conjunction={conjunction} />
+                </Box>
               </TableCell>
             </TableRow>
           ))}
