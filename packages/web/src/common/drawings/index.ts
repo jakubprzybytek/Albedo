@@ -11,14 +11,14 @@ export function calculatePositionAngle(firstBodyCoords: AstronomicalCoordinates,
     Math.cos(secondDecRad) * Math.tan(firstDecRad) - Math.sin(secondDecRad) * Math.cos(firstRaRad - secondRaRad));
 }
 
-export function calculateDrawingScale(firstBodyRadius: number, secondBodyRadius: number, separation: number, positionAngleRad: number) {
-  const longestDimention = (firstBodyRadius + separation + secondBodyRadius) * 1.2;
+export function calculateDrawingScale(firstBodyRadiusDeg: number, secondBodyRadiusDeg: number, separation: number, positionAngleRad: number) {
+  const longestDimention = (firstBodyRadiusDeg + separation + secondBodyRadiusDeg) * 1.2;
   const scale = 500 / longestDimention;
 
   const scaleXFactor = Math.sin(positionAngleRad) * scale;
   const scaleYFactor = Math.cos(positionAngleRad) * scale;
 
-  const balance = firstBodyRadius - secondBodyRadius;
+  const balance = firstBodyRadiusDeg - secondBodyRadiusDeg;
   const firstBodyBalancedSeparation = (separation - balance) / 2;
   const secondBodyBalancedSeparation = (separation + balance) / 2;
 

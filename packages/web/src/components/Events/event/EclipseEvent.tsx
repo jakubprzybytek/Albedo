@@ -24,7 +24,7 @@ export default function EclipseEvent({ eclipse }: EclipseEventParamType): JSX.El
           <EclipseDrawing eclipse={eclipse} />
         </Box>
         <Stack>
-          <Typography>
+          <Typography marginBottom={1}>
             <BodyChip bodyId={eclipse.type == EclipseType.SunEclipse ? JplBodyId.Sun : JplBodyId.Moon} /> eclipse with a sepration of <Angle value={eclipse.separation} />.
           </Typography>
           {eclipse.type == EclipseType.SunEclipse && <>
@@ -35,6 +35,8 @@ export default function EclipseEvent({ eclipse }: EclipseEventParamType): JSX.El
           {eclipse.type == EclipseType.MoonEclipse && <>
             <Typography>
               Moon angular size: <Angle value={eclipse.moonEphemeris.angularSizeDeg} />.
+            </Typography>
+            <Typography>
               Earth shadow umbra angular size: <Angle value={eclipse.earthShadowEphemeris.umbraAngularSizeDeg} />, penumbra angular size: <Angle value={eclipse.earthShadowEphemeris.penumbraAngularSizeDeg} />.
             </Typography>
           </>}

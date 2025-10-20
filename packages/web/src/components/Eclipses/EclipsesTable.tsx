@@ -23,9 +23,11 @@ function SunEclipseCells({ eclipse }: { eclipse: SunEclipse }) {
     <>
       <TableCell>
         <AstronomicalCoords coords={eclipse.sunEphemeris.coords} />
+        <div>Angular size: {formatDegrees(eclipse.sunEphemeris.angularSizeDeg)}</div>
       </TableCell>
       <TableCell>
         <AstronomicalCoords coords={eclipse.moonEphemeris.coords} />
+        <div>Angular size: {formatDegrees(eclipse.moonEphemeris.angularSizeDeg)}</div>
       </TableCell>
     </>
   );
@@ -36,9 +38,12 @@ function MoonEclipseCells({ eclipse }: { eclipse: MoonEclipse }) {
     <>
       <TableCell>
         <AstronomicalCoords coords={eclipse.moonEphemeris.coords} />
+        <div>Angular size: {formatDegrees(eclipse.moonEphemeris.angularSizeDeg)}</div>
       </TableCell>
       <TableCell>
         <AstronomicalCoords coords={eclipse.earthShadowEphemeris.coords} />
+        <div>Umbra angular size: {formatDegrees(eclipse.earthShadowEphemeris.umbraAngularSizeDeg)}</div>
+        <div>Penumbra angular size: {formatDegrees(eclipse.earthShadowEphemeris.penumbraAngularSizeDeg)}</div>
       </TableCell>
     </>
   );
@@ -79,7 +84,7 @@ export default function EclipsesTable({ eclipses }: EclipsesTablePropsType): JSX
               {eclipse.type === EclipseType.SunEclipse && <SunEclipseCells eclipse={eclipse} />}
               {eclipse.type === EclipseType.MoonEclipse && <MoonEclipseCells eclipse={eclipse} />}
               <TableCell align="left">
-                <div>{eclipse.separation.toFixed(9)}</div>
+                <div>{eclipse.separation.toFixed(9)}°</div>
                 <div>{formatDegrees(eclipse.separation)}</div>
               </TableCell>
               <TableCell align="right">
