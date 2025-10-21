@@ -7,6 +7,7 @@ import { StateSolver } from '@jpl/state';
 import { KernelsRepository } from '@jpl/kernels';
 import { States, Separations, Ephemerides, timeProperties } from '@astro/scripts';
 import { Conjunction } from '.';
+import { JulianDay } from '@astro';
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
@@ -70,7 +71,7 @@ export class Conjunctions {
           const separationFunction = Separations.buildSeparationFunction(this.stateSolver, firstBody.id, secondBody.id);
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
-          // console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
+          console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
           return {
             es: eventEs,
             separation: minSeparation

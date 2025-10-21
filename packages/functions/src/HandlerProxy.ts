@@ -2,12 +2,12 @@ import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2 } from "aws-lambda";
 import { anglesReplacer } from "./AnglesReplacer";
 
 type LambdaResponse<T> = {
-    data: T;
-    statusCode: number;
+  data: T;
+  statusCode: number;
 }
 
 type ErrorResponse = {
-    message: string;
+  message: string;
 }
 
 export type LambdaType<T> = (event: APIGatewayProxyEventV2) => LambdaResponse<T | ErrorResponse>;
@@ -17,23 +17,23 @@ export const Success = <T>(data: T): LambdaResponse<T> => ({ data: data, statusC
 export const Failure = (message: string): LambdaResponse<ErrorResponse> => ({ data: { message }, statusCode: 400 });
 
 export function lambdaHandler<T>(lambda: LambdaType<T>): APIGatewayProxyHandlerV2 {
-    return async function (event: APIGatewayProxyEventV2) {
-        try {
-            const response = lambda(event);
-            return {
-                statusCode: response.statusCode,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(response.data, anglesReplacer),
-            };
-        } catch (e: unknown) {
-            console.error(e);
-            return {
-                statusCode: 500,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: e instanceof Error ? e.message : String(e)
-                }),
-            };
-        }
-    };
+  return async function (event: APIGatewayProxyEventV2) {
+    try {
+      const response = lambda(event);
+      return {
+        statusCode: response.statusCode,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(response.data, anglesReplacer),
+      };
+    } catch (e: unknown) {
+      console.error(e);
+      return {
+        statusCode: 500,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: e instanceof Error ? e.message : String(e)
+        }),
+      };
+    }
+  };
 };
