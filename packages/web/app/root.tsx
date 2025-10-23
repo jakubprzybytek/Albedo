@@ -40,7 +40,7 @@ Amplify.configure({
     REST: {
       headers: async () => {
         return {
-          Authorization: `Bearer ${(await fetchAuthSession()).tokens?.accessToken.toString()}`,
+          Authorization: `Bearer ${(await fetchAuthSession()).tokens?.idToken}`,
         };
       },
     },

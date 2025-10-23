@@ -1,5 +1,6 @@
-import { StackContext, Api, Cognito } from "sst/constructs";
+import { StackContext, ApiGatewayV1Api, Cognito } from "sst/constructs";
 import { UserPool, UserPoolClient } from "aws-cdk-lib/aws-cognito";
+import * as apig from "aws-cdk-lib/aws-apigateway";
 
 
 export function API({ stack }: StackContext) {
@@ -10,41 +11,46 @@ export function API({ stack }: StackContext) {
     }
   });
 
-  const api = new Api(stack, "api", {
+  const api = new ApiGatewayV1Api(stack, "restapi", {
     authorizers: {
       jwt: {
-        type: "user_pool",
-        userPool: {
-          id: cognito.userPoolId,
-          clientIds: [cognito.userPoolClientId],
-        },
+        type: "user_pools",
+        userPoolIds: [cognito.userPoolId],
       },
     },
     defaults: {
-      // function: {
-      //   runtime: 'nodejs16.x',
-      //   memorySize: '128 MB',
-      //   timeout: '30 seconds'
-      // },
+      function: {
+        // runtime: 'nodejs16.x',
+        memorySize: '512 MB',
+        timeout: '30 seconds'
+      },
       authorizer: "jwt",
-      throttle: {
-        burst: 1,
-        rate: 1
+    },
+    cdk: {
+      restApi: {
+        deployOptions: {
+          throttlingBurstLimit: 1,
+          throttlingRateLimit: 1,
+        }
+        ,
+        defaultCorsPreflightOptions: {
+          allowOrigins: apig.Cors.ALL_ORIGINS,
+          allowMethods: ['GET', 'POST'],
+          allowHeaders: ["Authorization", "Content-Type"],
+          // Note: allowCredentials must remain false when using "*" origins
+        }
       }
     },
+
     routes: {
       "GET /api/states": "packages/functions/src/states/getStates.handler",
       "GET /api/ephemeris": "packages/functions/src/ephemeris/getEphemeris.handler",
       "GET /api/separations": "packages/functions/src/separations/getSeparations.handler",
-      "GET /api/conjunctions": {
-        function: {
-          handler: "packages/functions/src/conjunctions/getConjunctions.handler",
-          memorySize: '512 MB'
-        }
-      },
+      "GET /api/conjunctions": "packages/functions/src/conjunctions/getConjunctions.handler",
       "GET /api/eclipses": "packages/functions/src/eclipses/getEclipses.handler",
     },
   });
+
   stack.addOutputs({
     ApiEndpoint: api.url,
     UserPoolId: cognito.userPoolId,

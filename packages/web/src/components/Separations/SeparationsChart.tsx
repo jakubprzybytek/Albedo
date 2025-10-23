@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import DateAxisTick from '@/common/charts/DateAxisTick';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
-import type { Separation } from '@/sdk/GetSeparations';
+import type { Separation } from '@/sdk/Separations';
 
 type SeparationsChartPropsType = {
   separations: Separation[];

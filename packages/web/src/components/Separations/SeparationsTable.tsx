@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { formatDegrees } from '../../utils';
-import type { Separation } from '@/sdk/GetSeparations';
+import type { Separation } from '@/sdk/Separations';
 
 type SeparationsTablePropsType = {
   separations: Separation[];

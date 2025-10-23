@@ -7,7 +7,7 @@ import { addMonths, format } from 'date-fns';
 import QueryPanel from "@/forms/QueryPanel";
 import QuerySubmit from "@/forms/QuerySubmit";
 import type { ManagedQuery } from "@/forms/useQuery";
-import type { EphemeridesQuery } from "@/sdk/GetEphemerides";
+import type { EphemeridesQuery } from "@/sdk/Ephemerides";
 
 type EphemerisQueryFormParams = {
   query: ManagedQuery<EphemeridesQuery>;

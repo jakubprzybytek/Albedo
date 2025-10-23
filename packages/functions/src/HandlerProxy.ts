@@ -22,14 +22,24 @@ export function lambdaHandler<T>(lambda: LambdaType<T>): APIGatewayProxyHandlerV
       const response = lambda(event);
       return {
         statusCode: response.statusCode,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Authorization, Content-Type",
+          "Access-Control-Allow-Methods": "GET, POST",
+        },
         body: JSON.stringify(response.data, anglesReplacer),
       };
     } catch (e: unknown) {
       console.error(e);
       return {
         statusCode: 500,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Authorization, Content-Type",
+          "Access-Control-Allow-Methods": "GET, POST",
+        },
         body: JSON.stringify({
           message: e instanceof Error ? e.message : String(e)
         }),

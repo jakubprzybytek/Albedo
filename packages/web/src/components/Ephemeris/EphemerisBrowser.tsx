@@ -5,7 +5,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@/common/tabs/TabPanel";
 import useQuery from "@/forms/useQuery";
-import getEphemerides, { type EphemeridesQuery, type DetailedEphemeris } from "@/sdk/GetEphemerides";
+import getEphemerides, { type EphemeridesQuery, type DetailedEphemeris } from "@/sdk/Ephemerides";
 import EphemerisQueryForm from './EphemerisQueryForm';
 import EphemerisTable from './EphemerisTable';
 import AngularSizeChart from "./AngularSizeChart";

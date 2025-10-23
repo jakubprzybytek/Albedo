@@ -8,7 +8,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { addMonths, format, set } from 'date-fns';
 import QueryPanel from "@/forms/QueryPanel";
 import type { ManagedQuery } from "@/forms/useQuery";
-import type { SeparationsQuery } from "@/sdk/GetSeparations";
+import type { SeparationsQuery } from "@/sdk/Separations";
 import { useValidation } from "@/forms";
 import QuerySubmit from "@/forms/QuerySubmit";
 import NumberField from "@/forms/NumberField";

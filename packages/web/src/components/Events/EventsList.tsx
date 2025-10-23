@@ -16,9 +16,11 @@ export default function EventsList({ events }: EventsListPropsType): JSX.Element
   if (events.length === 0) {
     return (
       <Stack spacing={1}>
-        <Skeleton variant="rounded" animation="wave" width="100%" height={70} />
-        <Skeleton variant="rounded" animation="wave" width="100%" height={70} />
-        <Skeleton variant="rounded" animation="wave" width="100%" height={70} />
+        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
+        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
+        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
+        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
+        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
       </Stack>
     );
   }

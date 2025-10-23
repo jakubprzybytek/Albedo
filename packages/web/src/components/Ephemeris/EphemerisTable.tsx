@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import AstronomicalCoords from '../../common/AstronomicalCoordinates';
-import type { DetailedEphemeris } from '@/sdk/GetEphemerides';
+import type { DetailedEphemeris } from '@/sdk/Ephemerides';
 import Angle from '@/common/Angle';
 
 type EphemerisTablePropsType = {

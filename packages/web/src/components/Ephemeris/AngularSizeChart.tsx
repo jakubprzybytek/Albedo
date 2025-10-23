@@ -7,8 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { formatDegrees } from '@/utils';
-import type { DetailedEphemeris } from '@/sdk/GetEphemerides';
-import { format } from 'date-fns';
+import type { DetailedEphemeris } from '@/sdk/Ephemerides';
 
 type TooltipProps = {
   active: boolean;

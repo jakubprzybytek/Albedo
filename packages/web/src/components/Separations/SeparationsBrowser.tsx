@@ -7,9 +7,9 @@ import TabPanel from "@/common/tabs/TabPanel";
 import SeparationsQueryForm from './SeparationsQueryForm';
 import SeparationsTable from './SeparationsTable';
 import SeparationsChart from "./SeparationsChart";
-import type { SeparationsQuery, Separation } from "@/sdk/GetSeparations";
+import type { SeparationsQuery, Separation } from "@/sdk/Separations";
 import useQuery from "@/forms/useQuery";
-import getSeparations from "@/sdk/GetSeparations";
+import getSeparations from "@/sdk/Separations";
 
 export default function SeparationsBrowser(): JSX.Element {
   const [openedTab, setOpenedTab] = useState(0);

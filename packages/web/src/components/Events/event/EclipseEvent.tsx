@@ -11,16 +11,17 @@ import EclipseDrawing from '@/components/Eclipses/EclipseDrawing';
 
 type EclipseEventParamType = {
   eclipse: Eclipse;
+  expanded: boolean;
 }
 
-export default function EclipseEvent({ eclipse }: EclipseEventParamType): JSX.Element {
+export default function EclipseEvent({ eclipse, expanded }: EclipseEventParamType): JSX.Element {
   return (
     <>
       <Typography variant="subtitle2">
         <>{new Date(eclipse.tde).toLocaleString('pl-pl')} CET/CEST</>
       </Typography>
-      <Stack className='event-card-content' direction="row" spacing={1}>
-        <Box width='80px' height='80px'>
+      <Stack className='event-card-content' direction={expanded ? 'column' : 'row'} spacing={1}>
+        <Box display='flex' justifyContent='center' alignItems='center' height={expanded ? '30vh' : '80px'}>
           <EclipseDrawing eclipse={eclipse} />
         </Box>
         <Stack>
