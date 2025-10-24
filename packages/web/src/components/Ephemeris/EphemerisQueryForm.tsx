@@ -31,7 +31,6 @@ export default function EphemerisQueryForm({ query }: EphemerisQueryFormParams):
   return (
     <QueryPanel>
       <Stack spacing={2}>
-
         <Grid container rowSpacing={2} columnSpacing={1}>
           <Grid size={6}>
             <TextField label="Target" size="small"

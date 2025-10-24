@@ -5,8 +5,8 @@ import EventsBrowser from "@/components/Events/EventsBrowser";
 
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Albedo 2.2" },
+    { name: "description", content: "Albedo. Predicting astronomical events." },
   ];
 }
 

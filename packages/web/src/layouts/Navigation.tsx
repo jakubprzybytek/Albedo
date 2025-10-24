@@ -61,16 +61,16 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
     <>
       <AppBar component="nav">
         <Toolbar>
-          <IconButton color="inherit" edge="start" sx={{ mr: 2, display: { sm: 'none' } }}
-            onClick={() => setIsMobileOpen(!isMobileOpen)}>
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
             <Link to='/'>Albedo 2.2</Link>
           </Typography>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, pl: 2 }}>
             {title}
           </Typography>
+          <IconButton color="inherit" edge="start" sx={{ display: { sm: 'none' } }}
+            onClick={() => setIsMobileOpen(!isMobileOpen)}>
+            <MenuIcon />
+          </IconButton>
           <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'flex' } }}>
             <Button variant="contained" color="secondary" size='small' onClick={handleMenu}>
               Tools
@@ -129,10 +129,16 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
               ))}
             </List>
             <Divider />
-            <Typography variant="h6" sx={{ my: 2 }}
-              onClick={() => signOut()}>
-              Log out
-            </Typography>
+            <List>
+              <ListItem>
+                <Link className='full-width' to='/settings'>
+                  <ListItemText primary="Settings" />
+                </Link>
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Log out" onClick={() => signOut()} />
+              </ListItem>
+            </List>
           </Box>
         </Drawer>
       </Box>

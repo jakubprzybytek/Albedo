@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
 type NumberFieldParams = {
-  disabled: boolean;
+  disabled?: boolean;
   label: string;
   startAdornment?: string;
   value: number;
@@ -11,7 +11,7 @@ type NumberFieldParams = {
   validationUpdate: (valid: boolean) => void;
 };
 
-export default function NumberField({ label, value, onChange, disabled, startAdornment, validationUpdate }: NumberFieldParams): JSX.Element {
+export default function NumberField({ label, value, onChange, disabled = false, startAdornment, validationUpdate }: NumberFieldParams): JSX.Element {
   const [valueString, setValueString] = useState(value.toString());
   const [error, setError] = useState(false);
 
