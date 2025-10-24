@@ -1,22 +1,12 @@
 import { useState, type JSX } from 'react';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Drawer from '@mui/material/Drawer';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
-import { signOut } from "aws-amplify/auth";
 import { Link } from 'react-router';
+import DesktopMenu from './DesktopMenu';
+import MobileMenu from './MobileMenu';
 
 type NavigationParamsType = {
   title: string;
@@ -47,15 +37,6 @@ const menuItems = [
 
 export default function Navigation({ title }: NavigationParamsType): JSX.Element {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <>
@@ -71,77 +52,14 @@ export default function Navigation({ title }: NavigationParamsType): JSX.Element
             onClick={() => setIsMobileOpen(!isMobileOpen)}>
             <MenuIcon />
           </IconButton>
-          <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-            <Button variant="contained" color="secondary" size='small' onClick={handleMenu}>
-              Tools
-            </Button>
-            <Button variant="contained" color="secondary" size='small' onClick={() => signOut()}>
-              Log out
-            </Button>
-          </Stack>
-          <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            {menuItems.map(menuItem => (
-              <MenuItem key={menuItem.link} onClick={handleClose}>
-                <Link to={menuItem.link}>{menuItem.label}</Link>
-              </MenuItem>
-            ))}
-          </Menu>
+          <DesktopMenu menuItems={menuItems} />
         </Toolbar>
       </AppBar>
-      <Box component="nav">
-        <Drawer
-          variant="temporary"
-          open={isMobileOpen}
-          onClose={() => setIsMobileOpen(false)}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
-          }}
-        >
-          <Box onClick={() => setIsMobileOpen(!isMobileOpen)} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
-              <Link to='/'>Albedo 2.2</Link>
-            </Typography>
-            <Divider />
-            <List>
-              {menuItems.map(menuItem => (
-                <ListItem key={menuItem.link}>
-                  <Link className='full-width' to={menuItem.link}>
-                    <ListItemText primary={menuItem.label} sx={{ width: '100%' }} />
-                  </Link>
-                </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <List>
-              <ListItem>
-                <Link className='full-width' to='/settings'>
-                  <ListItemText primary="Settings" />
-                </Link>
-              </ListItem>
-              <ListItem>
-                <ListItemText primary="Log out" onClick={() => signOut()} />
-              </ListItem>
-            </List>
-          </Box>
-        </Drawer>
-      </Box>
+      <MobileMenu
+        isOpen={isMobileOpen}
+        onClose={() => setIsMobileOpen(false)}
+        menuItems={menuItems}
+      />
     </>
   )
 }
