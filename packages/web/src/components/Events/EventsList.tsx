@@ -26,7 +26,7 @@ export default function EventsList({ events }: EventsListPropsType): JSX.Element
   }
 
   return (
-    <Stack paddingLeft={0.25} paddingRight={0.25} spacing={1}>
+    <Stack paddingTop={1} paddingLeft={{ xs: 0.25, md: 1 }} paddingRight={{ xs: 0.25, md: 1 }} spacing={1}>
       {events.map(event => (
         <Paper key={event.jde} className='event' variant='outlined' sx={{ padding: 1, backgroundColor: theme.palette.grey[200] }}>
           <DisplayEvent type={event.type} event={event.data} />

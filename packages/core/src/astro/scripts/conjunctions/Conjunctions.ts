@@ -11,7 +11,7 @@ import { JulianDay } from '@astro';
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
-const SEPARATION_THRESHOLD = Radians.fromDegrees(1);
+const SEPARATION_THRESHOLD = Radians.fromDegrees(0.5);
 
 type TimedSeparation = {
   es: number;

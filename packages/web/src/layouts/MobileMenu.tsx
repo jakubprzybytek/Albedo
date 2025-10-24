@@ -52,7 +52,7 @@ export default function MobileMenu({ isOpen, onClose, menuItems }: MobileMenuPro
           <Divider />
           <List>
             <ListItem>
-              <Link className='full-width' to='/settings'>
+              <Link className='full-width' to='/profile'>
                 <ListItemText primary="Settings" />
               </Link>
             </ListItem>

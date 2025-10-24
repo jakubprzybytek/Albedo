@@ -1,11 +1,11 @@
 import type { JSX } from "react";
 import MainLayout from "@/layouts/MainLayout";
-import SettingsDialog from "@/components/Settings/SettingsDialog";
+import ProfileDialog from "@/components/Profile/ProfileDialog";
 
 export default function Settings(): JSX.Element {
   return (
     <MainLayout title="Settings">
-      <SettingsDialog />
+      <ProfileDialog />
     </MainLayout>
   );
 }

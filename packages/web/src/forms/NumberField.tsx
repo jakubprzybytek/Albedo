@@ -7,24 +7,28 @@ type NumberFieldParams = {
   label: string;
   startAdornment?: string;
   value: number;
+  validateValue?: (value: number) => boolean,
+  validationErrorMessage?: string,
   onChange: Dispatch<SetStateAction<number>>;
   validationUpdate: (valid: boolean) => void;
 };
 
-export default function NumberField({ label, value, onChange, disabled = false, startAdornment, validationUpdate }: NumberFieldParams): JSX.Element {
+export default function NumberField({ disabled = false, label, startAdornment, value, validateValue, validationErrorMessage, onChange, validationUpdate }: NumberFieldParams): JSX.Element {
   const [valueString, setValueString] = useState(value.toString());
   const [error, setError] = useState(false);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value;
-    setValueString(value);
+    const stringValue = event.target.value;
+    setValueString(stringValue);
 
-    const isError = !value || isNaN(Number(value));
+    const value = Number(stringValue);
+    let isError = !stringValue || isNaN(value) || (validateValue ? !validateValue(value) : false);
+
     setError(isError);
     validationUpdate(!isError);
 
     if (!isError) {
-      onChange(Number(value));
+      onChange(Number(stringValue));
     }
   }
 
@@ -35,7 +39,7 @@ export default function NumberField({ label, value, onChange, disabled = false, 
       }}
       disabled={disabled}
       error={error}
-      helperText={error ? "Please enter a valid number" : undefined}
+      helperText={error ? validationErrorMessage || "Please enter a valid number" : undefined}
       value={valueString}
       onChange={handleChange}
     />

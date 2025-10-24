@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Build from '@mui/icons-material/Build';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { signOut } from "aws-amplify/auth";
 import { Link } from 'react-router';
@@ -40,9 +41,9 @@ export default function DesktopMenu({ menuItems }: DesktopMenuProps): JSX.Elemen
   return (
     <>
       <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-        <Button variant="contained" color="secondary" size='small' onClick={handleMenu}>
-          Tools
-        </Button>
+        <IconButton color="inherit" onClick={handleMenu}>
+          <Build />
+        </IconButton>
         <IconButton color="inherit" onClick={handleAccountMenu}>
           <AccountCircle />
         </IconButton>
@@ -82,7 +83,7 @@ export default function DesktopMenu({ menuItems }: DesktopMenuProps): JSX.Elemen
         onClose={handleAccountClose}
       >
         <MenuItem onClick={handleAccountClose}>
-          <Link to='/settings'>Settings</Link>
+          <Link to='/profile'>Profile</Link>
         </MenuItem>
         <MenuItem onClick={() => {
           handleAccountClose();
