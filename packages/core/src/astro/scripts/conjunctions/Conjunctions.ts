@@ -1,4 +1,4 @@
-import { Radians, RectangularCoordinates } from '@astro/coords';
+import { ObserverLocation, Radians, RectangularCoordinates } from '@astro/coords';
 import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { createPairs } from '@astro/utils/Pairs';
@@ -20,16 +20,19 @@ type TimedSeparation = {
 
 export class Conjunctions {
 
-  readonly stateSolver: StateSolver;
+  readonly states: States;
+
+  readonly seprations: Separations;
 
   readonly ephemerides: Ephemerides;
 
   constructor(kernels: KernelsRepository) {
-    this.stateSolver = kernels.stateSolver();
+    this.states = new States(kernels);
+    this.seprations = new Separations(kernels);
     this.ephemerides = new Ephemerides(kernels);
   }
 
-  for(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number): Conjunction[] {
+  for(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number, observerLocation?: ObserverLocation): Conjunction[] {
     const bodies = bodyIdies
       .map(jplBodyFromId)
       .filter((jplBody): jplBody is JplBody => !!jplBody);
@@ -40,7 +43,7 @@ export class Conjunctions {
 
     const positionsByBody = bodyIdies
       .reduce(
-        (acc, bodyId) => acc.set(bodyId, esArray.map(States.buildPositionFunction(this.stateSolver, bodyId))),
+        (acc, bodyId) => acc.set(bodyId, esArray.map(this.states.buildPositionFunction(bodyId))),
         new Map<JplBodyId, RectangularCoordinates[]>()
       );
 
@@ -68,7 +71,9 @@ export class Conjunctions {
           const a = separation.es - PRELIMINARY_INTERVAL;
           const b = separation.es;
           const c = separation.es + PRELIMINARY_INTERVAL;
-          const separationFunction = Separations.buildSeparationFunction(this.stateSolver, firstBody.id, secondBody.id);
+          const separationFunction = observerLocation
+            ? this.seprations.buildParalaxCorrectedSeparationFunction(firstBody.id, secondBody.id, observerLocation)
+            : this.seprations.buildSeparationFunction(firstBody.id, secondBody.id);
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
           console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
@@ -95,9 +100,9 @@ export class Conjunctions {
     return conjuctions;
   }
 
-  all(fromJde: number, toJde: number): Conjunction[] {
-    const bodies = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
-    return this.for(bodies, fromJde, toJde, SEPARATION_THRESHOLD);
+  all(fromJde: number, toJde: number, observerLocation?: ObserverLocation): Conjunction[] {
+    const bodies = [JplBodyId.Moon, JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
+    return this.for(bodies, fromJde, toJde, SEPARATION_THRESHOLD, observerLocation);
   }
 
 };

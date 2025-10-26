@@ -10,24 +10,23 @@ export class Separations {
 
   readonly stateSolver: StateSolver;
 
-  readonly paralaxCorrection: ParalaxCorrection;
-
-  constructor(kernels: KernelsRepository) {
+  constructor(readonly kernels: KernelsRepository) {
     this.stateSolver = kernels.stateSolver();
-    this.paralaxCorrection = new ParalaxCorrection(kernels);
+
   }
 
-  static buildSeparationFunction(stateSolver: StateSolver, firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
+  buildSeparationFunction(firstBodyId: JplBodyId, secondBodyId: JplBodyId) {
     return (es: number): number => Radians.between(
-      stateSolver.position(firstBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords,
-      stateSolver.position(secondBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords
+      this.stateSolver.position(firstBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords,
+      this.stateSolver.position(secondBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords
     );
   }
 
-  static buildSeparationFunctionWithParalaxCorrection(stateSolver: StateSolver, paralaxCorrection: ParalaxCorrection, firstBodyId: JplBodyId, secondBodyId: JplBodyId, observerLocation: ObserverLocation) {
+  buildParalaxCorrectedSeparationFunction(firstBodyId: JplBodyId, secondBodyId: JplBodyId, observerLocation: ObserverLocation) {
+    const paralaxCorrection = new ParalaxCorrection(this.kernels);
     return (es: number): number => {
-      const firstBodyPosition = stateSolver.position(firstBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
-      const secondBodyPosition = stateSolver.position(secondBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
+      const firstBodyPosition = this.stateSolver.position(firstBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
+      const secondBodyPosition = this.stateSolver.position(secondBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
 
       const observerCoordinates = paralaxCorrection.observerPosition(observerLocation, es);
       const firstBodyObserverPosition = firstBodyPosition.subtract(observerCoordinates);
@@ -47,8 +46,8 @@ export class Separations {
 
   for(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromJde: number, toJde: number, interval: number, observerLocation?: ObserverLocation): Separation[] {
     const separationFunction = observerLocation
-      ? Separations.buildSeparationFunctionWithParalaxCorrection(this.stateSolver, this.paralaxCorrection, targetBodyId, observerBodyId, observerLocation)
-      : Separations.buildSeparationFunction(this.stateSolver, targetBodyId, observerBodyId);
+      ? this.buildParalaxCorrectedSeparationFunction(targetBodyId, observerBodyId, observerLocation)
+      : this.buildSeparationFunction(targetBodyId, observerBodyId);
     const fromEs = EphemerisSeconds.fromJde(fromJde);
     const toEs = EphemerisSeconds.fromJde(toJde);
     const itnervalEs = EphemerisSeconds.fromDays(interval);

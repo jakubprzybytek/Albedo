@@ -1,19 +1,29 @@
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from "@jpl/state";
-import { RectangularCoordinates } from "@astro/coords";
+import { ObserverLocation, RectangularCoordinates } from "@astro/coords";
 import { PositionInTime, StateInTime } from ".";
 import { KernelsRepository } from "@jpl/kernels";
+import { ParalaxCorrection } from "../paralaxCorrection/ParalaxCorrection";
 
 export class States {
 
   readonly stateSolver: StateSolver;
 
-  constructor(kernels: KernelsRepository) {
+  constructor(readonly kernels: KernelsRepository) {
     this.stateSolver = kernels.stateSolver();
   }
 
-  static buildPositionFunction(stateSolver: StateSolver, bodyId: JplBodyId) {
-    return (es: number) => stateSolver.position(bodyId, JplBodyId.Earth, es, CorrectionType.NONE).coords;
+  buildPositionFunction(bodyId: JplBodyId) {
+    return (es: number) => this.stateSolver.position(bodyId, JplBodyId.Earth, es, CorrectionType.NONE).coords;
+  }
+
+  buildParalaxCorrectedPositionFunction(bodyId: JplBodyId, correctionType: CorrectionType, observerLocation: ObserverLocation) {
+    const paralaxCorrection = new ParalaxCorrection(this.kernels);
+    return (es: number) => {
+      const uncorrectedPosition = this.stateSolver.position(bodyId, JplBodyId.Earth, es, correctionType).coords;
+      const observerCoordinates = paralaxCorrection.observerPosition(observerLocation, es);
+      return uncorrectedPosition.subtract(observerCoordinates);
+    }
   }
 
   position(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, correction: CorrectionType): RectangularCoordinates {

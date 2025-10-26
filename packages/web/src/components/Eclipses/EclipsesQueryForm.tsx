@@ -30,9 +30,11 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
       fromTde: fromTde ? format(fromTde, "yyyy-MM-dd'T'00:00'Z'") : '',
       toTde: toTde ? format(toTde, "yyyy-MM-dd'T'00:00'Z'") : '',
       ...(parallaxCorrectionEnabled && {
-        latitude,
-        longitude,
-        altitude
+        location: {
+          latitude,
+          longitude,
+          altitude
+        }
       }),
     });
   }

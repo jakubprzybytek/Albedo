@@ -1,31 +1,45 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
-import { mandatoryDate } from '../LambdaParams';
+import { mandatoryDate, optionalFloat } from '../LambdaParams';
 import { JulianDay } from '@astro';
 import { Conjunctions } from '@astro/scripts';
 import { kernels } from "@jpl/data/kernels.full";
 import { Conjunction } from ".";
+import { ObserverLocation } from "@astro/coords";
 
 type GetConjunctionsParams = {
   fromTde: Date;
   toTde: Date;
+  longitude?: number;
+  latitude: number | undefined;
+  altitude: number | undefined;
 }
 
 const parseGetConjunctionsParams: (event: APIGatewayProxyEventV2) => GetConjunctionsParams = (event: APIGatewayProxyEventV2) => ({
   fromTde: mandatoryDate(event, 'fromTde'),
   toTde: mandatoryDate(event, 'toTde'),
+  longitude: optionalFloat(event, 'longitude'),
+  latitude: optionalFloat(event, 'latitude'),
+  altitude: optionalFloat(event, 'altitude'),
 });
 
 export const handler = lambdaHandler<Conjunction[]>(event => {
-  const { fromTde, toTde } = parseGetConjunctionsParams(event);
+  const { fromTde, toTde, longitude, latitude, altitude } = parseGetConjunctionsParams(event);
 
   const fromJde = JulianDay.fromDateObject(fromTde);
   const toJde = JulianDay.fromDateObject(toTde);
 
-  console.log(`Compute conjunctions for between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})`);
-
   const conjunctionScripts = new Conjunctions(kernels);
-  const conjunctions = conjunctionScripts.all(fromJde, toJde);
+  const observerLocation: ObserverLocation | undefined = longitude !== undefined && latitude !== undefined && altitude !== undefined ? {
+    longitude,
+    latitude,
+    altitude
+  } : undefined;
+
+  console.log(`Compute conjunctions between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})` +
+    (observerLocation ? ` for observer at ${observerLocation.longitude}°, ${observerLocation.latitude}°, ${observerLocation.altitude}m` : ''));
+
+  const conjunctions = conjunctionScripts.all(fromJde, toJde, observerLocation);
 
   console.log(`Found ${conjunctions.length} conjunctions.`);
 
