@@ -3,7 +3,6 @@ import { localExtremums } from "@astro/math";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { createPairs } from '@astro/utils/Pairs';
 import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
-import { StateSolver } from '@jpl/state';
 import { KernelsRepository } from '@jpl/kernels';
 import { States, Separations, Ephemerides, timeProperties } from '@astro/scripts';
 import { Conjunction } from '.';
@@ -97,7 +96,7 @@ export class Conjunctions {
         .forEach(conjuction => conjuctions.push(conjuction));
     }
 
-    return conjuctions;
+    return conjuctions.sort((a, b) => a.es - b.es);
   }
 
   all(fromJde: number, toJde: number, observerLocation?: ObserverLocation): Conjunction[] {

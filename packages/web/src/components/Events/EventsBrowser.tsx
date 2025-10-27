@@ -63,7 +63,8 @@ export default function EventsBrowser(): JSX.Element {
     const fetchCData = async () => {
       const query: ConjunctionsQuery = {
         fromTde: format(new Date(), 'yyyy-MM-dd'),
-        toTde: format(addMonths(new Date(), 6), 'yyyy-MM-dd'),
+        toTde: format(addMonths(new Date(), 12), 'yyyy-MM-dd'),
+        location: profile.location
       };
       const conjunctions = await getConjunctions(query);
       setConjunctions(conjunctions);
