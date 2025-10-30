@@ -7,11 +7,12 @@ import Checkbox from "@mui/material/Checkbox";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { addMonths, format, set } from 'date-fns';
 import QueryPanel from "@/forms/QueryPanel";
+import ObserverLocationFields from "@/components/commons/ObserverLocationFields";
+import QuerySubmit from "@/forms/QuerySubmit";
 import type { ManagedQuery } from "@/forms/useQuery";
 import type { SeparationsQuery } from "@/sdk/Separations";
 import { useValidation } from "@/forms";
-import QuerySubmit from "@/forms/QuerySubmit";
-import NumberField from "@/forms/NumberField";
+import type { Location } from "@/common/Profile";
 
 type SeparationsQueryFormParams = {
   query: ManagedQuery<SeparationsQuery>;
@@ -23,10 +24,12 @@ export default function SeparationsQueryForm({ query }: SeparationsQueryFormPara
   const [fromTde, setFromTde] = useState<Date | null>(set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }));
   const [toTde, setToTde] = useState<Date | null>(addMonths(set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }), 1));
   const [interval, setInterval] = useState(1);
+  const [observerLocation, setObserverLocation] = useState<Location>({
+    latitude: 51,
+    longitude: 17,
+    altitude: 50
+  });
   const [parallaxCorrectionEnabled, setParallaxCorrectionEnabled] = useState(false);
-  const [longitude, setLongitude] = useState(17);
-  const [latitude, setLatitude] = useState(51);
-  const [altitude, setAltitude] = useState(50);
 
   const { updateValidation, isValid } = useValidation();
 
@@ -37,11 +40,7 @@ export default function SeparationsQueryForm({ query }: SeparationsQueryFormPara
       fromTde: fromTde ? format(fromTde, "yyyy-MM-dd'T'HH:mm'Z'") : '',
       toTde: toTde ? format(toTde, "yyyy-MM-dd'T'HH:mm'Z'") : '',
       interval,
-      ...(parallaxCorrectionEnabled && {
-        longitude,
-        latitude,
-        altitude
-      }),
+      ...(parallaxCorrectionEnabled && { location: observerLocation }),
     });
   }
 
@@ -85,36 +84,19 @@ export default function SeparationsQueryForm({ query }: SeparationsQueryFormPara
               }}
             />
           </Grid>
-        </Grid>
-        <Grid container rowSpacing={1} columnSpacing={1}>
           <Grid size={12}>
             <FormControlLabel control={<Checkbox size="small" sx={{ paddingTop: 0, paddingBottom: 0 }}
               checked={parallaxCorrectionEnabled}
               onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
           </Grid>
-          <Grid size={{ xs: 4, sm: 3 }}>
-            <NumberField label="Latitude (N)" startAdornment="°"
-              disabled={!parallaxCorrectionEnabled}
-              value={latitude} onChange={setLatitude}
-              validationUpdate={updateValidation('latitude')} />
-          </Grid>
-          <Grid size={{ xs: 4, sm: 3 }}>
-            <NumberField label="Longitude (E)" startAdornment="°"
-              disabled={!parallaxCorrectionEnabled}
-              value={longitude} onChange={setLongitude}
-              validationUpdate={updateValidation('longitude')} />
-          </Grid>
-          <Grid size={{ xs: 4, sm: 3 }}>
-            <NumberField label="Altitude" startAdornment="m"
-              disabled={!parallaxCorrectionEnabled}
-              value={altitude} onChange={setAltitude}
-              validationUpdate={updateValidation('altitude')} />
-          </Grid>
-          <QuerySubmit loading={query.loading} disabled={!isValid()}
-            success={query.successMessage}
-            error={query.errorMessage}
-            onSubmit={handleSubmit} />
+          <ObserverLocationFields disabled={!parallaxCorrectionEnabled}
+            onChanged={setObserverLocation}
+            updateValidation={updateValidation} />
         </Grid>
+        <QuerySubmit loading={query.loading} disabled={!isValid()}
+          success={query.successMessage}
+          error={query.errorMessage}
+          onSubmit={handleSubmit} />
       </Stack>
     </QueryPanel>
   );

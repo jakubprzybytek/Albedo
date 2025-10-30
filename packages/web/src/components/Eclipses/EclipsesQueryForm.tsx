@@ -9,7 +9,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
 import type { EclipsesQuery } from "@/sdk/Eclipses";
 import { type ManagedQuery, useValidation } from "@/forms";
-import NumberField from "@/forms/NumberField";
+import ObserverLocationFields from "../commons/ObserverLocationFields";
+import type { Location } from "@/common/Profile";
 
 type EclipsesQueryFormParams = {
   query: ManagedQuery<EclipsesQuery>;
@@ -19,9 +20,11 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
   const [fromTde, setFromTde] = useState<Date | null>(new Date());
   const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 6));
   const [parallaxCorrectionEnabled, setParallaxCorrectionEnabled] = useState(false);
-  const [latitude, setLatitude] = useState(51);
-  const [longitude, setLongitude] = useState(17);
-  const [altitude, setAltitude] = useState(50);
+  const [observerLocation, setObserverLocation] = useState<Location>({
+    latitude: 51,
+    longitude: 17,
+    altitude: 50
+  });
 
   const { updateValidation, isValid } = useValidation();
 
@@ -29,13 +32,7 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
     query.submit({
       fromTde: fromTde ? format(fromTde, "yyyy-MM-dd'T'00:00'Z'") : '',
       toTde: toTde ? format(toTde, "yyyy-MM-dd'T'00:00'Z'") : '',
-      ...(parallaxCorrectionEnabled && {
-        location: {
-          latitude,
-          longitude,
-          altitude
-        }
-      }),
+      ...(parallaxCorrectionEnabled && { location: observerLocation }),
     });
   }
 
@@ -59,26 +56,9 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
               checked={parallaxCorrectionEnabled}
               onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
           </Grid>
-          <Grid size={{ xs: 4, sm: 3 }}>
-            <NumberField label="Latitude (N)" startAdornment="°"
-              disabled={!parallaxCorrectionEnabled}
-              value={latitude} onChange={setLatitude}
-              validationUpdate={updateValidation('latitude')}
-            />
-          </Grid>
-          <Grid size={{ xs: 4, sm: 3 }}>
-            <NumberField label="Longitude (E)" startAdornment="°"
-              disabled={!parallaxCorrectionEnabled}
-              value={longitude} onChange={setLongitude}
-              validationUpdate={updateValidation('longitude')}
-            />
-          </Grid>
-          <Grid size={{ xs: 4, sm: 3 }}>
-            <NumberField label="Altitude" startAdornment="m"
-              disabled={!parallaxCorrectionEnabled}
-              value={altitude} onChange={setAltitude}
-              validationUpdate={updateValidation('altitude')} />
-          </Grid>
+          <ObserverLocationFields disabled={!parallaxCorrectionEnabled}
+            onChanged={setObserverLocation}
+            updateValidation={updateValidation} />
         </Grid>
       </Stack>
       <QuerySubmit loading={query.loading} disabled={!isValid()}

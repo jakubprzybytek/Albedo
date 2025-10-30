@@ -1,4 +1,4 @@
-import type { Profile } from ".";
+import type { Profile } from "@/common/Profile";
 
 const PROFILE_STORAGE_KEY = 'profile';
 
@@ -15,7 +15,7 @@ export function useProfile(): [Profile, (updatedProfile: Profile) => void] {
     const storedProfile = window.sessionStorage.getItem(PROFILE_STORAGE_KEY);
 
     if (storedProfile === null) {
-
+        // not implemented yet
     }
 
     const profile = storedProfile ? JSON.parse(storedProfile) as Profile : DEFAULT_PROFILE;

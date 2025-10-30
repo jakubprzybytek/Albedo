@@ -9,7 +9,7 @@ type NumberFieldParams = {
   value: number;
   validateValue?: (value: number) => boolean,
   validationErrorMessage?: string,
-  onChange: Dispatch<SetStateAction<number>>;
+  onChange: (value: number) => void;
   validationUpdate: (valid: boolean) => void;
 };
 

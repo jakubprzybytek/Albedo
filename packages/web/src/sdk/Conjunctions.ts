@@ -19,8 +19,7 @@ export default async function getConjunctions(query: ConjunctionsQuery): Promise
       latitude: query.location.latitude.toString(),
       longitude: query.location.longitude.toString(),
       altitude: query.location.altitude.toString(),
-    }
-    )
+    })
   };
 
   const { body } = await get({
@@ -28,6 +27,6 @@ export default async function getConjunctions(query: ConjunctionsQuery): Promise
     path: path + '?' + new URLSearchParams(searchParams).toString(),
   }).response;
 
-  const bodyJson = await body.json() as any;
+  const bodyJson = await body.json() as unknown;
   return bodyJson as Conjunction[];
 }

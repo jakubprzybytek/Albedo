@@ -1,16 +1,17 @@
 import { useState, type JSX } from "react";
+import Stack from "@mui/material/Stack";
 import Grid from '@mui/material/Grid';
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
 import type { ConjunctionsQuery } from "@/sdk/Conjunctions";
 import type { ManagedQuery } from "@/forms/useQuery";
 import QueryPanel from "@/forms/QueryPanel";
 import QuerySubmit from "@/forms/QuerySubmit";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import NumberField from "@/forms/NumberField";
 import { useValidation } from "@/forms";
-import Stack from "@mui/material/Stack";
+import ObserverLocationFields from "@/components/commons/ObserverLocationFields";
+import type { Location } from "@/common/Profile";
 
 type ConjunctionsQueryFormParams = {
   query: ManagedQuery<ConjunctionsQuery>;
@@ -19,10 +20,12 @@ type ConjunctionsQueryFormParams = {
 export default function ConjunctionsQueryForm({ query }: ConjunctionsQueryFormParams): JSX.Element {
   const [fromTde, setFromTde] = useState<Date | null>(new Date());
   const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 6));
+  const [observerLocation, setObserverLocation] = useState<Location>({
+    latitude: 51,
+    longitude: 17,
+    altitude: 50
+  });
   const [parallaxCorrectionEnabled, setParallaxCorrectionEnabled] = useState(false);
-  const [latitude, setLatitude] = useState(51);
-  const [longitude, setLongitude] = useState(17);
-  const [altitude, setAltitude] = useState(50);
 
   const { updateValidation, isValid } = useValidation();
 
@@ -30,20 +33,13 @@ export default function ConjunctionsQueryForm({ query }: ConjunctionsQueryFormPa
     query.submit({
       fromTde: fromTde ? format(fromTde, 'yyyy-MM-dd') : '',
       toTde: toTde ? format(toTde, 'yyyy-MM-dd') : '',
-      ...(parallaxCorrectionEnabled && {
-        location: {
-          latitude,
-          longitude,
-          altitude
-        }
-      })
+      ...(parallaxCorrectionEnabled && { location: observerLocation })
     });
   }
 
   return (
     <QueryPanel>
       <Stack spacing={1}>
-
         <Grid container columnSpacing={1}>
           <Grid size={{ xs: 6, sm: 4 }}>
             <DatePicker label="From (TDE)" sx={{ '& > div': { height: 40 } }}
@@ -61,26 +57,9 @@ export default function ConjunctionsQueryForm({ query }: ConjunctionsQueryFormPa
               checked={parallaxCorrectionEnabled}
               onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
           </Grid>
-          <Grid size={{ xs: 4, sm: 3 }}>
-            <NumberField label="Latitude (N)" startAdornment="°"
-              disabled={!parallaxCorrectionEnabled}
-              value={latitude} onChange={setLatitude}
-              validationUpdate={updateValidation('latitude')}
-            />
-          </Grid>
-          <Grid size={{ xs: 4, sm: 3 }}>
-            <NumberField label="Longitude (E)" startAdornment="°"
-              disabled={!parallaxCorrectionEnabled}
-              value={longitude} onChange={setLongitude}
-              validationUpdate={updateValidation('longitude')}
-            />
-          </Grid>
-          <Grid size={{ xs: 4, sm: 3 }}>
-            <NumberField label="Altitude" startAdornment="m"
-              disabled={!parallaxCorrectionEnabled}
-              value={altitude} onChange={setAltitude}
-              validationUpdate={updateValidation('altitude')} />
-          </Grid>
+          <ObserverLocationFields disabled={!parallaxCorrectionEnabled}
+            onChanged={setObserverLocation}
+            updateValidation={updateValidation} />
         </Grid>
         <QuerySubmit loading={query.loading} disabled={!isValid()}
           success={query.successMessage} error={query.errorMessage}

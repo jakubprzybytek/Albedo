@@ -67,7 +67,7 @@ export default function ProfileDialog(): JSX.Element {
           <NumberField label="Altitude" startAdornment="m"
             value={altitude} onChange={setAltitude}
             validateValue={(value: number) => value >= 0}
-            validationErrorMessage='Provide number greater or equal 0'
+            validationErrorMessage='Provide number greater than or equal 0'
             validationUpdate={updateValidation('altitude')} />
         </Grid>
         <Grid container size={12} justifyContent="space-between">

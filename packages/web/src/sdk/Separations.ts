@@ -1,5 +1,6 @@
 import { get } from "aws-amplify/api";
 import type { Separation } from '@lambda/separations';
+import type { Location } from "@/components/Profile";
 
 export type { Separation };
 
@@ -9,13 +10,22 @@ export type SeparationsQuery = {
     fromTde: string;
     toTde: string;
     interval: number;
+    location?: Location;
 };
 
 export default async function getSeparations(query: SeparationsQuery): Promise<Separation[]> {
     const path = '/api/separations';
     const params = {
-        ...query,
+        target: query.target,
+        observer: query.observer,
+        fromTde: query.fromTde,
+        toTde: query.toTde,
         interval: String(query.interval),
+        ...(query.location && {
+            latitude: query.location.latitude.toString(),
+            longitude: query.location.longitude.toString(),
+            altitude: query.location.altitude.toString(),
+        })
     };
 
     const { body } = await get({
@@ -23,6 +33,7 @@ export default async function getSeparations(query: SeparationsQuery): Promise<S
         path: path + '?' + new URLSearchParams(params).toString(),
     }).response;
 
-    const bodyJson = await body.json() as any;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const bodyJson = await body.json() as unknown;
     return bodyJson as Separation[];
 }
