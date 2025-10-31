@@ -10,9 +10,9 @@ import { formatDegrees } from '@/utils';
 import type { DetailedEphemeris } from '@/sdk/Ephemerides';
 
 type TooltipProps = {
-  active: boolean;
-  payload: any[];
-  label: string;
+  active?: boolean;
+  payload?: any[];
+  label?: string;
 }
 
 const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
@@ -23,7 +23,11 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
         <CardContent sx={{ bp: 0 }}>
           {/* <Typography gutterBottom>{format(label, 'yyyy-MM-dd HH:mm:ss')}</Typography> */}
           <Typography gutterBottom>{label}</Typography>
-          <Typography color={payload[0].color}>{payload[0].name}: {formatDegrees(payload[0].value)}</Typography>
+          {payload.map((entry, index) => (
+            <Typography key={index} color={entry.color}>
+              {entry.name}: {formatDegrees(entry.value)}
+            </Typography>
+          ))}
           {/* <Typography>{JSON.stringify(payload)}</Typography> */}
         </CardContent>
       )}
@@ -31,21 +35,23 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
   );
 };
 
-type AngularSizeChartPropsType = {
+type EphemerisChartsPropsType = {
   ephemeris: DetailedEphemeris[];
 }
 
-export default function AngularSizeChart({ ephemeris }: AngularSizeChartPropsType): JSX.Element {
+export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType): JSX.Element {
   const theme = useTheme();
 
   return (
     <Box sx={{ aspectRatio: { xs: '1', sm: '2' }, maxHeight: '70vh' }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={ephemeris} margin={{ left: 30 }}>
-          <XAxis dataKey="tde" tick={<DateAxisTick />} />
-          <YAxis width={30} />
+        <LineChart data={ephemeris} margin={{ left: 30, right: 30 }}>
+          <XAxis dataKey="tde" tick={DateAxisTick} />
+          <YAxis yAxisId="left" width={30} label={{ value: 'Angular Size (°)', angle: -90, position: 'insideLeft' }} />
+          <YAxis yAxisId="right" orientation="right" width={30} label={{ value: 'Declination (°)', angle: 90, position: 'insideRight' }} />
           <Tooltip content={<CustomTooltip />} />
-          <Line type="monotone" name="Angular Size" dataKey="angularSizeDeg" stroke="#8884d8" />
+          <Line yAxisId="left" type="monotone" name="Angular Size" dataKey="angularSizeDeg" stroke="#8884d8" />
+          <Line yAxisId="right" type="monotone" name="Declination" dataKey="coords.declination" stroke="#82ca9d" />
         </LineChart>
       </ResponsiveContainer>
     </Box>

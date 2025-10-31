@@ -8,7 +8,7 @@ import useQuery from "@/forms/useQuery";
 import getEphemerides, { type EphemeridesQuery, type DetailedEphemeris } from "@/sdk/Ephemerides";
 import EphemerisQueryForm from './EphemerisQueryForm';
 import EphemerisTable from './EphemerisTable';
-import AngularSizeChart from "./AngularSizeChart";
+import EphemerisCharts from "./EphemerisCharts";
 
 export default function StatesBrowser(): JSX.Element {
   const [openedTab, setOpenedTab] = useState(0);
@@ -27,14 +27,14 @@ export default function StatesBrowser(): JSX.Element {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={openedTab} onChange={(event, newValue) => setOpenedTab(newValue)}>
             <Tab label="Table" />
-            <Tab label="Chart" />
+            <Tab label="Charts" />
           </Tabs>
         </Box>
         <TabPanel value={openedTab} index={0}>
           <EphemerisTable ephemerides={ephemerides} />
         </TabPanel>
         <TabPanel value={openedTab} index={1}>
-          <AngularSizeChart ephemeris={ephemerides} />
+          <EphemerisCharts ephemeris={ephemerides} />
         </TabPanel>
       </Box>
     </Stack>
