@@ -57,6 +57,7 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
               onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
           </Grid>
           <ObserverLocationFields disabled={!parallaxCorrectionEnabled}
+            location={observerLocation}
             onChanged={setObserverLocation}
             updateValidation={updateValidation} />
         </Grid>

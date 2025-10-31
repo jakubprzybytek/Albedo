@@ -58,6 +58,7 @@ export default function ConjunctionsQueryForm({ query }: ConjunctionsQueryFormPa
               onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
           </Grid>
           <ObserverLocationFields disabled={!parallaxCorrectionEnabled}
+            location={observerLocation}
             onChanged={setObserverLocation}
             updateValidation={updateValidation} />
         </Grid>

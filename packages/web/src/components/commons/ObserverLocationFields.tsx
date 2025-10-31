@@ -1,26 +1,27 @@
-import { useEffect, useState, type Dispatch, type JSX } from "react";
+import type { JSX } from "react";
 import Grid from '@mui/material/Grid';
 import NumberField from "@/forms/NumberField";
 import type { Location } from "@/common/Profile";
 
 type ObserverLocationFieldsParams = {
   disabled: boolean;
+  location: Location;
   onChanged: (updatedObserverLocation: Location) => void;
   updateValidation: (field: string) => (valid: boolean) => void;
 };
 
-export default function ObserverLocationFields({ onChanged, updateValidation, disabled }: ObserverLocationFieldsParams): JSX.Element {
-  const [latitude, setLatitude] = useState(51);
-  const [longitude, setLongitude] = useState(17);
-  const [altitude, setAltitude] = useState(50);
+export default function ObserverLocationFields({ onChanged, updateValidation, disabled, location }: ObserverLocationFieldsParams): JSX.Element {
+  const handleLatitudeChange = (latitude: number) => {
+    onChanged({ ...location, latitude });
+  };
 
-  useEffect(() => {
-    onChanged({
-      latitude,
-      longitude,
-      altitude
-    });
-  }, [latitude, longitude, altitude]);
+  const handleLongitudeChange = (longitude: number) => {
+    onChanged({ ...location, longitude });
+  };
+
+  const handleAltitudeChange = (altitude: number) => {
+    onChanged({ ...location, altitude });
+  };
 
   return (
     <>
@@ -30,7 +31,7 @@ export default function ObserverLocationFields({ onChanged, updateValidation, di
           validateValue={(value: number) => value >= -90 && value <= 90}
           validationErrorMessage='Provide number between -90 and 90'
           validationUpdate={updateValidation('latitude')}
-          value={latitude} onChange={setLatitude}
+          value={location.latitude} onChange={handleLatitudeChange}
         />
       </Grid>
       <Grid size={{ xs: 4, sm: 3 }}>
@@ -39,7 +40,7 @@ export default function ObserverLocationFields({ onChanged, updateValidation, di
           validateValue={(value: number) => value >= -180 && value <= 180}
           validationErrorMessage='Provide number between -180 and 180'
           validationUpdate={updateValidation('longitude')}
-          value={longitude} onChange={setLongitude}
+          value={location.longitude} onChange={handleLongitudeChange}
         />
       </Grid>
       <Grid size={{ xs: 4, sm: 3 }}>
@@ -48,7 +49,7 @@ export default function ObserverLocationFields({ onChanged, updateValidation, di
           validateValue={(value: number) => value >= 0}
           validationErrorMessage='Provide number greater than or equal 0'
           validationUpdate={updateValidation('altitude')}
-          value={altitude} onChange={setAltitude}
+          value={location.altitude} onChange={handleAltitudeChange}
         />
       </Grid>
     </>
