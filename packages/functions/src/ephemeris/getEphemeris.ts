@@ -2,7 +2,7 @@ import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '@astro';
-import { Ephemerides, Ephemeris } from '@astro/scripts';
+import { DetailedEphemeris, Ephemerides } from '@astro/scripts';
 import { JplBody, JplBodyId } from '@jpl';
 import { kernels } from "@jpl/data/kernels.full";
 
@@ -20,7 +20,7 @@ const parseGetEphemerisParams: (event: APIGatewayProxyEventV2) => GetEphemerides
     interval: mandatoryFloat(event, 'interval')
 });
 
-export const handler = lambdaHandler<Ephemeris[]>(event => {
+export const handler = lambdaHandler<DetailedEphemeris[]>(event => {
     const { target, fromTde, toTde, interval } = parseGetEphemerisParams(event);
 
     if (target.id === JplBodyId.Earth) {
@@ -33,7 +33,7 @@ export const handler = lambdaHandler<Ephemeris[]>(event => {
     console.log(`Compute ephemerides for '${target.name}' between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde}) in interval of ${interval} day(s)`);
 
     const ephemerisScripts = new Ephemerides(kernels);
-    const ephemerides = ephemerisScripts.simple(target.id, fromJde, toJde, interval);
+    const ephemerides = ephemerisScripts.computeEphemerides(target.id, fromJde, toJde, interval);
 
     return Success(ephemerides);
 });

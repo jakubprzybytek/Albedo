@@ -38,6 +38,13 @@ export class States {
       }));
   }
 
+  state(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, correction: CorrectionType): StateInTime {
+    return {
+      es,
+      ...this.stateSolver.state(targetBodyId, observerBodyId, es, correction)
+    };
+  }
+
   states(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromEs: number, toEs: number, intervalEs: number, correction: CorrectionType): StateInTime[] {
     return EphemerisSeconds.forRange(fromEs, toEs, intervalEs)
       .map<StateInTime>(es => ({

@@ -29,7 +29,7 @@ describe("Ephemerides", () => {
 
   it("should compute simple ephemeis for Venus", () => {
     const jde = JulianDay.fromDate(2019, 10, 10);
-    const ephemeris = ephemerisScripts.simple(JplBodyId.Venus, jde, jde, 1);
+    const ephemeris = ephemerisScripts.computeEphemerides(JplBodyId.Venus, jde, jde, 1);
 
     const { coords, ...mainProperties } = ephemeris[0];
 

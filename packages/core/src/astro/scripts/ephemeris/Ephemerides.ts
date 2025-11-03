@@ -34,7 +34,7 @@ export class Ephemerides {
     }
   }
 
-  simple(tagetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): DetailedEphemeris[] {
+  computeEphemerides(tagetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): DetailedEphemeris[] {
     const fromEs = EphemerisSeconds.fromJde(fromJde);
     const toEs = EphemerisSeconds.fromJde(toJde);
     const itnervalEs = EphemerisSeconds.fromDays(interval);
