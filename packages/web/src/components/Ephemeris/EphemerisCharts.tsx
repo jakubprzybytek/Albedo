@@ -51,7 +51,7 @@ export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType)
   // Transform data to convert angular size from degrees to arc minutes
   const chartData = ephemeris.map(item => ({
     ...item,
-    angularSizeArcMin: item.angularSizeDeg * 60
+    angularSizeArcMin: item.angularSize * 60
   }));
 
   return (

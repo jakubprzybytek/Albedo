@@ -23,14 +23,14 @@ describe("Conjunctions", () => {
       firstBody: {
         info: jplBodyFromString('Mars') as JplBody,
         ephemeris: {
-          angularSizeDeg: 0.0013116147848169807,
+          angularSize: 0.00002289199651289324,
           coords: new AstronomicalCoordinates(6.268531423986194, -0.030433985916438734)
         }
       },
       secondBody: {
         info: jplBodyFromString('Neptune') as JplBody,
         ephemeris: {
-          angularSizeDeg: 0.0006187061624942599,
+          angularSize: 0.000010798459637903887,
           coords: new AstronomicalCoordinates(6.268292723456754, -0.02988462206159836)
         }
       },

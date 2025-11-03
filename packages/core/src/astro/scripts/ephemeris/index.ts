@@ -4,7 +4,7 @@ export * from './Ephemerides';
 
 export type DetailedCoordinates = {
     coords: AstronomicalCoordinates;
-    angularSizeDeg: number;
+    angularSize: number;
 }
 
 export type Ephemeris = {
@@ -15,5 +15,5 @@ export type Ephemeris = {
 };
 
 export type DetailedEphemeris = Ephemeris & {
-    angularSizeDeg: number;
+    angularSize: number;
 };

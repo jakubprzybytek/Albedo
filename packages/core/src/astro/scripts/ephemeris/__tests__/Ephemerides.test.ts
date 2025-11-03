@@ -24,7 +24,7 @@ describe("Ephemerides", () => {
     expect(Radians.toDegrees(ephemeris.coords.rightAscension)).approximately(209.39848483, 3e-9);
     expect(Radians.toDegrees(ephemeris.coords.declination)).toBeCloseTo(-11.36105059, 0);
 
-    expect(Radians.toDegrees(ephemeris.angularSizeDeg)).toEqual(0.16206301512330895);
+    expect(Radians.toDegrees(ephemeris.angularSize)).toEqual(0.002828533209611105);
   });
 
   it("should compute simple ephemeis for Venus", () => {
@@ -37,7 +37,7 @@ describe("Ephemerides", () => {
       es: 623937600,
       jde: 2458766.5,
       tde: new Date('2019-10-10T00:00:00.000Z'),
-      angularSizeDeg: 0.002828533209611105
+      angularSize: 0.0000493672175097167
     } as Omit<DetailedEphemeris, 'coords'>);
 
     expect(Radians.toDegrees(coords.rightAscension)).approximately(209.39848483, 3e-9);

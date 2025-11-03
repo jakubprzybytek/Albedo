@@ -46,7 +46,7 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
                 <AstronomicalCoords coords={ephemeris.coords} />
               </TableCell>
               <TableCell align="right">
-                <Angle value={ephemeris.angularSizeDeg} />
+                <Angle value={ephemeris.angularSize} />
               </TableCell>
             </TableRow>
           ))}

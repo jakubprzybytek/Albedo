@@ -30,7 +30,7 @@ export class Ephemerides {
 
     return {
       coords: AstronomicalCoordinates.fromRectangular(position),
-      angularSizeDeg: Radians.toDegrees(angularSize)
+      angularSize
     }
   }
 
