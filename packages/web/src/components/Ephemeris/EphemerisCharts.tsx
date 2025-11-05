@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import DateAxisTick from '@/common/charts/DateAxisTick';
@@ -44,6 +45,9 @@ type EphemerisChartsPropsType = {
 
 export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType): JSX.Element {
   const theme = useTheme();
+  
+  // State to track which series are visible
+  const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
 
   // Determine whether to use arc minutes or arc seconds based on first value
   const firstAngularSize = ephemeris[0]?.angularSize ?? 0;
@@ -58,6 +62,20 @@ export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType)
     angularSizeConverted: item.angularSize * conversionFactor
   }));
 
+  // Handler for legend click to toggle series visibility
+  const handleLegendClick = (data: any) => {
+    const dataKey = data.dataKey;
+    setHiddenSeries(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(dataKey)) {
+        newSet.delete(dataKey);
+      } else {
+        newSet.add(dataKey);
+      }
+      return newSet;
+    });
+  };
+
   return (
     <Box sx={{ aspectRatio: { xs: '1', sm: '2' }, maxHeight: '70vh' }}>
       <ResponsiveContainer width="100%" height="100%">
@@ -66,9 +84,9 @@ export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType)
           <YAxis yAxisId="left" width={30} domain={['auto', 'auto']} label={{ value: `Angular Size (${unitSymbol})`, angle: -90, position: 'insideLeft' }} />
           <YAxis yAxisId="right" orientation="right" width={30} label={{ value: 'Declination (°)', angle: 90, position: 'insideRight' }} />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Line yAxisId="left" type="monotone" name={`Angular Size (${unitName})`} dataKey="angularSizeConverted" stroke="#8884d8" />
-          <Line yAxisId="right" type="monotone" name="Declination" dataKey="coords.declination" stroke="#82ca9d" />
+          <Legend onClick={handleLegendClick} wrapperStyle={{ cursor: 'pointer' }} />
+          <Line yAxisId="left" type="monotone" name={`Angular Size (${unitName})`} dataKey="angularSizeConverted" stroke="#8884d8" hide={hiddenSeries.has('angularSizeConverted')} />
+          <Line yAxisId="right" type="monotone" name="Declination" dataKey="coords.declination" stroke="#82ca9d" hide={hiddenSeries.has('coords.declination')} />
         </LineChart>
       </ResponsiveContainer>
     </Box>
