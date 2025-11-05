@@ -5,7 +5,7 @@ import DateAxisTick from '@/common/charts/DateAxisTick';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { formatDegrees } from '@/utils';
 import type { DetailedEphemeris } from '@/sdk/Ephemerides';
 
@@ -66,6 +66,7 @@ export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType)
           <YAxis yAxisId="left" width={30} domain={['auto', 'auto']} label={{ value: `Angular Size (${unitSymbol})`, angle: -90, position: 'insideLeft' }} />
           <YAxis yAxisId="right" orientation="right" width={30} label={{ value: 'Declination (°)', angle: 90, position: 'insideRight' }} />
           <Tooltip content={<CustomTooltip />} />
+          <Legend />
           <Line yAxisId="left" type="monotone" name={`Angular Size (${unitName})`} dataKey="angularSizeConverted" stroke="#8884d8" />
           <Line yAxisId="right" type="monotone" name="Declination" dataKey="coords.declination" stroke="#82ca9d" />
         </LineChart>
