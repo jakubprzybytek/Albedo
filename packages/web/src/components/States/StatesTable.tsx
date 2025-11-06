@@ -10,8 +10,7 @@ import Paper from '@mui/material/Paper';
 import { formatDuration, intervalToDuration } from 'date-fns';
 import { RectangularCoordinates } from "@astro/coords";
 import type { StateResult } from '@/sdk/States';
-
-const decimalFormat = new Intl.NumberFormat('pl-PL')
+import { decimalFormat } from '@/utils';
 
 type VectoryDisplayPropsType = {
   coords: RectangularCoordinates;

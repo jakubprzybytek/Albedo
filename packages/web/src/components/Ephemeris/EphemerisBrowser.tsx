@@ -5,7 +5,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@/common/tabs/TabPanel";
 import useQuery from "@/forms/useQuery";
-import getEphemerides, { type EphemeridesQuery, type DetailedEphemeris } from "@/sdk/Ephemerides";
+import getEphemerides, { type EphemeridesQuery, type EphemerisWithVelocity } from "@/sdk/Ephemerides";
 import EphemerisQueryForm from './EphemerisQueryForm';
 import EphemerisTable from './EphemerisTable';
 import EphemerisCharts from "./EphemerisCharts";
@@ -13,8 +13,8 @@ import EphemerisCharts from "./EphemerisCharts";
 export default function StatesBrowser(): JSX.Element {
   const [openedTab, setOpenedTab] = useState(0);
 
-  const [ephemerides, setEphemerides] = useState<DetailedEphemeris[]>([]);
-  const query = useQuery<EphemeridesQuery, DetailedEphemeris[]>(fetchData, setEphemerides);
+  const [ephemerides, setEphemerides] = useState<EphemerisWithVelocity[]>([]);
+  const query = useQuery<EphemeridesQuery, EphemerisWithVelocity[]>(fetchData, setEphemerides);
 
   async function fetchData(params: EphemeridesQuery) {
     return await getEphemerides(params);

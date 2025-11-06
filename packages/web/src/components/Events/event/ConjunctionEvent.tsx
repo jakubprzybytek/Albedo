@@ -30,7 +30,7 @@ export default function ConjunctionEvent({ conjunction, expanded }: ConjunctionE
           </Typography>
           <Box sx={{ display: expanded ? 'block' : 'none' }}>
             <Typography>
-              <BodyChip bodyId={conjunction.firstBody.info.id} /> angular size: <Angle value={conjunction.firstBody.ephemeris.angularSizeDeg} />. <BodyChip bodyId={conjunction.secondBody.info.id} /> angular size: <Angle value={conjunction.secondBody.ephemeris.angularSizeDeg} />.
+              <BodyChip bodyId={conjunction.firstBody.info.id} /> angular size: <Angle value={conjunction.firstBody.ephemeris.angularSize} />. <BodyChip bodyId={conjunction.secondBody.info.id} /> angular size: <Angle value={conjunction.secondBody.ephemeris.angularSize} />.
             </Typography>
           </Box>
         </Stack>

@@ -37,6 +37,7 @@ describe("Ephemerides", () => {
       es: 623937600,
       jde: 2458766.5,
       tde: new Date('2019-10-10T00:00:00.000Z'),
+      range: 245174846.9550577,
       angularSize: 0.0000493672175097167
     } as Omit<DetailedEphemeris, 'coords'>);
 

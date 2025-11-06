@@ -8,8 +8,8 @@ export enum EclipseType {
 
 export type EarthShadowCoordinates = {
   coords: AstronomicalCoordinates;
-  umbraAngularSizeDeg: number;
-  penumbraAngularSizeDeg: number;
+  umbraAngularSize: number;
+  penumbraAngularSize: number;
 }
 
 export type CommonEclipseProperties = {

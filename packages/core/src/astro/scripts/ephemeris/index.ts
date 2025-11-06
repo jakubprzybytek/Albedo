@@ -5,15 +5,22 @@ export * from './Ephemerides';
 export type DetailedCoordinates = {
     coords: AstronomicalCoordinates;
     angularSize: number;
+    range: number;
 }
 
-export type Ephemeris = {
+export type DetailedCoordinatesWithVelocity = DetailedCoordinates & {
+    velocity: AstronomicalCoordinates;
+}
+
+export type DetailedEphemeris = {
     es: number;
     jde: number;
     tde: Date;
     coords: AstronomicalCoordinates;
+    angularSize: number;
+    range: number;
 };
 
-export type DetailedEphemeris = Ephemeris & {
-    angularSize: number;
+export type EphemerisWithVelocity = DetailedEphemeris & {
+    velocity: AstronomicalCoordinates;
 };

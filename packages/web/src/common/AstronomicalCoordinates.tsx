@@ -2,15 +2,41 @@ import type { JSX } from "react";
 import { AstronomicalCoordinates } from "@astro/coords";
 import { formatHourAngle, formatDegrees } from '../utils';
 
+type FormatMode = 'standard' | 'compact' | 'scientific';
+
 type AstronomicalCoordsPropsType = {
-    coords: AstronomicalCoordinates;
+  coords: AstronomicalCoordinates;
+  format?: FormatMode; // Formatting mode: 'standard' (default), 'compact' for decimal, 'scientific' for scientific notation
 }
 
-export default function AstronomicalCoords({ coords }: AstronomicalCoordsPropsType): JSX.Element {
+export default function AstronomicalCoords({ coords, format }: AstronomicalCoordsPropsType): JSX.Element {
+  // Handle backwards compatibility with compact boolean
+
+  if (format === 'scientific') {
+    // Scientific notation format for very small numbers
     return (
-        <>
-            <div>R.A.: {formatHourAngle(coords.rightAscension)} ({coords.rightAscension.toFixed(6)}°)</div>
-            <div>Dec.: {formatDegrees(coords.declination)} ({coords.declination.toFixed(6)}°)</div>
-        </>
+      <>
+        <div>R.A.: {coords.rightAscension.toExponential(6)}°</div>
+        <div>Dec.: {coords.declination.toExponential(6)}°</div>
+      </>
     );
+  }
+
+  if (format === 'compact') {
+    // Compact format suitable for small numbers like velocities
+    return (
+      <>
+        <div>R.A.: {coords.rightAscension.toFixed(8)}°</div>
+        <div>Dec.: {coords.declination.toFixed(8)}°</div>
+      </>
+    );
+  }
+
+  // Standard format for regular coordinates
+  return (
+    <>
+      <div>R.A.: {formatHourAngle(coords.rightAscension)} ({coords.rightAscension.toFixed(6)}°)</div>
+      <div>Dec.: {formatDegrees(coords.declination)} ({coords.declination.toFixed(6)}°)</div>
+    </>
+  );
 }

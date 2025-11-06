@@ -8,11 +8,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import AstronomicalCoords from '../../common/AstronomicalCoordinates';
-import type { DetailedEphemeris } from '@/sdk/Ephemerides';
+import type { EphemerisWithVelocity } from '@/sdk/Ephemerides';
 import Angle from '@/common/Angle';
+import { decimalFormat } from '@/utils';
 
 type EphemerisTablePropsType = {
-  ephemerides: DetailedEphemeris[];
+  ephemerides: EphemerisWithVelocity[];
 }
 
 export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType): JSX.Element {
@@ -29,7 +30,9 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
           <TableRow>
             <TableCell>Time</TableCell>
             <TableCell align="center">Coordinates</TableCell>
-            <TableCell align="right">Angular Size</TableCell>
+            <TableCell align="center">Range</TableCell>
+            <TableCell align="center">Angular Size</TableCell>
+            <TableCell align="right">Velocity</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -45,8 +48,16 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
               <TableCell align="left">
                 <AstronomicalCoords coords={ephemeris.coords} />
               </TableCell>
+              <TableCell align="center">
+                {/* <span>{state.distanceAU.toFixed(2)} AU</span> */}
+                <div>{decimalFormat.format(ephemeris.range)} km</div>
+                <div>({ephemeris.range} km)</div>
+              </TableCell>
               <TableCell align="right">
                 <Angle value={ephemeris.angularSize} />
+              </TableCell>
+              <TableCell align="right">
+                <AstronomicalCoords format='scientific' coords={ephemeris.velocity} />
               </TableCell>
             </TableRow>
           ))}

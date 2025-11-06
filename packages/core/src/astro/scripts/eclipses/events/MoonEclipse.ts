@@ -38,12 +38,13 @@ function computeMoonAndEarthShadowEphemeris(stateSolver: StateSolver, es: number
   return {
     moonEphemeris: {
       coords: AstronomicalCoordinates.fromRectangular(moonPosition),
-      angularSizeDeg: Radians.toDegrees(Radians.angularSize(Bodies[JplBodyId.Moon].equatorialRadiusKm * 2, distanceToMoon))
+      angularSize: Radians.toDegrees(Radians.angularSize(Bodies[JplBodyId.Moon].equatorialRadiusKm * 2, distanceToMoon)),
+      range: distanceToMoon
     },
     earthShadowEphemeris: {
       coords: AstronomicalCoordinates.fromRectangular(earthsShadowPosition),
-      umbraAngularSizeDeg: Radians.toDegrees(Radians.angularSize(umbraAngularSizeKm, distanceToMoon)),
-      penumbraAngularSizeDeg: Radians.toDegrees(Radians.angularSize(penumbraAngularSizeKm, distanceToMoon))
+      umbraAngularSize: Radians.toDegrees(Radians.angularSize(umbraAngularSizeKm, distanceToMoon)),
+      penumbraAngularSize: Radians.toDegrees(Radians.angularSize(penumbraAngularSizeKm, distanceToMoon))
     }
   };
 }

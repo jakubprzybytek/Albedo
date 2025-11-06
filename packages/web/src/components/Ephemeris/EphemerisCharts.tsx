@@ -8,7 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { formatDegrees } from '@/utils';
-import type { DetailedEphemeris } from '@/sdk/Ephemerides';
+import type { EphemerisWithVelocity } from '@/sdk/Ephemerides';
 
 type TooltipProps = {
   active?: boolean;
@@ -25,7 +25,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
           {/* <Typography gutterBottom>{format(label, 'yyyy-MM-dd HH:mm:ss')}</Typography> */}
           <Typography gutterBottom>{label}</Typography>
           {payload.map((entry, index) => {
-            const value = entry.name.includes('Angular Size') ? entry.payload.angularSize : entry.value;
+            const value = entry.name === 'Angular Size' ? entry.payload.angularSize : entry.value;
             return (
               <Typography key={index} color={entry.color}>
                 {entry.name}: {formatDegrees(value)}
@@ -40,7 +40,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
 };
 
 type EphemerisChartsPropsType = {
-  ephemeris: DetailedEphemeris[];
+  ephemeris: EphemerisWithVelocity[];
 }
 
 export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType): JSX.Element {
@@ -54,7 +54,6 @@ export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType)
   const useArcMinutes = firstAngularSize >= (1 / 60); // 1 arc minute = 1/60 degree
   const conversionFactor = useArcMinutes ? 60 : 3600; // arc minutes or arc seconds
   const unitSymbol = useArcMinutes ? "'" : '"';
-  const unitName = useArcMinutes ? 'Arc Minutes' : 'Arc Seconds';
 
   // Transform data to convert angular size from degrees to arc minutes or arc seconds
   const chartData = ephemeris.map(item => ({
@@ -85,7 +84,7 @@ export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType)
           <YAxis yAxisId="right" orientation="right" width={30} label={{ value: 'Declination (°)', angle: 90, position: 'insideRight' }} />
           <Tooltip content={<CustomTooltip />} />
           <Legend onClick={handleLegendClick} wrapperStyle={{ cursor: 'pointer' }} />
-          <Line yAxisId="left" type="monotone" name={`Angular Size (${unitName})`} dataKey="angularSizeConverted" stroke="#8884d8" hide={hiddenSeries.has('angularSizeConverted')} />
+          <Line yAxisId="left" type="monotone" name="Angular Size" dataKey="angularSizeConverted" stroke="#8884d8" hide={hiddenSeries.has('angularSizeConverted')} />
           <Line yAxisId="right" type="monotone" name="Declination" dataKey="coords.declination" stroke="#82ca9d" hide={hiddenSeries.has('coords.declination')} />
         </LineChart>
       </ResponsiveContainer>

@@ -18,7 +18,7 @@ type ConjunctionsTablePropsType = {
 }
 
 function separationFactor(conjunction: Conjunction): number {
-  const averageAngularSize = (conjunction.firstBody.ephemeris.angularSizeDeg + conjunction.secondBody.ephemeris.angularSizeDeg) / 2;
+  const averageAngularSize = (conjunction.firstBody.ephemeris.angularSize + conjunction.secondBody.ephemeris.angularSize) / 2;
   return conjunction.separation / averageAngularSize;
 }
 
@@ -54,12 +54,12 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
               <TableCell align="center">
                 {conjunction.firstBody.info.name}
                 <AstronomicalCoords coords={conjunction.firstBody.ephemeris.coords} />
-                Size: {formatDegrees(conjunction.firstBody.ephemeris.angularSizeDeg)}
+                Size: {formatDegrees(conjunction.firstBody.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="center">
                 {conjunction.secondBody.info.name}
                 <AstronomicalCoords coords={conjunction.secondBody.ephemeris.coords} />
-                Size: {formatDegrees(conjunction.secondBody.ephemeris.angularSizeDeg)}
+                Size: {formatDegrees(conjunction.secondBody.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="right">
                 {formatDegrees(conjunction.separation)}

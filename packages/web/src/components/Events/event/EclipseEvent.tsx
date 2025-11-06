@@ -30,15 +30,15 @@ export default function EclipseEvent({ eclipse, expanded }: EclipseEventParamTyp
           </Typography>
           {eclipse.type == EclipseType.SunEclipse && <>
             <Typography>
-              Sun angular size: <Angle value={eclipse.sunEphemeris.angularSizeDeg} />. Moon angular size: <Angle value={eclipse.moonEphemeris.angularSizeDeg} />.
+              Sun angular size: <Angle value={eclipse.sunEphemeris.angularSize} />. Moon angular size: <Angle value={eclipse.moonEphemeris.angularSize} />.
             </Typography>
           </>}
           {eclipse.type == EclipseType.MoonEclipse && <>
             <Typography>
-              Moon angular size: <Angle value={eclipse.moonEphemeris.angularSizeDeg} />.
+              Moon angular size: <Angle value={eclipse.moonEphemeris.angularSize} />.
             </Typography>
             <Typography>
-              Earth shadow umbra angular size: <Angle value={eclipse.earthShadowEphemeris.umbraAngularSizeDeg} />, penumbra angular size: <Angle value={eclipse.earthShadowEphemeris.penumbraAngularSizeDeg} />.
+              Earth shadow umbra angular size: <Angle value={eclipse.earthShadowEphemeris.umbraAngularSize} />, penumbra angular size: <Angle value={eclipse.earthShadowEphemeris.penumbraAngularSize} />.
             </Typography>
           </>}
         </Stack>
