@@ -8,12 +8,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import AstronomicalCoords from '../../common/AstronomicalCoordinates';
-import type { EphemerisWithVelocity } from '@/sdk/Ephemerides';
+import type { EphemerisWithAdjustedVelocity } from './EphemerisBrowser';
 import Angle from '@/common/Angle';
 import { decimalFormat } from '@/utils';
 
 type EphemerisTablePropsType = {
-  ephemerides: EphemerisWithVelocity[];
+  ephemerides: EphemerisWithAdjustedVelocity[];
 }
 
 export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType): JSX.Element {
@@ -32,7 +32,8 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
             <TableCell align="center">Coordinates</TableCell>
             <TableCell align="center">Range</TableCell>
             <TableCell align="center">Angular Size</TableCell>
-            <TableCell align="right">Velocity</TableCell>
+            <TableCell align="center">Velocity</TableCell>
+            <TableCell align="right">Velocity per Interval</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -58,6 +59,9 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
               </TableCell>
               <TableCell align="right">
                 <AstronomicalCoords format='scientific' coords={ephemeris.velocity} />
+              </TableCell>
+              <TableCell align="right">
+                <AstronomicalCoords coords={ephemeris.velocityPerInterval} />
               </TableCell>
             </TableRow>
           ))}

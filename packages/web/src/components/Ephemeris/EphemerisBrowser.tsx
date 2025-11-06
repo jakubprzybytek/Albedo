@@ -6,18 +6,37 @@ import Tab from "@mui/material/Tab";
 import TabPanel from "@/common/tabs/TabPanel";
 import useQuery from "@/forms/useQuery";
 import getEphemerides, { type EphemeridesQuery, type EphemerisWithVelocity } from "@/sdk/Ephemerides";
+import { AstronomicalCoordinates } from "@astro/coords";
 import EphemerisQueryForm from './EphemerisQueryForm';
 import EphemerisTable from './EphemerisTable';
 import EphemerisCharts from "./EphemerisCharts";
 
+const SECONDS_PER_DAY = 86400;
+
+export type EphemerisWithAdjustedVelocity = EphemerisWithVelocity & {
+  velocityPerInterval: AstronomicalCoordinates;
+};
+
 export default function StatesBrowser(): JSX.Element {
   const [openedTab, setOpenedTab] = useState(0);
 
-  const [ephemerides, setEphemerides] = useState<EphemerisWithVelocity[]>([]);
-  const query = useQuery<EphemeridesQuery, EphemerisWithVelocity[]>(fetchData, setEphemerides);
+  const [ephemerides, setEphemerides] = useState<EphemerisWithAdjustedVelocity[]>([]);
+  const query = useQuery<EphemeridesQuery, EphemerisWithAdjustedVelocity[]>(fetchData, setEphemerides);
 
   async function fetchData(params: EphemeridesQuery) {
-    return await getEphemerides(params);
+    const rawData = await getEphemerides(params);
+    
+    // Enrich data with velocity adjusted to the interval
+    // Raw velocity is in degrees per second, interval is in days
+    const secondsPerInterval = params.interval * SECONDS_PER_DAY;
+    
+    return rawData.map(item => ({
+      ...item,
+      velocityPerInterval: new AstronomicalCoordinates(
+        item.velocity.rightAscension * secondsPerInterval,
+        item.velocity.declination * secondsPerInterval
+      )
+    }));
   }
 
   return (

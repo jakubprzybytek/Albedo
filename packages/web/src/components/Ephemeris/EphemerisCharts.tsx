@@ -8,7 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { formatDegrees } from '@/utils';
-import type { EphemerisWithVelocity } from '@/sdk/Ephemerides';
+import type { EphemerisWithAdjustedVelocity } from './EphemerisBrowser';
 
 type TooltipProps = {
   active?: boolean;
@@ -25,10 +25,17 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
           {/* <Typography gutterBottom>{format(label, 'yyyy-MM-dd HH:mm:ss')}</Typography> */}
           <Typography gutterBottom>{label}</Typography>
           {payload.map((entry, index) => {
-            const value = entry.name === 'Angular Size' ? entry.payload.angularSize : entry.value;
+            let formattedValue: string;
+            if (entry.name === 'Angular Size') {
+              formattedValue = formatDegrees(entry.payload.angularSize);
+            } else if (entry.name.includes('Velocity')) {
+              formattedValue = `${entry.value.toFixed(8)}°`;
+            } else {
+              formattedValue = formatDegrees(entry.value);
+            }
             return (
               <Typography key={index} color={entry.color}>
-                {entry.name}: {formatDegrees(value)}
+                {entry.name}: {formattedValue}
               </Typography>
             );
           })}
@@ -40,7 +47,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
 };
 
 type EphemerisChartsPropsType = {
-  ephemeris: EphemerisWithVelocity[];
+  ephemeris: EphemerisWithAdjustedVelocity[];
 }
 
 export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType): JSX.Element {
@@ -58,7 +65,9 @@ export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType)
   // Transform data to convert angular size from degrees to arc minutes or arc seconds
   const chartData = ephemeris.map(item => ({
     ...item,
-    angularSizeConverted: item.angularSize * conversionFactor
+    angularSizeConverted: item.angularSize * conversionFactor,
+    velocityRA: item.velocityPerInterval.rightAscension,
+    velocityDec: item.velocityPerInterval.declination
   }));
 
   // Handler for legend click to toggle series visibility
@@ -81,10 +90,13 @@ export default function EphemerisCharts({ ephemeris }: EphemerisChartsPropsType)
         <LineChart data={chartData} margin={{ left: 30, right: 30 }}>
           <XAxis dataKey="tde" tick={DateAxisTick} />
           <YAxis yAxisId="left" width={30} domain={['auto', 'auto']} label={{ value: `Angular Size (${unitSymbol})`, angle: -90, position: 'insideLeft' }} />
+          <YAxis yAxisId="middle" orientation="right" width={30} domain={['auto', 'auto']} label={{ value: 'Velocity per Interval (°)', angle: 90, position: 'insideRight' }} />
           <YAxis yAxisId="right" orientation="right" width={30} label={{ value: 'Declination (°)', angle: 90, position: 'insideRight' }} />
           <Tooltip content={<CustomTooltip />} />
           <Legend onClick={handleLegendClick} wrapperStyle={{ cursor: 'pointer' }} />
           <Line yAxisId="left" type="monotone" name="Angular Size" dataKey="angularSizeConverted" stroke="#8884d8" hide={hiddenSeries.has('angularSizeConverted')} />
+          <Line yAxisId="middle" type="monotone" name="Velocity RA" dataKey="velocityRA" stroke="#ff7300" hide={hiddenSeries.has('velocityRA')} />
+          <Line yAxisId="middle" type="monotone" name="Velocity Dec" dataKey="velocityDec" stroke="#ffc658" hide={hiddenSeries.has('velocityDec')} />
           <Line yAxisId="right" type="monotone" name="Declination" dataKey="coords.declination" stroke="#82ca9d" hide={hiddenSeries.has('coords.declination')} />
         </LineChart>
       </ResponsiveContainer>
