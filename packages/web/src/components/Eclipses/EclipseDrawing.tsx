@@ -11,7 +11,7 @@ export function SunEclipseDrawing({ eclipse }: { eclipse: SunEclipse }): JSX.Ele
   const { scale, firstBodyX, firstBodyY, secondBodyX, secondBodyY } = calculateDrawingScale(sunRadius, moonRadius, eclipse.separation, positionAngle);
 
   return (
-    <svg viewBox="0 0 500 500" style={{ backgroundColor: 'lightblue', height: '100%' }}>
+    <svg viewBox="0 0 500 500" style={{ borderRadius: '4px', backgroundColor: 'lightblue', height: '100%' }}>
       <g>
         <circle cx={firstBodyX} cy={firstBodyY} r={sunRadius * scale} fill='yellow'></circle>
         <circle cx={secondBodyX} cy={secondBodyY} r={moonRadius * scale} stroke="grey" strokeWidth="2" fill='#585858'></circle>
@@ -30,7 +30,7 @@ function MoonEclipseDrawing({ eclipse }: { eclipse: MoonEclipse }) {
   const { scale, firstBodyX, firstBodyY, secondBodyX, secondBodyY } = calculateDrawingScale(moonBodyRadius, earthPenumbraRadius, eclipse.separation, positionAngle);
 
   return (
-    <svg viewBox="0 0 500 500" style={{ backgroundColor: 'darkblue', height: '100%' }}>
+    <svg viewBox="0 0 500 500" style={{ borderRadius: '4px', backgroundColor: 'darkblue', height: '100%' }}>
       <g>
         <circle cx={secondBodyX} cy={secondBodyY} r={earthPenumbraRadius * scale} fill='#787878'></circle>
         <circle cx={secondBodyX} cy={secondBodyY} r={earthUmbraRadius * scale} fill='#585858'></circle>

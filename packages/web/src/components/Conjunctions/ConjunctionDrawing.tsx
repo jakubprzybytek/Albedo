@@ -14,7 +14,7 @@ export default function ConjunctionDrawing({ conjunction }: ConjunctionDrawingPr
   const { scale, firstBodyX, firstBodyY, secondBodyX, secondBodyY } = calculateDrawingScale(firstBodyRadius, secondBodyRadius, conjunction.separation, positionAngle);
 
   return (
-    <svg viewBox="0 0 500 500" style={{ backgroundColor: 'darkblue', height: '100%' }}>
+    <svg viewBox="0 0 500 500" style={{ borderRadius: '4px', backgroundColor: 'darkblue', height: '100%' }}>
       <g>
         <circle cx={firstBodyX} cy={firstBodyY} r={firstBodyRadius * scale} fill='lightgrey'></circle>
         <circle cx={secondBodyX} cy={secondBodyY} r={secondBodyRadius * scale} fill='lightgrey'></circle>
