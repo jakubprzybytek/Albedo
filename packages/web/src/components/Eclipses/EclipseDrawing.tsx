@@ -4,8 +4,8 @@ import type { Eclipse, MoonEclipse, SunEclipse } from "@/sdk/Eclipses";
 import { calculatePositionAngle, calculateDrawingScale } from "@/common/drawings";
 
 export function SunEclipseDrawing({ eclipse }: { eclipse: SunEclipse }): JSX.Element {
-  const sunRadius = eclipse.sunEphemeris.angularSizeDeg / 2;
-  const moonRadius = eclipse.moonEphemeris.angularSizeDeg / 2;
+  const sunRadius = eclipse.sunEphemeris.angularSize / 2;
+  const moonRadius = eclipse.moonEphemeris.angularSize / 2;
 
   const positionAngle = calculatePositionAngle(eclipse.sunEphemeris.coords, eclipse.moonEphemeris.coords);
   const { scale, firstBodyX, firstBodyY, secondBodyX, secondBodyY } = calculateDrawingScale(sunRadius, moonRadius, eclipse.separation, positionAngle);
@@ -22,9 +22,9 @@ export function SunEclipseDrawing({ eclipse }: { eclipse: SunEclipse }): JSX.Ele
 }
 
 function MoonEclipseDrawing({ eclipse }: { eclipse: MoonEclipse }) {
-  const moonBodyRadius = eclipse.moonEphemeris.angularSizeDeg / 2.0;
-  const earthUmbraRadius = eclipse.earthShadowEphemeris.umbraAngularSizeDeg / 2.0;
-  const earthPenumbraRadius = eclipse.earthShadowEphemeris.penumbraAngularSizeDeg / 2.0;
+  const moonBodyRadius = eclipse.moonEphemeris.angularSize / 2.0;
+  const earthUmbraRadius = eclipse.earthShadowEphemeris.umbraAngularSize / 2.0;
+  const earthPenumbraRadius = eclipse.earthShadowEphemeris.penumbraAngularSize / 2.0;
 
   const positionAngle = calculatePositionAngle(eclipse.moonEphemeris.coords, eclipse.earthShadowEphemeris.coords);
   const { scale, firstBodyX, firstBodyY, secondBodyX, secondBodyY } = calculateDrawingScale(moonBodyRadius, earthPenumbraRadius, eclipse.separation, positionAngle);

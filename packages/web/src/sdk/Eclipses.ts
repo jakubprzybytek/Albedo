@@ -1,5 +1,5 @@
 import { get } from "aws-amplify/api";
-import type { Location } from "@/components/Profile";
+import type { Location } from "@/common/Profile";
 import type { Eclipse, SunEclipse, MoonEclipse } from '@lambda/eclipses';
 import { EclipseType } from '@lambda/eclipses';
 

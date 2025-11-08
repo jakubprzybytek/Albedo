@@ -7,8 +7,8 @@ type ConjunctionDrawingPropsType = {
 }
 
 export default function ConjunctionDrawing({ conjunction }: ConjunctionDrawingPropsType): JSX.Element {
-  const firstBodyRadius = conjunction.firstBody.ephemeris.angularSizeDeg / 2;
-  const secondBodyRadius = conjunction.secondBody.ephemeris.angularSizeDeg / 2;
+  const firstBodyRadius = conjunction.firstBody.ephemeris.angularSize / 2;
+  const secondBodyRadius = conjunction.secondBody.ephemeris.angularSize / 2;
 
   const positionAngle = calculatePositionAngle(conjunction.firstBody.ephemeris.coords, conjunction.secondBody.ephemeris.coords);
   const { scale, firstBodyX, firstBodyY, secondBodyX, secondBodyY } = calculateDrawingScale(firstBodyRadius, secondBodyRadius, conjunction.separation, positionAngle);

@@ -23,11 +23,11 @@ function SunEclipseCells({ eclipse }: { eclipse: SunEclipse }) {
     <>
       <TableCell>
         <AstronomicalCoords coords={eclipse.sunEphemeris.coords} />
-        <div>Angular size: {formatDegrees(eclipse.sunEphemeris.angularSizeDeg)}</div>
+        <div>Angular size: {formatDegrees(eclipse.sunEphemeris.angularSize)}</div>
       </TableCell>
       <TableCell>
         <AstronomicalCoords coords={eclipse.moonEphemeris.coords} />
-        <div>Angular size: {formatDegrees(eclipse.moonEphemeris.angularSizeDeg)}</div>
+        <div>Angular size: {formatDegrees(eclipse.moonEphemeris.angularSize)}</div>
       </TableCell>
     </>
   );
@@ -38,12 +38,12 @@ function MoonEclipseCells({ eclipse }: { eclipse: MoonEclipse }) {
     <>
       <TableCell>
         <AstronomicalCoords coords={eclipse.moonEphemeris.coords} />
-        <div>Angular size: {formatDegrees(eclipse.moonEphemeris.angularSizeDeg)}</div>
+        <div>Angular size: {formatDegrees(eclipse.moonEphemeris.angularSize)}</div>
       </TableCell>
       <TableCell>
         <AstronomicalCoords coords={eclipse.earthShadowEphemeris.coords} />
-        <div>Umbra angular size: {formatDegrees(eclipse.earthShadowEphemeris.umbraAngularSizeDeg)}</div>
-        <div>Penumbra angular size: {formatDegrees(eclipse.earthShadowEphemeris.penumbraAngularSizeDeg)}</div>
+        <div>Umbra angular size: {formatDegrees(eclipse.earthShadowEphemeris.umbraAngularSize)}</div>
+        <div>Penumbra angular size: {formatDegrees(eclipse.earthShadowEphemeris.penumbraAngularSize)}</div>
       </TableCell>
     </>
   );
