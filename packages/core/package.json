@@ -8,7 +8,8 @@
     "listSpk": "ts-node src/jpl/tools/ListSpkFileContent.ts",
     "listPck": "ts-node src/jpl/tools/ListPckFileContent.ts",
     "data:create": "ts-node src/jpl/data/kernels.scripts.ts",
-    "test:full": "ts-node src/jpl/test/fullTest.ts"
+    "test:full": "ts-node src/jpl/test/fullTest.ts",
+    "openNgc:generate": "ts-node src/openNgc/script.ts"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
