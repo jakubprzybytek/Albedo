@@ -1,45 +1,8 @@
-import { object } from "zod";
-import { OpenNgcObject, OpenNgcObjectType } from ".";
+import { OpenNgcObject } from ".";
 import { loadOpenNgc } from "./OpenNgcLoader";
+import { Table } from "@utils/Table";
 
 const CLUSTER_SIZE_DEG = 15.0;
-
-function getClusterId(object: OpenNgcObject): string {
-  const raClusterId = Math.floor(object.rightAscensionDec / CLUSTER_SIZE_DEG);
-  const decClusterId = Math.floor(object.declinationDec / CLUSTER_SIZE_DEG);
-  if (Number.isNaN(raClusterId)) {
-    console.error(object);
-  }
-  return `${raClusterId}#${decClusterId}`;
-}
-
-function groupBy<T>(collection: T[], getGroupId: (object: T) => string): Map<string, T[]> {
-  return collection.reduce((acc, object) => {
-    const groupId = getGroupId(object);
-    const groupCollection = acc.get(groupId);
-    if (groupCollection === undefined) {
-      acc.set(groupId, [object]);
-    } else {
-      groupCollection.push(object);
-    }
-    return acc;
-  }, new Map<string, T[]>());
-}
-
-class Table {
-  private table: OpenNgcObject[][][];
-
-  constructor(readonly columns: number, readonly rows: number) {
-    this.table = Array.from({ length: columns }, () => Array.from({ length: rows }, () => new Array<OpenNgcObject>));
-  }
-
-  get(column: number, row: number): OpenNgcObject[] {
-    if (column >= this.columns || row >= this.rows) {
-      throw new Error(`Out of index: (${column}, ${row}) for table (${this.columns}, ${this.rows})`);
-    }
-    return this.table[column][row];
-  }
-}
 
 function getClusterAddress(openNgcObject: OpenNgcObject): [number, number] {
   return [
@@ -52,20 +15,17 @@ console.time('prep');
 
 const openNgcObjects = loadOpenNgc('../../data/OpenNGC/database_files/NGC.csv');
 
-// const clusteredOpenNgcObjects = groupBy(openNgcObjects, getClusterId);
-// clusteredOpenNgcObjects.forEach((groupCollection, groupId) => console.log(`${groupId}: ${groupCollection.length}`));
-// console.log(`Number of clusters: ${clusteredOpenNgcObjects.size}`);
-
 const raClusters = Math.ceil(360 / CLUSTER_SIZE_DEG);
 const decClusters = Math.ceil(180 / CLUSTER_SIZE_DEG);
 
-const openNgcObjectTable = new Table(raClusters, decClusters);
+
+const openNgcObjectTable = new Table<OpenNgcObject[]>(raClusters, decClusters, () => new Array<OpenNgcObject>);
 openNgcObjects.forEach(object => {
   const [raIndex, decIndex] = getClusterAddress(object);
   openNgcObjectTable.get(raIndex, decIndex).push(object);
 });
 
-const openNgcObjectOverlayedTable = new Table(raClusters, decClusters);
+const openNgcObjectOverlayedTable = new Table<OpenNgcObject[]>(raClusters, decClusters, () => new Array<OpenNgcObject>);
 for (let x = 0; x < raClusters; x++) {
   for (let y = 0; y < decClusters; y++) {
     openNgcObjectOverlayedTable.get(x, y).push(
