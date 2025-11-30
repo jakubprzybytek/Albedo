@@ -15,22 +15,22 @@ describe("OpenNgcLoader", () => {
     expect(parseObject(line)).toEqual<OpenNgcObject>({
       name: 'IC0002',
       type: OpenNgcObjectType.Galaxy,
-      rightAscensionDec: 2.7536666666666663,
-      declinationDec: -12.822861111111111,
+      rightAscensionDeg: 2.7536666666666663,
+      declinationDeg: -12.822861111111111,
       majorAxis: 0.98,
       minorAxis: 0.32,
-      positionAngleDec: 142
+      positionAngleDeg: 142
     })
 
     const line2 = 'NGC7800;G;23:59:36.32;+14:48:20.1;Peg;1.74;0.72;45;13.31;;12.14;11.58;11.27;22.65;IB;;;;1696;0.005672;;;;;;;;2MASX J23593630+1448200,IRAS 23570+1431,MCG +02-01-007,PGC 073177,UGC 12885;;;;Type:1|RA:1|Dec:1|Const:99|MajAx:3|MinAx:3|PosAng:3|B-Mag:3|J-Mag:2|H-Mag:2|K-Mag:2|SurfBr:3|Hubble:3|RadVel:2|Redshift:2';
     expect(parseObject(line2)).toEqual<OpenNgcObject>({
       name: 'NGC7800',
       type: OpenNgcObjectType.Galaxy,
-      rightAscensionDec: 359.90133333333335,
-      declinationDec: 14.805583333333335,
+      rightAscensionDeg: 359.90133333333335,
+      declinationDeg: 14.805583333333335,
       majorAxis: 1.74,
       minorAxis: 0.72,
-      positionAngleDec: 45
+      positionAngleDeg: 45
     })
   });
 });

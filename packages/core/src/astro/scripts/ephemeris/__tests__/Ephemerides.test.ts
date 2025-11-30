@@ -5,16 +5,37 @@ import { Radians } from "@astro/coords";
 import { DetailedEphemeris, Ephemerides } from "@astro/scripts";
 import { kernels } from "@jpl/data/kernels.testData";
 
+const OBSERVER = { latitude: 52, longitude: 17, altitude: 50 };
+
 describe("Ephemerides", () => {
 
   const ephemerisScripts = new Ephemerides(kernels);
 
-  it("should compute astronomical coodinates for Venus", () => {
-    const es = EphemerisSeconds.fromDate(2019, 10, 10);
-    const ephemeris = ephemerisScripts.coordinatesForBody(JplBodyId.Venus, es);
+  describe("should build coordinates function", () => {
+    it("that compute astronomical coodinates for Venus", () => {
+      const es = EphemerisSeconds.fromDate(2019, 10, 10);
+      const ephemeris = ephemerisScripts.buildCoordinatesFunction(JplBodyId.Venus)(es);
 
-    expect(Radians.toDegrees(ephemeris.rightAscension)).approximately(209.39848483, 3e-9);
-    expect(Radians.toDegrees(ephemeris.declination)).toBeCloseTo(-11.36105059, 0);
+      expect(Radians.toDegrees(ephemeris.rightAscension)).approximately(209.39848483, 3e-9);
+      expect(Radians.toDegrees(ephemeris.declination)).toBeCloseTo(-11.36105059, 0);
+    });
+
+    it("that compute astronomical coodinates for Venus with paralax correction", () => {
+      const es = EphemerisSeconds.fromDate(2019, 10, 10);
+      const ephemeris = ephemerisScripts.buildCoordinatesFunction(JplBodyId.Venus, OBSERVER)(es);
+
+      expect(Radians.toDegrees(ephemeris.rightAscension)).eq(209.39857037294303);
+      expect(Radians.toDegrees(ephemeris.declination)).eq(-11.36201460681129);
+    });
+
+    it("that correct paralax", () => {
+      const es = EphemerisSeconds.fromDate(2019, 10, 10);
+      const ephemeris = ephemerisScripts.buildCoordinatesFunction(JplBodyId.Venus)(es);
+      const paralaxCorrectedEphemeris = ephemerisScripts.buildCoordinatesFunction(JplBodyId.Venus, OBSERVER)(es);
+
+      const maximumParalaxCorrectionAngle = Math.atan(6378 / 240000000);
+      expect(Radians.separation(paralaxCorrectedEphemeris, ephemeris)).toBeLessThanOrEqual(maximumParalaxCorrectionAngle);
+    });
   });
 
   it("should compute detailed astronomical coodinates for Venus", () => {

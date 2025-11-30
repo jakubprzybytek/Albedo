@@ -20,11 +20,11 @@ export function parseObject(line: string): OpenNgcObject {
       name: columns[0],
       // type: objectType,
       type: columns[1] as OpenNgcObjectType,
-      rightAscensionDec: parseAngle(columns[2]) * 15.0,
-      declinationDec: parseAngle(columns[3]),
+      rightAscensionDeg: parseAngle(columns[2]) * 15.0,
+      declinationDeg: parseAngle(columns[3]),
       majorAxis: Number(columns[5]),
       minorAxis: Number(columns[6]),
-      positionAngleDec: Number(columns[7])
+      positionAngleDeg: Number(columns[7])
     }
   } catch (e: unknown) {
     console.error(`Cannot parse: '${line}'`, e);

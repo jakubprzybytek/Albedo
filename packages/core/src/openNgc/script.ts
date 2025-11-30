@@ -6,8 +6,8 @@ const CLUSTER_SIZE_DEG = 15.0;
 
 function getClusterAddress(openNgcObject: OpenNgcObject): [number, number] {
   return [
-    Math.floor(openNgcObject.rightAscensionDec / CLUSTER_SIZE_DEG),
-    Math.floor((openNgcObject.declinationDec + 90) / CLUSTER_SIZE_DEG)
+    Math.floor(openNgcObject.rightAscensionDeg / CLUSTER_SIZE_DEG),
+    Math.floor((openNgcObject.declinationDeg + 90) / CLUSTER_SIZE_DEG)
   ];
 }
 

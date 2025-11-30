@@ -1,15 +1,32 @@
 import { Table } from "@utils/Table";
 import { OpenNgcObject } from "@openNgc";
+import { AstronomicalCoordinates, Radians } from "@astro/coords";
 
-const CLUSTER_SIZE_DEG = 15.0;
+const CLUSTER_SIZE_DEG = 1.0;
 const MIN_DECLINATION_DEG = -30.0;
 const MAX_DECLINATION_DEG = 30.0;
 
-export function getClusterAddress(openNgcObject: OpenNgcObject): [number, number] {
-  return [
-    Math.floor(openNgcObject.rightAscensionDec / CLUSTER_SIZE_DEG),
-    Math.floor((openNgcObject.declinationDec - MIN_DECLINATION_DEG) / CLUSTER_SIZE_DEG)
-  ];
+type ClusterAddress = {
+  column: number;
+  row: number;
+}
+
+type CoordinatesInTime = {
+  es: number;
+  coords: AstronomicalCoordinates;
+}
+
+export type ConjunctionCandidate = {
+  toEs: number;
+  fromEs: number;
+  dsoObject: OpenNgcObject;
+};
+
+function getClusterAddress(rightAscensionDeg: number, declinationDeg: number): ClusterAddress {
+  return {
+    column: Math.floor(rightAscensionDeg / CLUSTER_SIZE_DEG),
+    row: Math.floor((declinationDeg - MIN_DECLINATION_DEG) / CLUSTER_SIZE_DEG)
+  };
 }
 
 export function prepareCatalogueClusters(objects: OpenNgcObject[]): Table<OpenNgcObject[]> {
@@ -18,10 +35,10 @@ export function prepareCatalogueClusters(objects: OpenNgcObject[]): Table<OpenNg
 
   const clusters = new Table<OpenNgcObject[]>(raClusters, decClusters, () => new Array<OpenNgcObject>());
 
-  objects.filter(object => object.declinationDec >= MIN_DECLINATION_DEG && object.declinationDec < MAX_DECLINATION_DEG)
+  objects.filter(object => object.declinationDeg >= MIN_DECLINATION_DEG && object.declinationDeg < MAX_DECLINATION_DEG)
     .forEach(object => {
-      const [raIndex, decIndex] = getClusterAddress(object);
-      clusters.get(raIndex, decIndex).push(object);
+      const { column, row } = getClusterAddress(object.rightAscensionDeg, object.declinationDeg);
+      clusters.get(column, row).push(object);
     });
 
   const overlayedClusters = new Table<OpenNgcObject[]>(raClusters, decClusters, () => new Array<OpenNgcObject>);
@@ -47,4 +64,47 @@ export function prepareCatalogueClusters(objects: OpenNgcObject[]): Table<OpenNg
   }
 
   return overlayedClusters;
+}
+
+function createCandidates(fromEs: number, toEs: number, dsoObjects: OpenNgcObject[]): ConjunctionCandidate[] {
+  return dsoObjects.map(dsoObject => ({
+    fromEs,
+    toEs,
+    dsoObject
+  }));
+}
+
+export function findConjuctionCandidates(objectPath: CoordinatesInTime[], catalogueClusters: Table<OpenNgcObject[]>): ConjunctionCandidate[] {
+  if (objectPath.length == 0) {
+    return [];
+  }
+
+  const conjunctionCandidates: ConjunctionCandidate[] = [];
+
+  let currentClusterFirstIndex = 0;
+  let currentCluster = getClusterAddress(
+    Radians.toDegrees(objectPath[0].coords.rightAscension),
+    Radians.toDegrees(objectPath[0].coords.declination)
+  );
+
+  for (let i = 1; i < objectPath.length; i++) {
+    let nextCluster = getClusterAddress(
+      Radians.toDegrees(objectPath[i].coords.rightAscension),
+      Radians.toDegrees(objectPath[i].coords.declination)
+    );
+
+    if (nextCluster.column != currentCluster.column || nextCluster.row != currentCluster.row) {
+      const clusterObjects = catalogueClusters.get(currentCluster.column, currentCluster.row);
+      conjunctionCandidates.push(...createCandidates(objectPath[currentClusterFirstIndex].es, objectPath[i - 1].es, clusterObjects)
+      );
+
+      currentClusterFirstIndex = i;
+      currentCluster = nextCluster;
+    }
+  }
+
+  const clusterObjects = catalogueClusters.get(currentCluster.column, currentCluster.row);
+  conjunctionCandidates.push(...createCandidates(objectPath[currentClusterFirstIndex].es, objectPath[objectPath.length - 1].es, clusterObjects));
+
+  return conjunctionCandidates;
 }

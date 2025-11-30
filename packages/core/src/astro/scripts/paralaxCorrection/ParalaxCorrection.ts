@@ -15,8 +15,8 @@ export class ParalaxCorrection {
     this.bodyFixedFrame = kernels.bodyFixedFrame();
   }
 
-  observerPosition(observerLocation: ObserverLocation, es: number): RectangularCoordinates {
-    const bodyGeometry = this.bodyGeometryProvider.getBodyRadii(JplBodyId.Earth);
+  observerPosition(bodyId: JplBodyId, observerLocation: ObserverLocation, es: number): RectangularCoordinates {
+    const bodyGeometry = this.bodyGeometryProvider.getBodyRadii(bodyId);
 
     if (bodyGeometry === undefined) {
       throw Error("Earth geometry not found for Earth");
@@ -31,11 +31,12 @@ export class ParalaxCorrection {
       observerLocation.altitude / 1000,
       bodyRadius, bodyFlattening);
 
-    const bodyFixedRotationMatrix = this.bodyFixedFrame.getRotationMatrix(JplBodyId.Earth, es);
+    const bodyFixedRotationMatrix = this.bodyFixedFrame.getRotationMatrix(bodyId, es);
     const bodyFixedtoJ2000RotationMatrix = RotationMatrix.invert(bodyFixedRotationMatrix);
 
     const j2000ObserverPosition = RotationMatrix.multiplyVector(bodyFixedtoJ2000RotationMatrix, bodyFixedObserverPosition.toVector());
 
     return RectangularCoordinates.fromVector(j2000ObserverPosition);
   }
+
 }

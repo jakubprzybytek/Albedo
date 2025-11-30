@@ -221,7 +221,7 @@ export function jplBodyIdFromId(id: number): JplBodyId | undefined {
     return jplBodiesById[id]?.id;
 }
 
-export function jplBodyFromId(jplBodyId: JplBodyId): JplBody | undefined {
+export function jplBodyFromId(jplBodyId: JplBodyId): JplBody {
     return jplBodiesById[jplBodyId] || {
         id: jplBodyId,
         name: 'unknown',

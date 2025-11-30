@@ -8,9 +8,9 @@ export enum OpenNgcObjectType {
 export type OpenNgcObject = {
   name: string;
   type: OpenNgcObjectType;
-  rightAscensionDec: number;
-  declinationDec: number;
+  rightAscensionDeg: number;
+  declinationDeg: number;
   majorAxis: number;
   minorAxis: number;
-  positionAngleDec: number;
+  positionAngleDeg: number;
 }
