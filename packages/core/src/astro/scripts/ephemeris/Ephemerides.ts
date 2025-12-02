@@ -34,7 +34,7 @@ export class Ephemerides {
       ? this.states.buildParalaxCorrectedPositionFunction(targetBodyId, JplBodyId.Earth, observerLocation, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
       : this.states.buildPositionFunction(targetBodyId, JplBodyId.Earth, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
 
-    return (es: number): DetailedEphemeris => {
+    return (es: number): DetailedCoordinates => {
       const position = stateFunction(es);
 
       const rangeKm = position.length();
@@ -42,28 +42,10 @@ export class Ephemerides {
       const angularSize = Radians.angularSize(objectDiameterKm, rangeKm);
 
       return {
-        ...timeProperties(es),
         coords: AstronomicalCoordinates.fromRectangular(position),
         angularSize,
         range: rangeKm
       }
-    }
-  }
-
-  /*
-   * @deprecated The method should not be used
-   */
-  detailedCoordinatesForBody(targetBodyId: JplBodyId, es: number): DetailedCoordinates {
-    const position = this.states.computePosition(targetBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
-
-    const rangeKm = position.length();
-    const objectDiameterKm = (Bodies[targetBodyId as keyof typeof Bodies].equatorialRadiusKm ?? 0) * 2;
-    const angularSize = Radians.angularSize(objectDiameterKm, rangeKm);
-
-    return {
-      coords: AstronomicalCoordinates.fromRectangular(position),
-      angularSize,
-      range: rangeKm
     }
   }
 
@@ -88,9 +70,26 @@ export class Ephemerides {
     }
   }
 
-  computeEphemeris(targetBodyId: JplBodyId, es: number, observerLocation?: ObserverLocation): DetailedEphemeris {
-    const coordinatesFunction = this.buildDetailedCoordinatesFunction(targetBodyId, observerLocation);
-    return coordinatesFunction(es);
+  detailedCoordinatesForBody2(targetBodyId: JplBodyId, es: number, observerLocation?: ObserverLocation): DetailedCoordinates {
+    const detailedCoordinatesFunction = this.buildDetailedCoordinatesFunction(targetBodyId, observerLocation)
+    return detailedCoordinatesFunction(es);
+  }
+
+  /*
+   * @deprecated The method should not be used
+   */
+  detailedCoordinatesForBody(targetBodyId: JplBodyId, es: number): DetailedCoordinates {
+    const position = this.states.computePosition(targetBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
+
+    const rangeKm = position.length();
+    const objectDiameterKm = (Bodies[targetBodyId as keyof typeof Bodies].equatorialRadiusKm ?? 0) * 2;
+    const angularSize = Radians.angularSize(objectDiameterKm, rangeKm);
+
+    return {
+      coords: AstronomicalCoordinates.fromRectangular(position),
+      angularSize,
+      range: rangeKm
+    }
   }
 
   /*

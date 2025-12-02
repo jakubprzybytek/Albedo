@@ -1,5 +1,5 @@
 import { AstronomicalCoordinates, ObserverLocation, Radians } from "@astro/coords";
-import { ConjunctionDso, Ephemerides, timeProperties } from "@astro/scripts";
+import { DsoConjunction, Ephemerides, timeProperties } from "@astro/scripts";
 import { JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { KernelsRepository } from "@jpl/kernels";
 import { OpenNgcObject } from "@openNgc";
@@ -44,7 +44,7 @@ export class ConjunctionsWithDso {
     return (coordsInTime: CoordinatesInTime) => Radians.separation(coordsInTime.coords, dsoCoords);
   }
 
-  find(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number, observerLocation?: ObserverLocation): ConjunctionDso[] {
+  find(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number, observerLocation?: ObserverLocation): DsoConjunction[] {
     const correctedFromEs = EphemerisSeconds.fromJde(fromJde) - PRELIMINARY_INTERVAL;
     const correctedToEs = EphemerisSeconds.fromJde(toJde) + PRELIMINARY_INTERVAL;
     const esArray = EphemerisSeconds.forRange(correctedFromEs, correctedToEs, PRELIMINARY_INTERVAL);
@@ -103,11 +103,11 @@ export class ConjunctionsWithDso {
         }
       })
       .filter(({ separation }) => separation < separationLimit)
-      .map<ConjunctionDso>(({ es, bodyId, dsoObject, separation }) => ({
+      .map<DsoConjunction>(({ es, bodyId, dsoObject, separation }) => ({
         ...timeProperties(es),
         body: {
           info: jplBodyFromId(bodyId),
-          ephemeris: this.ephemerides.computeEphemeris(bodyId, es, observerLocation)
+          ephemeris: this.ephemerides.detailedCoordinatesForBody2(bodyId, es, observerLocation)
         },
         dso: dsoObject,
         separation
@@ -116,7 +116,7 @@ export class ConjunctionsWithDso {
     return conjuctions;
   }
 
-  findConjunctionsWithDso(fromJde: number, toJde: number, observerLocation?: ObserverLocation): ConjunctionDso[] {
+  findConjunctionsWithDso(fromJde: number, toJde: number, observerLocation?: ObserverLocation): DsoConjunction[] {
     // const bodies = [JplBodyId.Mercury];
     const bodies = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
     // const bodies = [JplBodyId.Moon, JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];

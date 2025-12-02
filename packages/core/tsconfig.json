@@ -4,6 +4,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "ESNext",
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@astro": ["./src/astro"],

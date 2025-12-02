@@ -15,10 +15,13 @@ describe("OpenNgcLoader", () => {
     expect(parseObject(line)).toEqual<OpenNgcObject>({
       name: 'IC0002',
       type: OpenNgcObjectType.Galaxy,
+      rightAscension: 0.04806054983575051,
       rightAscensionDeg: 2.7536666666666663,
+      declination: -0.2238011459148273,
       declinationDeg: -12.822861111111111,
       majorAxis: 0.98,
       minorAxis: 0.32,
+      positionAngle: 2.478367537831948,
       positionAngleDeg: 142
     })
 
@@ -26,10 +29,13 @@ describe("OpenNgcLoader", () => {
     expect(parseObject(line2)).toEqual<OpenNgcObject>({
       name: 'NGC7800',
       type: OpenNgcObjectType.Galaxy,
+      rightAscension: 6.281463248984285,
       rightAscensionDeg: 359.90133333333335,
+      declination: 0.2584061768450638,
       declinationDeg: 14.805583333333335,
       majorAxis: 1.74,
       minorAxis: 0.72,
+      positionAngle: 0.7853981633974483,
       positionAngleDeg: 45
     })
   });

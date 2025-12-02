@@ -3,6 +3,7 @@ import { DetailedCoordinates } from "../ephemeris";
 import { JplBody } from "@jpl";
 
 export * from './Conjunctions';
+export * from './ConjunctionsWithDso';
 
 export type Conjunction = {
   es: number;
@@ -19,7 +20,7 @@ export type Conjunction = {
   separation: number;
 };
 
-export type ConjunctionDso = {
+export type DsoConjunction = {
   es: number;
   jde: number;
   tde: Date;

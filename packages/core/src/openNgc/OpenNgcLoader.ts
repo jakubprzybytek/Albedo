@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { OpenNgcObject, OpenNgcObjectType } from '.';
-import { object } from 'zod';
+import { Radians } from '@astro/coords';
 
 // degree
 export function parseAngle(angleString: string): number {
@@ -15,16 +15,21 @@ export function parseObject(line: string): OpenNgcObject {
   const columns = line.split(';');
 
   try {
+    const rightAscensionDeg = parseAngle(columns[2]) * 15.0;
+    const declinationDeg = parseAngle(columns[3]);
+    const positionAngleDeg = Number(columns[7]);
 
     return {
       name: columns[0],
-      // type: objectType,
       type: columns[1] as OpenNgcObjectType,
-      rightAscensionDeg: parseAngle(columns[2]) * 15.0,
-      declinationDeg: parseAngle(columns[3]),
+      rightAscension: Radians.fromDegrees(rightAscensionDeg),
+      rightAscensionDeg,
+      declination: Radians.fromDegrees(declinationDeg),
+      declinationDeg,
       majorAxis: Number(columns[5]),
       minorAxis: Number(columns[6]),
-      positionAngleDeg: Number(columns[7])
+      positionAngle: Radians.fromDegrees(positionAngleDeg),
+      positionAngleDeg
     }
   } catch (e: unknown) {
     console.error(`Cannot parse: '${line}'`, e);
