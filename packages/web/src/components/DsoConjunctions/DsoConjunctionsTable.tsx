@@ -58,9 +58,9 @@ export default function DsoConjunctionsTable({ conjunctions }: DsoConjunctionsTa
                 Size: {formatDegrees(conjunction.body.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="center">
-                {conjunction.dso.name}
+                {conjunction.dso.name} / {conjunction.dso.type}
                 <AstronomicalCoords coords={new AstronomicalCoordinates(conjunction.dso.rightAscension, conjunction.dso.declination)} />
-                Size: {formatDegrees(conjunction.dso.majorAxis)} / {formatDegrees(conjunction.dso.minorAxis)}
+                Size: {formatDegrees(conjunction.dso.majorAxis)} / {formatDegrees(conjunction.dso.minorAxis)} / {formatDegrees(conjunction.dso.positionAngle)}
               </TableCell>
               <TableCell align="right">
                 {formatDegrees(conjunction.separation)}

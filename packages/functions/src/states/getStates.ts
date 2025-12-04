@@ -46,7 +46,7 @@ export const handler = lambdaHandler<StateResult[]>((event: APIGatewayProxyEvent
   const toEs = EphemerisSeconds.fromJde(toJde);
   const intervalEs = EphemerisSeconds.fromDays(interval);
 
-  const states = stateScripts.states(target.id, observer.id, fromEs, toEs, intervalEs, correction)
+  const states = stateScripts.computeStates(target.id, observer.id, fromEs, toEs, intervalEs, correction)
     .map<StateResult>(state => {
       const jde = EphemerisSeconds.toJde(state.es);
       const distance = state.position.length();
