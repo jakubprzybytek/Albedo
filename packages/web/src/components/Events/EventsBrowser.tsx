@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type JSX } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 import { addMonths, format } from 'date-fns';
 import EventsList from './EventsList';
-import getConjunctions, { type Conjunction, type ConjunctionsQuery } from "@/sdk/Conjunctions";
+import { getConjunctions, type Conjunction, type ConjunctionsQuery } from "@/sdk/Conjunctions";
 import type { Eclipse, EclipsesQuery } from "@/sdk/Eclipses";
 import { useProfile } from "@/components/Profile/useProfile";
 import getEclipses from "@/sdk/Eclipses";

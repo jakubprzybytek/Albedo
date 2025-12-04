@@ -1,6 +1,6 @@
 import { get } from "aws-amplify/api";
+import type { Location } from "@/common/Profile";
 import type { Separation } from '@lambda/separations';
-import type { Location } from "@/components/Profile";
 
 export type { Separation };
 

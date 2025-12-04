@@ -7,5 +7,6 @@ export default [
   route('ephemeris', 'routes/ephemeris.tsx'),
   route('separations', 'routes/separations.tsx'),
   route('conjunctions', 'routes/conjunctions.tsx'),
+  route('dso-conjunctions', 'routes/dso-conjunctions.tsx'),
   route('eclipses', 'routes/eclipses.tsx'),
 ] satisfies RouteConfig;

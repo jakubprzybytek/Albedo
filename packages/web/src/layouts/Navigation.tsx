@@ -30,6 +30,10 @@ const menuItems = [
     label: 'Conjunctions'
   },
   {
+    link: '/dso-conjunctions',
+    label: 'DSO Conjunctions'
+  },
+  {
     link: '/eclipses',
     label: 'Eclipses'
   }

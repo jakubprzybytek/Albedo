@@ -6,6 +6,7 @@ import { ConjunctionsWithDso } from '@astro/scripts';
 import { kernels } from "@jpl/data/kernels.full";
 import { DsoConjunction } from ".";
 import { ObserverLocation } from "@astro/coords";
+import { openNgcObjects } from "@openNgc";
 
 type GetConjunctionsParams = {
   fromTde: Date;
@@ -29,7 +30,7 @@ export const handler = lambdaHandler<DsoConjunction[]>(event => {
   const fromJde = JulianDay.fromDateObject(fromTde);
   const toJde = JulianDay.fromDateObject(toTde);
 
-  const conjunctionScripts = new ConjunctionsWithDso(kernels);
+  const conjunctionScripts = new ConjunctionsWithDso(kernels, openNgcObjects);
   const observerLocation: ObserverLocation | undefined = longitude !== undefined && latitude !== undefined && altitude !== undefined ? {
     longitude,
     latitude,

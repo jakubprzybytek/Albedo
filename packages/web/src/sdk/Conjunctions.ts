@@ -1,8 +1,8 @@
 import { get } from "aws-amplify/api";
-import type { Location } from "@/components/Profile";
-import type { Conjunction } from '@lambda/conjunctions';
+import type { Location } from "@/common/Profile";
+import type { Conjunction, DsoConjunction } from '@lambda/conjunctions';
 
-export type { Conjunction };
+export type { Conjunction, DsoConjunction };
 
 export type ConjunctionsQuery = {
   fromTde: string;
@@ -10,7 +10,7 @@ export type ConjunctionsQuery = {
   location?: Location;
 };
 
-export default async function getConjunctions(query: ConjunctionsQuery): Promise<Conjunction[]> {
+export async function getConjunctions(query: ConjunctionsQuery): Promise<Conjunction[]> {
   const path = '/api/conjunctions';
   const searchParams = {
     fromTde: query.fromTde,
@@ -29,4 +29,25 @@ export default async function getConjunctions(query: ConjunctionsQuery): Promise
 
   const bodyJson = await body.json() as unknown;
   return bodyJson as Conjunction[];
+}
+
+export async function getDsoConjunctions(query: ConjunctionsQuery): Promise<DsoConjunction[]> {
+  const path = '/api/dso-conjunctions';
+  const searchParams = {
+    fromTde: query.fromTde,
+    toTde: query.toTde,
+    ...(query.location && {
+      latitude: query.location.latitude.toString(),
+      longitude: query.location.longitude.toString(),
+      altitude: query.location.altitude.toString(),
+    })
+  };
+
+  const { body } = await get({
+    apiName: 'AlbedoAPI',
+    path: path + '?' + new URLSearchParams(searchParams).toString(),
+  }).response;
+
+  const bodyJson = await body.json() as unknown;
+  return bodyJson as DsoConjunction[];
 }

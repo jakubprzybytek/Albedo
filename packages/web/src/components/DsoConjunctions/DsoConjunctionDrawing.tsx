@@ -1,0 +1,24 @@
+import type { JSX } from "react";
+import { calculatePositionAngle, calculateDrawingScale } from "@/common/drawings";
+import type { Conjunction } from "@astro/scripts";
+
+type DsoConjunctionDrawingPropsType = {
+  conjunction: Conjunction;
+}
+
+export default function DsoConjunctionDrawing({ conjunction }: DsoConjunctionDrawingPropsType): JSX.Element {
+  const firstBodyRadius = conjunction.firstBody.ephemeris.angularSize / 2;
+  const secondBodyRadius = conjunction.secondBody.ephemeris.angularSize / 2;
+
+  const positionAngle = calculatePositionAngle(conjunction.firstBody.ephemeris.coords, conjunction.secondBody.ephemeris.coords);
+  const { scale, firstBodyX, firstBodyY, secondBodyX, secondBodyY } = calculateDrawingScale(firstBodyRadius, secondBodyRadius, conjunction.separation, positionAngle);
+
+  return (
+    <svg viewBox="0 0 500 500" style={{ borderRadius: '4px', backgroundColor: 'darkblue', height: '100%' }}>
+      <g>
+        <circle cx={firstBodyX} cy={firstBodyY} r={firstBodyRadius * scale} fill='lightgrey'></circle>
+        <circle cx={secondBodyX} cy={secondBodyY} r={secondBodyRadius * scale} fill='lightgrey'></circle>
+      </g>
+    </svg>
+  );
+}

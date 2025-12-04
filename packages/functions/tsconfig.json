@@ -10,6 +10,7 @@
       "@astro/*": ["../core/src/astro/*"],
       "@jpl": ["../core/src/jpl"],
       "@jpl/*": ["../core/src/jpl/*"],
+      "@openNgc": ["../core/src/openNgc"],
     }
   }
 }
