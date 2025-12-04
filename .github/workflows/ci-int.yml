@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: bahmutov/npm-install@v1.10.9
+      - uses: bahmutov/npm-install@v1.11.2
 
       - name: Run unit tests
         run: npm test
