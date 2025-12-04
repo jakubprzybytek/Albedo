@@ -47,6 +47,7 @@ export function API({ stack }: StackContext) {
       "GET /api/ephemeris": "packages/functions/src/ephemeris/getEphemeris.handler",
       "GET /api/separations": "packages/functions/src/separations/getSeparations.handler",
       "GET /api/conjunctions": "packages/functions/src/conjunctions/getConjunctions.handler",
+      "GET /api/dso-conjunctions": "packages/functions/src/conjunctions/getDsoConjunctions.handler",
       "GET /api/eclipses": "packages/functions/src/eclipses/getEclipses.handler",
     },
   });

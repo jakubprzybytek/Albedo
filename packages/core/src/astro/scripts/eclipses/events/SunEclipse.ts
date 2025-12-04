@@ -20,7 +20,7 @@ function buildAngleCalculatorBetweenSunAndMoonWithParalaxCorrection(stateSolver:
     const sunPosition = stateSolver.position(JplBodyId.Sun, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
     const moonPosition = stateSolver.position(JplBodyId.Moon, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
 
-    const observerCoordinates = paralaxCorrection.observerPosition(observerLocation, es);
+    const observerCoordinates = paralaxCorrection.observerPosition(JplBodyId.Earth, observerLocation, es);
     const sunObserverPosition = sunPosition.subtract(observerCoordinates);
     const moonObserverPosition = moonPosition.subtract(observerCoordinates);
 

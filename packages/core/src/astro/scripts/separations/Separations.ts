@@ -28,7 +28,7 @@ export class Separations {
       const firstBodyPosition = this.stateSolver.position(firstBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
       const secondBodyPosition = this.stateSolver.position(secondBodyId, JplBodyId.Earth, es, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION).coords;
 
-      const observerCoordinates = paralaxCorrection.observerPosition(observerLocation, es);
+      const observerCoordinates = paralaxCorrection.observerPosition(JplBodyId.Earth, observerLocation, es);
       const firstBodyObserverPosition = firstBodyPosition.subtract(observerCoordinates);
       const secondBodyObserverPosition = secondBodyPosition.subtract(observerCoordinates);
 

@@ -13,24 +13,24 @@ export class States {
     this.stateSolver = kernels.stateSolver();
   }
 
-  buildPositionFunction(bodyId: JplBodyId) {
-    return (es: number) => this.stateSolver.position(bodyId, JplBodyId.Earth, es, CorrectionType.NONE).coords;
+  buildPositionFunction(targetBodyId: JplBodyId, observerBodyId: JplBodyId = JplBodyId.Earth, correctionType: CorrectionType = CorrectionType.NONE) {
+    return (es: number) => this.stateSolver.position(targetBodyId, observerBodyId, es, correctionType).coords;
   }
 
-  buildParalaxCorrectedPositionFunction(bodyId: JplBodyId, correctionType: CorrectionType, observerLocation: ObserverLocation) {
+  buildParalaxCorrectedPositionFunction(targetBodyId: JplBodyId, observerBodyId: JplBodyId, observerLocation: ObserverLocation, correctionType: CorrectionType) {
     const paralaxCorrection = new ParalaxCorrection(this.kernels);
     return (es: number) => {
-      const uncorrectedPosition = this.stateSolver.position(bodyId, JplBodyId.Earth, es, correctionType).coords;
-      const observerCoordinates = paralaxCorrection.observerPosition(observerLocation, es);
+      const uncorrectedPosition = this.stateSolver.position(targetBodyId, observerBodyId, es, correctionType).coords;
+      const observerCoordinates = paralaxCorrection.observerPosition(JplBodyId.Earth, observerLocation, es);
       return uncorrectedPosition.subtract(observerCoordinates);
     }
   }
 
-  position(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, correction: CorrectionType): RectangularCoordinates {
+  computePosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, correction: CorrectionType): RectangularCoordinates {
     return this.stateSolver.position(targetBodyId, observerBodyId, es, correction).coords;
   }
 
-  positions(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromEs: number, toEs: number, intervalEs: number, correction: CorrectionType): PositionInTime[] {
+  computePositions(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromEs: number, toEs: number, intervalEs: number, correction: CorrectionType): PositionInTime[] {
     return EphemerisSeconds.forRange(fromEs, toEs, intervalEs)
       .map<PositionInTime>(es => ({
         es,
@@ -38,14 +38,14 @@ export class States {
       }));
   }
 
-  state(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, correction: CorrectionType): StateInTime {
+  computeState(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, correction: CorrectionType): StateInTime {
     return {
       es,
       ...this.stateSolver.state(targetBodyId, observerBodyId, es, correction)
     };
   }
 
-  states(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromEs: number, toEs: number, intervalEs: number, correction: CorrectionType): StateInTime[] {
+  computeStates(targetBodyId: JplBodyId, observerBodyId: JplBodyId, fromEs: number, toEs: number, intervalEs: number, correction: CorrectionType): StateInTime[] {
     return EphemerisSeconds.forRange(fromEs, toEs, intervalEs)
       .map<StateInTime>(es => ({
         es,
