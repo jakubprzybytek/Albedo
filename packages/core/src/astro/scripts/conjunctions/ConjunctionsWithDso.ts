@@ -10,7 +10,7 @@ import { localExtremums } from "@astro/math";
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
-const DETAILED_INTERVAL = EphemerisSeconds.fromDays(1 / 24);
+const DETAILED_INTERVAL = EphemerisSeconds.fromDays(1 / 12);
 
 const SEPARATION_THRESHOLD = Radians.fromDegrees(0.5);
 
@@ -49,6 +49,9 @@ export class ConjunctionsWithDso {
     const correctedToEs = EphemerisSeconds.fromJde(toJde) + PRELIMINARY_INTERVAL;
     const esArray = EphemerisSeconds.forRange(correctedFromEs, correctedToEs, PRELIMINARY_INTERVAL);
 
+    console.log(`Computing ${esArray.length} ephemeris for ${bodyIdies.length} bodies`);
+    console.time('Ephemerides computed');
+
     const ephemerides = bodyIdies
       .map(bodyId => {
         const coordinatesFunction = this.ephemerides.buildCoordinatesFunction(bodyId, observerLocation);
@@ -61,6 +64,10 @@ export class ConjunctionsWithDso {
         }
       });
 
+    console.timeEnd('Ephemerides computed');
+
+    console.log('Finding conjunction candidates using Clusters');
+    console.time('Candidates found in');
     const candidates = ephemerides
       .flatMap(({ bodyId, ephemerides }) =>
         findConjuctionCandidates(ephemerides, this.catalogueClusters)
@@ -69,6 +76,12 @@ export class ConjunctionsWithDso {
             ...conjunctionCandidate
           }))
       );
+
+    console.timeEnd('Candidates found in');
+    console.log(`Candidates: ${candidates.length}`);
+
+    console.log('Finding minimums in candidates using fixed interval method');
+    console.time('Minimums found in candidates in');
 
     const filteredCandidates = candidates.flatMap(({ bodyId, dsoObject, fromEs, toEs }) => {
       const coordinatesFunction = this.ephemerides.buildCoordinatesFunction(bodyId, observerLocation);
@@ -80,7 +93,6 @@ export class ConjunctionsWithDso {
           coords: coordinatesFunction(es)
         }));
       const { minimums } = localExtremums<CoordinatesInTime>(separations, separationFunction);
-      console.log(`Object ${dsoObject.name} min: ${minimums.map(cit => `${cit.es}`)}`)
       return minimums.map(minimum => ({
         dsoObject,
         bodyId,
@@ -88,12 +100,19 @@ export class ConjunctionsWithDso {
       }));
     });
 
+    console.timeEnd('Minimums found in candidates in');
+    console.log(`Minimums found: ${filteredCandidates.length}`);
+
+    console.log('Finding conjunctions using local minimum golden ratio method');
+    console.time('Conjunctions found in');
+
     const conjuctions = filteredCandidates
       .map(({ bodyId, dsoObject, es }) => {
         const separationFunction = this.buildSeparationFunction(bodyId, dsoObject, observerLocation);
         const a = es - DETAILED_INTERVAL;
         const b = es;
         const c = es + DETAILED_INTERVAL;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         return {
           es: eventEs,
@@ -112,6 +131,9 @@ export class ConjunctionsWithDso {
         dso: dsoObject,
         separation
       }));
+
+    console.timeEnd('Conjunctions found in');
+    console.log(`Conjunctions found: ${conjuctions.length}`);
 
     return conjuctions;
   }

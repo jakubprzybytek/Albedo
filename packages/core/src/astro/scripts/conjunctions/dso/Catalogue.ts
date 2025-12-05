@@ -88,7 +88,7 @@ export function findConjuctionCandidates(objectPath: CoordinatesInTime[], catalo
   );
 
   for (let i = 1; i < objectPath.length; i++) {
-    let nextCluster = getClusterAddress(
+    const nextCluster = getClusterAddress(
       Radians.toDegrees(objectPath[i].coords.rightAscension),
       Radians.toDegrees(objectPath[i].coords.declination)
     );
