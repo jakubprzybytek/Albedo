@@ -1,5 +1,5 @@
-import { Conjunction } from "@astro/scripts";
-import { DsoConjunction } from "@astro/scripts";
+import type { Conjunction, DsoConjunction } from "@astro/scripts";
+import { type OpenNgcObject, OpenNgcObjectType } from "@openNgc";
 
-export { Conjunction };
-export { DsoConjunction };
+export { Conjunction, DsoConjunction };
+export { OpenNgcObject, OpenNgcObjectType };

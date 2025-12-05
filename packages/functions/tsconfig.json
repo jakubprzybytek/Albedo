@@ -11,6 +11,7 @@
       "@jpl": ["../core/src/jpl"],
       "@jpl/*": ["../core/src/jpl/*"],
       "@openNgc": ["../core/src/openNgc"],
+      "@openNgc/*": ["../core/src/openNgc/*"],
     }
   }
 }

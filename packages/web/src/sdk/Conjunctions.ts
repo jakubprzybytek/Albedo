@@ -1,8 +1,10 @@
 import { get } from "aws-amplify/api";
 import type { Location } from "@/common/Profile";
 import type { Conjunction, DsoConjunction } from '@lambda/conjunctions';
+import { type OpenNgcObject, OpenNgcObjectType } from "@lambda/conjunctions";
 
 export type { Conjunction, DsoConjunction };
+export { OpenNgcObject, OpenNgcObjectType };
 
 export type ConjunctionsQuery = {
   fromTde: string;

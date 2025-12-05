@@ -2,11 +2,10 @@ import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate, optionalFloat } from '../LambdaParams';
 import { JulianDay } from '@astro';
-import { ConjunctionsWithDso } from '@astro/scripts';
-import { kernels } from "@jpl/data/kernels.full";
-import { DsoConjunction } from ".";
 import { ObserverLocation } from "@astro/coords";
-import { openNgcObjects } from "@openNgc";
+import { ConjunctionsWithDso, DsoConjunction } from '@astro/scripts';
+import { kernels } from "@jpl/data/kernels.full";
+import { openNgcObjects } from "@openNgc/data";
 
 type GetConjunctionsParams = {
   fromTde: Date;

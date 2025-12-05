@@ -2,7 +2,7 @@ import { AstronomicalCoordinates, ObserverLocation, Radians } from "@astro/coord
 import { DsoConjunction, Ephemerides, timeProperties } from "@astro/scripts";
 import { JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { KernelsRepository } from "@jpl/kernels";
-import { OpenNgcObject } from "@openNgc";
+import { OpenNgcObject, OpenNgcObjectType } from "@openNgc";
 import { Table } from "@utils/Table";
 import { findConjuctionCandidates, prepareCatalogueClusters } from "./dso/Catalogue";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
@@ -134,6 +134,8 @@ export class ConjunctionsWithDso {
 
     console.timeEnd('Conjunctions found in');
     console.log(`Conjunctions found: ${conjuctions.length}`);
+    console.log(OpenNgcObjectType['Galaxy']);
+    console.log(Object.keys(OpenNgcObjectType)[Object.values(OpenNgcObjectType).indexOf('G' as OpenNgcObjectType)]);
 
     return conjuctions;
   }

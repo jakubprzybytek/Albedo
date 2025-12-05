@@ -5,7 +5,8 @@ import { JplBody, jplBodyFromString } from "@jpl";
 import { kernels } from "@jpl/data/kernels.full";
 import { ConjunctionsWithDso } from "../ConjunctionsWithDso";
 import { DsoConjunction } from "..";
-import { openNgcObjects, OpenNgcObjectType } from "@openNgc";
+import { OpenNgcObjectType } from "@openNgc";
+import { openNgcObjects } from "@openNgc/data";
 
 describe("ConjunctionsWithDso", () => {
   const conjuctionScripts = new ConjunctionsWithDso(kernels, openNgcObjects);

@@ -2,9 +2,9 @@ import { useState, type JSX } from "react";
 import Stack from "@mui/material/Stack";
 import DsoConjunctionsQueryForm from './DsoConjunctionsQueryForm';
 import DsoConjunctionsTable from './DsoConjunctionsTable';
-import type { Conjunction, ConjunctionsQuery, DsoConjunction } from "@/sdk/Conjunctions";
-import useQuery from "@/forms/useQuery";
+import type { ConjunctionsQuery, DsoConjunction } from "@/sdk/Conjunctions";
 import { getDsoConjunctions } from "@/sdk/Conjunctions";
+import useQuery from "@/forms/useQuery";
 
 export default function DsoConjunctionsBrowser(): JSX.Element {
   const [conjunctions, setConjunctions] = useState<DsoConjunction[]>([]);
