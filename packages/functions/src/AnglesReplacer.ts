@@ -1,8 +1,10 @@
 import { Radians } from "@astro/coords";
 
+const FIELDS_TO_TRANSFORM = ['rightAscension', 'declination', 'separation', 'angularSize', 'majorAxis', 'minorAxis', 'positionAngle']
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function anglesReplacer(this: any, key: string, value: any): any {
-    if (key === 'rightAscension' || key === 'declination' || key === 'separation' || key === 'angularSize') {
+    if (FIELDS_TO_TRANSFORM.includes(key)) {
         const angle = value as number;
         return Radians.toDegrees(angle);
     }

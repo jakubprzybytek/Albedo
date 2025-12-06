@@ -2,8 +2,7 @@ import { readFileSync } from 'fs';
 import { OpenNgcObject, OpenNgcObjectType } from '.';
 import { Radians } from '@astro/coords';
 
-// degree
-export function parseAngle(angleString: string): number {
+export function parseAngleInDegree(angleString: string): number {
   const values = angleString.split(':');
   const angles = Number(values[0]);
   return angles >= 0
@@ -11,12 +10,16 @@ export function parseAngle(angleString: string): number {
     : angles - Number(values[1]) / 60 - Number(values[2]) / 3600;
 }
 
+export function parseAngleInArcMinutes(angleString: string): number {
+  return Number(angleString) / 60;
+}
+
 export function parseObject(line: string): OpenNgcObject {
   const columns = line.split(';');
 
   try {
-    const rightAscensionDeg = parseAngle(columns[2]) * 15.0;
-    const declinationDeg = parseAngle(columns[3]);
+    const rightAscensionDeg = parseAngleInDegree(columns[2]) * 15.0;
+    const declinationDeg = parseAngleInDegree(columns[3]);
     const positionAngleDeg = Number(columns[7]);
 
     return {
@@ -26,8 +29,8 @@ export function parseObject(line: string): OpenNgcObject {
       rightAscensionDeg,
       declination: Radians.fromDegrees(declinationDeg),
       declinationDeg,
-      majorAxis: Number(columns[5]),
-      minorAxis: Number(columns[6]),
+      majorAxis: Radians.fromDegrees(parseAngleInArcMinutes(columns[5])),
+      minorAxis: Radians.fromDegrees(parseAngleInArcMinutes(columns[6])),
       positionAngle: Radians.fromDegrees(positionAngleDeg),
       positionAngleDeg
     }

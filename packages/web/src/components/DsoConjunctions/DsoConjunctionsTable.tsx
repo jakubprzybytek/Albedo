@@ -48,8 +48,8 @@ export default function DsoConjunctionsTable({ conjunctions }: DsoConjunctionsTa
           </TableRow>
         </TableHead>
         <TableBody>
-          {conjunctions.map((conjunction) => (
-            <TableRow key={`${conjunction.jde}-${conjunction.body.info.id}-${conjunction.dso.name}`} sx={{
+          {conjunctions.map((conjunction, index) => (
+            <TableRow key={index} sx={{
               '&:last-child td, &:last-child th': { border: 0 },
               '& span': { display: 'block' }
             }}>
@@ -65,7 +65,7 @@ export default function DsoConjunctionsTable({ conjunctions }: DsoConjunctionsTa
               <TableCell align="center">
                 {conjunction.dso.name} / {formatOpenNGCObjectType(conjunction.dso.type)}
                 <AstronomicalCoords coords={new AstronomicalCoordinates(conjunction.dso.rightAscension, conjunction.dso.declination)} />
-                Size: {formatDegrees(conjunction.dso.majorAxis)} / {formatDegrees(conjunction.dso.minorAxis)} / {formatDegrees(conjunction.dso.positionAngle)}
+                Size: {formatDegrees(conjunction.dso.majorAxis)} / {formatDegrees(conjunction.dso.minorAxis)} / {conjunction.dso.positionAngle}°
               </TableCell>
               <TableCell align="right">
                 {formatDegrees(conjunction.separation)}

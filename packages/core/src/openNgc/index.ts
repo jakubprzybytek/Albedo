@@ -13,6 +13,8 @@ export enum OpenNgcObjectType {
   Assotiation = '*Ass',
   'Cluser and Nebula' = 'Cl+N',
 
+  'Planetary Nebula' = 'PN',
+
   'Hydrogen Nebula' = 'HII',
   Nebula = 'Neb',
   'Emission Nebula' = 'EmN',

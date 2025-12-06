@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { parseAngle, parseObject } from "../OpenNgcLoader";
+import { parseAngleInDegree, parseObject } from "../OpenNgcLoader";
 import { OpenNgcObject, OpenNgcObjectType } from "..";
-import { AstronomicalCoordinates } from "@astro/coords";
+import { AstronomicalCoordinates, Radians } from "@astro/coords";
 
 describe("OpenNgcLoader", () => {
   it("should parse anges", () => {
-    expect(parseAngle('+00:12:36.36')).toBe(0.2101);
-    expect(parseAngle('+27:12:36.36')).toBe(27.2101);
-    expect(parseAngle('-03:36:12')).toBe(-3.6033333333333335);
+    expect(parseAngleInDegree('+00:12:36.36')).toBe(0.2101);
+    expect(parseAngleInDegree('+27:12:36.36')).toBe(27.2101);
+    expect(parseAngleInDegree('-03:36:12')).toBe(-3.6033333333333335);
   });
 
   it("should parse OpenNGC object", () => {
@@ -15,12 +15,12 @@ describe("OpenNgcLoader", () => {
     expect(parseObject(line)).toEqual<OpenNgcObject>({
       name: 'IC0002',
       type: OpenNgcObjectType.Galaxy,
-      rightAscension: 0.04806054983575051,
+      rightAscension: Radians.fromDegrees(2.7536666666666663),
       rightAscensionDeg: 2.7536666666666663,
-      declination: -0.2238011459148273,
+      declination: Radians.fromDegrees(-12.822861111111111),
       declinationDeg: -12.822861111111111,
-      majorAxis: 0.98,
-      minorAxis: 0.32,
+      majorAxis: Radians.fromDegrees(0.98 / 60),
+      minorAxis: Radians.fromDegrees(0.32 / 60),
       positionAngle: 2.478367537831948,
       positionAngleDeg: 142
     })
@@ -29,12 +29,12 @@ describe("OpenNgcLoader", () => {
     expect(parseObject(line2)).toEqual<OpenNgcObject>({
       name: 'NGC7800',
       type: OpenNgcObjectType.Galaxy,
-      rightAscension: 6.281463248984285,
+      rightAscension: Radians.fromDegrees(359.90133333333335),
       rightAscensionDeg: 359.90133333333335,
-      declination: 0.2584061768450638,
+      declination: Radians.fromDegrees(14.805583333333335),
       declinationDeg: 14.805583333333335,
-      majorAxis: 1.74,
-      minorAxis: 0.72,
+      majorAxis: Radians.fromDegrees(1.74 / 60),
+      minorAxis: Radians.fromDegrees(0.72 / 60),
       positionAngle: 0.7853981633974483,
       positionAngleDeg: 45
     })

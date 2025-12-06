@@ -42,7 +42,7 @@ describe("ConjunctionsWithDso", () => {
         positionAngleDeg: 0,
         rightAscension: 4.682727836967568,
         rightAscensionDeg: 268.3005416666667,
-        type: OpenNgcObjectType.OpenCluster,
+        type: OpenNgcObjectType["Open Cluster"],
       },
       separation: 0.00678430488600484,
     } satisfies DsoConjunction);
