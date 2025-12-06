@@ -1,5 +1,5 @@
 import { AstronomicalCoordinates, ObserverLocation, Radians } from "@astro/coords";
-import { DsoConjunction, Ephemerides, timeProperties } from "@astro/scripts";
+import { DsoConjunction, Ephemerides, sortByEs, timeProperties } from "@astro/scripts";
 import { JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { KernelsRepository } from "@jpl/kernels";
 import { OpenNgcObject, OpenNgcObjectType } from "@openNgc";
@@ -31,16 +31,13 @@ export class ConjunctionsWithDso {
   }
 
   private buildSeparationFunction(bodyId: JplBodyId, dsoObject: OpenNgcObject, observerLocation?: ObserverLocation) {
-    const osoObjectCoords = new AstronomicalCoordinates(
-      Radians.fromDegrees(dsoObject.rightAscensionDeg),
-      Radians.fromDegrees(dsoObject.declinationDeg)
-    );
+    const osoObjectCoords = new AstronomicalCoordinates(dsoObject.rightAscension, dsoObject.declination);
     const bodyCoordsFunction = this.ephemerides.buildCoordinatesFunction(bodyId, observerLocation);
     return (es: number) => Radians.separation(bodyCoordsFunction(es), osoObjectCoords)
   }
 
   buildSeparationFunctionForDso(dsoObject: OpenNgcObject) {
-    const dsoCoords = new AstronomicalCoordinates(Radians.fromDegrees(dsoObject.rightAscensionDeg), Radians.fromDegrees(dsoObject.declinationDeg));
+    const dsoCoords = new AstronomicalCoordinates(dsoObject.rightAscension, dsoObject.declination);
     return (coordsInTime: CoordinatesInTime) => Radians.separation(coordsInTime.coords, dsoCoords);
   }
 
@@ -134,10 +131,8 @@ export class ConjunctionsWithDso {
 
     console.timeEnd('Conjunctions found in');
     console.log(`Conjunctions found: ${conjuctions.length}`);
-    console.log(OpenNgcObjectType['Galaxy']);
-    console.log(Object.keys(OpenNgcObjectType)[Object.values(OpenNgcObjectType).indexOf('G' as OpenNgcObjectType)]);
 
-    return conjuctions;
+    return conjuctions.sort(sortByEs);;
   }
 
   findConjunctionsWithDso(fromJde: number, toJde: number, observerLocation?: ObserverLocation): DsoConjunction[] {

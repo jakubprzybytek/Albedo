@@ -15,3 +15,5 @@ export function timeProperties(es: number): TimeProperties {
     tde: JulianDay.toDateTime(jde),
   };
 }
+
+export const sortByEs = (a: TimeProperties, b: TimeProperties) => a.es - b.es;

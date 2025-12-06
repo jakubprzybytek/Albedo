@@ -16,13 +16,10 @@ describe("OpenNgcLoader", () => {
       name: 'IC0002',
       type: OpenNgcObjectType.Galaxy,
       rightAscension: Radians.fromDegrees(2.7536666666666663),
-      rightAscensionDeg: 2.7536666666666663,
       declination: Radians.fromDegrees(-12.822861111111111),
-      declinationDeg: -12.822861111111111,
       majorAxis: Radians.fromDegrees(0.98 / 60),
       minorAxis: Radians.fromDegrees(0.32 / 60),
       positionAngle: 2.478367537831948,
-      positionAngleDeg: 142
     })
 
     const line2 = 'NGC7800;G;23:59:36.32;+14:48:20.1;Peg;1.74;0.72;45;13.31;;12.14;11.58;11.27;22.65;IB;;;;1696;0.005672;;;;;;;;2MASX J23593630+1448200,IRAS 23570+1431,MCG +02-01-007,PGC 073177,UGC 12885;;;;Type:1|RA:1|Dec:1|Const:99|MajAx:3|MinAx:3|PosAng:3|B-Mag:3|J-Mag:2|H-Mag:2|K-Mag:2|SurfBr:3|Hubble:3|RadVel:2|Redshift:2';
@@ -30,13 +27,10 @@ describe("OpenNgcLoader", () => {
       name: 'NGC7800',
       type: OpenNgcObjectType.Galaxy,
       rightAscension: Radians.fromDegrees(359.90133333333335),
-      rightAscensionDeg: 359.90133333333335,
       declination: Radians.fromDegrees(14.805583333333335),
-      declinationDeg: 14.805583333333335,
       majorAxis: Radians.fromDegrees(1.74 / 60),
       minorAxis: Radians.fromDegrees(0.72 / 60),
       positionAngle: 0.7853981633974483,
-      positionAngleDeg: 45
     })
 
     const line3 = 'IC1593;**;00:54:39.63;+32:31:10.1;Psc;;;;;;;;;;;;;;;;;;;;;;;;;;;Type:1|RA:1|Dec:1|Const:99';
@@ -44,13 +38,10 @@ describe("OpenNgcLoader", () => {
       name: 'IC1593',
       type: OpenNgcObjectType.Unknown,
       rightAscension: Radians.fromDegrees(13.665125),
-      rightAscensionDeg: 13.665125,
       declination: Radians.fromDegrees(32.51947222222222),
-      declinationDeg: 32.51947222222222,
       majorAxis: undefined,
       minorAxis: undefined,
       positionAngle: undefined,
-      positionAngleDeg: undefined
     })
   });
 });

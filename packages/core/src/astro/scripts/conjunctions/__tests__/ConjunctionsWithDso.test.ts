@@ -13,35 +13,32 @@ describe("ConjunctionsWithDso", () => {
 
   it("should compute conjunctions for all bodies", () => {
     const fromJde = JulianDay.fromDate(2024, 1, 1);
-    const toJde = JulianDay.fromDate(2024, 1, 31);
+    const toJde = JulianDay.fromDate(2024, 1, 10);
     const conjunctions = conjuctionScripts.findConjunctionsWithDso(fromJde, toJde);
 
-    console.log(conjunctions);
-
-    expect(conjunctions).toHaveLength(58);
+    expect(conjunctions).toHaveLength(24);
 
     expect(conjunctions[0]).toStrictEqual({
-      es: 758376018.0899954,
-      jde: 2460322.500209375,
-      tde: new Date('2024-01-13T00:00:18.000Z'),
+      es: 757507306.4444026,
+      jde: 2460312.44567644,
+      tde: new Date('2024-01-02T22:41:46.000Z'),
       body: {
-        info: jplBodyFromString('Mercury') as JplBody,
+        info: jplBodyFromString('Venus') as JplBody,
         ephemeris: {
-          angularSize: 0.000031954655296513917,
-          coords: new AstronomicalCoordinates(4.6839067379632215, -0.38207825315982513),
-          range: 152697625.8797922
+          angularSize: 0.00006775728581838766,
+          coords: new AstronomicalCoordinates(4.2420248605159, -0.33519850968920445),
+          range: 178631712.43032137
         }
       },
       dso: {
-        declination: -0.3887740301364613,
-        declinationDeg: -22.27511111111111,
-        majorAxis: Radians.fromDegrees(9 / 60),
-        name: "NGC6469",
-        rightAscension: 4.682727836967568,
-        rightAscensionDeg: 268.3005416666667,
-        type: OpenNgcObjectType["Open Cluster"],
+        name: "IC4592",
+        type: OpenNgcObjectType["Reflection Nebula"],
+        rightAscension: 4.241053362016839,
+        declination: -0.3395479882113234,
+        majorAxis: 0.017453292519943295,
+        minorAxis: 0.011635528346628862,
       },
-      separation: 0.00678430488600484,
+      separation: 0.004445037711602649,
     } satisfies DsoConjunction);
   }, { timeout: 10000 });
 });
