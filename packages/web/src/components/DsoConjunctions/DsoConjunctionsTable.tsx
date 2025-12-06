@@ -11,16 +11,21 @@ import Paper from '@mui/material/Paper';
 import { formatDegrees } from '../../utils';
 import AstronomicalCoords from '@/common/AstronomicalCoordinates';
 import DsoConjunctionDrawing from './DsoConjunctionDrawing';
-import type { DsoConjunction } from '@/sdk/Conjunctions';
+import { type DsoConjunction, OpenNgcObjectType } from '@/sdk/Conjunctions';
 import { AstronomicalCoordinates } from '@astro/coords';
+
+function separationFactor(conjunction: DsoConjunction): number {
+  const averageAngularSize = (conjunction.body.ephemeris.angularSize + (conjunction.dso.majorAxis + conjunction.dso.minorAxis) / 2) / 2;
+  return conjunction.separation / averageAngularSize;
+}
+
+function formatOpenNGCObjectType(type: OpenNgcObjectType) {
+  const enumIndex = Object.values(OpenNgcObjectType).indexOf(type);
+  return enumIndex >= 0 ? Object.keys(OpenNgcObjectType)[enumIndex] : `${type}(?)`;
+}
 
 type DsoConjunctionsTablePropsType = {
   conjunctions: DsoConjunction[];
-}
-
-function separationFactor(conjunction: DsoConjunction): number {
-  const averageAngularSize = (conjunction.body.ephemeris.angularSize + (conjunction.dso.majorAxis + conjunction.dso.minorAxis) /2 ) / 2;
-  return conjunction.separation / averageAngularSize;
 }
 
 export default function DsoConjunctionsTable({ conjunctions }: DsoConjunctionsTablePropsType): JSX.Element {
@@ -58,7 +63,7 @@ export default function DsoConjunctionsTable({ conjunctions }: DsoConjunctionsTa
                 Size: {formatDegrees(conjunction.body.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="center">
-                {conjunction.dso.name} / {conjunction.dso.type}
+                {conjunction.dso.name} / {formatOpenNGCObjectType(conjunction.dso.type)}
                 <AstronomicalCoords coords={new AstronomicalCoordinates(conjunction.dso.rightAscension, conjunction.dso.declination)} />
                 Size: {formatDegrees(conjunction.dso.majorAxis)} / {formatDegrees(conjunction.dso.minorAxis)} / {formatDegrees(conjunction.dso.positionAngle)}
               </TableCell>
