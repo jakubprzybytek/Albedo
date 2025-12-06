@@ -38,5 +38,19 @@ describe("OpenNgcLoader", () => {
       positionAngle: 0.7853981633974483,
       positionAngleDeg: 45
     })
+
+    const line3 = 'IC1593;**;00:54:39.63;+32:31:10.1;Psc;;;;;;;;;;;;;;;;;;;;;;;;;;;Type:1|RA:1|Dec:1|Const:99';
+    expect(parseObject(line3)).toEqual<OpenNgcObject>({
+      name: 'IC1593',
+      type: OpenNgcObjectType.Unknown,
+      rightAscension: Radians.fromDegrees(13.665125),
+      rightAscensionDeg: 13.665125,
+      declination: Radians.fromDegrees(32.51947222222222),
+      declinationDeg: 32.51947222222222,
+      majorAxis: undefined,
+      minorAxis: undefined,
+      positionAngle: undefined,
+      positionAngleDeg: undefined
+    })
   });
 });

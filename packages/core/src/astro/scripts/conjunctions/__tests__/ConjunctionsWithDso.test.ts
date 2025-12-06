@@ -1,5 +1,5 @@
 import { JulianDay } from "@astro";
-import { AstronomicalCoordinates } from "@astro/coords";
+import { AstronomicalCoordinates, Radians } from "@astro/coords";
 import { describe, it, expect } from "vitest";
 import { JplBody, jplBodyFromString } from "@jpl";
 import { kernels } from "@jpl/data/kernels.full";
@@ -35,11 +35,8 @@ describe("ConjunctionsWithDso", () => {
       dso: {
         declination: -0.3887740301364613,
         declinationDeg: -22.27511111111111,
-        majorAxis: 9,
-        minorAxis: 0,
+        majorAxis: Radians.fromDegrees(9 / 60),
         name: "NGC6469",
-        positionAngle: 0,
-        positionAngleDeg: 0,
         rightAscension: 4.682727836967568,
         rightAscensionDeg: 268.3005416666667,
         type: OpenNgcObjectType["Open Cluster"],

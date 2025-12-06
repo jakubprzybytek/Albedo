@@ -29,8 +29,8 @@ export type OpenNgcObject = {
   rightAscensionDeg: number;
   declination: number;
   declinationDeg: number;
-  majorAxis: number;
-  minorAxis: number;
-  positionAngle: number;
-  positionAngleDeg: number;
+  majorAxis?: number;
+  minorAxis?: number;
+  positionAngle?: number;
+  positionAngleDeg?: number;
 }
