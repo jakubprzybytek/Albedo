@@ -15,7 +15,8 @@ import { type DsoConjunction, OpenNgcObjectType } from '@/sdk/Conjunctions';
 import { AstronomicalCoordinates } from '@astro/coords';
 
 function separationFactor(conjunction: DsoConjunction): number {
-  const averageAngularSize = (conjunction.body.ephemeris.angularSize + (conjunction.dso.majorAxis + conjunction.dso.minorAxis) / 2) / 2;
+  const dsoAngularSize = conjunction.dso.minorAxis ? (conjunction.dso.majorAxis + conjunction.dso.minorAxis) / 2 : conjunction.dso.majorAxis;
+  const averageAngularSize = (conjunction.body.ephemeris.angularSize + dsoAngularSize) / 2;
   return conjunction.separation / averageAngularSize;
 }
 
