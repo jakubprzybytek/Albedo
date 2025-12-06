@@ -2,9 +2,9 @@ import { Table } from "@utils/Table";
 import { OpenNgcObject } from "@openNgc";
 import { AstronomicalCoordinates, Radians } from "@astro/coords";
 
-const CLUSTER_SIZE_DEG = 1.0;
-const MIN_DECLINATION_DEG = -30.0;
-const MAX_DECLINATION_DEG = 30.0;
+const CLUSTER_SIZE = Radians.fromDegrees(1.0);
+const MIN_DECLINATION = Radians.fromDegrees(-30.0);
+const MAX_DECLINATION = Radians.fromDegrees(30.0);
 
 type ClusterAddress = {
   column: number;
@@ -22,22 +22,22 @@ export type ConjunctionCandidate = {
   dsoObject: OpenNgcObject;
 };
 
-function getClusterAddress(rightAscensionDeg: number, declinationDeg: number): ClusterAddress {
+function getClusterAddress(rightAscension: number, declination: number): ClusterAddress {
   return {
-    column: Math.floor(rightAscensionDeg / CLUSTER_SIZE_DEG),
-    row: Math.floor((declinationDeg - MIN_DECLINATION_DEG) / CLUSTER_SIZE_DEG)
+    column: Math.floor(rightAscension / CLUSTER_SIZE),
+    row: Math.floor((declination - MIN_DECLINATION) / CLUSTER_SIZE)
   };
 }
 
 export function prepareCatalogueClusters(objects: OpenNgcObject[]): Table<OpenNgcObject[]> {
-  const raClusters = Math.ceil(360 / CLUSTER_SIZE_DEG);
-  const decClusters = Math.ceil((MAX_DECLINATION_DEG - MIN_DECLINATION_DEG) / CLUSTER_SIZE_DEG);
+  const raClusters = Math.ceil(360 / CLUSTER_SIZE);
+  const decClusters = Math.ceil((MAX_DECLINATION - MIN_DECLINATION) / CLUSTER_SIZE);
 
   const clusters = new Table<OpenNgcObject[]>(raClusters, decClusters, () => new Array<OpenNgcObject>());
 
-  objects.filter(object => object.declinationDeg >= MIN_DECLINATION_DEG && object.declinationDeg < MAX_DECLINATION_DEG)
+  objects.filter(object => object.declination >= MIN_DECLINATION && object.declination < MAX_DECLINATION)
     .forEach(object => {
-      const { column, row } = getClusterAddress(object.rightAscensionDeg, object.declinationDeg);
+      const { column, row } = getClusterAddress(object.rightAscension, object.declination);
       clusters.get(column, row).push(object);
     });
 
@@ -82,16 +82,10 @@ export function findConjuctionCandidates(objectPath: CoordinatesInTime[], catalo
   const conjunctionCandidates: ConjunctionCandidate[] = [];
 
   let currentClusterFirstIndex = 0;
-  let currentCluster = getClusterAddress(
-    Radians.toDegrees(objectPath[0].coords.rightAscension),
-    Radians.toDegrees(objectPath[0].coords.declination)
-  );
+  let currentCluster = getClusterAddress(objectPath[0].coords.rightAscension, objectPath[0].coords.declination);
 
   for (let i = 1; i < objectPath.length; i++) {
-    const nextCluster = getClusterAddress(
-      Radians.toDegrees(objectPath[i].coords.rightAscension),
-      Radians.toDegrees(objectPath[i].coords.declination)
-    );
+    const nextCluster = getClusterAddress(objectPath[i].coords.rightAscension, objectPath[i].coords.declination);
 
     if (nextCluster.column != currentCluster.column || nextCluster.row != currentCluster.row) {
       const clusterObjects = catalogueClusters.get(currentCluster.column, currentCluster.row);

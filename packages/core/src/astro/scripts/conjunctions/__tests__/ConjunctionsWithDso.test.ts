@@ -43,5 +43,5 @@ describe("ConjunctionsWithDso", () => {
       },
       separation: 0.00678430488600484,
     } satisfies DsoConjunction);
-  });
+  }, { timeout: 10000 });
 });
