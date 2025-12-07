@@ -49,7 +49,7 @@ export function API({ stack }: StackContext) {
       "GET /api/dso-conjunctions": {
         function: {
           handler: "packages/functions/src/conjunctions/getDsoConjunctions.handler",
-          memorySize: "4096 MB"
+          memorySize: "2048 MB"
         }
       }, 
       "GET /api/eclipses": "packages/functions/src/eclipses/getEclipses.handler",
