@@ -2,13 +2,14 @@ import { useEffect, useMemo, useState, type JSX } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 import { addMonths, format } from 'date-fns';
 import EventsList from './EventsList';
-import { getConjunctions, type Conjunction, type ConjunctionsQuery } from "@/sdk/Conjunctions";
+import { getConjunctions, getDsoConjunctions, type Conjunction, type ConjunctionsQuery, type DsoConjunction } from "@/sdk/Conjunctions";
 import type { Eclipse, EclipsesQuery } from "@/sdk/Eclipses";
 import { useProfile } from "@/components/Profile/useProfile";
 import getEclipses from "@/sdk/Eclipses";
 
 export enum EventType {
   Conjuction,
+  DsoConjuction,
   Eclipse
 }
 
@@ -28,6 +29,7 @@ function toEvents(rawEvents: any[], type: EventType): Event[] {
 
 export default function EventsBrowser(): JSX.Element {
   const [conjunctions, setConjunctions] = useState<Conjunction[]>([]);
+  const [dsoConjunctions, setDsoConjunctions] = useState<DsoConjunction[]>([]);
   const [eclipses, setEclipses] = useState<Eclipse[]>([]);
 
   const [eventTypesLoaded, setEventTypesLoaded] = useState(0);
@@ -37,12 +39,13 @@ export default function EventsBrowser(): JSX.Element {
   const events = useMemo(() => {
     return [
       ...toEvents(conjunctions, EventType.Conjuction),
+      ...toEvents(dsoConjunctions, EventType.DsoConjuction),
       ...toEvents(eclipses, EventType.Eclipse)
     ]
       .sort((a, b) => a.jde - b.jde);
-  }, [conjunctions, eclipses]);
+  }, [conjunctions, dsoConjunctions, eclipses]);
 
-  const progress = (eventTypesLoaded / 2.0) * 100.0;
+  const progress = (eventTypesLoaded / 3.0) * 100.0;
 
   useEffect(() => {
     const fetchEData = async () => {
@@ -72,6 +75,21 @@ export default function EventsBrowser(): JSX.Element {
     };
 
     fetchCData();
+  }, []);
+
+  useEffect(() => {
+    const fetchDCData = async () => {
+      const query: ConjunctionsQuery = {
+        fromTde: format(new Date(), 'yyyy-MM-dd'),
+        toTde: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
+        location: profile.location
+      };
+      const conjunctions = await getDsoConjunctions(query);
+      setDsoConjunctions(conjunctions);
+      setEventTypesLoaded(previous => previous + 1);
+    };
+
+    fetchDCData();
   }, []);
 
   return (

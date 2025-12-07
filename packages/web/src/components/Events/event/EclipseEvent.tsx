@@ -28,19 +28,21 @@ export default function EclipseEvent({ eclipse, expanded }: EclipseEventParamTyp
           <Typography marginBottom={1}>
             <BodyChip bodyId={eclipse.type == EclipseType.SunEclipse ? JplBodyId.Sun : JplBodyId.Moon} /> eclipse with a sepration of <Angle value={eclipse.separation} />.
           </Typography>
-          {eclipse.type == EclipseType.SunEclipse && <>
-            <Typography>
-              Sun angular size: <Angle value={eclipse.sunEphemeris.angularSize} />. Moon angular size: <Angle value={eclipse.moonEphemeris.angularSize} />.
-            </Typography>
-          </>}
-          {eclipse.type == EclipseType.MoonEclipse && <>
-            <Typography>
-              Moon angular size: <Angle value={eclipse.moonEphemeris.angularSize} />.
-            </Typography>
-            <Typography>
-              Earth shadow umbra angular size: <Angle value={eclipse.earthShadowEphemeris.umbraAngularSize} />, penumbra angular size: <Angle value={eclipse.earthShadowEphemeris.penumbraAngularSize} />.
-            </Typography>
-          </>}
+          <Box sx={{ display: expanded ? 'block' : 'none' }}>
+            {eclipse.type == EclipseType.SunEclipse && <>
+              <Typography>
+                Sun angular size: <Angle value={eclipse.sunEphemeris.angularSize} />. Moon angular size: <Angle value={eclipse.moonEphemeris.angularSize} />.
+              </Typography>
+            </>}
+            {eclipse.type == EclipseType.MoonEclipse && <>
+              <Typography>
+                Moon angular size: <Angle value={eclipse.moonEphemeris.angularSize} />.
+              </Typography>
+              <Typography>
+                Earth shadow umbra angular size: <Angle value={eclipse.earthShadowEphemeris.umbraAngularSize} />, penumbra angular size: <Angle value={eclipse.earthShadowEphemeris.penumbraAngularSize} />.
+              </Typography>
+            </>}
+          </Box>
         </Stack>
       </Stack>
     </>

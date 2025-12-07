@@ -1,6 +1,6 @@
 import { Radians } from "@astro/coords";
 
-const FIELDS_TO_TRANSFORM = ['rightAscension', 'declination', 'separation', 'angularSize', 'majorAxis', 'minorAxis', 'positionAngle']
+const FIELDS_TO_TRANSFORM = ['rightAscension', 'declination', 'separation', 'angularSize', 'umbraAngularSize', 'penumbraAngularSize', 'majorAxis', 'minorAxis', 'positionAngle']
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function anglesReplacer(this: any, key: string, value: any): any {

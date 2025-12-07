@@ -3,14 +3,15 @@ import IconButton from '@mui/material/IconButton';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { EventType } from '../EventsBrowser';
-import type { Conjunction } from '@/sdk/Conjunctions';
+import type { Conjunction, DsoConjunction } from '@/sdk/Conjunctions';
 import type { Eclipse } from '@/sdk/Eclipses';
 import ConjunctionEvent from './ConjunctionEvent';
 import EclipseEvent from './EclipseEvent';
+import DsoConjunctionEvent from './DsoConjunctionEvent';
 
 type DispatchEventParamType = {
   type: EventType,
-  event: Conjunction | Eclipse
+  event: Conjunction | DsoConjunction | Eclipse
 }
 
 export default function DisplayEvent({ type, event }: DispatchEventParamType) {
@@ -23,6 +24,9 @@ export default function DisplayEvent({ type, event }: DispatchEventParamType) {
       </IconButton>
       {type === EventType.Conjuction && (
         <ConjunctionEvent conjunction={event as Conjunction} expanded={expanded} />
+      )}
+      {type === EventType.DsoConjuction && (
+        <DsoConjunctionEvent conjunction={event as DsoConjunction} expanded={expanded} />
       )}
       {type === EventType.Eclipse && (
         <EclipseEvent eclipse={event as Eclipse} expanded={expanded} />
