@@ -4,7 +4,7 @@ import { JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { KernelsRepository } from "@jpl/kernels";
 import { OpenNgcObject, OpenNgcObjectType } from "@openNgc";
 import { Table } from "@utils/Table";
-import { findConjuctionCandidates, prepareCatalogueClusters } from "./dso/Catalogue";
+import { ConjunctionCandidate, findConjuctionCandidates, prepareCatalogueClusters } from "./dso/Catalogue";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { localExtremums } from "@astro/math";
 
@@ -17,6 +17,13 @@ const SEPARATION_THRESHOLD = Radians.fromDegrees(0.5);
 export type CoordinatesInTime = {
   es: number;
   coords: AstronomicalCoordinates;
+}
+
+export type ConjunctionPredictionRange = {
+  bodyId: JplBodyId;
+  dso: OpenNgcObject;
+  toEs: number;
+  fromEs: number;
 }
 
 export class ConjunctionsWithDso {
@@ -49,49 +56,67 @@ export class ConjunctionsWithDso {
     console.log(`Computing ${esArray.length} ephemeris for ${bodyIdies.length} bodies`);
     console.time('Ephemerides computed');
 
-    const ephemerides = bodyIdies
-      .map(bodyId => {
-        const coordinatesFunction = this.ephemerides.buildCoordinatesFunction(bodyId, observerLocation);
-        return {
-          bodyId,
-          ephemerides: esArray.map(es => ({
-            es,
-            coords: coordinatesFunction(es)
-          }))
-        }
-      });
+    const ephemerides = bodyIdies.map(bodyId => {
+      const coordinatesFunction = this.ephemerides.buildCoordinatesFunction(bodyId, observerLocation);
+      return {
+        bodyId,
+        ephemerides: esArray.map(es => ({
+          es,
+          coords: coordinatesFunction(es)
+        }))
+      }
+    });
 
     console.timeEnd('Ephemerides computed');
 
     console.log('Finding conjunction candidates using Clusters');
     console.time('Candidates found in');
-    const candidates = ephemerides
-      .flatMap(({ bodyId, ephemerides }) =>
-        findConjuctionCandidates(ephemerides, this.catalogueClusters)
-          .map(conjunctionCandidate => ({
-            bodyId,
-            ...conjunctionCandidate
-          }))
-      );
+    const candidates = ephemerides.flatMap<ConjunctionPredictionRange>(({ bodyId, ephemerides }) =>
+      findConjuctionCandidates(ephemerides, this.catalogueClusters)
+        .map(conjunctionCandidate => ({
+          bodyId,
+          ...conjunctionCandidate
+        }))
+    );
 
     console.timeEnd('Candidates found in');
     console.log(`Candidates: ${candidates.length}`);
 
+    console.log('Merging candidates wit the same DSO');
+    console.time('Merged candidates in');
+
+    const mergedCandidates = Array.from(candidates
+      .reduce((acc, newCandidate) => {
+        const candidateId = `${newCandidate.bodyId}-${newCandidate.dso.name}`;
+        const existingCandidate = acc.get(candidateId);
+        if (existingCandidate) {
+          existingCandidate.fromEs = Math.min(existingCandidate.fromEs, newCandidate.fromEs);
+          existingCandidate.toEs = Math.min(existingCandidate.toEs, newCandidate.toEs);
+        } else {
+          acc.set(candidateId, { ...newCandidate });
+        }
+        return acc;
+      }, new Map<string, ConjunctionPredictionRange>())
+      .values());
+
+    console.timeEnd('Merged candidates in');
+    console.log(`Candidates after merging: ${mergedCandidates.length}`);
+
     console.log('Finding minimums in candidates using fixed interval method');
     console.time('Minimums found in candidates in');
 
-    const filteredCandidates = candidates.flatMap(({ bodyId, dsoObject, fromEs, toEs }) => {
+    const filteredCandidates = mergedCandidates.flatMap(({ bodyId, dso, fromEs, toEs }) => {
       const coordinatesFunction = this.ephemerides.buildCoordinatesFunction(bodyId, observerLocation);
-      const separationFunction = this.buildSeparationFunctionForDso(dsoObject);
-      const separations = EphemerisSeconds
+      const separationFunction = this.buildSeparationFunctionForDso(dso);
+      const coords = EphemerisSeconds
         .forRange(fromEs - PRELIMINARY_INTERVAL, toEs + PRELIMINARY_INTERVAL, DETAILED_INTERVAL)
         .map(es => ({
           es,
           coords: coordinatesFunction(es)
         }));
-      const { minimums } = localExtremums<CoordinatesInTime>(separations, separationFunction);
+      const { minimums } = localExtremums<CoordinatesInTime>(coords, separationFunction);
       return minimums.map(minimum => ({
-        dsoObject,
+        dso,
         bodyId,
         es: minimum.es
       }));
@@ -104,8 +129,8 @@ export class ConjunctionsWithDso {
     console.time('Conjunctions found in');
 
     const conjuctions = filteredCandidates
-      .map(({ bodyId, dsoObject, es }) => {
-        const separationFunction = this.buildSeparationFunction(bodyId, dsoObject, observerLocation);
+      .map(({ bodyId, dso, es }) => {
+        const separationFunction = this.buildSeparationFunction(bodyId, dso, observerLocation);
         const a = es - DETAILED_INTERVAL;
         const b = es;
         const c = es + DETAILED_INTERVAL;
@@ -114,18 +139,18 @@ export class ConjunctionsWithDso {
         return {
           es: eventEs,
           bodyId,
-          dsoObject,
+          dso,
           separation: minSeparation
         }
       })
       .filter(({ separation }) => separation < separationLimit)
-      .map<DsoConjunction>(({ es, bodyId, dsoObject, separation }) => ({
+      .map<DsoConjunction>(({ es, bodyId, dso, separation }) => ({
         ...timeProperties(es),
         body: {
           info: jplBodyFromId(bodyId),
           ephemeris: this.ephemerides.detailedCoordinatesForBody2(bodyId, es, observerLocation)
         },
-        dso: dsoObject,
+        dso,
         separation
       }));
 
@@ -136,7 +161,6 @@ export class ConjunctionsWithDso {
   }
 
   findConjunctionsWithDso(fromJde: number, toJde: number, observerLocation?: ObserverLocation): DsoConjunction[] {
-    // const bodies = [JplBodyId.Mercury];
     const bodies = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
     // const bodies = [JplBodyId.Moon, JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
     return this.find(bodies, fromJde, toJde, SEPARATION_THRESHOLD, observerLocation);

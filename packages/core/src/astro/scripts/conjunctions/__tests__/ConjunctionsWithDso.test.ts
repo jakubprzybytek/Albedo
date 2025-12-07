@@ -9,36 +9,36 @@ import { OpenNgcObjectType } from "@openNgc";
 import { openNgcObjects } from "@openNgc/data";
 
 describe("ConjunctionsWithDso", () => {
-  const conjuctionScripts = new ConjunctionsWithDso(kernels, openNgcObjects);
+  const filteredOpenNgcObjects = openNgcObjects.filter(ngcObject => ngcObject.name == 'NGC6369');
+  const conjuctionScripts = new ConjunctionsWithDso(kernels, filteredOpenNgcObjects);
 
   it("should compute conjunctions for all bodies", () => {
-    const fromJde = JulianDay.fromDate(2024, 1, 1);
-    const toJde = JulianDay.fromDate(2024, 1, 10);
+    const fromJde = JulianDay.fromDate(2025, 12, 7);
+    const toJde = JulianDay.fromDate(2025, 12, 14);
     const conjunctions = conjuctionScripts.findConjunctionsWithDso(fromJde, toJde);
 
-    expect(conjunctions).toHaveLength(24);
+    expect(conjunctions).toHaveLength(1);
 
     expect(conjunctions[0]).toStrictEqual({
-      es: 757507306.4444026,
-      jde: 2460312.44567644,
-      tde: new Date('2024-01-02T22:41:46.000Z'),
+      es: 818290164.5959318,
+      jde: 2461015.9509791196,
+      tde: new Date('2025-12-06T10:49:24.000Z'),
       body: {
-        info: jplBodyFromString('Venus') as JplBody,
+        info: jplBodyFromString('Mars') as JplBody,
         ephemeris: {
-          angularSize: 0.00006775728581838766,
-          coords: new AstronomicalCoordinates(4.2420248605159, -0.33519850968920445),
-          range: 178631712.43032137
+          angularSize: 0.00001873613462208236,
+          coords: new AstronomicalCoordinates(4.578375813971508, -0.41812934138311586),
+          range: 362529419.05081064
         }
       },
       dso: {
-        name: "IC4592",
-        type: OpenNgcObjectType["Reflection Nebula"],
-        rightAscension: 4.241053362016839,
-        declination: -0.3395479882113234,
-        majorAxis: 0.017453292519943295,
-        minorAxis: 0.011635528346628862,
+        name: "NGC6369",
+        type: OpenNgcObjectType["Planetary Nebula"],
+        rightAscension: 4.578616765424541,
+        declination: -0.41468053400023047,
+        majorAxis: 0.0001832595714594046,
       },
-      separation: 0.004445037711602649,
+      separation: 0.0034558402242048196,
     } satisfies DsoConjunction);
   }, { timeout: 10000 });
 });

@@ -19,7 +19,7 @@ type CoordinatesInTime = {
 export type ConjunctionCandidate = {
   toEs: number;
   fromEs: number;
-  dsoObject: OpenNgcObject;
+  dso: OpenNgcObject;
 };
 
 function getClusterAddress(rightAscension: number, declination: number): ClusterAddress {
@@ -67,10 +67,10 @@ export function prepareCatalogueClusters(objects: OpenNgcObject[]): Table<OpenNg
 }
 
 function createCandidates(fromEs: number, toEs: number, dsoObjects: OpenNgcObject[]): ConjunctionCandidate[] {
-  return dsoObjects.map(dsoObject => ({
+  return dsoObjects.map(dso => ({
     fromEs,
     toEs,
-    dsoObject
+    dso
   }));
 }
 
