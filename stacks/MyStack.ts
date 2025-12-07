@@ -20,7 +20,7 @@ export function API({ stack }: StackContext) {
     },
     defaults: {
       function: {
-        memorySize: '512 MB',
+        memorySize: '1024 MB',
         timeout: '30 seconds'
       },
       authorizer: "jwt",
@@ -49,7 +49,7 @@ export function API({ stack }: StackContext) {
       "GET /api/dso-conjunctions": {
         function: {
           handler: "packages/functions/src/conjunctions/getDsoConjunctions.handler",
-          memorySize: 2048
+          memorySize: "4096 MB"
         }
       }, 
       "GET /api/eclipses": "packages/functions/src/eclipses/getEclipses.handler",
