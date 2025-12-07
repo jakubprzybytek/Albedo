@@ -74,7 +74,7 @@ export default function DsoConjunctionsTable({ conjunctions }: DsoConjunctionsTa
               </TableCell>
               <TableCell align="right">
                 <Box width="100px" height="100px" marginLeft="auto">
-                  {/* <DsoConjunctionDrawing conjunction={conjunction} /> */}
+                  <DsoConjunctionDrawing conjunction={conjunction} />
                 </Box>
               </TableCell>
             </TableRow>

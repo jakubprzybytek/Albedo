@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { calculatePositionAngle, calculateDrawingScale } from "@/common/drawings";
-import type { Conjunction } from "@astro/scripts";
+import type { Conjunction } from "@/sdk/Conjunctions";
 
 type ConjunctionDrawingPropsType = {
   conjunction: Conjunction;
