@@ -21,13 +21,13 @@ describe("Eclipses", () => {
       tde: new Date("2025-03-14T07:00:39.000Z"),
       moonEphemeris: {
         coords: new AstronomicalCoordinates(3.041711860760187, 0.049190155228928806),
-        angularSize: 0.4960573932804797,
+        angularSize: 0.008657834791604766,
         range: 401506.65490064514,
       },
       earthShadowEphemeris: {
         coords: new AstronomicalCoordinates(3.0389340446163278, 0.044399759055822184),
-        umbraAngularSize: 0.6446096386697163,
-        penumbraAngularSize: 2.3609303074779597
+        umbraAngularSize: 0.011250560584877509,
+        penumbraAngularSize: 0.041206007275612494
       },
       separation: 0.005525133562433181,
     });
@@ -70,13 +70,13 @@ describe("Eclipses", () => {
       tde: new Date("2025-03-14T07:00:39.000Z"),
       moonEphemeris: {
         coords: new AstronomicalCoordinates(3.041711860760187, 0.049190155228928806),
-        angularSize: 0.4960573932804797,
+        angularSize: 0.008657834791604766,
         range: 401506.65490064514,
       },
       earthShadowEphemeris: {
         coords: new AstronomicalCoordinates(3.0389340446163278, 0.044399759055822184),
-        umbraAngularSize: 0.6446096386697163,
-        penumbraAngularSize: 2.3609303074779597
+        umbraAngularSize:0.011250560584877509,
+        penumbraAngularSize:0.041206007275612494
       },
       separation: 0.005525133562433181,
     });
