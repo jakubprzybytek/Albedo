@@ -30,4 +30,5 @@ export type DsoConjunction = {
   }
   dso: OpenNgcObject;
   separation: number;
+  separationFactor: number;
 };

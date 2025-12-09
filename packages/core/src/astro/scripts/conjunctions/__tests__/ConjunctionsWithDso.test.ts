@@ -9,36 +9,38 @@ import { OpenNgcObjectType } from "@openNgc";
 import { openNgcObjects } from "@openNgc/data";
 
 describe("ConjunctionsWithDso", () => {
-  const filteredOpenNgcObjects = openNgcObjects.filter(ngcObject => ngcObject.name == 'NGC6369');
+  const filteredOpenNgcObjects = openNgcObjects.filter(ngcObject => ngcObject.name == 'IC4685');
   const conjuctionScripts = new ConjunctionsWithDso(kernels, filteredOpenNgcObjects);
 
   it("should compute conjunctions for all bodies", () => {
-    const fromJde = JulianDay.fromDate(2025, 12, 7);
-    const toJde = JulianDay.fromDate(2025, 12, 14);
+    const fromJde = JulianDay.fromDate(2026, 1, 1);
+    const toJde = JulianDay.fromDate(2026, 1, 8);
     const conjunctions = conjuctionScripts.findConjunctionsWithDso(fromJde, toJde);
 
     expect(conjunctions).toHaveLength(1);
 
     expect(conjunctions[0]).toStrictEqual({
-      es: 818290164.5959318,
-      jde: 2461015.9509791196,
-      tde: new Date('2025-12-06T10:49:24.000Z'),
+      es: 820712868.8673649,
+      jde: 2461043.991537817,
+      tde: new Date('2026-01-03T11:47:48.000Z'),
       body: {
-        info: jplBodyFromString('Mars') as JplBody,
+        info: jplBodyFromString('Mercury') as JplBody,
         ephemeris: {
-          angularSize: 0.00001873613462208236,
-          coords: new AstronomicalCoordinates(4.578375813971508, -0.41812934138311586),
-          range: 362529419.05081064
+          angularSize: 0.000023386420039559303,
+          coords: new AstronomicalCoordinates(4.752671483403667, -0.423326831626858),
+          range: 208642451.1115366
         }
       },
       dso: {
-        name: "NGC6369",
-        type: OpenNgcObjectType["Planetary Nebula"],
-        rightAscension: 4.578616765424541,
-        declination: -0.41468053400023047,
-        majorAxis: 0.0001832595714594046,
+        name: "IC4685",
+        type: OpenNgcObjectType["Nebula"],
+        rightAscension: 4.752931524467474,
+        declination: -0.4186564909990098,
+        majorAxis: 0.004363323129985824,
+        minorAxis: 0.0029088820866572155,
       },
-      separation: 0.0034558402242048196,
+      separation: 0.004676367124766821,
+      separationFactor: 2.6
     } satisfies DsoConjunction);
   }, { timeout: 10000 });
 });

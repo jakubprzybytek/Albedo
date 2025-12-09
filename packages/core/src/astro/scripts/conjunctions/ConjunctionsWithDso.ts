@@ -1,10 +1,10 @@
 import { AstronomicalCoordinates, ObserverLocation, Radians } from "@astro/coords";
-import { DsoConjunction, Ephemerides, sortByEs, timeProperties } from "@astro/scripts";
+import { DsoConjunction, Ephemerides, sortByEs, timeProperties, separationFactor } from "@astro/scripts";
 import { JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { KernelsRepository } from "@jpl/kernels";
-import { OpenNgcObject, OpenNgcObjectType } from "@openNgc";
+import { OpenNgcObject } from "@openNgc";
 import { Table } from "@utils/Table";
-import { ConjunctionCandidate, findConjuctionCandidates, prepareCatalogueClusters } from "./dso/Catalogue";
+import { findConjuctionCandidates, prepareCatalogueClusters } from "./dso/Catalogue";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { localExtremums } from "@astro/math";
 
@@ -13,6 +13,8 @@ const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 const DETAILED_INTERVAL = EphemerisSeconds.fromDays(1 / 12);
 
 const SEPARATION_THRESHOLD = Radians.fromDegrees(0.5);
+
+const SEPARATION_FACTOR_THRESHOLD = 5;
 
 export type CoordinatesInTime = {
   es: number;
@@ -24,6 +26,10 @@ export type ConjunctionPredictionRange = {
   dso: OpenNgcObject;
   toEs: number;
   fromEs: number;
+}
+
+function getAverageAngularSize(dso: OpenNgcObject): number | undefined {
+  return dso.majorAxis ? dso.minorAxis ? (dso.majorAxis + dso.minorAxis) / 2 : dso.majorAxis : undefined;
 }
 
 export class ConjunctionsWithDso {
@@ -144,15 +150,21 @@ export class ConjunctionsWithDso {
         }
       })
       .filter(({ separation }) => separation < separationLimit)
-      .map<DsoConjunction>(({ es, bodyId, dso, separation }) => ({
-        ...timeProperties(es),
-        body: {
-          info: jplBodyFromId(bodyId),
-          ephemeris: this.ephemerides.detailedCoordinatesForBody2(bodyId, es, observerLocation)
-        },
-        dso,
-        separation
-      }));
+      .map<DsoConjunction>(({ es, bodyId, dso, separation }) => {
+        const ephemeris = this.ephemerides.detailedCoordinatesForBody2(bodyId, es, observerLocation);
+        const separationFactorValue = separationFactor(separation, ephemeris.angularSize, getAverageAngularSize(dso));
+        return {
+          ...timeProperties(es),
+          body: {
+            info: jplBodyFromId(bodyId),
+            ephemeris
+          },
+          dso,
+          separation,
+          separationFactor: Math.round(separationFactorValue * 10) / 10
+        }
+      })
+      .filter(dsoConjunction => dsoConjunction.separationFactor <= SEPARATION_FACTOR_THRESHOLD);
 
     console.timeEnd('Conjunctions found in');
     console.log(`Conjunctions found: ${conjuctions.length}`);

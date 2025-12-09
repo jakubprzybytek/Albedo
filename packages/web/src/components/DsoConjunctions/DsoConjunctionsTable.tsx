@@ -14,12 +14,6 @@ import DsoConjunctionDrawing from './DsoConjunctionDrawing';
 import { type DsoConjunction, OpenNgcObjectType } from '@/sdk/Conjunctions';
 import { AstronomicalCoordinates } from '@astro/coords';
 
-function separationFactor(conjunction: DsoConjunction): number {
-  const dsoAngularSize = conjunction.dso.minorAxis ? (conjunction.dso.majorAxis + conjunction.dso.minorAxis) / 2 : conjunction.dso.majorAxis;
-  const averageAngularSize = (conjunction.body.ephemeris.angularSize + dsoAngularSize) / 2;
-  return conjunction.separation / averageAngularSize;
-}
-
 function formatOpenNGCObjectType(type: OpenNgcObjectType) {
   const enumIndex = Object.values(OpenNgcObjectType).indexOf(type);
   return enumIndex >= 0 ? Object.keys(OpenNgcObjectType)[enumIndex] : `${type}(?)`;
@@ -70,7 +64,7 @@ export default function DsoConjunctionsTable({ conjunctions }: DsoConjunctionsTa
               </TableCell>
               <TableCell align="right">
                 {formatDegrees(conjunction.separation)}
-                <span>Sep. factor: {separationFactor(conjunction).toFixed(1)}</span>
+                <span>Sep. factor: {conjunction.separationFactor}</span>
               </TableCell>
               <TableCell align="right">
                 <Box width="100px" height="100px" marginLeft="auto">
