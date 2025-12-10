@@ -49,20 +49,24 @@ export default function DsoConjunctionEvent({ conjunction, expanded }: Conjuncti
               sep. factor of {conjunction.separationFactor}.</>
           </Typography>
           <Box sx={{ display: expanded ? 'block' : 'none' }}>
-            <Typography>Coordinates:</Typography>
-            <Typography variant='body2'>
-              <BodyChip bodyId={conjunction.body.info.id} />: <AstronomicalCoords coords={conjunction.body.ephemeris.coords} />
-            </Typography>
-            <Typography variant='body2'>
-              {conjunction.dso.name}: <AstronomicalCoords coords={new AstronomicalCoordinates(conjunction.dso.rightAscension, conjunction.dso.declination)} />
-            </Typography>
-            <Typography>Sizes:</Typography>
-            <Typography variant='body2'>
-              <BodyChip bodyId={conjunction.body.info.id} />: <Angle value={conjunction.body.ephemeris.angularSize} />
-            </Typography>
-            <Typography variant='body2'>
-              {conjunction.dso.name}: <DsoSize dso={conjunction.dso} />
-            </Typography>
+            <Typography variant='h6'>Coordinates</Typography>
+            <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
+              <Typography><BodyChip bodyId={conjunction.body.info.id} /></Typography>
+              <Typography><AstronomicalCoords coords={conjunction.body.ephemeris.coords} /></Typography>
+            </Stack>
+            <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
+              <Typography>{conjunction.dso.name}</Typography>
+              <Typography><AstronomicalCoords coords={new AstronomicalCoordinates(conjunction.dso.rightAscension, conjunction.dso.declination)} /></Typography>
+            </Stack>
+            <Typography variant='h6'>Angular size</Typography>
+            <Stack direction='row' justifyContent='space-between'>
+              <Typography><BodyChip bodyId={conjunction.body.info.id} /></Typography>
+              <Typography><Angle value={conjunction.body.ephemeris.angularSize} /></Typography>
+            </Stack>
+            <Stack direction='row' justifyContent='space-between'>
+              <Typography>{conjunction.dso.name}</Typography>
+              <Typography><DsoSize dso={conjunction.dso} /></Typography>
+            </Stack>
           </Box>
         </Stack>
       </Stack>

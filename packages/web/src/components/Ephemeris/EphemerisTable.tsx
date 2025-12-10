@@ -47,7 +47,7 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
                 <div><>{ephemeris.tde} (TDE)</></div>
               </TableCell>
               <TableCell align="left">
-                <AstronomicalCoords coords={ephemeris.coords} />
+                <AstronomicalCoords format='verbose' coords={ephemeris.coords} />
               </TableCell>
               <TableCell align="center">
                 {/* <span>{state.distanceAU.toFixed(2)} AU</span> */}

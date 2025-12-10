@@ -1,8 +1,9 @@
 import type { JSX } from "react";
 import { AstronomicalCoordinates } from "@astro/coords";
 import { formatHourAngle, formatDegrees } from '../utils';
+import Typography from "@mui/material/Typography";
 
-type FormatMode = 'standard' | 'compact' | 'scientific';
+type FormatMode = 'standard' | 'compact' | 'scientific' | 'verbose';
 
 type AstronomicalCoordsPropsType = {
   coords: AstronomicalCoordinates;
@@ -11,6 +12,15 @@ type AstronomicalCoordsPropsType = {
 
 export default function AstronomicalCoords({ coords, format }: AstronomicalCoordsPropsType): JSX.Element {
   // Handle backwards compatibility with compact boolean
+
+  if (format === 'verbose') {
+    return (
+      <>
+        <div>R.A.: {formatHourAngle(coords.rightAscension)} ({coords.rightAscension.toFixed(6)}°)</div>
+        <div>Dec.: {formatDegrees(coords.declination)} ({coords.declination.toFixed(6)}°)</div>
+      </>
+    );
+  }
 
   if (format === 'scientific') {
     // Scientific notation format for very small numbers
@@ -35,8 +45,8 @@ export default function AstronomicalCoords({ coords, format }: AstronomicalCoord
   // Standard format for regular coordinates
   return (
     <>
-      <div>R.A.: {formatHourAngle(coords.rightAscension)} ({coords.rightAscension.toFixed(6)}°)</div>
-      <div>Dec.: {formatDegrees(coords.declination)} ({coords.declination.toFixed(6)}°)</div>
+      <Typography component="span" noWrap>R.A.: {formatHourAngle(coords.rightAscension)}
+      </Typography> <Typography component="span" noWrap>Dec.: {formatDegrees(coords.declination)}</Typography>
     </>
   );
 }

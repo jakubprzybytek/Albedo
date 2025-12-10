@@ -53,12 +53,12 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
               </TableCell>
               <TableCell align="center">
                 {conjunction.firstBody.info.name}
-                <AstronomicalCoords coords={conjunction.firstBody.ephemeris.coords} />
+                <AstronomicalCoords format='verbose' coords={conjunction.firstBody.ephemeris.coords} />
                 Size: {formatDegrees(conjunction.firstBody.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="center">
                 {conjunction.secondBody.info.name}
-                <AstronomicalCoords coords={conjunction.secondBody.ephemeris.coords} />
+                <AstronomicalCoords format='verbose' coords={conjunction.secondBody.ephemeris.coords} />
                 Size: {formatDegrees(conjunction.secondBody.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="right">

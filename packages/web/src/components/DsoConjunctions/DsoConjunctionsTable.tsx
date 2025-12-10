@@ -54,7 +54,7 @@ export default function DsoConjunctionsTable({ conjunctions }: DsoConjunctionsTa
               </TableCell>
               <TableCell align="center">
                 {conjunction.body.info.name}
-                <AstronomicalCoords coords={conjunction.body.ephemeris.coords} />
+                <AstronomicalCoords format='verbose' coords={conjunction.body.ephemeris.coords} />
                 Size: {formatDegrees(conjunction.body.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="center">
