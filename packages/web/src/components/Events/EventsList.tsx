@@ -15,12 +15,12 @@ export default function EventsList({ events }: EventsListPropsType): JSX.Element
 
   if (events.length === 0) {
     return (
-      <Stack spacing={1}>
-        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
-        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
-        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
-        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
-        <Skeleton variant="rounded" animation="wave" width="100%" height={100} />
+      <Stack paddingTop={1} paddingLeft={{ xs: 0.25, md: 1 }} paddingRight={{ xs: 0.25, md: 1 }} spacing={1}>
+        <Skeleton variant="rounded" animation="wave" width="100%" height={102} />
+        <Skeleton variant="rounded" animation="wave" width="100%" height={102} />
+        <Skeleton variant="rounded" animation="wave" width="100%" height={102} />
+        <Skeleton variant="rounded" animation="wave" width="100%" height={102} />
+        <Skeleton variant="rounded" animation="wave" width="100%" height={102} />
       </Stack>
     );
   }

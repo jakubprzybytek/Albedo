@@ -1,21 +1,22 @@
 import type { JSX } from 'react';
 import Typography from '@mui/material/Typography';
 import { formatDegrees } from '@/utils';
+import type { OpenNgcObject } from '@/sdk/Conjunctions';
 
-type AngleParamType = {
-  value: number;
+type DsoChipParamType = {
+  dso: OpenNgcObject;
 }
 
-export default function Angle({ value }: AngleParamType): JSX.Element {
+export default function DsoChip({ dso }: DsoChipParamType): JSX.Element {
   return (
     <Typography component='span' sx={{
-      backgroundColor: 'whitesmoke',
-      border: '1px solid darkgrey',
+      backgroundColor: 'linen',
+      border: '1px solid orange',
       borderRadius: 2,
       padding: '1px 4px',
       whiteSpace: 'nowrap'
     }}>
-      {formatDegrees(value)}
+      {dso.name}: {dso.type}
     </Typography>
   );
 }
