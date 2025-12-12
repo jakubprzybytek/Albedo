@@ -49,18 +49,18 @@ export default function DsoConjunctionEvent({ conjunction, expanded }: Conjuncti
               sep. factor of {conjunction.separationFactor}.</>
           </Typography>
           <Box sx={{ display: expanded ? 'block' : 'none' }}>
-            <Typography variant='h6'>Coordinates</Typography>
+            <Typography variant='caption'>Coordinates</Typography>
             <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
-              <Typography><BodyChip bodyId={conjunction.body.info.id} /></Typography>
+              <Typography>{conjunction.body.info.name}</Typography>
               <Typography><AstronomicalCoords coords={conjunction.body.ephemeris.coords} /></Typography>
             </Stack>
             <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
               <Typography>{conjunction.dso.name}</Typography>
               <Typography><AstronomicalCoords coords={new AstronomicalCoordinates(conjunction.dso.rightAscension, conjunction.dso.declination)} /></Typography>
             </Stack>
-            <Typography variant='h6'>Angular size</Typography>
+            <Typography variant='caption'>Angular size</Typography>
             <Stack direction='row' justifyContent='space-between'>
-              <Typography><BodyChip bodyId={conjunction.body.info.id} /></Typography>
+              <Typography>{conjunction.body.info.name}</Typography>
               <Typography><Angle value={conjunction.body.ephemeris.angularSize} /></Typography>
             </Stack>
             <Stack direction='row' justifyContent='space-between'>

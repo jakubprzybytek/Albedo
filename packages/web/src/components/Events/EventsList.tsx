@@ -15,7 +15,7 @@ export default function EventsList({ events }: EventsListPropsType): JSX.Element
 
   if (events.length === 0) {
     return (
-      <Stack paddingTop={1} paddingLeft={{ xs: 0.25, md: 1 }} paddingRight={{ xs: 0.25, md: 1 }} spacing={1}>
+      <Stack paddingTop={1} paddingLeft={{ md: 1 }} paddingRight={{md: 1 }} spacing={1}>
         <Skeleton variant="rounded" animation="wave" width="100%" height={102} />
         <Skeleton variant="rounded" animation="wave" width="100%" height={102} />
         <Skeleton variant="rounded" animation="wave" width="100%" height={102} />
@@ -26,7 +26,7 @@ export default function EventsList({ events }: EventsListPropsType): JSX.Element
   }
 
   return (
-    <Stack paddingTop={1} paddingLeft={{ xs: 0.25, md: 1 }} paddingRight={{ xs: 0.25, md: 1 }} spacing={1}>
+    <Stack paddingTop={1} paddingLeft={{ md: 1 }} paddingRight={{ md: 1 }} spacing={1}>
       {events.map(event => (
         <Paper key={event.jde} className='event' variant='outlined' sx={{ padding: 1, backgroundColor: theme.palette.grey[200] }}>
           <DisplayEvent type={event.type} event={event.data} />

@@ -8,6 +8,7 @@ import type { Eclipse } from '@/sdk/Eclipses';
 import { EclipseType } from '@/sdk/Eclipses';
 import { JplBodyId } from '@jpl';
 import EclipseDrawing from '@/components/Eclipses/EclipseDrawing';
+import AstronomicalCoords from '@/common/AstronomicalCoordinates';
 
 type EclipseEventParamType = {
   eclipse: Eclipse;
@@ -30,17 +31,47 @@ export default function EclipseEvent({ eclipse, expanded }: EclipseEventParamTyp
           </Typography>
           <Box sx={{ display: expanded ? 'block' : 'none' }}>
             {eclipse.type == EclipseType.SunEclipse && <>
-              <Typography>
-                Sun angular size: <Angle value={eclipse.sunEphemeris.angularSize} />. Moon angular size: <Angle value={eclipse.moonEphemeris.angularSize} />.
-              </Typography>
+              <Typography variant='caption'>Coordinates</Typography>
+              <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
+                <Typography>Sun</Typography>
+                <Typography><AstronomicalCoords coords={eclipse.sunEphemeris.coords} /></Typography>
+              </Stack>
+              <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
+                <Typography>Moon</Typography>
+                <Typography><AstronomicalCoords coords={eclipse.moonEphemeris.coords} /></Typography>
+              </Stack>
+              <Typography variant='caption'>Angular size</Typography>
+              <Stack direction='row' justifyContent='space-between'>
+                <Typography>Sun</Typography>
+                <Typography><Angle value={eclipse.sunEphemeris.angularSize} /></Typography>
+              </Stack>
+              <Stack direction='row' justifyContent='space-between'>
+                <Typography>Moon</Typography>
+                <Typography><Angle value={eclipse.moonEphemeris.angularSize} /></Typography>
+              </Stack>
             </>}
             {eclipse.type == EclipseType.MoonEclipse && <>
-              <Typography>
-                Moon angular size: <Angle value={eclipse.moonEphemeris.angularSize} />.
-              </Typography>
-              <Typography>
-                Earth shadow umbra angular size: <Angle value={eclipse.earthShadowEphemeris.umbraAngularSize} />, penumbra angular size: <Angle value={eclipse.earthShadowEphemeris.penumbraAngularSize} />.
-              </Typography>
+              <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
+                <Typography>Moon</Typography>
+                <Typography><AstronomicalCoords coords={eclipse.moonEphemeris.coords} /></Typography>
+              </Stack>
+              <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
+                <Typography>Earth shadow</Typography>
+                <Typography><AstronomicalCoords coords={eclipse.earthShadowEphemeris.coords} /></Typography>
+              </Stack>
+              <Typography variant='caption'>Angular size</Typography>
+              <Stack direction='row' justifyContent='space-between'>
+                <Typography>Moon</Typography>
+                <Typography><Angle value={eclipse.moonEphemeris.angularSize} /></Typography>
+              </Stack>
+              <Stack direction='row' justifyContent='space-between'>
+                <Typography>Earth shadow umbra</Typography>
+                <Typography><Angle value={eclipse.earthShadowEphemeris.umbraAngularSize} /></Typography>
+              </Stack>
+              <Stack direction='row' justifyContent='space-between'>
+                <Typography>Earth shadow penumbra</Typography>
+                <Typography><Angle value={eclipse.earthShadowEphemeris.penumbraAngularSize} /></Typography>
+              </Stack>
             </>}
           </Box>
         </Stack>

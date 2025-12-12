@@ -6,6 +6,7 @@ import Angle from '@/common/Angle';
 import BodyChip from '@/common/BodyChip';
 import ConjunctionDrawing from '@/components/Conjunctions/ConjunctionDrawing';
 import type { Conjunction } from '@/sdk/Conjunctions';
+import AstronomicalCoords from '@/common/AstronomicalCoordinates';
 
 type ConjunctionEventParamType = {
   conjunction: Conjunction;
@@ -27,9 +28,24 @@ export default function ConjunctionEvent({ conjunction, expanded }: ConjunctionE
             <>Conjunction between <BodyChip bodyId={conjunction.firstBody.info.id} /> and <BodyChip bodyId={conjunction.secondBody.info.id} /> with a sepration of <Angle value={conjunction.separation} />.</>
           </Typography>
           <Box sx={{ display: expanded ? 'block' : 'none' }}>
-            <Typography>
-              <BodyChip bodyId={conjunction.firstBody.info.id} /> angular size: <Angle value={conjunction.firstBody.ephemeris.angularSize} />. <BodyChip bodyId={conjunction.secondBody.info.id} /> angular size: <Angle value={conjunction.secondBody.ephemeris.angularSize} />.
-            </Typography>
+            <Typography variant='caption'>Coordinates</Typography>
+            <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
+              <Typography>{conjunction.firstBody.info.name}</Typography>
+              <Typography><AstronomicalCoords coords={conjunction.firstBody.ephemeris.coords} /></Typography>
+            </Stack>
+            <Stack direction='row' justifyContent='space-between' spacing={1} textAlign='right'>
+              <Typography>{conjunction.secondBody.info.name}</Typography>
+              <Typography><AstronomicalCoords coords={conjunction.secondBody.ephemeris.coords} /></Typography>
+            </Stack>
+            <Typography variant='caption'>Angular size</Typography>
+            <Stack direction='row' justifyContent='space-between'>
+              <Typography>{conjunction.firstBody.info.name}</Typography>
+              <Typography><Angle value={conjunction.firstBody.ephemeris.angularSize} /></Typography>
+            </Stack>
+            <Stack direction='row' justifyContent='space-between'>
+              <Typography>{conjunction.secondBody.info.name}</Typography>
+              <Typography><Angle value={conjunction.secondBody.ephemeris.angularSize} /></Typography>
+            </Stack>
           </Box>
         </Stack>
       </Stack>
