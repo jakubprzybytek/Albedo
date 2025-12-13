@@ -28,7 +28,7 @@ function buildAngleCalculatorBetweenSunAndMoonWithParalaxCorrection(stateSolver:
   };
 }
 
-function buildSunEclipseFinder(ephemerides: Ephemerides, separationCalculator: (es: number) => number) {
+function buildSunEclipseFinder(ephemerides: Ephemerides, separationCalculator: (es: number) => number, observerLocation?: ObserverLocation) {
   return (fromEs: number, toEs: number): SunEclipse => {
     const midPointEs = fromEs + (toEs - fromEs) / 2;
     const [eventEs, minSeparation, minSeparationEs, iterations] = localMinimum(separationCalculator, fromEs, midPointEs, toEs, { maxResultRangeWidth: 1, maxIterations: 40 });
@@ -38,8 +38,8 @@ function buildSunEclipseFinder(ephemerides: Ephemerides, separationCalculator: (
     return {
       type: EclipseType.SunEclipse,
       ...timeProperties(eventEs),
-      sunEphemeris: ephemerides.detailedCoordinatesForBody(JplBodyId.Sun, eventEs),
-      moonEphemeris: ephemerides.detailedCoordinatesForBody(JplBodyId.Moon, eventEs),
+      sunEphemeris: ephemerides.detailedCoordinatesForBody2(JplBodyId.Sun, eventEs, observerLocation),
+      moonEphemeris: ephemerides.detailedCoordinatesForBody2(JplBodyId.Moon, eventEs, observerLocation),
       separation: minSeparation,
     }
   };
@@ -52,5 +52,5 @@ export function getSunEclipseFinder(stateSolver: StateSolver, ephemerides: Ephem
 
 export function getSunEclipseFinderWithParalaxCorrection(stateSolver: StateSolver, ephemerides: Ephemerides, paralaxCorrection: ParalaxCorrection, observerLocation: ObserverLocation) {
   const sunAndMoonAngle = buildAngleCalculatorBetweenSunAndMoonWithParalaxCorrection(stateSolver, paralaxCorrection, observerLocation);
-  return buildSunEclipseFinder(ephemerides, sunAndMoonAngle);
+  return buildSunEclipseFinder(ephemerides, sunAndMoonAngle, observerLocation);
 }

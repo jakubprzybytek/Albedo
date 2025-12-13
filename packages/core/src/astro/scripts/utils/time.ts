@@ -16,4 +16,4 @@ export function timeProperties(es: number): TimeProperties {
   };
 }
 
-export const sortByEs = (a: TimeProperties, b: TimeProperties) => a.es - b.es;
+export const esOrder = (a: TimeProperties, b: TimeProperties) => a.es - b.es;

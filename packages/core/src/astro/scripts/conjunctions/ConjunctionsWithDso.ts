@@ -1,5 +1,5 @@
 import { AstronomicalCoordinates, ObserverLocation, Radians } from "@astro/coords";
-import { DsoConjunction, Ephemerides, sortByEs, timeProperties, separationFactor } from "@astro/scripts";
+import { DsoConjunction, Ephemerides, esOrder, timeProperties, separationFactor } from "@astro/scripts";
 import { JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { KernelsRepository } from "@jpl/kernels";
 import { OpenNgcObject } from "@openNgc";
@@ -169,7 +169,7 @@ export class ConjunctionsWithDso {
     console.timeEnd('Conjunctions found in');
     console.log(`Conjunctions found: ${conjuctions.length}`);
 
-    return conjuctions.sort(sortByEs);;
+    return conjuctions.sort(esOrder);;
   }
 
   findConjunctionsWithDso(fromJde: number, toJde: number, observerLocation?: ObserverLocation): DsoConjunction[] {

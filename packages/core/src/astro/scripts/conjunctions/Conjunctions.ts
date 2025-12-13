@@ -4,7 +4,7 @@ import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio
 import { createPairs } from '@astro/utils/Pairs';
 import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { KernelsRepository } from '@jpl/kernels';
-import { States, Separations, Ephemerides, timeProperties, sortByEs } from '@astro/scripts';
+import { States, Separations, Ephemerides, timeProperties, esOrder } from '@astro/scripts';
 import { Conjunction } from '.';
 import { JulianDay } from '@astro';
 
@@ -85,18 +85,18 @@ export class Conjunctions {
           ...timeProperties(separation.es),
           firstBody: {
             info: firstBody,
-            ephemeris: this.ephemerides.detailedCoordinatesForBody(firstBody.id, separation.es)
+            ephemeris: this.ephemerides.detailedCoordinatesForBody2(firstBody.id, separation.es, observerLocation)
           },
           secondBody: {
             info: secondBody,
-            ephemeris: this.ephemerides.detailedCoordinatesForBody(secondBody.id, separation.es)
+            ephemeris: this.ephemerides.detailedCoordinatesForBody2(secondBody.id, separation.es, observerLocation)
           },
           separation: separation.separation,
         }))
         .forEach(conjuction => conjuctions.push(conjuction));
     }
 
-    return conjuctions.sort(sortByEs);
+    return conjuctions.sort(esOrder);
   }
 
   all(fromJde: number, toJde: number, observerLocation?: ObserverLocation): Conjunction[] {

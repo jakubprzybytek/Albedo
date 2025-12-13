@@ -9,7 +9,7 @@ import { Conjunction } from "..";
 describe("Conjunctions", () => {
   const conjuctionScripts = new Conjunctions(kernels);
 
-  it("should compute conjunctions for all bodies", () => {
+  it("should find conjunctions for all bodies", () => {
     const fromJde = JulianDay.fromDate(2024, 4, 20);
     const toJde = JulianDay.fromDate(2024, 4, 30);
     const conjunctions = conjuctionScripts.all(fromJde, toJde);
@@ -37,6 +37,37 @@ describe("Conjunctions", () => {
         }
       },
       separation: 0.0005989380399368273,
+    } satisfies Conjunction);
+  });
+
+  it("should find conjunctions for all bodies for a given obsever location", () => {
+    const fromJde = JulianDay.fromDate(2024, 4, 20);
+    const toJde = JulianDay.fromDate(2024, 4, 30);
+    const conjunctions = conjuctionScripts.all(fromJde, toJde, { longitude: 52, latitude: 17, altitude: 50 });
+
+    expect(conjunctions).toHaveLength(1);
+
+    expect(conjunctions[0]).toStrictEqual({
+      es: 767637118.3790983,
+      jde: 2460429.6888701282,
+      tde: new Date('2024-04-29T04:31:58.000Z'),
+      firstBody: {
+        info: jplBodyFromString('Mars') as JplBody,
+        ephemeris: {
+          angularSize: 0.000022892422026134983,
+          coords: new AstronomicalCoordinates(6.268537473397251, -0.030441513190657125),
+          range: 296709539.59999794
+        }
+      },
+      secondBody: {
+        info: jplBodyFromString('Neptune') as JplBody,
+        ephemeris: {
+          angularSize: 0.00001079847227762168,
+          coords: new AstronomicalCoordinates(6.268293157279016, -0.029885088234573462),
+          range: 4586574723.366985
+        }
+      },
+      separation: 0.0006076551692939348,
     } satisfies Conjunction);
   });
 });
