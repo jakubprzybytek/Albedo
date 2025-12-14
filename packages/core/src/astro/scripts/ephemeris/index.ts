@@ -1,26 +1,25 @@
 import { AstronomicalCoordinates } from '@astro/coords';
+import { TimeProperties } from '..';
 
 export * from './Ephemerides';
 
 export type DetailedCoordinates = {
-    coords: AstronomicalCoordinates;
-    angularSize: number;
-    range: number;
+  coords: AstronomicalCoordinates;
+  angularSize: number;
+  range: number;
 }
 
 export type DetailedCoordinatesWithVelocity = DetailedCoordinates & {
-    velocity: AstronomicalCoordinates;
+  velocity: AstronomicalCoordinates;
 }
 
-export type DetailedEphemeris = {
-    es: number;
-    jde: number;
-    tde: Date;
-    coords: AstronomicalCoordinates;
-    angularSize: number;
-    range: number;
-};
+export type FullCoordinates = DetailedCoordinates & {
+  fixedBodyCoords: AstronomicalCoordinates
+}
 
-export type EphemerisWithVelocity = DetailedEphemeris & {
-    velocity: AstronomicalCoordinates;
+export type DetailedEphemeris = TimeProperties & DetailedCoordinates;
+
+export type EphemerisWithVelocity = TimeProperties & DetailedCoordinatesWithVelocity;
+
+export type FullEphemeris = TimeProperties & FullCoordinates & {
 };

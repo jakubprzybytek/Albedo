@@ -6,6 +6,7 @@ import { KernelsRepository } from "@jpl/kernels";
 import { BodyGeometryProvider } from "@jpl/kernels/pck";
 
 export class ParalaxCorrection {
+
   readonly bodyGeometryProvider: BodyGeometryProvider;
 
   readonly bodyFixedFrame: BodyFixedFrame;

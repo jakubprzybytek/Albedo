@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { EphemerisSeconds, JplBodyId, Matrix3x3, Vector3 } from "@jpl";
+import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { kernels } from "@jpl/data/kernels.testData";
+import { Matrix3x3, Vector3 } from "@astro/math";
 
 function approximately(actual: Vector3, expected: Vector3, delta: number) {
   expect(actual[0]).approximately(expected[0], delta);

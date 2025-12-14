@@ -38,25 +38,52 @@ describe("Ephemerides", () => {
     });
   });
 
-  it("should compute simple ephemeis for Venus", () => {
-    const jde = JulianDay.fromDate(2019, 10, 10);
-    const ephemeris = ephemerisScripts.computeEphemeridesWithVelocity(JplBodyId.Venus, jde, jde, 1);
+  describe("should compute ephemeris with velocity", () => {
+    it("for Venus", () => {
+      const jde = JulianDay.fromDate(2019, 10, 10);
+      const ephemeris = ephemerisScripts.computeEphemeridesWithVelocity(JplBodyId.Venus, jde, jde, 1);
 
-    const { coords, ...mainProperties } = ephemeris[0];
+      const { coords, ...mainProperties } = ephemeris[0];
 
-    expect(mainProperties).toEqual({
-      es: 623937600,
-      jde: 2458766.5,
-      tde: new Date('2019-10-10T00:00:00.000Z'),
-      range: 245174846.9550577,
-      angularSize: 0.0000493672175097167,
-      velocity: {
-        declination: -9.401312947576734e-8,
-        rightAscension: 2.3757238221122634e-7,
-      },
-    } as Omit<DetailedEphemeris, 'coords'>);
+      expect(mainProperties).toEqual({
+        es: 623937600,
+        jde: 2458766.5,
+        tde: new Date('2019-10-10T00:00:00.000Z'),
+        range: 245174846.9550577,
+        angularSize: 0.0000493672175097167,
+        velocity: {
+          declination: -9.401312947576734e-8,
+          rightAscension: 2.3757238221122634e-7,
+        },
+      } as Omit<DetailedEphemeris, 'coords'>);
 
-    expect(Radians.toDegrees(coords.rightAscension)).approximately(209.39848483, 3e-9);
-    expect(Radians.toDegrees(coords.declination)).toBeCloseTo(-11.36105059, 0);
+      expect(Radians.toDegrees(coords.rightAscension)).approximately(209.39848483, 3e-9);
+      expect(Radians.toDegrees(coords.declination)).toBeCloseTo(-11.36105059, 0);
+    });
   });
+
+  describe("should compute full ephemeris", () => {
+    it("for Venus", () => {
+      const jde = JulianDay.fromDate(2019, 10, 10);
+      const ephemeris = ephemerisScripts.fullEphemerisForBody(JplBodyId.Venus, jde);
+
+      expect(ephemeris).toEqual({
+        range: 245174846.9550577,
+        angularSize: 0.0000493672175097167,
+        // coords: {
+        //   declination: -0.19828773921887338,
+        //   rightAscension: 3.6546930090133447,
+        // },
+        coords: {
+          declination: -11.361050586432135,
+          rightAscension: 209.39848483243196,
+        },
+        fixedBodyCoords: {
+          declination: -0.6257192160919699,
+          rightAscension: 306.2947868468457,
+        },
+      });
+    });
+  });
+
 });

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { RotationMatrix, Axis } from '../RotationMatrix';
-import { Matrix3x3, Matrix6x6, Vector3 } from "@jpl";
+import { Matrix3x3, Matrix6x6, Vector3 } from "@astro/math";
 
 function expectMatrixToBeCloseTo(actual: Matrix3x3, expected: Matrix3x3, precision = 8) {
   for (let i = 0; i < 3; i++) {

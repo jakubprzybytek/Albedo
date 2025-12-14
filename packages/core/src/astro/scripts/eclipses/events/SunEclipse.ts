@@ -38,8 +38,8 @@ function buildSunEclipseFinder(ephemerides: Ephemerides, separationCalculator: (
     return {
       type: EclipseType.SunEclipse,
       ...timeProperties(eventEs),
-      sunEphemeris: ephemerides.detailedCoordinatesForBody2(JplBodyId.Sun, eventEs, observerLocation),
-      moonEphemeris: ephemerides.detailedCoordinatesForBody2(JplBodyId.Moon, eventEs, observerLocation),
+      sunEphemeris: ephemerides.detailedCoordinatesForBody(JplBodyId.Sun, eventEs, observerLocation),
+      moonEphemeris: ephemerides.detailedCoordinatesForBody(JplBodyId.Moon, eventEs, observerLocation),
       separation: minSeparation,
     }
   };
