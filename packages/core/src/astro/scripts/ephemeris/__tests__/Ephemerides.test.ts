@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { JulianDay } from "@astro";
-import { Radians } from "@astro/coords";
+import { AstronomicalCoordinates, AzAltCoordinates, Radians } from "@astro/coords";
 import { DetailedEphemeris, Ephemerides } from "@astro/scripts";
 import { kernels } from "@jpl/data/kernels.testData";
 
@@ -65,23 +65,17 @@ describe("Ephemerides", () => {
   describe("should compute full ephemeris", () => {
     it("for Venus", () => {
       const jde = JulianDay.fromDate(2019, 10, 10);
-      const ephemeris = ephemerisScripts.fullEphemerisForBody(JplBodyId.Venus, jde);
+      const ephemeris = ephemerisScripts.fullEphemerisForBody(JplBodyId.Venus, jde, { latitude: 52, longitude: 17, altitude: 50 });
 
       expect(ephemeris).toEqual({
-        range: 245174846.9550577,
-        angularSize: 0.0000493672175097167,
+        range: 245179680.85845146,
+        angularSize: 0.000049366244197575465,
         // coords: {
         //   declination: -0.19828773921887338,
         //   rightAscension: 3.6546930090133447,
         // },
-        coords: {
-          declination: -11.361050586432135,
-          rightAscension: 209.39848483243196,
-        },
-        fixedBodyCoords: {
-          declination: -0.6257192160919699,
-          rightAscension: 306.2947868468457,
-        },
+        coords: new AstronomicalCoordinates(209.39857037294303, -11.36201460681129),
+        azAltCoords: new AzAltCoordinates(69.41940302401295, -48.36319651185873)
       });
     });
   });

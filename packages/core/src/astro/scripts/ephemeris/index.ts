@@ -1,4 +1,4 @@
-import { AstronomicalCoordinates } from '@astro/coords';
+import { AstronomicalCoordinates, AzAltCoordinates } from '@astro/coords';
 import { TimeProperties } from '..';
 
 export * from './Ephemerides';
@@ -14,7 +14,8 @@ export type DetailedCoordinatesWithVelocity = DetailedCoordinates & {
 }
 
 export type FullCoordinates = DetailedCoordinates & {
-  fixedBodyCoords: AstronomicalCoordinates
+  // fixedBodyCoords: AstronomicalCoordinates,
+  azAltCoords: AzAltCoordinates
 }
 
 export type DetailedEphemeris = TimeProperties & DetailedCoordinates;

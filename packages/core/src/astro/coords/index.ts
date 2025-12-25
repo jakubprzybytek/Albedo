@@ -1,6 +1,7 @@
 export * from './Radians';
 export * from './RectangularCoordinates';
 export * from './AstronomicalCoordinates';
+export * from './AzAltCoordinates';
 
 export type ObserverLocation = {
   // Longitude in degrees
