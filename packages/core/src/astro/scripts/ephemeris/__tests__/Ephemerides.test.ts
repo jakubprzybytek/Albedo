@@ -47,7 +47,7 @@ describe("Ephemerides", () => {
         range: 245179680.85845146,
         angularSize: 0.000049366244197575465,
         coords: new AstronomicalCoordinates(3.6546945019769064, -0.19830456454854592),
-        azAltCoords: new AzAltCoordinates(1.2115971475379341, -0.8440970159209716)
+        azAltCoords: new AzAltCoordinates(5.071588159641652, -0.8440970159209716)
       });
     });
   });
@@ -62,7 +62,7 @@ describe("Ephemerides", () => {
         angularSize: 0.000049366244197575465,
         coords: new AstronomicalCoordinates(3.6546945019769064, -0.19830456454854592),
         velocity: new AstronomicalCoordinates(2.387571900186458e-7, -9.403411957431551e-8),
-        azAltCoords: new AzAltCoordinates(1.2115971475379341, -0.8440970159209716)
+        azAltCoords: new AzAltCoordinates(5.071588159641652, -0.8440970159209716)
       });
     });
   });

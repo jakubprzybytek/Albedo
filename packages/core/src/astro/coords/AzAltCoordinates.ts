@@ -24,7 +24,7 @@ export class AzAltCoordinates {
 
     static fromRectangular(rectangular: RectangularCoordinates): AzAltCoordinates {
         return new AzAltCoordinates(
-            this.normalizeAngle(Math.atan2(rectangular.y, rectangular.x)),
+            this.normalizeAngle(TWO_PI - Math.atan2(rectangular.y, rectangular.x)),
             Math.atan2(rectangular.z, Math.sqrt(rectangular.x * rectangular.x + rectangular.y * rectangular.y))
         );
     }
