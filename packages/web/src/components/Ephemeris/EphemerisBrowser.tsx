@@ -5,7 +5,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@/common/tabs/TabPanel";
 import useQuery from "@/forms/useQuery";
-import getEphemerides, { type EphemeridesQuery, type EphemerisWithVelocity } from "@/sdk/Ephemerides";
+import getEphemerides, { type EphemeridesQuery, type FullEphemerisWithVelocity } from "@/sdk/Ephemerides";
 import { AstronomicalCoordinates } from "@astro/coords";
 import EphemerisQueryForm from './EphemerisQueryForm';
 import EphemerisTable from './EphemerisTable';
@@ -13,7 +13,7 @@ import EphemerisCharts from "./EphemerisCharts";
 
 const SECONDS_PER_DAY = 86400;
 
-export type EphemerisWithAdjustedVelocity = EphemerisWithVelocity & {
+export type EphemerisWithAdjustedVelocity = FullEphemerisWithVelocity & {
   velocityPerInterval: AstronomicalCoordinates;
 };
 

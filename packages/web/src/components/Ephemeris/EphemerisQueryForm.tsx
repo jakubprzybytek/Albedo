@@ -7,7 +7,10 @@ import { addMonths, format } from 'date-fns';
 import QueryPanel from "@/forms/QueryPanel";
 import QuerySubmit from "@/forms/QuerySubmit";
 import type { ManagedQuery } from "@/forms/useQuery";
+import type { Location } from "@/common/Profile";
 import type { EphemeridesQuery } from "@/sdk/Ephemerides";
+import ObserverLocationFields from "../commons/ObserverLocationFields";
+import { useValidation } from "@/forms";
 
 type EphemerisQueryFormParams = {
   query: ManagedQuery<EphemeridesQuery>;
@@ -18,13 +21,21 @@ export default function EphemerisQueryForm({ query }: EphemerisQueryFormParams):
   const [fromTde, setFromTde] = useState<Date | null>(new Date());
   const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 1));
   const [interval, setInterval] = useState(1);
+  const [observerLocation, setObserverLocation] = useState<Location>({
+    latitude: 51,
+    longitude: 17,
+    altitude: 50
+  });
+
+  const { updateValidation, isValid } = useValidation();
 
   function handleSubmit() {
     query.submit({
       target,
       fromTde: fromTde ? format(fromTde, 'yyyy-MM-dd') : '',
       toTde: toTde ? format(toTde, 'yyyy-MM-dd') : '',
-      interval
+      interval,
+      location: observerLocation
     });
   }
 
@@ -61,8 +72,17 @@ export default function EphemerisQueryForm({ query }: EphemerisQueryFormParams):
             />
           </Grid>
         </Grid>
+        <Grid container rowSpacing={1} columnSpacing={1}>
+          <ObserverLocationFields
+            location={observerLocation}
+            onChanged={setObserverLocation}
+            updateValidation={updateValidation} />
+        </Grid>
       </Stack>
-      <QuerySubmit loading={query.loading} success={query.successMessage} error={query.errorMessage} onSubmit={handleSubmit} />
+      <QuerySubmit loading={query.loading} disabled={!isValid()}
+        success={query.successMessage}
+        error={query.errorMessage}
+        onSubmit={handleSubmit} />
     </QueryPanel >
   );
 }

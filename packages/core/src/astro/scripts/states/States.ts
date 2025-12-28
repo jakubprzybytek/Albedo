@@ -26,6 +26,20 @@ export class States {
     }
   }
 
+  buildParalaxCorrectedStateFunction(targetBodyId: JplBodyId, observerBodyId: JplBodyId, observerLocation: ObserverLocation, correctionType: CorrectionType) {
+    const paralaxCorrection = new ParalaxCorrection(this.kernels);
+    return (es: number) => {
+      const uncorrectedState = this.stateSolver.state(targetBodyId, observerBodyId, es, correctionType);
+      const observerPosition = paralaxCorrection.observerPosition(observerBodyId, observerLocation, es);
+      const observerVelocity = paralaxCorrection.observerVelocity(observerBodyId, observerLocation, es);
+      return {
+        position: uncorrectedState.position.subtract(observerPosition),
+        velocity: uncorrectedState.velocity.subtract(observerVelocity),
+        lightTime: uncorrectedState.lightTime
+      };
+    }
+  }
+
   computePosition(targetBodyId: JplBodyId, observerBodyId: JplBodyId, es: number, correction: CorrectionType): RectangularCoordinates {
     return this.stateSolver.position(targetBodyId, observerBodyId, es, correction).coords;
   }

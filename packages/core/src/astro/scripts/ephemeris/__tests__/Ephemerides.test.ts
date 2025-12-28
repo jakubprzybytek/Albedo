@@ -43,39 +43,48 @@ describe("Ephemerides", () => {
       const jde = JulianDay.fromDate(2019, 10, 10);
       const ephemeris = ephemerisScripts.computeEphemeridesWithVelocity(JplBodyId.Venus, jde, jde, 1);
 
-      const { coords, ...mainProperties } = ephemeris[0];
+      const { coords } = ephemeris[0];
 
-      expect(mainProperties).toEqual({
+      expect(ephemeris[0]).toEqual({
         es: 623937600,
         jde: 2458766.5,
         tde: new Date('2019-10-10T00:00:00.000Z'),
         range: 245174846.9550577,
         angularSize: 0.0000493672175097167,
-        velocity: {
-          declination: -9.401312947576734e-8,
-          rightAscension: 2.3757238221122634e-7,
-        },
-      } as Omit<DetailedEphemeris, 'coords'>);
+        coords: new AstronomicalCoordinates(3.6546930090133447, -0.19828773921887338),
+        velocity: new AstronomicalCoordinates(2.3757238221122634e-7, -9.401312947576734e-8),
+      } as DetailedEphemeris);
 
       expect(Radians.toDegrees(coords.rightAscension)).approximately(209.39848483, 3e-9);
       expect(Radians.toDegrees(coords.declination)).toBeCloseTo(-11.36105059, 0);
     });
   });
 
-  describe("should compute full ephemeris", () => {
+  describe("should compute full coordinates", () => {
     it("for Venus", () => {
       const jde = JulianDay.fromDate(2019, 10, 10);
-      const ephemeris = ephemerisScripts.fullEphemerisForBody(JplBodyId.Venus, jde, { latitude: 52, longitude: 17, altitude: 50 });
+      const ephemeris = ephemerisScripts.fullCoordinates(JplBodyId.Venus, jde, { latitude: 52, longitude: 17, altitude: 50 });
 
       expect(ephemeris).toEqual({
         range: 245179680.85845146,
         angularSize: 0.000049366244197575465,
-        // coords: {
-        //   declination: -0.19828773921887338,
-        //   rightAscension: 3.6546930090133447,
-        // },
-        coords: new AstronomicalCoordinates(209.39857037294303, -11.36201460681129),
-        azAltCoords: new AzAltCoordinates(69.41940302401295, -48.36319651185873)
+        coords: new AstronomicalCoordinates(3.6546945019769064, -0.19830456454854592),
+        azAltCoords: new AzAltCoordinates(1.2115971475379341, -0.8440970159209716)
+      });
+    });
+  });
+
+  describe("should compute full coordinates with velocity", () => {
+    it("for Venus", () => {
+      const jde = JulianDay.fromDate(2019, 10, 10);
+      const ephemeris = ephemerisScripts.fullCoordinatesWithVelocity(JplBodyId.Venus, jde, { latitude: 52, longitude: 17, altitude: 50 });
+
+      expect(ephemeris).toEqual({
+        range: 245179680.85845146,
+        angularSize: 0.000049366244197575465,
+        coords: new AstronomicalCoordinates(3.6546945019769064, -0.19830456454854592),
+        velocity: new AstronomicalCoordinates(2.387571900186458e-7, -9.403411957431551e-8),
+        azAltCoords: new AzAltCoordinates(1.2115971475379341, -0.8440970159209716)
       });
     });
   });

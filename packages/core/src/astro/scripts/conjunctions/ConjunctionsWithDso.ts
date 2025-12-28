@@ -151,7 +151,7 @@ export class ConjunctionsWithDso {
       })
       .filter(({ separation }) => separation < separationLimit)
       .map<DsoConjunction>(({ es, bodyId, dso, separation }) => {
-        const ephemeris = this.ephemerides.detailedCoordinatesForBody(bodyId, es, observerLocation);
+        const ephemeris = this.ephemerides.detailedCoordinates(bodyId, es, observerLocation);
         const separationFactorValue = separationFactor(separation, ephemeris.angularSize, getAverageAngularSize(dso));
         return {
           ...timeProperties(es),

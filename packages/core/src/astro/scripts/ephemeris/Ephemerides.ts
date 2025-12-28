@@ -2,11 +2,11 @@ import { AstronomicalCoordinates, ObserverLocation, Radians, RectangularCoordina
 import { States, timeProperties } from '@astro/scripts';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { CorrectionType } from '@jpl/state';
-import { DetailedCoordinates, DetailedCoordinatesWithVelocity, EphemerisWithVelocity, FullCoordinates } from '.';
+import { DetailedCoordinates, DetailedCoordinatesWithVelocity, EphemerisWithVelocity, FullCoordinates, FullCoordinatesWithVelocity, FullEphemerisWithVelocity } from '.';
 import { Bodies } from 'src/catalogues/Bodies';
 import { KernelsRepository } from '@jpl/kernels';
 import { BodyGeometryProvider } from '@jpl/kernels/pck';
-import { Axis, BodyFixedFrame, RotationMatrix } from '@jpl/frames';
+import { BodyFixedFrame, Frames } from '@jpl/frames';
 
 export class Ephemerides {
 
@@ -14,12 +14,15 @@ export class Ephemerides {
 
   readonly bodyGeometryProvider: BodyGeometryProvider;
 
-  readonly bodyFixedFrame: BodyFixedFrame;
+  readonly earthBodyFixedFrame: BodyFixedFrame;
+
+  readonly frames: Frames;
 
   constructor(kernels: KernelsRepository) {
     this.states = new States(kernels);
     this.bodyGeometryProvider = kernels.bodyGeometryProvider();
-    this.bodyFixedFrame = kernels.bodyFixedFrame();
+    this.earthBodyFixedFrame = kernels.frames().bodyFixedFrame(JplBodyId.Earth);
+    this.frames = kernels.frames();
   }
 
   buildCoordinatesFunction(targetBodyId: JplBodyId, observerLocation?: ObserverLocation) {
@@ -75,8 +78,9 @@ export class Ephemerides {
     }
   }
 
-  buildFullEphemerisFunction(bodyId: JplBodyId, observerLocation: ObserverLocation) {
+  buildFullEphemerisFunction(bodyId: JplBodyId, observerLocation: ObserverLocation): (es: number) => FullCoordinates {
     const positionFunction = this.states.buildParalaxCorrectedPositionFunction(bodyId, JplBodyId.Earth, observerLocation, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
+    const topocentricFrame = this.frames.topocentricFrame(JplBodyId.Earth, observerLocation);
 
     const bodyGeometry = this.bodyGeometryProvider.getBodyRadii(bodyId);
     if (!bodyGeometry) {
@@ -86,49 +90,88 @@ export class Ephemerides {
 
     return (es: number): FullCoordinates => {
       const position = positionFunction(es);
-      const bodyFixedRotationMatrix = this.bodyFixedFrame.getRotationMatrix(JplBodyId.Earth, es);
-      const fixedBodyPosition = RotationMatrix.multiplyVector(bodyFixedRotationMatrix, position.toVector());
-
-      const observerColatitude = 90 - observerLocation.latitude;
-      const topocentricRotationMatrix = RotationMatrix.eulerToMatrix(
-        Radians.fromDegrees(-observerLocation.latitude),
-        Radians.fromDegrees(-observerColatitude),
-        Radians.fromDegrees(180),
-        Axis.Z, Axis.Y, Axis.Z)
-      const topocentricPosition = RotationMatrix.multiplyVector(topocentricRotationMatrix, fixedBodyPosition);
+      const topocentricPosition = topocentricFrame.transformVector3(es)(position.toVector());
 
       const rangeKm = position.length();
       const angularSize = Radians.angularSize(bodyDiameterKm, rangeKm);
 
       return {
-        coords: AstronomicalCoordinates.fromRectangular(position).toDegrees(),
+        coords: AstronomicalCoordinates.fromRectangular(position),
         angularSize,
         range: rangeKm,
-        // fixedBodyCoords: AstronomicalCoordinates.fromRectangular(RectangularCoordinates.fromVector(fixedBodyPosition)).toDegrees(),
-        azAltCoords: AzAltCoordinates.fromRectangular(RectangularCoordinates.fromVector(topocentricPosition)).toDegrees()
+        azAltCoords: AzAltCoordinates.fromRectangular(RectangularCoordinates.fromVector(topocentricPosition)),
       }
     }
   }
 
-  detailedCoordinatesForBody(targetBodyId: JplBodyId, es: number, observerLocation?: ObserverLocation): DetailedCoordinates {
-    const detailedCoordinatesFunction = this.buildDetailedCoordinatesFunction(targetBodyId, observerLocation)
-    return detailedCoordinatesFunction(es);
+  buildFullEphemerisWithVelocityFunction(bodyId: JplBodyId, observerLocation: ObserverLocation): (es: number) => FullCoordinatesWithVelocity {
+    const stateFunction = this.states.buildParalaxCorrectedStateFunction(bodyId, JplBodyId.Earth, observerLocation, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
+    const topocentricFrame = this.frames.topocentricFrame(JplBodyId.Earth, observerLocation);
+
+    const bodyGeometry = this.bodyGeometryProvider.getBodyRadii(bodyId);
+    if (!bodyGeometry) {
+      throw new Error(`Cannot find body geometry for: bodyId='${bodyId}'`);
+    }
+    const bodyDiameterKm = bodyGeometry[0] * 2;
+
+    return (es: number): FullCoordinatesWithVelocity => {
+      const state = stateFunction(es);
+      const coords = AstronomicalCoordinates.fromRectangular(state.position);
+
+      const topocentricPosition = topocentricFrame.transformVector3(es)(state.position.toVector());
+
+      const nextPosition = state.position.add(state.velocity);
+      const nextCoords = AstronomicalCoordinates.fromRectangular(nextPosition);
+
+      const rangeKm = state.position.length();
+      const angularSize = Radians.angularSize(bodyDiameterKm, rangeKm);
+
+      return {
+        coords,
+        velocity: new AstronomicalCoordinates(nextCoords.rightAscension - coords.rightAscension, nextCoords.declination - coords.declination),
+        angularSize,
+        range: rangeKm,
+        azAltCoords: AzAltCoordinates.fromRectangular(RectangularCoordinates.fromVector(topocentricPosition)),
+      }
+    }
   }
 
-  fullEphemerisForBody(bodyId: JplBodyId, jde: number, observerLocation: ObserverLocation): FullCoordinates {
-    const fullEphemerisFunction = this.buildFullEphemerisFunction(bodyId, observerLocation);
-    return fullEphemerisFunction(EphemerisSeconds.fromJde(jde));
+  detailedCoordinates(targetBodyId: JplBodyId, es: number, observerLocation?: ObserverLocation): DetailedCoordinates {
+    const coordsFunction = this.buildDetailedCoordinatesFunction(targetBodyId, observerLocation)
+    return coordsFunction(es);
+  }
+
+  fullCoordinates(bodyId: JplBodyId, jde: number, observerLocation: ObserverLocation): FullCoordinates {
+    const coordsFunction = this.buildFullEphemerisFunction(bodyId, observerLocation);
+    return coordsFunction(EphemerisSeconds.fromJde(jde));
+  }
+
+  fullCoordinatesWithVelocity(bodyId: JplBodyId, jde: number, observerLocation: ObserverLocation): FullCoordinatesWithVelocity {
+    const coordsFunction = this.buildFullEphemerisWithVelocityFunction(bodyId, observerLocation);
+    return coordsFunction(EphemerisSeconds.fromJde(jde));
   }
 
   computeEphemeridesWithVelocity(targetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): EphemerisWithVelocity[] {
     const fromEs = EphemerisSeconds.fromJde(fromJde);
     const toEs = EphemerisSeconds.fromJde(toJde);
     const itnervalEs = EphemerisSeconds.fromDays(interval);
-    const detailedCoordinatesWithVelocityFunction = this.buildDetailedCoordinatesWithVelocityFunction(targetBodyId);
+    const coordsFunction = this.buildDetailedCoordinatesWithVelocityFunction(targetBodyId);
     return EphemerisSeconds.forRange(fromEs, toEs, itnervalEs)
       .map(es => ({
         ...timeProperties(es),
-        ...detailedCoordinatesWithVelocityFunction(es)
+        ...coordsFunction(es)
+      }));
+  }
+
+  computeFullEphemeridesWithVelocity(bodyId: JplBodyId, fromJde: number, toJde: number, interval: number, observerLocation: ObserverLocation): FullEphemerisWithVelocity[] {
+    const fromEs = EphemerisSeconds.fromJde(fromJde);
+    const toEs = EphemerisSeconds.fromJde(toJde);
+    const itnervalEs = EphemerisSeconds.fromDays(interval);
+    const coordsFunction = this.buildFullEphemerisWithVelocityFunction(bodyId, observerLocation);
+    return EphemerisSeconds.forRange(fromEs, toEs, itnervalEs)
+      .map(es => ({
+        ...timeProperties(es),
+        ...coordsFunction(es)
       }));
   }
 };

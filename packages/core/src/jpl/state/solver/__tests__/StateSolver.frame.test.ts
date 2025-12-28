@@ -9,7 +9,7 @@ describe("StateSolver", () => {
 
   const stateSolver = kernels.stateSolver();
 
-  const bodyFixedFrame = kernels.bodyFixedFrame();
+  const bodyFixedFrame = kernels.frames().bodyFixedFrame(JplBodyId.Earth);
 
   it("should correctly compute state for Moon wrt. Earth", () => {
     const es = EphemerisSeconds.fromDate(2019, 10, 9);
@@ -20,7 +20,7 @@ describe("StateSolver", () => {
     expect(position.y).approximately(-220341.79779477, 2e-9);
     expect(position.z).approximately(-119833.86746624, 1e-9);
 
-    const rotationMatrix = bodyFixedFrame.getRotationMatrix(JplBodyId.Earth, es);
+    const rotationMatrix = bodyFixedFrame.getRotationMatrix(es);
 
     const positionVector: Vector3 = [position.x, position.y, position.z];
     // const positionVector: Vector3 = [317255.79483133, -220341.79779477, -119833.86746624];

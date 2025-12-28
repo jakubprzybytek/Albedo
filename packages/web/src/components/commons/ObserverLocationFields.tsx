@@ -4,13 +4,13 @@ import NumberField from "@/forms/NumberField";
 import type { Location } from "@/common/Profile";
 
 type ObserverLocationFieldsParams = {
-  disabled: boolean;
+  disabled?: boolean;
   location: Location;
   onChanged: (updatedObserverLocation: Location) => void;
   updateValidation: (field: string) => (valid: boolean) => void;
 };
 
-export default function ObserverLocationFields({ onChanged, updateValidation, disabled, location }: ObserverLocationFieldsParams): JSX.Element {
+export default function ObserverLocationFields({ onChanged, updateValidation, disabled = false, location }: ObserverLocationFieldsParams): JSX.Element {
   const handleLatitudeChange = (latitude: number) => {
     onChanged({ ...location, latitude });
   };

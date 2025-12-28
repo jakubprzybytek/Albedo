@@ -9,16 +9,16 @@ import { ObserverLocation } from "@astro/coords";
 type GetEclipsesParams = {
   fromTde: Date;
   toTde: Date;
-  longitude: number | undefined;
   latitude: number | undefined;
+  longitude: number | undefined;
   altitude: number | undefined;
 }
 
 const parseGetEcilipsesParams: (event: APIGatewayProxyEventV2) => GetEclipsesParams = (event: APIGatewayProxyEventV2) => ({
   fromTde: mandatoryDate(event, 'fromTde'),
   toTde: mandatoryDate(event, 'toTde'),
-  longitude: optionalFloat(event, 'longitude'),
   latitude: optionalFloat(event, 'latitude'),
+  longitude: optionalFloat(event, 'longitude'),
   altitude: optionalFloat(event, 'altitude'),
 });
 
@@ -30,16 +30,16 @@ export const handler = lambdaHandler<GetEclipsesReturnType>(event => {
   const fromJde = JulianDay.fromDateObject(fromTde);
   const toJde = JulianDay.fromDateObject(toTde);
 
-  const eclipseScripts = new Eclipses(kernels);
   const observerLocation: ObserverLocation | undefined = longitude !== undefined && latitude !== undefined && altitude !== undefined ? {
     longitude,
     latitude,
     altitude
   } : undefined;
-
+  
   console.log(`Find eclipses between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})` +
-    (observerLocation ? ` for observer at ${observerLocation.longitude}°, ${observerLocation.latitude}°, ${observerLocation.altitude}m` : ''));
-
+  (observerLocation ? ` for observer at ${observerLocation.longitude}°, ${observerLocation.latitude}°, ${observerLocation.altitude}m` : ''));
+  
+  const eclipseScripts = new Eclipses(kernels);
   const eclipses = eclipseScripts.forSunAndMoon(fromJde, toJde, observerLocation);
   console.log(`Found ${eclipses.length} eclipses.`);
 

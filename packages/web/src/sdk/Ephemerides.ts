@@ -1,20 +1,27 @@
 import { get } from "aws-amplify/api";
-import type { EphemerisWithVelocity } from "@astro/scripts";
+import type { Location } from "@/common/Profile";
+import type { FullEphemerisWithVelocity } from "@astro/scripts";
 
-export type { EphemerisWithVelocity };
+export type { FullEphemerisWithVelocity };
 
 export type EphemeridesQuery = {
     target: string;
     fromTde: string;
     toTde: string;
     interval: number;
+    location: Location;
 };
 
-export default async function getEphemerides(query: EphemeridesQuery): Promise<EphemerisWithVelocity[]> {
+export default async function getEphemerides(query: EphemeridesQuery): Promise<FullEphemerisWithVelocity[]> {
     const path = '/api/ephemeris';
     const params = {
-        ...query,
+        target: query.target,
+        fromTde: query.fromTde,
+        toTde: query.toTde,
         interval: String(query.interval),
+        latitude: query.location.latitude.toString(),
+        longitude: query.location.longitude.toString(),
+        altitude: query.location.altitude.toString(),
     };
 
     const { body } = await get({
@@ -23,5 +30,5 @@ export default async function getEphemerides(query: EphemeridesQuery): Promise<E
     }).response;
 
     const bodyJson = await body.json() as unknown;
-    return bodyJson as EphemerisWithVelocity[];
+    return bodyJson as FullEphemerisWithVelocity[];
 }

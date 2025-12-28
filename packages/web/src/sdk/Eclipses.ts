@@ -30,6 +30,6 @@ export default async function getEclipses(query: EclipsesQuery): Promise<Eclipse
     path: path + '?' + new URLSearchParams(searchParams).toString(),
   }).response;
 
-  const bodyJson = await body.json() as any;
+  const bodyJson = await body.json() as unknown;
   return bodyJson as Eclipse[];
 }

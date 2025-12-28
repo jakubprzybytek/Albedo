@@ -14,7 +14,10 @@ export type DetailedCoordinatesWithVelocity = DetailedCoordinates & {
 }
 
 export type FullCoordinates = DetailedCoordinates & {
-  // fixedBodyCoords: AstronomicalCoordinates,
+  azAltCoords: AzAltCoordinates
+}
+
+export type FullCoordinatesWithVelocity = DetailedCoordinatesWithVelocity & {
   azAltCoords: AzAltCoordinates
 }
 
@@ -24,3 +27,5 @@ export type EphemerisWithVelocity = TimeProperties & DetailedCoordinatesWithVelo
 
 export type FullEphemeris = TimeProperties & FullCoordinates & {
 };
+
+export type FullEphemerisWithVelocity = TimeProperties & FullCoordinatesWithVelocity;

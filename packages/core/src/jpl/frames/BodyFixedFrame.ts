@@ -1,19 +1,16 @@
 import { Radians } from "@astro/coords";
 import { Matrix3x3, Vector3 } from "@astro/math";
-import { JplBodyId} from "@jpl";
-import { KernelsRepository } from "@jpl/kernels/KernelsRepository";
 import { Axis, RotationMatrix } from "./RotationMatrix";
+import { JplBodyId } from "@jpl";
+import { OrientationModelProvider } from "@jpl/kernels/pck";
 
 export class BodyFixedFrame {
 
-  readonly orientationModelProvider;
-
-  constructor(readonly kernels: KernelsRepository) {
-    this.orientationModelProvider = kernels.orientationModelProvider();
+  constructor(readonly orientationModelProvider: OrientationModelProvider, readonly bodyId: JplBodyId) {
   }
 
-  getRotationAngles(jplBodyId: JplBodyId, es: number): Vector3 {
-    const orientationModel = this.orientationModelProvider.getOrientationModel(jplBodyId, es);
+  getRotationAngles(es: number): Vector3 {
+    const orientationModel = this.orientationModelProvider.getOrientationModel(this.bodyId, es);
 
     const RA = 90 + orientationModel.RA;
     const Dec = 90 - orientationModel.Dec;
@@ -26,13 +23,20 @@ export class BodyFixedFrame {
     ]
   }
 
-  getRotationMatrix(jplBodyId: JplBodyId, es: number): Matrix3x3 {
-    const orientationModel = this.orientationModelProvider.getOrientationModel(jplBodyId, es);
+  getRotationMatrix(es: number): Matrix3x3 {
+    const orientationModel = this.orientationModelProvider.getOrientationModel(this.bodyId, es);
 
     const RA = 90 + orientationModel.RA;
     const Dec = 90 - orientationModel.Dec;
     const W = orientationModel.W % 360;
 
     return RotationMatrix.eulerToMatrix(Radians.fromDegrees(W), Radians.fromDegrees(Dec), Radians.fromDegrees(RA), Axis.Z, Axis.X, Axis.Z);
+  }
+
+  transformVector3(es: number) {
+    const bodyFixedRotationMatrix = this.getRotationMatrix(es);
+    return function (vector: Vector3): Vector3 {
+      return RotationMatrix.multiplyVector(bodyFixedRotationMatrix, vector);
+    }
   }
 }

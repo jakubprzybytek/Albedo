@@ -11,6 +11,7 @@ import AstronomicalCoords from '../../common/AstronomicalCoordinates';
 import type { EphemerisWithAdjustedVelocity } from './EphemerisBrowser';
 import Angle from '@/common/Angle';
 import { decimalFormat } from '@/utils';
+import AzAltCoords from '@/common/AzAltCoordinates';
 
 type EphemerisTablePropsType = {
   ephemerides: EphemerisWithAdjustedVelocity[];
@@ -33,7 +34,8 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
             <TableCell align="center">Range</TableCell>
             <TableCell align="center">Angular Size</TableCell>
             <TableCell align="center">Velocity</TableCell>
-            <TableCell align="right">Velocity per Interval</TableCell>
+            <TableCell align="center">Velocity per Interval</TableCell>
+            <TableCell align="right">Az Alt</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -62,6 +64,9 @@ export default function EphemerisTable({ ephemerides }: EphemerisTablePropsType)
               </TableCell>
               <TableCell align="right">
                 <AstronomicalCoords coords={ephemeris.velocityPerInterval} />
+              </TableCell>
+              <TableCell align="right">
+                <AzAltCoords coords={ephemeris.azAltCoords} format='verbose' />
               </TableCell>
             </TableRow>
           ))}
