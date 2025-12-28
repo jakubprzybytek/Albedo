@@ -9,21 +9,22 @@ export type DetailedCoordinates = {
   range: number;
 }
 
-export type DetailedCoordinatesWithVelocity = DetailedCoordinates & {
-  velocity: AstronomicalCoordinates;
-}
+// export type DetailedCoordinatesWithVelocity = DetailedCoordinates & {
+//   velocity: AstronomicalCoordinates;
+// }
 
 export type FullCoordinates = DetailedCoordinates & {
   azAltCoords: AzAltCoordinates
 }
 
-export type FullCoordinatesWithVelocity = DetailedCoordinatesWithVelocity & {
+export type FullCoordinatesWithVelocity = DetailedCoordinates & {
+  velocity: AstronomicalCoordinates;
   azAltCoords: AzAltCoordinates
 }
 
 export type DetailedEphemeris = TimeProperties & DetailedCoordinates;
 
-export type EphemerisWithVelocity = TimeProperties & DetailedCoordinatesWithVelocity;
+// export type EphemerisWithVelocity = TimeProperties & DetailedCoordinatesWithVelocity;
 
 export type FullEphemeris = TimeProperties & FullCoordinates & {
 };

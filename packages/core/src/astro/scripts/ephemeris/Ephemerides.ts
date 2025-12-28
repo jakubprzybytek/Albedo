@@ -2,7 +2,7 @@ import { AstronomicalCoordinates, ObserverLocation, Radians, RectangularCoordina
 import { States, timeProperties } from '@astro/scripts';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { CorrectionType } from '@jpl/state';
-import { DetailedCoordinates, DetailedCoordinatesWithVelocity, EphemerisWithVelocity, FullCoordinates, FullCoordinatesWithVelocity, FullEphemerisWithVelocity } from '.';
+import { DetailedCoordinates, FullCoordinates, FullCoordinatesWithVelocity, FullEphemerisWithVelocity } from '.';
 import { Bodies } from 'src/catalogues/Bodies';
 import { KernelsRepository } from '@jpl/kernels';
 import { BodyGeometryProvider } from '@jpl/kernels/pck';
@@ -25,7 +25,7 @@ export class Ephemerides {
     this.frames = kernels.frames();
   }
 
-  buildCoordinatesFunction(targetBodyId: JplBodyId, observerLocation?: ObserverLocation) {
+  buildCoordinatesFunction(targetBodyId: JplBodyId, observerLocation?: ObserverLocation): (es: number) => AstronomicalCoordinates {
     const stateFunction = observerLocation
       ? this.states.buildParalaxCorrectedPositionFunction(targetBodyId, JplBodyId.Earth, observerLocation, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
       : this.states.buildPositionFunction(targetBodyId, JplBodyId.Earth, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
@@ -37,7 +37,7 @@ export class Ephemerides {
   }
 
   // ToDo: use JPL to fetch body radius
-  buildDetailedCoordinatesFunction(bodyId: JplBodyId, observerLocation?: ObserverLocation) {
+  buildDetailedCoordinatesFunction(bodyId: JplBodyId, observerLocation?: ObserverLocation): (es: number) => DetailedCoordinates {
     const stateFunction = observerLocation
       ? this.states.buildParalaxCorrectedPositionFunction(bodyId, JplBodyId.Earth, observerLocation, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
       : this.states.buildPositionFunction(bodyId, JplBodyId.Earth, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
@@ -53,27 +53,6 @@ export class Ephemerides {
         coords: AstronomicalCoordinates.fromRectangular(position),
         angularSize,
         range: rangeKm
-      }
-    }
-  }
-
-  // ToDo: use JPL to fetch body radius
-  buildDetailedCoordinatesWithVelocityFunction(targetBodyId: JplBodyId, correctionType: CorrectionType = CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION) {
-    return (es: number): DetailedCoordinatesWithVelocity => {
-      const state = this.states.computeState(targetBodyId, JplBodyId.Earth, es, correctionType);
-      const coords = AstronomicalCoordinates.fromRectangular(state.position);
-      const nextPosition = state.position.add(state.velocity);
-      const nextCoords = AstronomicalCoordinates.fromRectangular(nextPosition);
-
-      const rangeKm = state.position.length();
-      const objectDiameterKm = (Bodies[targetBodyId as keyof typeof Bodies].equatorialRadiusKm ?? 0) * 2;
-      const angularSize = Radians.angularSize(objectDiameterKm, rangeKm);
-
-      return {
-        coords,
-        angularSize,
-        range: rangeKm,
-        velocity: new AstronomicalCoordinates(nextCoords.rightAscension - coords.rightAscension, nextCoords.declination - coords.declination)
       }
     }
   }
@@ -136,6 +115,9 @@ export class Ephemerides {
     }
   }
 
+  /**
+   * @deprecated The method should not be used
+   */
   detailedCoordinates(targetBodyId: JplBodyId, es: number, observerLocation?: ObserverLocation): DetailedCoordinates {
     const coordsFunction = this.buildDetailedCoordinatesFunction(targetBodyId, observerLocation)
     return coordsFunction(es);
@@ -151,18 +133,6 @@ export class Ephemerides {
     return coordsFunction(EphemerisSeconds.fromJde(jde));
   }
 
-  computeEphemeridesWithVelocity(targetBodyId: JplBodyId, fromJde: number, toJde: number, interval: number): EphemerisWithVelocity[] {
-    const fromEs = EphemerisSeconds.fromJde(fromJde);
-    const toEs = EphemerisSeconds.fromJde(toJde);
-    const itnervalEs = EphemerisSeconds.fromDays(interval);
-    const coordsFunction = this.buildDetailedCoordinatesWithVelocityFunction(targetBodyId);
-    return EphemerisSeconds.forRange(fromEs, toEs, itnervalEs)
-      .map(es => ({
-        ...timeProperties(es),
-        ...coordsFunction(es)
-      }));
-  }
-
   computeFullEphemeridesWithVelocity(bodyId: JplBodyId, fromJde: number, toJde: number, interval: number, observerLocation: ObserverLocation): FullEphemerisWithVelocity[] {
     const fromEs = EphemerisSeconds.fromJde(fromJde);
     const toEs = EphemerisSeconds.fromJde(toJde);
@@ -174,4 +144,5 @@ export class Ephemerides {
         ...coordsFunction(es)
       }));
   }
+
 };
