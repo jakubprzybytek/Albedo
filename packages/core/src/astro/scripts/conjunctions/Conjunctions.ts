@@ -31,7 +31,7 @@ export class Conjunctions {
     this.ephemerides = new Ephemerides(kernels);
   }
 
-  for(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number, observerLocation?: ObserverLocation): Conjunction[] {
+  findFor(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number, observerLocation: ObserverLocation): Conjunction[] {
     const bodies = bodyIdies
       .map(jplBodyFromId)
       .filter((jplBody): jplBody is JplBody => !!jplBody);
@@ -85,11 +85,11 @@ export class Conjunctions {
           ...timeProperties(separation.es),
           firstBody: {
             info: firstBody,
-            ephemeris: this.ephemerides.detailedCoordinates(firstBody.id, separation.es, observerLocation)
+            ephemeris: this.ephemerides.fullCoordinates(firstBody.id, separation.es, observerLocation)
           },
           secondBody: {
             info: secondBody,
-            ephemeris: this.ephemerides.detailedCoordinates(secondBody.id, separation.es, observerLocation)
+            ephemeris: this.ephemerides.fullCoordinates(secondBody.id, separation.es, observerLocation)
           },
           separation: separation.separation,
         }))
@@ -99,9 +99,9 @@ export class Conjunctions {
     return conjuctions.sort(esOrder);
   }
 
-  all(fromJde: number, toJde: number, observerLocation?: ObserverLocation): Conjunction[] {
+  find(fromJde: number, toJde: number, observerLocation: ObserverLocation): Conjunction[] {
     const bodies = [JplBodyId.Moon, JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
-    return this.for(bodies, fromJde, toJde, SEPARATION_THRESHOLD, observerLocation);
+    return this.findFor(bodies, fromJde, toJde, SEPARATION_THRESHOLD, observerLocation);
   }
 
 };

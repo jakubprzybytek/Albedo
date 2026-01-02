@@ -1,5 +1,5 @@
 import { JulianDay } from "@astro";
-import { AstronomicalCoordinates } from "@astro/coords";
+import { AstronomicalCoordinates, AzAltCoordinates } from "@astro/coords";
 import { describe, it, expect } from "vitest";
 import { JplBody, jplBodyFromString } from "@jpl";
 import { kernels } from "@jpl/data/kernels.full";
@@ -12,38 +12,7 @@ describe("Conjunctions", () => {
   it("should find conjunctions for all bodies", () => {
     const fromJde = JulianDay.fromDate(2024, 4, 20);
     const toJde = JulianDay.fromDate(2024, 4, 30);
-    const conjunctions = conjuctionScripts.all(fromJde, toJde);
-
-    expect(conjunctions).toHaveLength(1);
-
-    expect(conjunctions[0]).toStrictEqual({
-      es: 767637130.476549,
-      jde: 2460429.689010145,
-      tde: new Date('2024-04-29T04:32:10.000Z'),
-      firstBody: {
-        info: jplBodyFromString('Mars') as JplBody,
-        ephemeris: {
-          angularSize: 0.00002289199651289324,
-          coords: new AstronomicalCoordinates(6.268531423986194, -0.030433985916438734),
-          range: 296715054.7955813
-        }
-      },
-      secondBody: {
-        info: jplBodyFromString('Neptune') as JplBody,
-        ephemeris: {
-          angularSize: 0.000010798459637903887,
-          coords: new AstronomicalCoordinates(6.268292723456754, -0.02988462206159836),
-          range: 4586580092.004004
-        }
-      },
-      separation: 0.0005989380399368273,
-    } satisfies Conjunction);
-  });
-
-  it("should find conjunctions for all bodies for a given obsever location", () => {
-    const fromJde = JulianDay.fromDate(2024, 4, 20);
-    const toJde = JulianDay.fromDate(2024, 4, 30);
-    const conjunctions = conjuctionScripts.all(fromJde, toJde, { longitude: 52, latitude: 17, altitude: 50 });
+    const conjunctions = conjuctionScripts.find(fromJde, toJde, { longitude: 52, latitude: 17, altitude: 50 });
 
     expect(conjunctions).toHaveLength(1);
 
@@ -54,9 +23,10 @@ describe("Conjunctions", () => {
       firstBody: {
         info: jplBodyFromString('Mars') as JplBody,
         ephemeris: {
-          angularSize: 0.000022892422026134983,
+          angularSize: 0.000022892354620145867,
           coords: new AstronomicalCoordinates(6.268537473397251, -0.030441513190657125),
-          range: 296709539.59999794
+          range: 296709539.59999794,
+          azAltCoords: new AzAltCoordinates(1.384184449951694, 0.2545172706595791)
         }
       },
       secondBody: {
@@ -64,7 +34,41 @@ describe("Conjunctions", () => {
         ephemeris: {
           angularSize: 0.00001079847227762168,
           coords: new AstronomicalCoordinates(6.268293157279016, -0.029885088234573462),
-          range: 4586574723.366985
+          range: 4586574723.366985,
+          azAltCoords: new AzAltCoordinates(1.3837158075866753, 0.25492170034120504)
+        }
+      },
+      separation: 0.0006076551692939348,
+    } satisfies Conjunction);
+  });
+
+  it("should find conjunctions for all bodies for a given obsever location", () => {
+    const fromJde = JulianDay.fromDate(2024, 4, 20);
+    const toJde = JulianDay.fromDate(2024, 4, 30);
+    const conjunctions = conjuctionScripts.find(fromJde, toJde, { longitude: 52, latitude: 17, altitude: 50 });
+
+    expect(conjunctions).toHaveLength(1);
+
+    expect(conjunctions[0]).toStrictEqual({
+      es: 767637118.3790983,
+      jde: 2460429.6888701282,
+      tde: new Date('2024-04-29T04:31:58.000Z'),
+      firstBody: {
+        info: jplBodyFromString('Mars') as JplBody,
+        ephemeris: {
+          angularSize: 0.000022892354620145867,
+          coords: new AstronomicalCoordinates(6.268537473397251, -0.030441513190657125),
+          range: 296709539.59999794,
+          azAltCoords: new AzAltCoordinates(1.384184449951694, 0.2545172706595791)
+        }
+      },
+      secondBody: {
+        info: jplBodyFromString('Neptune') as JplBody,
+        ephemeris: {
+          angularSize: 0.00001079847227762168,
+          coords: new AstronomicalCoordinates(6.268293157279016, -0.029885088234573462),
+          range: 4586574723.366985,
+          azAltCoords: new AzAltCoordinates(1.3837158075866753, 0.25492170034120504)
         }
       },
       separation: 0.0006076551692939348,

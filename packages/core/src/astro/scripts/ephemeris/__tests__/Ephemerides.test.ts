@@ -40,7 +40,7 @@ describe("Ephemerides", () => {
 
   describe("should compute full coordinates", () => {
     it("for Venus", () => {
-      const jde = JulianDay.fromDate(2019, 10, 10);
+      const jde = EphemerisSeconds.fromDate(2019, 10, 10);
       const ephemeris = ephemerisScripts.fullCoordinates(JplBodyId.Venus, jde, { latitude: 52, longitude: 17, altitude: 50 });
 
       expect(ephemeris).toEqual({
@@ -52,12 +52,15 @@ describe("Ephemerides", () => {
     });
   });
 
-  describe("should compute full coordinates with velocity", () => {
+  describe("should compute full ephemeris with velocity", () => {
     it("for Venus", () => {
       const jde = JulianDay.fromDate(2019, 10, 10);
-      const ephemeris = ephemerisScripts.fullCoordinatesWithVelocity(JplBodyId.Venus, jde, { latitude: 52, longitude: 17, altitude: 50 });
+      const ephemeris = ephemerisScripts.computeFullEphemeridesWithVelocity(JplBodyId.Venus, jde, jde, 1, { latitude: 52, longitude: 17, altitude: 50 });
 
-      expect(ephemeris).toEqual({
+      expect(ephemeris[0]).toEqual({
+        es: 623937600,
+        jde: 2458766.5,
+        tde: new Date('2019-10-10T00:00:00.000Z'),
         range: 245179680.85845146,
         angularSize: 0.000049366244197575465,
         coords: new AstronomicalCoordinates(3.6546945019769064, -0.19830456454854592),

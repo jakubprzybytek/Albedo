@@ -25,10 +25,10 @@ export class Ephemerides {
     this.frames = kernels.frames();
   }
 
-  buildCoordinatesFunction(targetBodyId: JplBodyId, observerLocation?: ObserverLocation): (es: number) => AstronomicalCoordinates {
+  buildCoordinatesFunction(bodyId: JplBodyId, observerLocation?: ObserverLocation): (es: number) => AstronomicalCoordinates {
     const stateFunction = observerLocation
-      ? this.states.buildParalaxCorrectedPositionFunction(targetBodyId, JplBodyId.Earth, observerLocation, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
-      : this.states.buildPositionFunction(targetBodyId, JplBodyId.Earth, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
+      ? this.states.buildParalaxCorrectedPositionFunction(bodyId, JplBodyId.Earth, observerLocation, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
+      : this.states.buildPositionFunction(bodyId, JplBodyId.Earth, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
 
     return (es: number): AstronomicalCoordinates => {
       const position = stateFunction(es);
@@ -118,19 +118,14 @@ export class Ephemerides {
   /**
    * @deprecated The method should not be used
    */
-  detailedCoordinates(targetBodyId: JplBodyId, es: number, observerLocation?: ObserverLocation): DetailedCoordinates {
-    const coordsFunction = this.buildDetailedCoordinatesFunction(targetBodyId, observerLocation)
+  detailedCoordinates(bodyId: JplBodyId, es: number, observerLocation?: ObserverLocation): DetailedCoordinates {
+    const coordsFunction = this.buildDetailedCoordinatesFunction(bodyId, observerLocation)
     return coordsFunction(es);
   }
 
-  fullCoordinates(bodyId: JplBodyId, jde: number, observerLocation: ObserverLocation): FullCoordinates {
+  fullCoordinates(bodyId: JplBodyId, es: number, observerLocation: ObserverLocation): FullCoordinates {
     const coordsFunction = this.buildFullEphemerisFunction(bodyId, observerLocation);
-    return coordsFunction(EphemerisSeconds.fromJde(jde));
-  }
-
-  fullCoordinatesWithVelocity(bodyId: JplBodyId, jde: number, observerLocation: ObserverLocation): FullCoordinatesWithVelocity {
-    const coordsFunction = this.buildFullEphemerisWithVelocityFunction(bodyId, observerLocation);
-    return coordsFunction(EphemerisSeconds.fromJde(jde));
+    return coordsFunction(es);
   }
 
   computeFullEphemeridesWithVelocity(bodyId: JplBodyId, fromJde: number, toJde: number, interval: number, observerLocation: ObserverLocation): FullEphemerisWithVelocity[] {
