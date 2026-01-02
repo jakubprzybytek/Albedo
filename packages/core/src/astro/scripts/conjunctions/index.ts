@@ -1,5 +1,5 @@
 import { OpenNgcObject } from "@openNgc";
-import { DetailedCoordinates, FullCoordinates } from "../ephemeris";
+import { FullCoordinates } from "../ephemeris";
 import { JplBody } from "@jpl";
 
 export * from './Conjunctions';
@@ -26,7 +26,7 @@ export type DsoConjunction = {
   tde: Date;
   body: {
     info: JplBody;
-    ephemeris: DetailedCoordinates;
+    ephemeris: FullCoordinates;
   }
   dso: OpenNgcObject;
   separation: number;

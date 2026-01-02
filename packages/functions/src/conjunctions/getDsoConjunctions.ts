@@ -1,6 +1,6 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
-import { mandatoryDate, optionalFloat } from '../LambdaParams';
+import { mandatoryDate, mandatoryFloat, optionalFloat } from '../LambdaParams';
 import { JulianDay } from '@astro';
 import { ObserverLocation } from "@astro/coords";
 import { ConjunctionsWithDso, DsoConjunction } from '@astro/scripts';
@@ -10,17 +10,17 @@ import { openNgcObjects } from "@openNgc/data";
 type GetConjunctionsParams = {
   fromTde: Date;
   toTde: Date;
-  longitude?: number;
-  latitude: number | undefined;
-  altitude: number | undefined;
+  longitude: number;
+  latitude: number;
+  altitude: number;
 }
 
 const parseGetConjunctionsParams: (event: APIGatewayProxyEventV2) => GetConjunctionsParams = (event: APIGatewayProxyEventV2) => ({
   fromTde: mandatoryDate(event, 'fromTde'),
   toTde: mandatoryDate(event, 'toTde'),
-  longitude: optionalFloat(event, 'longitude'),
-  latitude: optionalFloat(event, 'latitude'),
-  altitude: optionalFloat(event, 'altitude'),
+  longitude: mandatoryFloat(event, 'longitude'),
+  latitude: mandatoryFloat(event, 'latitude'),
+  altitude: mandatoryFloat(event, 'altitude'),
 });
 
 export const handler = lambdaHandler<DsoConjunction[]>(event => {
@@ -30,14 +30,14 @@ export const handler = lambdaHandler<DsoConjunction[]>(event => {
   const toJde = JulianDay.fromDateObject(toTde);
 
   const conjunctionScripts = new ConjunctionsWithDso(kernels, openNgcObjects);
-  const observerLocation: ObserverLocation | undefined = longitude !== undefined && latitude !== undefined && altitude !== undefined ? {
+  const observerLocation: ObserverLocation = {
     longitude,
     latitude,
     altitude
-  } : undefined;
+  };
 
   console.log(`Compute conjunctions with DSO between ${fromTde.toISOString()}(${fromJde}) and ${toTde.toISOString()}(${toJde})` +
-    (observerLocation ? ` for observer at ${observerLocation.longitude}°, ${observerLocation.latitude}°, ${observerLocation.altitude}m` : ''));
+    ` for observer at ${observerLocation.longitude}°, ${observerLocation.latitude}°, ${observerLocation.altitude}m`);
 
   const conjunctions = conjunctionScripts.findConjunctionsWithDso(fromJde, toJde, observerLocation);
 

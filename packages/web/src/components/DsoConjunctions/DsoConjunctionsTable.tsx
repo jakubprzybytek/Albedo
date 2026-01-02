@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { formatDegrees } from '../../utils';
 import AstronomicalCoords from '@/common/AstronomicalCoordinates';
+import AzAltCoords from '@/common/AzAltCoordinates';
 import DsoConjunctionDrawing from './DsoConjunctionDrawing';
 import { type DsoConjunction, OpenNgcObjectType } from '@/sdk/Conjunctions';
 import { AstronomicalCoordinates } from '@astro/coords';
@@ -55,6 +56,7 @@ export default function DsoConjunctionsTable({ conjunctions }: DsoConjunctionsTa
               <TableCell align="center">
                 {conjunction.body.info.name}
                 <AstronomicalCoords format='verbose' coords={conjunction.body.ephemeris.coords} />
+                <AzAltCoords format='verbose' coords={conjunction.body.ephemeris.azAltCoords} />
                 Size: {formatDegrees(conjunction.body.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="center">

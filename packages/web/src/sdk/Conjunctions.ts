@@ -9,7 +9,7 @@ export { OpenNgcObject, OpenNgcObjectType };
 export type ConjunctionsQuery = {
   fromTde: string;
   toTde: string;
-  location?: Location;
+  location: Location;
 };
 
 export async function getConjunctions(query: ConjunctionsQuery): Promise<Conjunction[]> {
@@ -17,11 +17,9 @@ export async function getConjunctions(query: ConjunctionsQuery): Promise<Conjunc
   const searchParams = {
     fromTde: query.fromTde,
     toTde: query.toTde,
-    ...(query.location && {
-      latitude: query.location.latitude.toString(),
-      longitude: query.location.longitude.toString(),
-      altitude: query.location.altitude.toString(),
-    })
+    latitude: query.location.latitude.toString(),
+    longitude: query.location.longitude.toString(),
+    altitude: query.location.altitude.toString(),
   };
 
   const { body } = await get({
@@ -38,11 +36,9 @@ export async function getDsoConjunctions(query: ConjunctionsQuery): Promise<DsoC
   const searchParams = {
     fromTde: query.fromTde,
     toTde: query.toTde,
-    ...(query.location && {
-      latitude: query.location.latitude.toString(),
-      longitude: query.location.longitude.toString(),
-      altitude: query.location.altitude.toString(),
-    })
+    latitude: query.location.latitude.toString(),
+    longitude: query.location.longitude.toString(),
+    altitude: query.location.altitude.toString(),
   };
 
   const { body } = await get({

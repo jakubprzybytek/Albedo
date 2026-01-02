@@ -25,7 +25,6 @@ export default function DsoConjunctionsQueryForm({ query }: DsoConjunctionsQuery
     longitude: 17,
     altitude: 50
   });
-  const [parallaxCorrectionEnabled, setParallaxCorrectionEnabled] = useState(false);
 
   const { updateValidation, isValid } = useValidation();
 
@@ -33,7 +32,7 @@ export default function DsoConjunctionsQueryForm({ query }: DsoConjunctionsQuery
     query.submit({
       fromTde: fromTde ? format(fromTde, 'yyyy-MM-dd') : '',
       toTde: toTde ? format(toTde, 'yyyy-MM-dd') : '',
-      ...(parallaxCorrectionEnabled && { location: observerLocation })
+      location: observerLocation
     });
   }
 
@@ -52,12 +51,7 @@ export default function DsoConjunctionsQueryForm({ query }: DsoConjunctionsQuery
           </Grid>
         </Grid>
         <Grid container rowSpacing={1} columnSpacing={1}>
-          <Grid size={12}>
-            <FormControlLabel control={<Checkbox size="small" sx={{ paddingTop: 0, paddingBottom: 0 }}
-              checked={parallaxCorrectionEnabled}
-              onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
-          </Grid>
-          <ObserverLocationFields disabled={!parallaxCorrectionEnabled}
+          <ObserverLocationFields
             location={observerLocation}
             onChanged={setObserverLocation}
             updateValidation={updateValidation} />

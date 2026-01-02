@@ -1,8 +1,6 @@
 import { useState, type JSX } from "react";
 import Stack from "@mui/material/Stack";
 import Grid from '@mui/material/Grid';
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
 import type { ConjunctionsQuery } from "@/sdk/Conjunctions";
@@ -25,7 +23,6 @@ export default function ConjunctionsQueryForm({ query }: ConjunctionsQueryFormPa
     longitude: 17,
     altitude: 50
   });
-  const [parallaxCorrectionEnabled, setParallaxCorrectionEnabled] = useState(false);
 
   const { updateValidation, isValid } = useValidation();
 
@@ -33,7 +30,7 @@ export default function ConjunctionsQueryForm({ query }: ConjunctionsQueryFormPa
     query.submit({
       fromTde: fromTde ? format(fromTde, 'yyyy-MM-dd') : '',
       toTde: toTde ? format(toTde, 'yyyy-MM-dd') : '',
-      ...(parallaxCorrectionEnabled && { location: observerLocation })
+      location: observerLocation
     });
   }
 
@@ -52,12 +49,7 @@ export default function ConjunctionsQueryForm({ query }: ConjunctionsQueryFormPa
           </Grid>
         </Grid>
         <Grid container rowSpacing={1} columnSpacing={1}>
-          <Grid size={12}>
-            <FormControlLabel control={<Checkbox size="small" sx={{ paddingTop: 0, paddingBottom: 0 }}
-              checked={parallaxCorrectionEnabled}
-              onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
-          </Grid>
-          <ObserverLocationFields disabled={!parallaxCorrectionEnabled}
+          <ObserverLocationFields
             location={observerLocation}
             onChanged={setObserverLocation}
             updateValidation={updateValidation} />

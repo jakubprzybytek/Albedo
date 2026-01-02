@@ -54,7 +54,7 @@ export class ConjunctionsWithDso {
     return (coordsInTime: CoordinatesInTime) => Radians.separation(coordsInTime.coords, dsoCoords);
   }
 
-  find(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number, observerLocation?: ObserverLocation): DsoConjunction[] {
+  find(bodyIdies: JplBodyId[], fromJde: number, toJde: number, separationLimit: number, observerLocation: ObserverLocation): DsoConjunction[] {
     const correctedFromEs = EphemerisSeconds.fromJde(fromJde) - PRELIMINARY_INTERVAL;
     const correctedToEs = EphemerisSeconds.fromJde(toJde) + PRELIMINARY_INTERVAL;
     const esArray = EphemerisSeconds.forRange(correctedFromEs, correctedToEs, PRELIMINARY_INTERVAL);
@@ -151,7 +151,7 @@ export class ConjunctionsWithDso {
       })
       .filter(({ separation }) => separation < separationLimit)
       .map<DsoConjunction>(({ es, bodyId, dso, separation }) => {
-        const ephemeris = this.ephemerides.detailedCoordinates(bodyId, es, observerLocation);
+        const ephemeris = this.ephemerides.fullCoordinates(bodyId, es, observerLocation);
         const separationFactorValue = separationFactor(separation, ephemeris.angularSize, getAverageAngularSize(dso));
         return {
           ...timeProperties(es),
@@ -172,7 +172,7 @@ export class ConjunctionsWithDso {
     return conjuctions.sort(esOrder);;
   }
 
-  findConjunctionsWithDso(fromJde: number, toJde: number, observerLocation?: ObserverLocation): DsoConjunction[] {
+  findConjunctionsWithDso(fromJde: number, toJde: number, observerLocation: ObserverLocation): DsoConjunction[] {
     const bodies = [JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
     // const bodies = [JplBodyId.Moon, JplBodyId.Mercury, JplBodyId.Venus, JplBodyId.Mars, JplBodyId.Jupiter, JplBodyId.Saturn, JplBodyId.Uranus, JplBodyId.Neptune, JplBodyId.Pluto];
     return this.find(bodies, fromJde, toJde, SEPARATION_THRESHOLD, observerLocation);

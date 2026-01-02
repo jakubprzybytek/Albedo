@@ -12,6 +12,7 @@ import { formatDegrees } from '../../utils';
 import AstronomicalCoords from '@/common/AstronomicalCoordinates';
 import ConjunctionDrawing from './ConjunctionDrawing';
 import type { Conjunction } from '@/sdk/Conjunctions';
+import AzAltCoords from '@/common/AzAltCoordinates';
 
 type ConjunctionsTablePropsType = {
   conjunctions: Conjunction[];
@@ -54,11 +55,13 @@ export default function ConjunctionsTable({ conjunctions }: ConjunctionsTablePro
               <TableCell align="center">
                 {conjunction.firstBody.info.name}
                 <AstronomicalCoords format='verbose' coords={conjunction.firstBody.ephemeris.coords} />
+                <AzAltCoords format='verbose' coords={conjunction.firstBody.ephemeris.azAltCoords} />
                 Size: {formatDegrees(conjunction.firstBody.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="center">
                 {conjunction.secondBody.info.name}
                 <AstronomicalCoords format='verbose' coords={conjunction.secondBody.ephemeris.coords} />
+                <AzAltCoords format='verbose' coords={conjunction.secondBody.ephemeris.azAltCoords} />
                 Size: {formatDegrees(conjunction.secondBody.ephemeris.angularSize)}
               </TableCell>
               <TableCell align="right">
