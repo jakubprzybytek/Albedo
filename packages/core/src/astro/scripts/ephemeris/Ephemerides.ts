@@ -2,8 +2,7 @@ import { AstronomicalCoordinates, ObserverLocation, Radians, RectangularCoordina
 import { States, timeProperties } from '@astro/scripts';
 import { EphemerisSeconds, JplBodyId } from '@jpl';
 import { CorrectionType } from '@jpl/state';
-import { DetailedCoordinates, FullCoordinates, FullCoordinatesWithVelocity, FullEphemerisWithVelocity } from '.';
-import { Bodies } from 'src/catalogues/Bodies';
+import { FullCoordinates, FullCoordinatesWithVelocity, FullEphemerisWithVelocity } from '.';
 import { KernelsRepository } from '@jpl/kernels';
 import { BodyGeometryProvider } from '@jpl/kernels/pck';
 import { BodyFixedFrame, Frames } from '@jpl/frames';
@@ -36,28 +35,7 @@ export class Ephemerides {
     }
   }
 
-  // ToDo: use JPL to fetch body radius
-  buildDetailedCoordinatesFunction(bodyId: JplBodyId, observerLocation?: ObserverLocation): (es: number) => DetailedCoordinates {
-    const stateFunction = observerLocation
-      ? this.states.buildParalaxCorrectedPositionFunction(bodyId, JplBodyId.Earth, observerLocation, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
-      : this.states.buildPositionFunction(bodyId, JplBodyId.Earth, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION);
-    const objectDiameterKm = (Bodies[bodyId as keyof typeof Bodies].equatorialRadiusKm ?? 0) * 2;
-
-    return (es: number): DetailedCoordinates => {
-      const position = stateFunction(es);
-
-      const rangeKm = position.length();
-      const angularSize = Radians.angularSize(objectDiameterKm, rangeKm);
-
-      return {
-        coords: AstronomicalCoordinates.fromRectangular(position),
-        angularSize,
-        range: rangeKm
-      }
-    }
-  }
-
-  buildFullEphemerisFunction(bodyId: JplBodyId, observerLocation: ObserverLocation): (es: number) => FullCoordinates {
+  buildFullCoordinatesFunction(bodyId: JplBodyId, observerLocation: ObserverLocation): (es: number) => FullCoordinates {
     const positionFunction = this.states.buildParalaxCorrectedPositionFunction(bodyId, JplBodyId.Earth, observerLocation, CorrectionType.LIGHT_TIME_AND_STAR_ABBERATION)
     const topocentricFrame = this.frames.topocentricFrame(JplBodyId.Earth, observerLocation);
 
@@ -115,16 +93,8 @@ export class Ephemerides {
     }
   }
 
-  /**
-   * @deprecated The method should not be used
-   */
-  detailedCoordinates(bodyId: JplBodyId, es: number, observerLocation?: ObserverLocation): DetailedCoordinates {
-    const coordsFunction = this.buildDetailedCoordinatesFunction(bodyId, observerLocation)
-    return coordsFunction(es);
-  }
-
   fullCoordinates(bodyId: JplBodyId, es: number, observerLocation: ObserverLocation): FullCoordinates {
-    const coordsFunction = this.buildFullEphemerisFunction(bodyId, observerLocation);
+    const coordsFunction = this.buildFullCoordinatesFunction(bodyId, observerLocation);
     return coordsFunction(es);
   }
 
