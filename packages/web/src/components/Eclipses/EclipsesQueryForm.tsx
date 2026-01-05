@@ -3,8 +3,6 @@ import Stack from "@mui/material/Stack";
 import Grid from '@mui/material/Grid';
 import QueryPanel from "@/forms/QueryPanel";
 import QuerySubmit from "@/forms/QuerySubmit";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addMonths, format } from 'date-fns';
 import type { EclipsesQuery } from "@/sdk/Eclipses";
@@ -19,7 +17,7 @@ type EclipsesQueryFormParams = {
 export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): JSX.Element {
   const [fromTde, setFromTde] = useState<Date | null>(new Date());
   const [toTde, setToTde] = useState<Date | null>(addMonths(new Date(), 6));
-  const [parallaxCorrectionEnabled, setParallaxCorrectionEnabled] = useState(false);
+
   const [observerLocation, setObserverLocation] = useState<Location>({
     latitude: 51,
     longitude: 17,
@@ -32,7 +30,7 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
     query.submit({
       fromTde: fromTde ? format(fromTde, "yyyy-MM-dd'T'00:00'Z'") : '',
       toTde: toTde ? format(toTde, "yyyy-MM-dd'T'00:00'Z'") : '',
-      ...(parallaxCorrectionEnabled && { location: observerLocation }),
+      location: observerLocation,
     });
   }
 
@@ -51,12 +49,7 @@ export default function EclipsesQueryForm({ query }: EclipsesQueryFormParams): J
           </Grid>
         </Grid>
         <Grid container rowSpacing={1} columnSpacing={1}>
-          <Grid size={12}>
-            <FormControlLabel control={<Checkbox size="small" sx={{ paddingTop: 0, paddingBottom: 0 }}
-              checked={parallaxCorrectionEnabled}
-              onChange={(event) => setParallaxCorrectionEnabled(event.target.checked)} />} label="Parallax correction" />
-          </Grid>
-          <ObserverLocationFields disabled={!parallaxCorrectionEnabled}
+          <ObserverLocationFields
             location={observerLocation}
             onChanged={setObserverLocation}
             updateValidation={updateValidation} />

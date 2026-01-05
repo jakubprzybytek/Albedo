@@ -5,7 +5,7 @@ import { StateSolver, CorrectionType } from '@jpl/state';
 import { KernelsRepository } from "@jpl/kernels";
 import { Eclipse, MoonEclipse, SunEclipse } from ".";
 import { Ephemerides } from "../ephemeris";
-import { getSunEclipseFinder, getSunEclipseFinderWithParalaxCorrection } from "./events/SunEclipse";
+import { getSunEclipseFinder } from "./events/SunEclipse";
 import { findMoonEclipses } from "./events/MoonEclipse";
 import { ParalaxCorrection } from "../paralaxCorrection/ParalaxCorrection";
 
@@ -42,7 +42,7 @@ export class Eclipses {
     this.paralaxCorrection = new ParalaxCorrection(kernels);
   }
 
-  forSunAndMoon(fromJde: number, toJde: number, observerLocation?: ObserverLocation): Eclipse[] {
+  forSunAndMoon(fromJde: number, toJde: number, observerLocation: ObserverLocation): Eclipse[] {
     const sunAndMoonAngle = buildRoughAngleBetweenSunAndMoon(this.stateSolver);
 
     const correctedFromEs = EphemerisSeconds.fromJde(fromJde) - PRELIMINARY_INTERVAL;
@@ -55,9 +55,7 @@ export class Eclipses {
 
     const { minimums, maximums } = localExtremums(sunMoonSeparations, minSepration => minSepration.separation);
 
-    const findSunEclipse = observerLocation ?
-      getSunEclipseFinderWithParalaxCorrection(this.stateSolver, this.ephemerides, this.paralaxCorrection, observerLocation) :
-      getSunEclipseFinder(this.stateSolver, this.ephemerides);
+    const findSunEclipse = getSunEclipseFinder(this.stateSolver, this.ephemerides, this.paralaxCorrection, observerLocation);
 
     const sunEclipses = minimums
       .filter(minSeparation => minSeparation.separation < PRELIMINARY_ANGLE_RANGE)

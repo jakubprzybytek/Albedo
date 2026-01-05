@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import AstronomicalCoords from '@/common/AstronomicalCoordinates';
+import AzAltCoords from '@/common/AzAltCoordinates';
 import { formatDegrees } from '../../utils';
 import { EclipseType } from '@/sdk/Eclipses';
 import type { Eclipse, MoonEclipse, SunEclipse } from '@/sdk/Eclipses';
@@ -23,6 +24,7 @@ function SunEclipseCells({ eclipse }: { eclipse: SunEclipse }) {
     <>
       <TableCell>
         <AstronomicalCoords format='verbose' coords={eclipse.sunEphemeris.coords} />
+        <AzAltCoords format='verbose' coords={eclipse.sunEphemeris.azAltCoords} />
         <div>Angular size: {formatDegrees(eclipse.sunEphemeris.angularSize)}</div>
       </TableCell>
       <TableCell>
@@ -38,6 +40,7 @@ function MoonEclipseCells({ eclipse }: { eclipse: MoonEclipse }) {
     <>
       <TableCell>
         <AstronomicalCoords format='verbose' coords={eclipse.moonEphemeris.coords} />
+        <AzAltCoords format='verbose' coords={eclipse.moonEphemeris.azAltCoords} />
         <div>Angular size: {formatDegrees(eclipse.moonEphemeris.angularSize)}</div>
       </TableCell>
       <TableCell>

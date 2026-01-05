@@ -1,4 +1,4 @@
-import { AstronomicalCoordinates, Radians } from "@astro/coords";
+import { AstronomicalCoordinates, AzAltCoordinates, Radians } from "@astro/coords";
 import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
 import { timeProperties } from "@astro/scripts/utils/time";
 import { JplBodyId } from "@jpl";
@@ -39,6 +39,7 @@ function computeMoonAndEarthShadowEphemeris(stateSolver: StateSolver, es: number
     moonEphemeris: {
       coords: AstronomicalCoordinates.fromRectangular(moonPosition),
       angularSize: Radians.angularSize(Bodies[JplBodyId.Moon].equatorialRadiusKm * 2, distanceToMoon),
+      azAltCoords: new AzAltCoordinates(0, 0),
       range: distanceToMoon
     },
     earthShadowEphemeris: {

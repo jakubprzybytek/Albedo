@@ -9,7 +9,7 @@ export { EclipseType };
 export type EclipsesQuery = {
   fromTde: string;
   toTde: string;
-  location?: Location;
+  location: Location;
 };
 
 export default async function getEclipses(query: EclipsesQuery): Promise<Eclipse[]> {
@@ -17,12 +17,9 @@ export default async function getEclipses(query: EclipsesQuery): Promise<Eclipse
   const searchParams = {
     fromTde: query.fromTde,
     toTde: query.toTde,
-    ...(query.location && {
-      latitude: query.location.latitude.toString(),
-      longitude: query.location.longitude.toString(),
-      altitude: query.location.altitude.toString(),
-    }
-    )
+    latitude: query.location.latitude.toString(),
+    longitude: query.location.longitude.toString(),
+    altitude: query.location.altitude.toString(),
   };
 
   const { body } = await get({
