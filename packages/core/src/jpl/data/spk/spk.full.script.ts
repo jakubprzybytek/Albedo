@@ -4,7 +4,7 @@ import { readMultipleSpkCollections } from "@jpl/data/lib/spk/readMultipleSpkCol
 
 export function generateSpk(rootFolder: string) {
   const from = new Date('2022-01-01');
-  const to = new Date('2026-12-31');
+  const to = new Date('2027-12-31');
 
   const de440spk = readMultipleSpkCollections(`${rootFolder}/de440.bsp`, from, to, [
     { body: JplBodyId.Sun, centerBody: JplBodyId.SolarSystemBarycenter },
@@ -47,5 +47,5 @@ export function generateSpk(rootFolder: string) {
     { body: JplBodyId.Pluto, centerBody: JplBodyId.PlutoBarycenter },
   ]);
 
-  printSpkCollections(`${__dirname}/spk.full.ts`, [...de440spk, ...mar097spk, ...jup365spk, ...sat450spk, ...ura116spk, ...nep101spk, ...plu058spk], from, to);
+  printSpkCollections(`${__dirname}/generated/spk.full.ts`, [...de440spk, ...mar097spk, ...jup365spk, ...sat450spk, ...ura116spk, ...nep101spk, ...plu058spk], from, to);
 }

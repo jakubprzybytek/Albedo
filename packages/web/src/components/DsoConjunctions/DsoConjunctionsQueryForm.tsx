@@ -38,15 +38,15 @@ export default function DsoConjunctionsQueryForm({ query }: DsoConjunctionsQuery
 
   return (
     <QueryPanel>
-      <Stack spacing={1}>
+      <Stack spacing={2}>
         <Grid container columnSpacing={1}>
           <Grid size={{ xs: 6, sm: 4 }}>
-            <DatePicker label="From (TDE)" sx={{ '& > div': { height: 40 } }}
+            <DatePicker label="From (TDE)" sx={{ width: '100%', '& > div': { height: 40 } }}
               value={fromTde}
               onChange={(newValue) => setFromTde(newValue)} />
           </Grid>
           <Grid size={{ xs: 6, sm: 4 }}>
-            <DatePicker label="To (TDE)" sx={{ '& > div': { height: 40 } }}
+            <DatePicker label="To (TDE)" sx={{ width: '100%', '& > div': { height: 40 } }}
               value={toTde} onChange={(newValue) => setToTde(newValue)} />
           </Grid>
         </Grid>

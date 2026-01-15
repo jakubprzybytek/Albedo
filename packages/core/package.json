@@ -7,7 +7,7 @@
     "typecheck": "tsc -noEmit",
     "listSpk": "ts-node src/jpl/tools/ListSpkFileContent.ts",
     "listPck": "ts-node src/jpl/tools/ListPckFileContent.ts",
-    "jpl:generate": "ts-node src/jpl/data/kernels.scripts.ts",
+    "jpl:generate": "ts-node src/jpl/data/scripts.ts",
     "test:full": "ts-node src/jpl/test/fullTest.ts",
     "openNgc:generate": "ts-node src/openNgc/data/script.ts"
   },

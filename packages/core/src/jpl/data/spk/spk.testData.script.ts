@@ -15,5 +15,5 @@ export function generateSpk(kernelsFolder: string) {
     { body: JplBodyId.Moon, centerBody: JplBodyId.EarthMoonBarycenter },
   ]);
 
-  printSpkCollections(`${__dirname}/spk.testData.ts`, spkCollections, from, to);
+  printSpkCollections(`${__dirname}/generated/spk.testData.ts`, spkCollections, from, to);
 }

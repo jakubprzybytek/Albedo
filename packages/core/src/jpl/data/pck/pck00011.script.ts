@@ -9,5 +9,5 @@ export async function generatePck(rootFolder: string) {
     const radii = extractRadiiInformation(variables);
     const { bodies, barycenters } = extractOrientationModelInformation(variables);
 
-    printPckFile(`${__dirname}/pck00011.ts`, radii, bodies, barycenters);
+    printPckFile(`${__dirname}/generated/pck00011.ts`, radii, bodies, barycenters);
 }
