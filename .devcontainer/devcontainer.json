@@ -1,0 +1,13 @@
+{
+  "name": "Albedo Codespace",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "amazonwebservices.aws-toolkit-vscode"
+      ]
+    }
+  }
+}
