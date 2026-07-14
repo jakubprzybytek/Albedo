@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu
+FROM mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm
 
 # Install AWS CLI v2
 RUN apt-get update \
@@ -8,5 +8,5 @@ RUN apt-get update \
     && /tmp/aws/install \
     && rm -rf /var/lib/apt/lists/* /tmp/aws /tmp/awscliv2.zip
 
-# Verify installation
-RUN aws --version
+# Verify installations
+RUN node --version && npm --version && aws --version
