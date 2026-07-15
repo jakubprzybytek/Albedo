@@ -1,4 +1,4 @@
-import { APIGatewayProxyEventV2 } from "aws-lambda";
+import { APIGatewayProxyEvent } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate, mandatoryFloat, optionalFloat } from '../LambdaParams';
 import { JulianDay } from '@astro';
@@ -15,7 +15,7 @@ type GetConjunctionsParams = {
   altitude: number;
 }
 
-const parseGetConjunctionsParams: (event: APIGatewayProxyEventV2) => GetConjunctionsParams = (event: APIGatewayProxyEventV2) => ({
+const parseGetConjunctionsParams: (event: APIGatewayProxyEvent) => GetConjunctionsParams = (event: APIGatewayProxyEvent) => ({
   fromTde: mandatoryDate(event, 'fromTde'),
   toTde: mandatoryDate(event, 'toTde'),
   longitude: mandatoryFloat(event, 'longitude'),

@@ -1,4 +1,4 @@
-import { APIGatewayProxyEventV2 } from "aws-lambda";
+import { APIGatewayProxyEvent } from "aws-lambda";
 import { lambdaHandler, Success, Failure } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody } from '../LambdaParams';
 import { JulianDay } from '@astro';
@@ -17,7 +17,7 @@ type GetEphemeridesParams = {
   altitude: number;
 }
 
-const parseGetEphemerisParams: (event: APIGatewayProxyEventV2) => GetEphemeridesParams = (event: APIGatewayProxyEventV2) => ({
+const parseGetEphemerisParams: (event: APIGatewayProxyEvent) => GetEphemeridesParams = (event: APIGatewayProxyEvent) => ({
   target: mandatoryJplBody(event, 'target'),
   fromTde: mandatoryDate(event, 'fromTde'),
   toTde: mandatoryDate(event, 'toTde'),

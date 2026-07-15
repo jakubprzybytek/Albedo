@@ -22,15 +22,22 @@ jobs:
     name: Deploy Int
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: bahmutov/npm-install@v1.11.2
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run unit tests
         run: npm test
 
+      - name: Run type checks
+        run: npm run typecheck
+
+      - name: Verify SST version
+        run: test "$(npx sst version)" = "4.17.1"
+
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

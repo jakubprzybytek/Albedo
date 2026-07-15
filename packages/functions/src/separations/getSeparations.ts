@@ -1,4 +1,4 @@
-import { APIGatewayProxyEventV2 } from "aws-lambda";
+import { APIGatewayProxyEvent } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody, optionalFloat } from '../LambdaParams';
 import { JulianDay } from '@astro';
@@ -18,7 +18,7 @@ type GetSeparationsParams = {
   altitude: number | undefined;
 }
 
-const parseGetSeparationsParams: (event: APIGatewayProxyEventV2) => GetSeparationsParams = (event: APIGatewayProxyEventV2) => ({
+const parseGetSeparationsParams: (event: APIGatewayProxyEvent) => GetSeparationsParams = (event: APIGatewayProxyEvent) => ({
   target: mandatoryJplBody(event, 'target'),
   observer: mandatoryJplBody(event, 'observer'),
   fromTde: mandatoryDate(event, 'fromTde'),

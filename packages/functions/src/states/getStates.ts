@@ -1,4 +1,4 @@
-import { APIGatewayProxyEventV2 } from "aws-lambda";
+import { APIGatewayProxyEvent } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryFloat, mandatoryDate, mandatoryJplBody, mandatoryString } from '../LambdaParams';
 import { JulianDay } from '@astro';
@@ -17,7 +17,7 @@ type GetStatesParams = {
   correctionString: string;
 }
 
-const parseGetStatesParams: (event: APIGatewayProxyEventV2) => GetStatesParams = (event: APIGatewayProxyEventV2) => ({
+const parseGetStatesParams: (event: APIGatewayProxyEvent) => GetStatesParams = (event: APIGatewayProxyEvent) => ({
   target: mandatoryJplBody(event, 'target'),
   observer: mandatoryJplBody(event, 'observer'),
   fromTde: mandatoryDate(event, 'fromTde'),
@@ -26,7 +26,7 @@ const parseGetStatesParams: (event: APIGatewayProxyEventV2) => GetStatesParams =
   correctionString: mandatoryString(event, 'correction')
 });
 
-export const handler = lambdaHandler<StateResult[]>((event: APIGatewayProxyEventV2) => {
+export const handler = lambdaHandler<StateResult[]>((event: APIGatewayProxyEvent) => {
   const { target, observer, fromTde, toTde, interval, correctionString } = parseGetStatesParams(event);
 
   const fromJde = JulianDay.fromDateObject(fromTde);

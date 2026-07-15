@@ -1,4 +1,4 @@
-import { APIGatewayProxyEventV2 } from "aws-lambda";
+import { APIGatewayProxyEvent } from "aws-lambda";
 import { lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryDate, mandatoryFloat } from '../LambdaParams';
 import { JulianDay } from '@astro';
@@ -14,7 +14,7 @@ type GetEclipsesParams = {
   altitude: number;
 }
 
-const parseGetEcilipsesParams: (event: APIGatewayProxyEventV2) => GetEclipsesParams = (event: APIGatewayProxyEventV2) => ({
+const parseGetEcilipsesParams: (event: APIGatewayProxyEvent) => GetEclipsesParams = (event: APIGatewayProxyEvent) => ({
   fromTde: mandatoryDate(event, 'fromTde'),
   toTde: mandatoryDate(event, 'toTde'),
   latitude: mandatoryFloat(event, 'latitude'),

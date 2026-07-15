@@ -1,4 +1,4 @@
-import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2 } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyHandler } from "aws-lambda";
 import { anglesReplacer } from "./AnglesReplacer";
 
 type LambdaResponse<T> = {
@@ -10,14 +10,14 @@ type ErrorResponse = {
   message: string;
 }
 
-export type LambdaType<T> = (event: APIGatewayProxyEventV2) => LambdaResponse<T | ErrorResponse>;
+export type LambdaType<T> = (event: APIGatewayProxyEvent) => LambdaResponse<T | ErrorResponse>;
 
 export const Success = <T>(data: T): LambdaResponse<T> => ({ data: data, statusCode: 200 });
 
 export const Failure = (message: string): LambdaResponse<ErrorResponse> => ({ data: { message }, statusCode: 400 });
 
-export function lambdaHandler<T>(lambda: LambdaType<T>): APIGatewayProxyHandlerV2 {
-  return async function (event: APIGatewayProxyEventV2) {
+export function lambdaHandler<T>(lambda: LambdaType<T>): APIGatewayProxyHandler {
+  return async function (event: APIGatewayProxyEvent) {
     try {
       const response = lambda(event);
       return {

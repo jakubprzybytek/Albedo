@@ -1,15 +1,29 @@
-import { SSTConfig } from "sst";
-import { API } from "./stacks/MyStack";
-import { Frontend } from "./stacks/Frontend";
+/// <reference path="./.sst/platform/config.d.ts" />
 
-export default {
-  config(_input) {
+export default $config({
+  app(input) {
     return {
       name: "Albedo2-2",
-      region: "eu-west-1",
+      home: "aws",
+      providers: {
+        aws: {
+          region: "eu-west-1",
+        },
+      },
+      removal: input?.stage === "production" ? "retain" : "remove",
     };
   },
-  stacks(app) {
-    app.stack(API).stack(Frontend);
-  }
-} satisfies SSTConfig;
+  async run() {
+    const { createApi } = await import("./infra/api");
+    const { createFrontend } = await import("./infra/frontend");
+    const api = createApi();
+    const site = createFrontend(api);
+
+    return {
+      ApiEndpoint: api.url,
+      UserPoolId: api.userPoolId,
+      UserPoolClientId: api.userPoolClientId,
+      URL: site.url,
+    };
+  },
+});
