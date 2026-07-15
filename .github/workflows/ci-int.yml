@@ -30,6 +30,9 @@ jobs:
       - name: Run unit tests
         run: npm test
 
+      - name: Generate SST types
+        run: npx sst install
+
       - name: Run type checks
         run: npm run typecheck
 
