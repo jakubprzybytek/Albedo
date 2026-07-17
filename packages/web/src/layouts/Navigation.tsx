@@ -22,6 +22,10 @@ const menuItems = [
     label: 'Ephemeris'
   },
   {
+    link: '/altitudes',
+    label: 'Altitudes'
+  },
+  {
     link: '/separations',
     label: 'Separations'
   },

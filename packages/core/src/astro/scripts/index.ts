@@ -1,5 +1,6 @@
 export * from './states';
 export * from './ephemeris';
+export * from './altitudes';
 export * from './separations';
 export * from './conjunctions';
 export * from './eclipses';

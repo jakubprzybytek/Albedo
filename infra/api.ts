@@ -34,6 +34,7 @@ export function createApi() {
 
   route("GET /api/states", "packages/functions/src/states/getStates.handler");
   route("GET /api/ephemeris", "packages/functions/src/ephemeris/getEphemeris.handler");
+  route("GET /api/altitudes", "packages/functions/src/altitudes/getAltitudes.handler");
   route("GET /api/separations", "packages/functions/src/separations/getSeparations.handler");
   route("GET /api/conjunctions", "packages/functions/src/conjunctions/getConjunctions.handler");
   route("GET /api/dso-conjunctions", "packages/functions/src/conjunctions/getDsoConjunctions.handler", "2048 MB");
