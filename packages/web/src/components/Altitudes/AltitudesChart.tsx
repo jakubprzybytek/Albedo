@@ -65,8 +65,8 @@ function solarPhaseAreas(result: AltitudesResponse): SolarPhaseArea[] {
   return areas;
 }
 
-const utcFormatter = new Intl.DateTimeFormat('en-GB', {
-  timeZone: 'UTC', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false,
+const utcFormatter = new Intl.DateTimeFormat('pl-PL', {
+  timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
 });
 
 function formatUtc(value: number): string {
@@ -99,7 +99,7 @@ export default function AltitudesChart({ result }: AltitudesChartProps): JSX.Ele
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data} margin={{ top: 28, right: 22, bottom: 22, left: 8 }}>
         <XAxis dataKey="timestamp" type="number" domain={['dataMin', 'dataMax']} tickFormatter={formatUtc} minTickGap={72} />
-        <YAxis domain={[-90, 90]} width={48} unit=" deg" />
+        <YAxis domain={[0, 90]} allowDataOverflow width={48} unit=" deg" />
         {phaseAreas.map(area => <ReferenceArea key={`${area.phase}-${area.from}`} x1={area.from} x2={area.to}
           fill={PHASE_COLORS[area.phase].fill} fillOpacity={PHASE_COLORS[area.phase].opacity} strokeOpacity={0} />)}
         <Tooltip content={<AltitudeTooltip />} />

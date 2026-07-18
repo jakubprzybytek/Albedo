@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import type { Location } from '@/common/Profile';
 import QueryPanel from '@/forms/QueryPanel';
 import QuerySubmit from '@/forms/QuerySubmit';
@@ -19,22 +19,34 @@ import { ALTITUDE_TARGET_NAMES, type AltitudeTargetName } from './altitudeTypes'
 
 const MAX_RANGE_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
 
-function formatUtcInput(date: Date): string {
-  return date.toISOString().slice(0, 16);
-}
-
-function initialFrom(): string {
+function nextNightStart(): Date {
   const now = new Date();
-  now.setUTCMinutes(Math.floor(now.getUTCMinutes() / 10) * 10, 0, 0);
-  return formatUtcInput(now);
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12));
 }
 
-function parseUtcInput(value: string): Date | undefined {
-  if (!value) {
+function utcToPickerDate(date: Date): Date {
+  return new Date(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+  );
+}
+
+function pickerDateToUtc(date: Date | null): Date | undefined {
+  if (!date || Number.isNaN(date.getTime())) {
     return undefined;
   }
-  const date = new Date(`${value}:00.000Z`);
-  return Number.isNaN(date.getTime()) ? undefined : date;
+  return new Date(Date.UTC(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+  ));
 }
 
 type AltitudesQueryFormProps = {
@@ -42,15 +54,15 @@ type AltitudesQueryFormProps = {
 };
 
 export default function AltitudesQueryForm({ query }: AltitudesQueryFormProps): JSX.Element {
-  const initialStart = initialFrom();
+  const initialStart = nextNightStart();
   const [targets, setTargets] = useState<AltitudeTargetName[]>([...ALTITUDE_TARGET_NAMES]);
-  const [fromTde, setFromTde] = useState(initialStart);
-  const [toTde, setToTde] = useState(() => formatUtcInput(new Date(parseUtcInput(initialStart)!.getTime() + 24 * 60 * 60 * 1000)));
+  const [fromTde, setFromTde] = useState<Date | null>(() => utcToPickerDate(initialStart));
+  const [toTde, setToTde] = useState<Date | null>(() => utcToPickerDate(new Date(initialStart.getTime() + 24 * 60 * 60 * 1000)));
   const [location, setLocation] = useState<Location>({ latitude: 51, longitude: 17, altitude: 50 });
   const { updateValidation, isValid } = useValidation();
 
-  const from = parseUtcInput(fromTde);
-  const to = parseUtcInput(toTde);
+  const from = pickerDateToUtc(fromTde);
+  const to = pickerDateToUtc(toTde);
   const rangeValid = Boolean(from && to && from < to && to.getTime() - from.getTime() <= MAX_RANGE_MILLISECONDS);
   const dateError = !rangeValid;
   const dateHelper = !from || !to
@@ -97,14 +109,12 @@ export default function AltitudesQueryForm({ query }: AltitudesQueryFormProps): 
         </FormControl>
         <Grid container rowSpacing={1} columnSpacing={1}>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField aria-label="Start (UTC)" label="Start (UTC)" type="datetime-local" size="small"
-              value={fromTde} error={dateError} helperText={dateError ? dateHelper : undefined}
-              slotProps={{ inputLabel: { shrink: true } }} onChange={event => setFromTde(event.target.value)} />
+            <DateTimePicker label="Start (UTC)" value={fromTde} onChange={setFromTde}
+              slotProps={{ textField: { size: 'small', error: dateError, helperText: dateError ? dateHelper : undefined, inputProps: { 'aria-label': 'Start (UTC)' } } }} />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField aria-label="End (UTC)" label="End (UTC)" type="datetime-local" size="small"
-              value={toTde} error={dateError} helperText={dateError ? dateHelper : undefined}
-              slotProps={{ inputLabel: { shrink: true } }} onChange={event => setToTde(event.target.value)} />
+            <DateTimePicker label="End (UTC)" value={toTde} onChange={setToTde}
+              slotProps={{ textField: { size: 'small', error: dateError, helperText: dateError ? dateHelper : undefined, inputProps: { 'aria-label': 'End (UTC)' } } }} />
           </Grid>
           <ObserverLocationFields disabled={query.loading} location={location} onChanged={setLocation} updateValidation={updateValidation} />
         </Grid>
