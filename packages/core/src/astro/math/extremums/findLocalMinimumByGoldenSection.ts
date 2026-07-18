@@ -9,63 +9,77 @@ export type LocalMinimumOptions = {
   maxIterations: number
 }
 
+export type LocalMinimumResult = [
+  input: number,
+  value: number,
+  resultRangeWidth: number,
+  iterations: number
+]
+
 const DEFAULT_OPTIONS: LocalMinimumOptions = {
   maxResultRangeWidth: 0.001,
   maxIterations: 20
 }
 
-export function localMinimum(f: (x: number) => number, a: number, b: number, c: number, options?: Partial<LocalMinimumOptions>): number[] {
+/**
+ * Approximates the minimum of a continuous numeric function with golden-section search.
+ *
+ * The points `a < b < c` must bracket a local minimum, meaning `f(b)` is no
+ * greater than either `f(a)` or `f(c)`. Returns the estimated input, function
+ * value, final bracket width, and iteration count, in that order.
+ */
+export function findLocalMinimumByGoldenSection(functionToMinimize: (x: number) => number, a: number, b: number, c: number, options?: Partial<LocalMinimumOptions>): LocalMinimumResult {
 
   const effectiveOptions = {
     ...DEFAULT_OPTIONS,
     ...options
   };
 
-  let f_a = f(a);
-  let f_b = f(b);
-  let f_c = f(c);
+  let fA = functionToMinimize(a);
+  let fB = functionToMinimize(b);
+  let fC = functionToMinimize(c);
 
   // try to fix input points
-  if (f_b > f_a) {
+  if (fB > fA) {
     c = b;
-    f_c = f_b;
+    fC = fB;
     b = a + (c - a) / 2;
-    f_b = f(b);
+    fB = functionToMinimize(b);
   }
 
-  if (f_b > f_c) {
+  if (fB > fC) {
     a = b;
-    f_a = f_b;
+    fA = fB;
     b = a + (c - a) / 2;
-    f_b = f(b);
+    fB = functionToMinimize(b);
   }
 
   if (a > b || b > c) {
     throw new Error(`Parameters don't meet the condition: a=${a} < b=${b} < c=${c}`);
   }
 
-  if (f_b > f_a || f_b > f_c) {
-    throw new Error(`Parameters don't meet the condition: f(a=${a})=${f_a} > f(b=${b})=${f_b} < f(c=${c})=${f_c}`);
+  if (fB > fA || fB > fC) {
+    throw new Error(`Parameters don't meet the condition: f(a=${a})=${fA} > f(b=${b})=${fB} < f(c=${c})=${fC}`);
   }
 
   let iteration = 0;
   do {
     const d = (b - a) > (c - b) ? a + omega * (b - a) : b + omega * (c - b);
-    const f_d = f(d);
+    const fD = functionToMinimize(d);
 
-    if (f_d < f_b) {
+    if (fD < fB) {
       if (d < b) {
-        c = b; f_c = f_b;
-        b = d; f_b = f_d;
+        c = b; fC = fB;
+        b = d; fB = fD;
       } else {
-        a = b; f_a = f_b;
-        b = d; f_b = f_d;
+        a = b; fA = fB;
+        b = d; fB = fD;
       }
     } else
       if (d < b) {
-        a = d; f_a = f_d;
+        a = d; fA = fD;
       } else {
-        c = d; f_c = f_d;
+        c = d; fC = fD;
       }
 
     // console.log('\n');
@@ -82,10 +96,10 @@ export function localMinimum(f: (x: number) => number, a: number, b: number, c: 
   // console.log(`f(c=${c})=${f_c}`);
 
   const result = (a + c) / 2;
-  const f_result = f(result);
+  const fResult = functionToMinimize(result);
 
   // console.log(`result midle point: f(${result})=${f_result}`);
   // console.log(`result range: ${c - a}`);
 
-  return [result, f_result, c - a, iteration];
+  return [result, fResult, c - a, iteration];
 }

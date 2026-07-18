@@ -1,6 +1,6 @@
 import { ObserverLocation, Radians } from "@astro/coords";
 import { timeProperties } from "@astro/scripts/utils/time";
-import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
+import { findLocalMinimumByGoldenSection } from "@astro/math";
 import { JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from "@jpl/state";
 import { EclipseType, SunEclipse } from "..";
@@ -23,7 +23,7 @@ function buildAngleCalculatorBetweenSunAndMoon(stateSolver: StateSolver, paralax
 function buildSunEclipseFinder(ephemerides: Ephemerides, separationCalculator: (es: number) => number, observerLocation: ObserverLocation) {
   return (fromEs: number, toEs: number): SunEclipse => {
     const midPointEs = fromEs + (toEs - fromEs) / 2;
-    const [eventEs, minSeparation, minSeparationEs, iterations] = localMinimum(separationCalculator, fromEs, midPointEs, toEs, { maxResultRangeWidth: 1, maxIterations: 40 });
+    const [eventEs, minSeparation, minSeparationEs, iterations] = findLocalMinimumByGoldenSection(separationCalculator, fromEs, midPointEs, toEs, { maxResultRangeWidth: 1, maxIterations: 40 });
 
     console.log(`SunEclipse: es= ${eventEs}, separation=${minSeparation}, minSeparationEs=${minSeparationEs}, iterations=${iterations}`);
 

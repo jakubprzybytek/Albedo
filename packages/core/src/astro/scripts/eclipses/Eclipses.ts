@@ -1,5 +1,5 @@
 import { ObserverLocation, Radians } from "@astro/coords";
-import { localExtremums } from "@astro/math";
+import { findSampledLocalExtremums } from "@astro/math";
 import { EphemerisSeconds, JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from '@jpl/state';
 import { KernelsRepository } from "@jpl/kernels";
@@ -53,7 +53,7 @@ export class Eclipses {
         separation: sunAndMoonAngle(es)
       }));
 
-    const { minimums, maximums } = localExtremums(sunMoonSeparations, minSepration => minSepration.separation);
+    const { minimums, maximums } = findSampledLocalExtremums(sunMoonSeparations, minSepration => minSepration.separation);
 
     const findSunEclipse = getSunEclipseFinder(this.stateSolver, this.ephemerides, this.paralaxCorrection, observerLocation);
 

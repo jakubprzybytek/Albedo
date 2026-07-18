@@ -3,7 +3,13 @@ export type Extremums<T> = {
   maximums: T[]
 }
 
-export function localExtremums<T>(array: T[], evalFunction: (element: T) => number): Extremums<T> {
+/**
+ * Finds strict local minima and maxima in sampled data.
+ *
+ * Evaluates each interior element against its immediate neighbours; endpoints
+ * and equal-valued plateaus are not reported as extremums.
+ */
+export function findSampledLocalExtremums<T>(array: T[], evaluate: (element: T) => number): Extremums<T> {
   if (array.length < 2) {
     return { minimums: [], maximums: [] };
   }
@@ -22,12 +28,12 @@ export function localExtremums<T>(array: T[], evalFunction: (element: T) => numb
   // }
 
   var previousValue;
-  var currentValue = evalFunction(array[0]);
-  var nextValue = evalFunction(array[1]);
+  var currentValue = evaluate(array[0]);
+  var nextValue = evaluate(array[1]);
   for (let i = 1; i <= length - 2; i++) {
     previousValue = currentValue;
     currentValue = nextValue;
-    nextValue = evalFunction(array[i + 1]);
+    nextValue = evaluate(array[i + 1]);
     if (previousValue > currentValue && nextValue > currentValue) {
       minimums.push(array[i]);
     } else if (previousValue < currentValue && nextValue < currentValue) {

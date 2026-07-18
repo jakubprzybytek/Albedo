@@ -5,8 +5,7 @@ import { KernelsRepository } from "@jpl/kernels";
 import { OpenNgcObject } from "@openNgc";
 import { Table } from "@utils/Table";
 import { findConjuctionCandidates, prepareCatalogueClusters } from "./dso/Catalogue";
-import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
-import { localExtremums } from "@astro/math";
+import { findLocalMinimumByGoldenSection, findSampledLocalExtremums } from "@astro/math";
 
 const PRELIMINARY_INTERVAL = EphemerisSeconds.fromDays(1);
 
@@ -120,7 +119,7 @@ export class ConjunctionsWithDso {
           es,
           coords: coordinatesFunction(es)
         }));
-      const { minimums } = localExtremums<CoordinatesInTime>(coords, separationFunction);
+      const { minimums } = findSampledLocalExtremums<CoordinatesInTime>(coords, separationFunction);
       return minimums.map(minimum => ({
         dso,
         bodyId,
@@ -141,7 +140,7 @@ export class ConjunctionsWithDso {
         const b = es;
         const c = es + DETAILED_INTERVAL;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
+        const [eventEs, minSeparation, resultRangeWidth, iterations] = findLocalMinimumByGoldenSection(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
         return {
           es: eventEs,
           bodyId,

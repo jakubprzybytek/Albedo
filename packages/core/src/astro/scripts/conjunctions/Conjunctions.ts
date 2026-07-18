@@ -1,6 +1,5 @@
 import { ObserverLocation, Radians, RectangularCoordinates } from '@astro/coords';
-import { localExtremums } from "@astro/math";
-import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
+import { findLocalMinimumByGoldenSection, findSampledLocalExtremums } from "@astro/math";
 import { createPairs } from '@astro/utils/Pairs';
 import { JplBody, JplBodyId, jplBodyFromId, EphemerisSeconds } from "@jpl";
 import { KernelsRepository } from '@jpl/kernels';
@@ -61,7 +60,7 @@ export class Conjunctions {
         separation: Radians.between(firstBodyPositions[index], secondBodyPositions[index])
       }));
 
-      const { minimums } = localExtremums(separations, minSepration => minSepration.separation);
+      const { minimums } = findSampledLocalExtremums(separations, minSepration => minSepration.separation);
 
       minimums
         .filter(separation => separation.separation < separationLimit)
@@ -74,7 +73,7 @@ export class Conjunctions {
             ? this.seprations.buildParalaxCorrectedSeparationFunction(firstBody.id, secondBody.id, observerLocation)
             : this.seprations.buildSeparationFunction(firstBody.id, secondBody.id);
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const [eventEs, minSeparation, resultRangeWidth, iterations] = localMinimum(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
+          const [eventEs, minSeparation, resultRangeWidth, iterations] = findLocalMinimumByGoldenSection(separationFunction, a, b, c, { maxResultRangeWidth: 10, maxIterations: 30 });
           console.log(`jde: ${EphemerisSeconds.toJde(eventEs)}, date=${JulianDay.toDateTime(EphemerisSeconds.toJde(eventEs)).toISOString()}, angle=${Radians.toDegrees(minSeparation)}°, result range width=${resultRangeWidth}, iterations=${iterations}`);
           return {
             es: eventEs,

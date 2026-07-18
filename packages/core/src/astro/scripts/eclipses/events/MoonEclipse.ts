@@ -1,5 +1,5 @@
 import { AstronomicalCoordinates, AzAltCoordinates, Radians } from "@astro/coords";
-import { localMinimum } from "@astro/math/extremums/localMinimumUsingGoldenRatio";
+import { findLocalMinimumByGoldenSection } from "@astro/math";
 import { timeProperties } from "@astro/scripts/utils/time";
 import { JplBodyId } from "@jpl";
 import { StateSolver, CorrectionType } from "@jpl/state";
@@ -54,7 +54,7 @@ export function findMoonEclipses(stateSolver: StateSolver, fromEs: number, toEs:
   const earthsShadowAndMoonAngle = buildEarthsShadowAndMoonAngle(stateSolver);
 
   const midPointEs = fromEs + (toEs - fromEs) / 2;
-  const [eventEs, minSeparation] = localMinimum(earthsShadowAndMoonAngle, fromEs, midPointEs, toEs, { maxResultRangeWidth: 10, maxIterations: 30 });
+  const [eventEs, minSeparation] = findLocalMinimumByGoldenSection(earthsShadowAndMoonAngle, fromEs, midPointEs, toEs, { maxResultRangeWidth: 10, maxIterations: 30 });
 
   return {
     type: EclipseType.MoonEclipse,
