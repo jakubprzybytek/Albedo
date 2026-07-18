@@ -14,7 +14,6 @@ The page is intended to answer: "Which selected objects are above the horizon du
 - Observer latitude, longitude, and altitude inputs, using the existing observer-location fields and validation.
 - UTC start and end date-time inputs.
 - A multi-select containing:
-	- Sun
 	- Moon
 	- Mercury
 	- Venus
@@ -47,7 +46,7 @@ Create a dedicated **Altitudes** page consistent with the existing query pages.
 
 | Input | Initial value | Validation |
 |---|---|---|
-| Objects | Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune | At least one object; only values from the supported list |
+| Objects | Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune | At least one object; only values from the supported list |
 | Start (UTC) | Current time, rounded down to 10 minutes | Valid date-time and earlier than End |
 | End (UTC) | Start plus 24 hours | Valid date-time; no more than 7 days after Start |
 | Latitude | Existing observer-location default | `-90` to `90` degrees |
@@ -162,6 +161,6 @@ Reject missing or non-finite numeric parameters, invalid dates, unsupported or d
 The specification above makes these MVP decisions so implementation can start. Confirm or amend them before development:
 
 - UTC is used everywhere instead of adding an observer timezone input.
-- All nine supported objects are selected initially.
+- All eight supported objects are selected initially.
 - The maximum range is 7 days with a fixed 10-minute sample interval.
 - The conventional `-0.833 deg` sunrise/sunset threshold is acceptable even though the underlying altitude calculation does not otherwise model atmospheric refraction.

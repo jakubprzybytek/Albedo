@@ -25,6 +25,7 @@ describe('parseGetAltitudesParams', () => {
 
   it.each([
     [{ ...valid, targets: '' }],
+    [{ ...valid, targets: 'Sun' }],
     [{ ...valid, targets: 'Mars,Mars' }],
     [{ ...valid, targets: 'mars' }],
     [{ ...valid, fromTde: '2026-07-16T20:00:00' }],

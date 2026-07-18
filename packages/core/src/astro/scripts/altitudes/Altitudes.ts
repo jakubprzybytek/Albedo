@@ -6,7 +6,6 @@ import { Ephemerides } from '../ephemeris';
 import { findSolarEvents, type SolarEventType } from './SolarEvents';
 
 export const ALTITUDE_TARGET_NAMES = [
-  'Sun',
   'Moon',
   'Mercury',
   'Venus',
@@ -25,7 +24,6 @@ export type AltitudeTarget = {
 };
 
 export const ALTITUDE_TARGETS: readonly AltitudeTarget[] = [
-  { name: 'Sun', bodyId: JplBodyId.Sun },
   { name: 'Moon', bodyId: JplBodyId.Moon },
   { name: 'Mercury', bodyId: JplBodyId.Mercury },
   { name: 'Venus', bodyId: JplBodyId.Venus },
@@ -93,8 +91,7 @@ export class Altitudes {
       target.name,
       ephemerides.buildFullCoordinatesFunction(target.bodyId, observer),
     ]));
-    const sunFunction = coordinateFunctions.get('Sun')
-      ?? ephemerides.buildFullCoordinatesFunction(JplBodyId.Sun, observer);
+    const sunFunction = ephemerides.buildFullCoordinatesFunction(JplBodyId.Sun, observer);
     const times = sampleTimes(fromEs, toEs);
     const samples = times.map(es => {
       const altitudes = {} as Record<AltitudeTargetName, number>;

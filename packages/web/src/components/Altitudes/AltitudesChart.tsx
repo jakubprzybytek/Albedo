@@ -8,7 +8,7 @@ import type { AltitudesResponse, SolarEventDto } from '@/sdk/Altitudes';
 import { ALTITUDE_TARGET_NAMES, type AltitudeTargetName } from './altitudeTypes';
 
 const COLORS: Record<AltitudeTargetName, string> = {
-  Sun: '#d97706', Moon: '#64748b', Mercury: '#7c3aed', Venus: '#db2777', Mars: '#dc2626',
+  Moon: '#64748b', Mercury: '#7c3aed', Venus: '#db2777', Mars: '#dc2626',
   Jupiter: '#92400e', Saturn: '#0891b2', Uranus: '#0f766e', Neptune: '#2563eb',
 };
 

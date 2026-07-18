@@ -1,5 +1,4 @@
 export const ALTITUDE_TARGET_NAMES = [
-  'Sun',
   'Moon',
   'Mercury',
   'Venus',

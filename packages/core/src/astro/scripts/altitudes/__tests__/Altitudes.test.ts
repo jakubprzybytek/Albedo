@@ -5,7 +5,7 @@ import { kernels } from '@jpl/data/kernels.testData';
 describe('Altitudes', () => {
   it('includes aligned endpoints and requested target keys', () => {
     const result = new Altitudes(kernels).compute(
-      [ALTITUDE_TARGETS[0], ALTITUDE_TARGETS[3]],
+      [ALTITUDE_TARGETS[0], ALTITUDE_TARGETS[2]],
       623937600,
       623938800,
       { latitude: 52, longitude: 17, altitude: 50 },
@@ -17,7 +17,7 @@ describe('Altitudes', () => {
       '2019-10-10T00:10:00.000Z',
       '2019-10-10T00:20:00.000Z',
     ]);
-    expect(Object.keys(result.samples[0].altitudes)).toEqual(['Sun', 'Venus']);
+    expect(Object.keys(result.samples[0].altitudes)).toEqual(['Moon', 'Venus']);
     expect(result.samples[0].altitudes.Venus).toBeGreaterThanOrEqual(-90);
     expect(result.samples[0].altitudes.Venus).toBeLessThanOrEqual(90);
   });

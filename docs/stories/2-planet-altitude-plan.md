@@ -9,7 +9,7 @@ Implement the story in [2-planet-altitude.md](2-planet-altitude.md) end to end: 
 The plan assumes the product decisions in the story are accepted:
 
 - All timestamps are entered, transmitted, plotted, and displayed in UTC.
-- Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, and Neptune are the only supported targets and are all selected initially.
+- Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, and Neptune are the only supported chart targets and are all selected initially. The Sun is calculated internally for solar-phase annotations.
 - Samples are generated every 10 minutes for a maximum range of 7 days.
 - The response includes the exact start and end instants.
 - Solar thresholds are `-0.833 deg`, `-6 deg`, `-12 deg`, and `-18 deg`.
@@ -527,7 +527,7 @@ Use Playwright route interception for most page behavior tests. This makes chart
 Test cases:
 
 1. Navigation exposes Altitudes on desktop and mobile and opens `/altitudes`.
-2. Initial form has all nine targets selected and an approximately 24-hour UTC range.
+2. Initial form has all eight targets selected and an approximately 24-hour UTC range.
 3. Empty targets, reversed dates, a range over 7 days, and invalid location values show inline errors and disable Submit.
 4. A mocked successful response renders target lines, the horizon, and all supplied event markers.
 5. Legend interaction hides and restores a series.
