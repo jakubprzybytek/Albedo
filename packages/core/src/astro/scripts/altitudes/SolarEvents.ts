@@ -15,7 +15,9 @@ export type SolarEventAtEphemerisSecond = {
 
 export type AltitudeAt = (es: number) => number;
 
-const SOLAR_THRESHOLDS = [
+export type SolarPhase = 'day' | 'civilTwilight' | 'nauticalTwilight' | 'astronomicalTwilight' | 'night';
+
+export const SOLAR_THRESHOLDS = [
   { altitude: -0.833, rising: 'sunrise', setting: 'sunset' },
   { altitude: -6, rising: 'civilDawn', setting: 'civilDusk' },
   { altitude: -12, rising: 'nauticalDawn', setting: 'nauticalDusk' },
@@ -36,6 +38,14 @@ function crossingDirection(left: number, right: number): 'rising' | 'setting' | 
     return 'setting';
   }
   return undefined;
+}
+
+export function solarPhaseAt(altitude: number): SolarPhase {
+  if (altitude >= SOLAR_THRESHOLDS[0].altitude) return 'day';
+  if (altitude >= SOLAR_THRESHOLDS[1].altitude) return 'civilTwilight';
+  if (altitude >= SOLAR_THRESHOLDS[2].altitude) return 'nauticalTwilight';
+  if (altitude >= SOLAR_THRESHOLDS[3].altitude) return 'astronomicalTwilight';
+  return 'night';
 }
 
 function refineCrossing(
@@ -63,6 +73,24 @@ function refineCrossing(
 }
 
 export function findSolarEvents(sampleTimes: readonly number[], altitudeAt: AltitudeAt): SolarEventAtEphemerisSecond[] {
+  return SOLAR_THRESHOLDS.flatMap(threshold => findThresholdCrossings(sampleTimes, altitudeAt, threshold.altitude)
+    .map(event => ({
+      type: event.direction === 'rising' ? threshold.rising : threshold.setting,
+      es: event.es,
+    })))
+    .sort((first, second) => first.es - second.es || first.type.localeCompare(second.type));
+}
+
+export type ThresholdCrossing = {
+  direction: 'rising' | 'setting';
+  es: number;
+};
+
+export function findThresholdCrossings(
+  sampleTimes: readonly number[],
+  altitudeAt: AltitudeAt,
+  threshold: number,
+): ThresholdCrossing[] {
   const cache = new Map<number, number>();
   const cachedAltitudeAt = (es: number) => {
     const existing = cache.get(es);
@@ -73,21 +101,20 @@ export function findSolarEvents(sampleTimes: readonly number[], altitudeAt: Alti
     cache.set(es, altitude);
     return altitude;
   };
-  const events: SolarEventAtEphemerisSecond[] = [];
+  const events: ThresholdCrossing[] = [];
 
-  for (const threshold of SOLAR_THRESHOLDS) {
-    for (let index = 0; index < sampleTimes.length; index += 1) {
+  for (let index = 0; index < sampleTimes.length; index += 1) {
       const current = sampleTimes[index];
-      const currentOffset = cachedAltitudeAt(current) - threshold.altitude;
+      const currentOffset = cachedAltitudeAt(current) - threshold;
       if (currentOffset !== 0) {
         continue;
       }
 
       const previousOffset = index > 0
-        ? cachedAltitudeAt(sampleTimes[index - 1]) - threshold.altitude
+        ? cachedAltitudeAt(sampleTimes[index - 1]) - threshold
         : undefined;
       const nextOffset = index < sampleTimes.length - 1
-        ? cachedAltitudeAt(sampleTimes[index + 1]) - threshold.altitude
+        ? cachedAltitudeAt(sampleTimes[index + 1]) - threshold
         : undefined;
       const direction = previousOffset !== undefined && nextOffset !== undefined
         ? crossingDirection(previousOffset, nextOffset)
@@ -98,7 +125,7 @@ export function findSolarEvents(sampleTimes: readonly number[], altitudeAt: Alti
             : undefined;
       if (direction) {
         events.push({
-          type: direction === 'rising' ? threshold.rising : threshold.setting,
+          direction,
           es: current,
         });
       }
@@ -107,19 +134,18 @@ export function findSolarEvents(sampleTimes: readonly number[], altitudeAt: Alti
     for (let index = 0; index < sampleTimes.length - 1; index += 1) {
       const left = sampleTimes[index];
       const right = sampleTimes[index + 1];
-      const leftOffset = cachedAltitudeAt(left) - threshold.altitude;
-      const rightOffset = cachedAltitudeAt(right) - threshold.altitude;
+      const leftOffset = cachedAltitudeAt(left) - threshold;
+      const rightOffset = cachedAltitudeAt(right) - threshold;
       const direction = crossingDirection(leftOffset, rightOffset);
       if (!direction) {
         continue;
       }
 
       events.push({
-        type: direction === 'rising' ? threshold.rising : threshold.setting,
-        es: refineCrossing(left, right, threshold.altitude, cachedAltitudeAt),
+        direction,
+        es: refineCrossing(left, right, threshold, cachedAltitudeAt),
       });
     }
-  }
 
-  return events.sort((first, second) => first.es - second.es || first.type.localeCompare(second.type));
+  return events.sort((first, second) => first.es - second.es || first.direction.localeCompare(second.direction));
 }

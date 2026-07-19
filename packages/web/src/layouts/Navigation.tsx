@@ -26,6 +26,10 @@ const menuItems = [
     label: 'Altitudes'
   },
   {
+    link: '/visibility',
+    label: 'Visibility'
+  },
+  {
     link: '/separations',
     label: 'Separations'
   },

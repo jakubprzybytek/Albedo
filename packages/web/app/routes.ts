@@ -6,6 +6,7 @@ export default [
   route('states', 'routes/states.tsx'),
   route('ephemeris', 'routes/ephemeris.tsx'),
   route('altitudes', 'routes/altitudes.tsx'),
+  route('visibility', 'routes/visibility.tsx'),
   route('separations', 'routes/separations.tsx'),
   route('conjunctions', 'routes/conjunctions.tsx'),
   route('dso-conjunctions', 'routes/dso-conjunctions.tsx'),
