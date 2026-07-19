@@ -55,15 +55,39 @@ function observingPhaseIntervals(day: VisibilityDayDto, followingDay: Visibility
 type PhaseInterval = ReturnType<typeof observingPhaseIntervals>[number];
 type PhaseBandPoint = PhaseInterval & { rowIndex: number };
 
+const PHASE_DEPTH: Record<SolarPhase, number> = {
+  day: 0,
+  civilTwilight: 1,
+  nauticalTwilight: 2,
+  astronomicalTwilight: 3,
+  night: 4,
+};
+
+function intervalsAtLeastAsDark(intervals: PhaseInterval[], phase: SolarPhase): PhaseInterval[] {
+  const selected = intervals.filter(interval => PHASE_DEPTH[interval.phase] >= PHASE_DEPTH[phase]);
+  return selected.reduce<PhaseInterval[]>((merged, interval) => {
+    const previous = merged.at(-1);
+    if (previous?.to === interval.from) {
+      previous.to = interval.to;
+    } else {
+      merged.push({ ...interval, phase });
+    }
+    return merged;
+  }, []);
+}
+
 function solarPhasePolygons(days: VisibilityDayDto[]): { phase: SolarPhase; points: PhaseBandPoint[] }[] {
-  const rows = days.map((day, rowIndex) => ({
-    rowIndex,
-    intervals: observingPhaseIntervals(day, days[rowIndex + 1]),
+  const intervalsByRow = days.map((day, rowIndex) => ({
+    rowIndex, intervals: observingPhaseIntervals(day, days[rowIndex + 1]),
   }));
-  const phases = Object.keys(SOLAR_PHASE_COLORS) as SolarPhase[];
+  const phases = (Object.keys(SOLAR_PHASE_COLORS) as SolarPhase[]).filter(phase => phase !== 'day');
   const polygons: { phase: SolarPhase; points: PhaseBandPoint[] }[] = [];
 
   for (const phase of phases) {
+    const rows = intervalsByRow.map(row => ({
+      rowIndex: row.rowIndex,
+      intervals: intervalsAtLeastAsDark(row.intervals, phase),
+    }));
     const slotCount = Math.max(0, ...rows.map(row => row.intervals.filter(interval => interval.phase === phase).length));
     for (let slot = 0; slot < slotCount; slot += 1) {
       let current: PhaseBandPoint[] = [];
@@ -83,8 +107,8 @@ function solarPhasePolygons(days: VisibilityDayDto[]): { phase: SolarPhase; poin
   return polygons;
 }
 
-function isFirstDayOfMonth(date: string): boolean {
-  return date.endsWith('-01');
+function isFirstAvailableDayOfMonth(date: string, previousDate: string | undefined): boolean {
+  return !previousDate || date.slice(0, 7) !== previousDate.slice(0, 7);
 }
 
 function trackPoints(days: VisibilityDayDto[], target: AltitudeTargetName, kind: EventKind) {
@@ -137,12 +161,15 @@ export default function VisibilityChart({ days, timeZone }: Props): JSX.Element 
     {!hasEvents && <Alert severity="info">No selected object has a rise, highest altitude, or set event in this range.</Alert>}
     <Box sx={{ border: 1, borderColor: 'divider' }}><svg viewBox={`0 0 ${chartWidth} ${height}`} width="100%" role="img" aria-label={`Object rise, highest altitude, and set tracks from noon to noon in ${timeZone}`}>
       <defs><clipPath id="visibility-night-clip" clipPathUnits="userSpaceOnUse">
-        {phasePolygons.filter(polygon => polygon.phase !== 'day').map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} />)}
+        {phasePolygons.filter(polygon => polygon.phase === 'civilTwilight').map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} />)}
       </clipPath></defs>
-      {phasePolygons.map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} fill={SOLAR_PHASE_COLORS[polygon.phase]} opacity=".68" />)}
+      <g opacity=".68">
+        <rect x={plotLeft} y={axisHeight} width={plotWidth} height={height - axisHeight} fill={SOLAR_PHASE_COLORS.day} />
+        {phasePolygons.map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} fill={SOLAR_PHASE_COLORS[polygon.phase]} />)}
+      </g>
       {[0, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320, 1440].map(minute => { const hour = (minute / 60 + 12) % 24; const midnight = minute === 720; return <g key={minute}><line x1={x(minute)} x2={x(minute)} y1={0} y2={height} stroke={midnight ? '#334155' : '#94a3b8'} strokeWidth={midnight ? 1.5 : 1} strokeOpacity={midnight ? .9 : .45} /><text x={x(minute)} y={15} textAnchor="middle" fontSize="11">{minute === 1440 ? '12:00' : `${String(hour).padStart(2, '0')}:00`}</text></g>; })}
       {days.map((day, index) => <g key={day.date}>
-        {isFirstDayOfMonth(day.date) && <><line x1={plotLeft} x2={plotLeft + plotWidth} y1={y(index) - rowHeight / 2} y2={y(index) - rowHeight / 2} stroke="#64748b" strokeOpacity=".65" /><text x={plotLeft - 8} y={y(index) + 4} textAnchor="end" fontSize="11">{day.date}</text></>}
+        {isFirstAvailableDayOfMonth(day.date, days[index - 1]?.date) && <><line x1={plotLeft} x2={plotLeft + plotWidth} y1={y(index) - rowHeight / 2} y2={y(index) - rowHeight / 2} stroke="#64748b" strokeOpacity=".65" /><text x={plotLeft - 8} y={y(index) + 4} textAnchor="end" fontSize="11">{day.date}</text></>}
       </g>)}
       <g clipPath="url(#visibility-night-clip)">{ALTITUDE_TARGET_NAMES.flatMap(target => !visibleTargets.has(target) ? [] : (['rise', 'transit', 'set'] as const).flatMap(kind => {
           if (!visibleEvents.has(kind)) return [];
