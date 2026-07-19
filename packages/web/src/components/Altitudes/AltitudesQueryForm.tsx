@@ -108,11 +108,11 @@ export default function AltitudesQueryForm({ query }: AltitudesQueryFormProps): 
           {targets.length === 0 && <span>Choose at least one object</span>}
         </FormControl>
         <Grid container rowSpacing={1} columnSpacing={1}>
-          <Grid size={{ xs: 12, sm: 6 }}>
+          <Grid size={{ xs: 6, sm: 6 }}>
             <DateTimePicker label="Start (UTC)" value={fromTde} onChange={setFromTde}
               slotProps={{ textField: { size: 'small', error: dateError, helperText: dateError ? dateHelper : undefined, inputProps: { 'aria-label': 'Start (UTC)' } } }} />
           </Grid>
-          <Grid size={{ xs: 12, sm: 6 }}>
+          <Grid size={{ xs: 6, sm: 6 }}>
             <DateTimePicker label="End (UTC)" value={toTde} onChange={setToTde}
               slotProps={{ textField: { size: 'small', error: dateError, helperText: dateError ? dateHelper : undefined, inputProps: { 'aria-label': 'End (UTC)' } } }} />
           </Grid>

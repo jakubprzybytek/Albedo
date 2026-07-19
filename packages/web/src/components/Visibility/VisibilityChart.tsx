@@ -135,7 +135,7 @@ export default function VisibilityChart({ days, timeZone }: Props): JSX.Element 
       {(['rise', 'transit', 'set'] as const).map(event => <Stack key={event} direction="row" spacing={.75} alignItems="center"><svg width="42" height="12" aria-hidden="true"><line x1="1" x2="41" y1="6" y2="6" stroke="#334155" strokeWidth="2" strokeDasharray={EVENT_STYLES[event].dash} strokeLinecap="round" /></svg><Typography variant="caption">{EVENT_STYLES[event].label}</Typography></Stack>)}
     </Stack>
     {!hasEvents && <Alert severity="info">No selected object has a rise, highest altitude, or set event in this range.</Alert>}
-    <Box sx={{ overflow: 'auto', maxHeight: '75vh', border: 1, borderColor: 'divider' }}><svg viewBox={`0 0 ${chartWidth} ${height}`} width="100%" height={height} role="img" aria-label={`Object rise, highest altitude, and set tracks from noon to noon in ${timeZone}`}>
+    <Box sx={{ border: 1, borderColor: 'divider' }}><svg viewBox={`0 0 ${chartWidth} ${height}`} width="100%" role="img" aria-label={`Object rise, highest altitude, and set tracks from noon to noon in ${timeZone}`}>
       <defs><clipPath id="visibility-night-clip" clipPathUnits="userSpaceOnUse">
         {phasePolygons.filter(polygon => polygon.phase !== 'day').map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} />)}
       </clipPath></defs>

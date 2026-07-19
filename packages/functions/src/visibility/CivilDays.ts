@@ -27,9 +27,10 @@ export function assertTimeZone(timeZone: string): void {
   }
 }
 
-export function civilDayIntervals(fromDate: Date, toDate: Date, timeZone: string): VisibilityInterval[] {
+export function civilDayIntervals(fromDate: Date, toDate: Date, timeZone: string, intervalDays = 1): VisibilityInterval[] {
+  if (!Number.isInteger(intervalDays) || intervalDays < 1) throw new Error('Civil day interval must be a positive integer');
   const intervals: VisibilityInterval[] = [];
-  for (let date = fromDate; date <= toDate; date = addDays(date, 1)) {
+  for (let date = fromDate; date <= toDate; date = addDays(date, intervalDays)) {
     const key = formatCivilDate(date);
     const followingKey = formatCivilDate(addDays(date, 1));
     const from = fromZonedTime(`${key}T00:00:00`, timeZone);
