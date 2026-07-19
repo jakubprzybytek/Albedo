@@ -52,6 +52,37 @@ function observingPhaseIntervals(day: VisibilityDayDto, followingDay: Visibility
   }).concat([{ from, to: 1440, phase }]).filter(interval => interval.to > interval.from);
 }
 
+type PhaseInterval = ReturnType<typeof observingPhaseIntervals>[number];
+type PhaseBandPoint = PhaseInterval & { rowIndex: number };
+
+function solarPhasePolygons(days: VisibilityDayDto[]): { phase: SolarPhase; points: PhaseBandPoint[] }[] {
+  const rows = days.map((day, rowIndex) => ({
+    rowIndex,
+    intervals: observingPhaseIntervals(day, days[rowIndex + 1]),
+  }));
+  const phases = Object.keys(SOLAR_PHASE_COLORS) as SolarPhase[];
+  const polygons: { phase: SolarPhase; points: PhaseBandPoint[] }[] = [];
+
+  for (const phase of phases) {
+    const slotCount = Math.max(0, ...rows.map(row => row.intervals.filter(interval => interval.phase === phase).length));
+    for (let slot = 0; slot < slotCount; slot += 1) {
+      let current: PhaseBandPoint[] = [];
+      for (const row of rows) {
+        const interval = row.intervals.filter(candidate => candidate.phase === phase)[slot];
+        if (interval) {
+          current.push({ ...interval, rowIndex: row.rowIndex });
+        } else if (current.length) {
+          polygons.push({ phase, points: current });
+          current = [];
+        }
+      }
+      if (current.length) polygons.push({ phase, points: current });
+    }
+  }
+
+  return polygons;
+}
+
 function isFirstDayOfMonth(date: string): boolean {
   return date.endsWith('-01');
 }
@@ -83,29 +114,41 @@ function trackSegments(points: ReturnType<typeof trackPoints>): (typeof points)[
 export default function VisibilityChart({ days, timeZone }: Props): JSX.Element {
   const [visibleTargets, setVisibleTargets] = useState(() => new Set<AltitudeTargetName>(ALTITUDE_TARGET_NAMES));
   const [visibleEvents, setVisibleEvents] = useState(new Set(['rise', 'transit', 'set']));
+  const availableTargets = new Set<AltitudeTargetName>(days.flatMap(day => Object.keys(day.objects) as AltitudeTargetName[]));
   const hasEvents = days.some(day => Object.values(day.objects).some(events => events?.rise || events?.transit || events?.set));
+  const phasePolygons = solarPhasePolygons(days);
   const rowHeight = Math.min(12, Math.max(3, (chartWidth * 1.5 - axisHeight) / Math.max(days.length, 1)));
   const height = Math.max(120, days.length * rowHeight + axisHeight);
   const x = (minute: number) => plotLeft + minute / 1440 * plotWidth;
   const y = (rowIndex: number) => axisHeight + (rowIndex + 0.5) * rowHeight;
+  const phasePolygonPoints = (points: PhaseBandPoint[]) => [
+    ...points.map(point => `${x(point.from)},${y(point.rowIndex)}`),
+    ...points.slice().reverse().map(point => `${x(point.to)},${y(point.rowIndex)}`),
+  ].join(' ');
   const toggleTarget = (target: AltitudeTargetName) => setVisibleTargets(previous => { const next = new Set(previous); next.has(target) ? next.delete(target) : next.add(target); return next; });
   const toggleEvent = (event: string) => setVisibleEvents(previous => { const next = new Set(previous); next.has(event) ? next.delete(event) : next.add(event); return next; });
   return <Stack spacing={1} aria-label={`Visibility chart in ${timeZone}`}>
     <Typography variant="subtitle1">Visibility by local time ({timeZone})</Typography>
-    <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">{ALTITUDE_TARGET_NAMES.map(target => <Button key={target} size="small" variant="outlined" aria-pressed={visibleTargets.has(target)} onClick={() => toggleTarget(target)} sx={{ color: OBJECT_COLORS[target], borderColor: OBJECT_COLORS[target] }}>{target}</Button>)}
-      {['rise', 'transit', 'set'].map(event => <Button key={event} size="small" variant="outlined" aria-pressed={visibleEvents.has(event)} onClick={() => toggleEvent(event)}>{event}</Button>)}</Stack>
+    <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">{ALTITUDE_TARGET_NAMES.map(target => { const pressed = visibleTargets.has(target); return <Button key={target} size="small" variant={pressed ? 'contained' : 'outlined'} disabled={!availableTargets.has(target)} aria-pressed={pressed} onClick={() => toggleTarget(target)} sx={pressed ? { bgcolor: OBJECT_COLORS[target], color: '#fff', '&:hover': { bgcolor: OBJECT_COLORS[target], filter: 'brightness(.85)' } } : { color: OBJECT_COLORS[target], borderColor: OBJECT_COLORS[target] }}>{target}</Button>; })}
+      {(['rise', 'transit', 'set'] as const).map(event => { const pressed = visibleEvents.has(event); return <Button key={event} size="small" variant={pressed ? 'contained' : 'outlined'} aria-pressed={pressed} onClick={() => toggleEvent(event)}>{EVENT_STYLES[event].label}</Button>; })}</Stack>
+    <Stack direction="row" spacing={2.5} useFlexGap flexWrap="wrap" aria-label="Event line legend">
+      {(['rise', 'transit', 'set'] as const).map(event => <Stack key={event} direction="row" spacing={.75} alignItems="center"><svg width="42" height="12" aria-hidden="true"><line x1="1" x2="41" y1="6" y2="6" stroke="#334155" strokeWidth="2" strokeDasharray={EVENT_STYLES[event].dash} strokeLinecap="round" /></svg><Typography variant="caption">{EVENT_STYLES[event].label}</Typography></Stack>)}
+    </Stack>
     {!hasEvents && <Alert severity="info">No selected object has a rise, highest altitude, or set event in this range.</Alert>}
     <Box sx={{ overflow: 'auto', maxHeight: '75vh', border: 1, borderColor: 'divider' }}><svg viewBox={`0 0 ${chartWidth} ${height}`} width="100%" height={height} role="img" aria-label={`Object rise, highest altitude, and set tracks from noon to noon in ${timeZone}`}>
+      <defs><clipPath id="visibility-night-clip" clipPathUnits="userSpaceOnUse">
+        {phasePolygons.filter(polygon => polygon.phase !== 'day').map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} />)}
+      </clipPath></defs>
+      {phasePolygons.map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} fill={SOLAR_PHASE_COLORS[polygon.phase]} opacity=".68" />)}
       {[0, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320, 1440].map(minute => { const hour = (minute / 60 + 12) % 24; const midnight = minute === 720; return <g key={minute}><line x1={x(minute)} x2={x(minute)} y1={0} y2={height} stroke={midnight ? '#334155' : '#94a3b8'} strokeWidth={midnight ? 1.5 : 1} strokeOpacity={midnight ? .9 : .45} /><text x={x(minute)} y={15} textAnchor="middle" fontSize="11">{minute === 1440 ? '12:00' : `${String(hour).padStart(2, '0')}:00`}</text></g>; })}
       {days.map((day, index) => <g key={day.date}>
-        {observingPhaseIntervals(day, days[index + 1]).map((interval, intervalIndex) => <rect key={intervalIndex} x={x(interval.from)} y={y(index) - rowHeight / 2} width={x(interval.to) - x(interval.from)} height={rowHeight} fill={SOLAR_PHASE_COLORS[interval.phase]} opacity=".68" />)}
         {isFirstDayOfMonth(day.date) && <><line x1={plotLeft} x2={plotLeft + plotWidth} y1={y(index) - rowHeight / 2} y2={y(index) - rowHeight / 2} stroke="#64748b" strokeOpacity=".65" /><text x={plotLeft - 8} y={y(index) + 4} textAnchor="end" fontSize="11">{day.date}</text></>}
       </g>)}
-      {ALTITUDE_TARGET_NAMES.flatMap(target => !visibleTargets.has(target) ? [] : (['rise', 'transit', 'set'] as const).flatMap(kind => {
-        if (!visibleEvents.has(kind)) return [];
-        const points = trackPoints(days, target, kind);
-        return trackSegments(points).map((segment, segmentIndex) => segment.length > 1 && <polyline key={`${target}-${kind}-${segmentIndex}`} points={segment.map(point => `${x(point.minute)},${y(point.rowIndex)}`).join(' ')} fill="none" stroke={OBJECT_COLORS[target]} strokeWidth="1.8" strokeDasharray={EVENT_STYLES[kind].dash} strokeLinecap="round" strokeLinejoin="round" />);
-      }))}
+      <g clipPath="url(#visibility-night-clip)">{ALTITUDE_TARGET_NAMES.flatMap(target => !visibleTargets.has(target) ? [] : (['rise', 'transit', 'set'] as const).flatMap(kind => {
+          if (!visibleEvents.has(kind)) return [];
+          const points = trackPoints(days, target, kind);
+          return trackSegments(points).map((segment, segmentIndex) => segment.length > 1 && <polyline key={`${target}-${kind}-${segmentIndex}`} points={segment.map(point => `${x(point.minute)},${y(point.rowIndex)}`).join(' ')} fill="none" stroke={OBJECT_COLORS[target]} strokeWidth="1.8" strokeDasharray={EVENT_STYLES[kind].dash} strokeLinecap="round" strokeLinejoin="round" />);
+        }))}</g>
       {ALTITUDE_TARGET_NAMES.flatMap(target => !visibleTargets.has(target) ? [] : (['rise', 'transit', 'set'] as const).flatMap(kind => {
         if (!visibleEvents.has(kind)) return [];
         return trackPoints(days, target, kind).map(point => { const transit = kind === 'transit' ? point.event as VisibilityEventDto & { altitude: number } : null; const muted = transit ? transit.altitude < 0 : false; const title = `${target} ${EVENT_STYLES[kind].label}, ${days[point.dayIndex].date}, ${new Date(point.event.tde).toISOString()}${transit ? `, ${transit.altitude.toFixed(2)} deg${muted ? ', below horizon' : ''}` : ''}`; return <circle key={`${target}-${kind}-${point.dayIndex}`} cx={x(point.minute)} cy={y(point.rowIndex)} r="5" fill="transparent" stroke="transparent" tabIndex={0} aria-label={title}><title>{title}</title></circle>; });
