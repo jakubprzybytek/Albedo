@@ -8,14 +8,6 @@ export function createApi() {
 
   const api = new sst.aws.ApiGatewayV1("Api", {
     cors: true,
-    transform: {
-      route: {
-        handler: (args) => {
-          args.memory ??= "1024 MB";
-          args.timeout ??= "30 seconds";
-        },
-      },
-    },
   });
 
   const authorizer = api.addAuthorizer({
@@ -30,7 +22,7 @@ export function createApi() {
   };
 
   const route = (path: string, handler: string, memory?: "1024 MB" | "2048 MB") =>
-    api.route(path, { handler, ...(memory && { memory }) }, { auth });
+    api.route(path, { handler, memory: memory ?? "1024 MB", timeout: "30 seconds" }, { auth });
 
   route("GET /api/states", "packages/functions/src/states/getStates.handler");
   route("GET /api/ephemeris", "packages/functions/src/ephemeris/getEphemeris.handler");

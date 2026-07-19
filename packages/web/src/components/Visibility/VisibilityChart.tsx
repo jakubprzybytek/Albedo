@@ -27,6 +27,17 @@ function observingMinute(minuteOfDay: number): number {
   return minuteOfDay >= NOON ? minuteOfDay - NOON : minuteOfDay + NOON;
 }
 
+function observingWindow(days: VisibilityDayDto[]): { from: number; to: number } {
+  const sunsets = days.flatMap(day => day.solar.events.filter(event => event.type === 'sunset').map(event => observingMinute(event.minuteOfDay)));
+  const sunrises = days.flatMap(day => day.solar.events.filter(event => event.type === 'sunrise').map(event => observingMinute(event.minuteOfDay)));
+  if (!sunsets.length || !sunrises.length) return { from: 0, to: 1440 };
+
+  return {
+    from: Math.max(0, Math.floor((Math.min(...sunsets) - 60) / 60) * 60),
+    to: Math.min(1440, Math.ceil((Math.max(...sunrises) + 60) / 60) * 60),
+  };
+}
+
 function phaseAtMinute(day: VisibilityDayDto, minute: number): SolarPhase {
   let phase = day.solar.phaseAtStart;
   for (const event of [...day.solar.events].sort((first, second) => first.minuteOfDay - second.minuteOfDay)) {
@@ -141,9 +152,11 @@ export default function VisibilityChart({ days, timeZone }: Props): JSX.Element 
   const availableTargets = new Set<AltitudeTargetName>(days.flatMap(day => Object.keys(day.objects) as AltitudeTargetName[]));
   const hasEvents = days.some(day => Object.values(day.objects).some(events => events?.rise || events?.transit || events?.set));
   const phasePolygons = solarPhasePolygons(days);
+  const window = observingWindow(days);
+  const formatObservingTime = (minute: number) => `${String((minute / 60 + 12) % 24).padStart(2, '0')}:00`;
   const rowHeight = Math.min(12, Math.max(3, (chartWidth * 1.5 - axisHeight) / Math.max(days.length, 1)));
   const height = Math.max(120, days.length * rowHeight + axisHeight);
-  const x = (minute: number) => plotLeft + minute / 1440 * plotWidth;
+  const x = (minute: number) => plotLeft + (minute - window.from) / (window.to - window.from) * plotWidth;
   const y = (rowIndex: number) => axisHeight + (rowIndex + 0.5) * rowHeight;
   const phasePolygonPoints = (points: PhaseBandPoint[]) => [
     ...points.map(point => `${x(point.from)},${y(point.rowIndex)}`),
@@ -159,7 +172,7 @@ export default function VisibilityChart({ days, timeZone }: Props): JSX.Element 
       {(['rise', 'transit', 'set'] as const).map(event => <Stack key={event} direction="row" spacing={.75} alignItems="center"><svg width="42" height="12" aria-hidden="true"><line x1="1" x2="41" y1="6" y2="6" stroke="#334155" strokeWidth="2" strokeDasharray={EVENT_STYLES[event].dash} strokeLinecap="round" /></svg><Typography variant="caption">{EVENT_STYLES[event].label}</Typography></Stack>)}
     </Stack>
     {!hasEvents && <Alert severity="info">No selected object has a rise, highest altitude, or set event in this range.</Alert>}
-    <Box sx={{ border: 1, borderColor: 'divider' }}><svg viewBox={`0 0 ${chartWidth} ${height}`} width="100%" role="img" aria-label={`Object rise, highest altitude, and set tracks from noon to noon in ${timeZone}`}>
+    <Box sx={{ border: 1, borderColor: 'divider' }}><svg viewBox={`0 0 ${chartWidth} ${height}`} width="100%" role="img" aria-label={`Object rise, highest altitude, and set tracks from ${formatObservingTime(window.from)} to ${formatObservingTime(window.to)} in ${timeZone}`}>
       <defs><clipPath id="visibility-night-clip" clipPathUnits="userSpaceOnUse">
         {phasePolygons.filter(polygon => polygon.phase === 'civilTwilight').map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} />)}
       </clipPath></defs>
@@ -167,7 +180,7 @@ export default function VisibilityChart({ days, timeZone }: Props): JSX.Element 
         <rect x={plotLeft} y={axisHeight} width={plotWidth} height={height - axisHeight} fill={SOLAR_PHASE_COLORS.day} />
         {phasePolygons.map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} fill={SOLAR_PHASE_COLORS[polygon.phase]} />)}
       </g>
-      {[0, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320, 1440].map(minute => { const hour = (minute / 60 + 12) % 24; const midnight = minute === 720; return <g key={minute}><line x1={x(minute)} x2={x(minute)} y1={0} y2={height} stroke={midnight ? '#334155' : '#94a3b8'} strokeWidth={midnight ? 1.5 : 1} strokeOpacity={midnight ? .9 : .45} /><text x={x(minute)} y={15} textAnchor="middle" fontSize="11">{minute === 1440 ? '12:00' : `${String(hour).padStart(2, '0')}:00`}</text></g>; })}
+      {Array.from({ length: (window.to - window.from) / 60 + 1 }, (_, index) => window.from + index * 60).map(minute => { const hour = (minute / 60 + 12) % 24; const midnight = minute === 720; return <g key={minute}><line x1={x(minute)} x2={x(minute)} y1={0} y2={height} stroke={midnight ? '#334155' : '#94a3b8'} strokeWidth={midnight ? 1.5 : 1} strokeOpacity={midnight ? .9 : .45} /><text x={x(minute)} y={15} textAnchor="middle" fontSize="11">{minute === 1440 ? '12:00' : `${String(hour).padStart(2, '0')}:00`}</text></g>; })}
       {days.map((day, index) => <g key={day.date}>
         {isFirstAvailableDayOfMonth(day.date, days[index - 1]?.date) && <><line x1={plotLeft} x2={plotLeft + plotWidth} y1={y(index) - rowHeight / 2} y2={y(index) - rowHeight / 2} stroke="#64748b" strokeOpacity=".65" /><text x={plotLeft - 8} y={y(index) + 4} textAnchor="end" fontSize="11">{day.date}</text></>}
       </g>)}

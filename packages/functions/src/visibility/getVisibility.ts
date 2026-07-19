@@ -128,9 +128,12 @@ export function getVisibility(event: APIGatewayProxyEvent) {
   } catch (error) {
     return Failure(error instanceof Error ? error.message : String(error));
   }
+
   console.log(`Compute visibility for ${params.targets.map(target => `'${target.name}'`).join(', ')} from ${formatCivilDate(params.fromDate)} through ${formatCivilDate(params.toDate)}`
     + ` in ${params.timeZone} for observer at ${params.longitude}°, ${params.latitude}°, ${params.altitude}m${params.cursor ? ' (continuation page)' : ''}`);
+
   const query = queryKey(params);
+
   let pageFrom: Date;
   try {
     pageFrom = params.cursor ? decodeCursor(params.cursor, query, params.fromDate, params.toDate) : params.fromDate;
@@ -142,8 +145,11 @@ export function getVisibility(event: APIGatewayProxyEvent) {
   const results = new Visibility(kernels).compute(params.targets, civilDayIntervals(pageFrom, pageTo, params.timeZone, COMPUTE_INTERVAL_DAYS), {
     latitude: params.latitude, longitude: params.longitude, altitude: params.altitude,
   });
+
   const nextDate = addDays(pageTo, 1);
+
   console.log(`Computed ${results.length} visibility day(s) from ${formatCivilDate(pageFrom)} through ${formatCivilDate(pageTo)}${isAfter(nextDate, params.toDate) ? ' (final page)' : ' (more pages available)'}`);
+
   return Success<VisibilityResponse>({
     timeZone: params.timeZone,
     fromDate: formatCivilDate(params.fromDate),

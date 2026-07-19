@@ -1,4 +1,4 @@
-type Api = ReturnType<typeof import("./api").createApi>;
+type Api = ReturnType<typeof import("./api.js").createApi>;
 
 export function createFrontend(api: Api) {
   const domain = $app.stage === "int"

@@ -14,8 +14,8 @@ export default $config({
     };
   },
   async run() {
-    const { createApi } = await import("./infra/api");
-    const { createFrontend } = await import("./infra/frontend");
+    const { createApi } = await import("./infra/api.js");
+    const { createFrontend } = await import("./infra/frontend.js");
     const api = createApi();
     const site = createFrontend(api);
 
