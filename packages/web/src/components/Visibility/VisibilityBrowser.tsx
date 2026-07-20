@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react';
+import { useRef, useState, type JSX } from 'react';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { iterateVisibilityPages, type VisibilityQuery, type VisibilityResponse } from '@/sdk/Visibility';
@@ -9,17 +9,17 @@ export default function VisibilityBrowser(): JSX.Element {
   const [result, setResult] = useState<VisibilityResponse>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
-  const [generation, setGeneration] = useState(0);
+  const generationRef = useRef(0);
   async function submit(query: VisibilityQuery) {
-    const requestGeneration = generation + 1;
-    setGeneration(requestGeneration); setLoading(true); setError(undefined); setResult(undefined);
+    const requestGeneration = ++generationRef.current;
+    setLoading(true); setError(undefined); setResult(undefined);
     try {
       for await (const page of iterateVisibilityPages(query)) {
-        if (requestGeneration !== generation + 1) return;
+        if (generationRef.current !== requestGeneration) return;
         setResult(previous => previous ? { ...page, days: [...previous.days, ...page.days] } : page);
       }
-    } catch (reason) { if (requestGeneration === generation + 1) setError(reason instanceof Error ? reason.message : String(reason)); }
-    finally { if (requestGeneration === generation + 1) setLoading(false); }
+    } catch (reason) { if (generationRef.current === requestGeneration) setError(reason instanceof Error ? reason.message : String(reason)); }
+    finally { if (generationRef.current === requestGeneration) setLoading(false); }
   }
   return <Stack spacing={2} padding={1}><VisibilityQueryForm loading={loading} error={error} onSubmit={submit} />
     {loading && result && <Alert severity="info">Loading more dates: {result.days.length} loaded.</Alert>}

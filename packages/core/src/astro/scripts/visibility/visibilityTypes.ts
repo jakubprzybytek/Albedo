@@ -1,30 +1,27 @@
 import type { AltitudeTargetName, SolarEventAtEphemerisSecond, SolarPhase } from '../altitudes';
 
-export type VisibilityInterval = {
-  key: string;
-  fromEs: number;
-  toEs: number;
-};
-
-export type TimedObjectEvent = {
+export type RiseSetEvent = {
+  type: 'rise' | 'set';
   es: number;
 };
 
-export type TransitEvent = TimedObjectEvent & {
+export type TransitEvent = {
+  type: 'transit';
+  es: number;
   altitude: number;
 };
 
-export type ObjectEvents = {
-  rise: TimedObjectEvent | null;
-  transit: TransitEvent | null;
-  set: TimedObjectEvent | null;
+export type ObjectEvent = RiseSetEvent | TransitEvent;
+
+export type SolarPhaseAtTime = {
+  es: number;
+  phase: SolarPhase;
 };
 
-export type VisibilityIntervalResult = {
-  key: string;
-  objects: Partial<Record<AltitudeTargetName, ObjectEvents>>;
+export type VisibilityResult = {
+  objects: Partial<Record<AltitudeTargetName, ObjectEvent[]>>;
   solar: {
-    phaseAtStart: SolarPhase;
     events: SolarEventAtEphemerisSecond[];
+    phases: SolarPhaseAtTime[];
   };
 };

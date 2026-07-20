@@ -1,6 +1,6 @@
 import type { APIGatewayProxyEvent } from 'aws-lambda';
 import { addDays, addYears, isAfter } from 'date-fns';
-import { getTimezoneOffset, toZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, getTimezoneOffset, toZonedTime } from 'date-fns-tz';
 import { EphemerisSeconds } from '@jpl';
 import {
   ALTITUDE_TARGET_NAMES,
@@ -8,16 +8,16 @@ import {
   Visibility,
   type AltitudeTarget,
   type AltitudeTargetName,
-  type ObjectEvents,
+  type ObjectEvent,
   type SolarEventAtEphemerisSecond,
+  type TransitEvent,
 } from '@astro/scripts';
 import { kernels } from '@jpl/data/kernels.full';
 import { Failure, lambdaHandler, Success } from '../HandlerProxy';
 import { mandatoryString } from '../LambdaParams';
-import { assertTimeZone, civilDayIntervals, formatCivilDate, parseCivilDate } from './CivilDays';
+import { assertTimeZone, civilDaySpan, formatCivilDate, parseCivilDate } from './CivilDays';
 
-const COMPUTE_INTERVAL_DAYS = 5;
-const VISIBILITY_PAGE_DAYS = 95;
+const VISIBILITY_PAGE_DAYS = 35;
 
 type VisibilityCursor = { version: 1; nextDate: string; query: string };
 
@@ -109,12 +109,34 @@ function eventDto(es: number, timeZone: string): VisibilityEventDto {
   };
 }
 
-function objectDto(events: ObjectEvents, timeZone: string): VisibilityObjectDayDto {
+function objectDayDto(events: readonly ObjectEvent[], timeZone: string): VisibilityObjectDayDto {
+  const rise = events.find(event => event.type === 'rise') ?? null;
+  const set = events.find(event => event.type === 'set') ?? null;
+  const transit = events.filter((event): event is TransitEvent => event.type === 'transit')
+    .sort((first, second) => second.altitude - first.altitude || first.es - second.es)[0] ?? null;
   return {
-    rise: events.rise && eventDto(events.rise.es, timeZone),
-    transit: events.transit && { ...eventDto(events.transit.es, timeZone), altitude: events.transit.altitude },
-    set: events.set && eventDto(events.set.es, timeZone),
+    rise: rise && eventDto(rise.es, timeZone),
+    transit: transit && { ...eventDto(transit.es, timeZone), altitude: transit.altitude },
+    set: set && eventDto(set.es, timeZone),
   };
+}
+
+function localDateKey(es: number, timeZone: string): string {
+  return formatInTimeZone(EphemerisSeconds.toDateObject(es), timeZone, 'yyyy-MM-dd');
+}
+
+function groupByDay<T extends { es: number }>(events: readonly T[], timeZone: string): Map<string, T[]> {
+  const grouped = new Map<string, T[]>();
+  for (const event of events) {
+    const key = localDateKey(event.es, timeZone);
+    const list = grouped.get(key);
+    if (list) {
+      list.push(event);
+    } else {
+      grouped.set(key, [event]);
+    }
+  }
+  return grouped;
 }
 
 function solarDto(events: readonly SolarEventAtEphemerisSecond[], timeZone: string) {
@@ -142,22 +164,33 @@ export function getVisibility(event: APIGatewayProxyEvent) {
   }
   const pageToCandidate = addDays(pageFrom, VISIBILITY_PAGE_DAYS - 1);
   const pageTo = isAfter(pageToCandidate, params.toDate) ? params.toDate : pageToCandidate;
-  const results = new Visibility(kernels).compute(params.targets, civilDayIntervals(pageFrom, pageTo, params.timeZone, COMPUTE_INTERVAL_DAYS), {
+  const span = civilDaySpan(pageFrom, pageTo, params.timeZone);
+  const result = new Visibility(kernels).compute(params.targets, span.fromEs, span.toEs, span.days.map(day => day.startEs), {
     latitude: params.latitude, longitude: params.longitude, altitude: params.altitude,
   });
 
+  const objectEventsByDay = new Map(params.targets.map(target => [target.name, groupByDay(result.objects[target.name] ?? [], params.timeZone)]));
+  const solarEventsByDay = groupByDay(result.solar.events, params.timeZone);
+  const phaseByDayStart = new Map(result.solar.phases.map(phase => [phase.es, phase.phase]));
+
   const nextDate = addDays(pageTo, 1);
 
-  console.log(`Computed ${results.length} visibility day(s) from ${formatCivilDate(pageFrom)} through ${formatCivilDate(pageTo)}${isAfter(nextDate, params.toDate) ? ' (final page)' : ' (more pages available)'}`);
+  console.log(`Computed ${span.days.length} visibility day(s) from ${formatCivilDate(pageFrom)} through ${formatCivilDate(pageTo)}${isAfter(nextDate, params.toDate) ? ' (final page)' : ' (more pages available)'}`);
 
   return Success<VisibilityResponse>({
     timeZone: params.timeZone,
     fromDate: formatCivilDate(params.fromDate),
     toDate: formatCivilDate(params.toDate),
-    days: results.map(result => ({
-      date: result.key,
-      objects: Object.fromEntries(params.targets.map(target => [target.name, objectDto(result.objects[target.name]!, params.timeZone)])),
-      solar: { phaseAtStart: result.solar.phaseAtStart, events: solarDto(result.solar.events, params.timeZone) },
+    days: span.days.map(day => ({
+      date: day.key,
+      objects: Object.fromEntries(params.targets.map(target => [
+        target.name,
+        objectDayDto(objectEventsByDay.get(target.name)?.get(day.key) ?? [], params.timeZone),
+      ])),
+      solar: {
+        phaseAtStart: phaseByDayStart.get(day.startEs)!,
+        events: solarDto(solarEventsByDay.get(day.key) ?? [], params.timeZone),
+      },
     })),
     nextCursor: isAfter(nextDate, params.toDate) ? null : encodeCursor(nextDate, query),
   });

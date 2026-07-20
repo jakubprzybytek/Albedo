@@ -1,10 +1,20 @@
 import { describe, expect, it } from 'vitest';
-import { civilDayIntervals, parseCivilDate } from './CivilDays';
+import { civilDaySpan, parseCivilDate } from './CivilDays';
 
-describe('civilDayIntervals', () => {
-  it('generates every fifth civil day when requested', () => {
-    const intervals = civilDayIntervals(parseCivilDate('2026-01-01'), parseCivilDate('2026-01-12'), 'Europe/Warsaw', 5);
+describe('civilDaySpan', () => {
+  it('generates every civil day with a continuous span', () => {
+    const span = civilDaySpan(parseCivilDate('2026-01-01'), parseCivilDate('2026-01-03'), 'Europe/Warsaw');
 
-    expect(intervals.map(interval => interval.key)).toEqual(['2026-01-01', '2026-01-06', '2026-01-11']);
+    expect(span.days.map(day => day.key)).toEqual(['2026-01-01', '2026-01-02', '2026-01-03']);
+    expect(span.fromEs).toBe(span.days[0].startEs);
+    expect(span.toEs - span.days[2].startEs).toBe(86_400);
+  });
+
+  it('handles daylight-saving day lengths', () => {
+    const springForward = civilDaySpan(parseCivilDate('2026-03-29'), parseCivilDate('2026-03-29'), 'Europe/Warsaw');
+    const fallBack = civilDaySpan(parseCivilDate('2026-10-25'), parseCivilDate('2026-10-25'), 'Europe/Warsaw');
+
+    expect(springForward.toEs - springForward.fromEs).toBe(23 * 3600);
+    expect(fallBack.toEs - fallBack.fromEs).toBe(25 * 3600);
   });
 });

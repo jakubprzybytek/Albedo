@@ -1,7 +1,6 @@
 import { addDays, format, isValid, parse } from 'date-fns';
 import { fromZonedTime } from 'date-fns-tz';
 import { EphemerisSeconds } from '@jpl';
-import type { VisibilityInterval } from '@astro/scripts';
 
 const DATE_FORMAT = 'yyyy-MM-dd';
 
@@ -27,19 +26,29 @@ export function assertTimeZone(timeZone: string): void {
   }
 }
 
-export function civilDayIntervals(fromDate: Date, toDate: Date, timeZone: string, intervalDays = 1): VisibilityInterval[] {
-  if (!Number.isInteger(intervalDays) || intervalDays < 1) throw new Error('Civil day interval must be a positive integer');
-  const intervals: VisibilityInterval[] = [];
-  for (let date = fromDate; date <= toDate; date = addDays(date, intervalDays)) {
-    const key = formatCivilDate(date);
-    const followingKey = formatCivilDate(addDays(date, 1));
-    const from = fromZonedTime(`${key}T00:00:00`, timeZone);
-    const to = fromZonedTime(`${followingKey}T00:00:00`, timeZone);
-    intervals.push({
-      key,
-      fromEs: EphemerisSeconds.fromDateTimeObject(from),
-      toEs: EphemerisSeconds.fromDateTimeObject(to),
-    });
+export type CivilDay = {
+  key: string;
+  startEs: number;
+};
+
+export type CivilDaySpan = {
+  fromEs: number;
+  toEs: number;
+  days: CivilDay[];
+};
+
+function civilMidnightEs(date: Date, timeZone: string): number {
+  return EphemerisSeconds.fromDateTimeObject(fromZonedTime(`${formatCivilDate(date)}T00:00:00`, timeZone));
+}
+
+export function civilDaySpan(fromDate: Date, toDate: Date, timeZone: string): CivilDaySpan {
+  const days: CivilDay[] = [];
+  for (let date = fromDate; date <= toDate; date = addDays(date, 1)) {
+    days.push({ key: formatCivilDate(date), startEs: civilMidnightEs(date, timeZone) });
   }
-  return intervals;
+  return {
+    fromEs: days[0].startEs,
+    toEs: civilMidnightEs(addDays(toDate, 1), timeZone),
+    days,
+  };
 }

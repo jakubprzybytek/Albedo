@@ -72,8 +72,22 @@ function refineCrossing(
   return (lower + upper) / 2;
 }
 
+export function memoizeAltitudeAt(altitudeAt: AltitudeAt): AltitudeAt {
+  const cache = new Map<number, number>();
+  return (es: number) => {
+    const existing = cache.get(es);
+    if (existing !== undefined) {
+      return existing;
+    }
+    const altitude = altitudeAt(es);
+    cache.set(es, altitude);
+    return altitude;
+  };
+}
+
 export function findSolarEvents(sampleTimes: readonly number[], altitudeAt: AltitudeAt): SolarEventAtEphemerisSecond[] {
-  return SOLAR_THRESHOLDS.flatMap(threshold => findThresholdCrossings(sampleTimes, altitudeAt, threshold.altitude)
+  const cachedAltitudeAt = memoizeAltitudeAt(altitudeAt);
+  return SOLAR_THRESHOLDS.flatMap(threshold => findThresholdCrossings(sampleTimes, cachedAltitudeAt, threshold.altitude)
     .map(event => ({
       type: event.direction === 'rising' ? threshold.rising : threshold.setting,
       es: event.es,
@@ -91,30 +105,22 @@ export function findThresholdCrossings(
   altitudeAt: AltitudeAt,
   threshold: number,
 ): ThresholdCrossing[] {
-  const cache = new Map<number, number>();
-  const cachedAltitudeAt = (es: number) => {
-    const existing = cache.get(es);
-    if (existing !== undefined) {
-      return existing;
-    }
-    const altitude = altitudeAt(es);
-    cache.set(es, altitude);
-    return altitude;
-  };
+  // Callers are expected to pass a memoized function (see memoizeAltitudeAt) when the
+  // same samples are evaluated across multiple thresholds or event detectors.
   const events: ThresholdCrossing[] = [];
 
   for (let index = 0; index < sampleTimes.length; index += 1) {
       const current = sampleTimes[index];
-      const currentOffset = cachedAltitudeAt(current) - threshold;
+      const currentOffset = altitudeAt(current) - threshold;
       if (currentOffset !== 0) {
         continue;
       }
 
       const previousOffset = index > 0
-        ? cachedAltitudeAt(sampleTimes[index - 1]) - threshold
+        ? altitudeAt(sampleTimes[index - 1]) - threshold
         : undefined;
       const nextOffset = index < sampleTimes.length - 1
-        ? cachedAltitudeAt(sampleTimes[index + 1]) - threshold
+        ? altitudeAt(sampleTimes[index + 1]) - threshold
         : undefined;
       const direction = previousOffset !== undefined && nextOffset !== undefined
         ? crossingDirection(previousOffset, nextOffset)
@@ -134,8 +140,8 @@ export function findThresholdCrossings(
     for (let index = 0; index < sampleTimes.length - 1; index += 1) {
       const left = sampleTimes[index];
       const right = sampleTimes[index + 1];
-      const leftOffset = cachedAltitudeAt(left) - threshold;
-      const rightOffset = cachedAltitudeAt(right) - threshold;
+      const leftOffset = altitudeAt(left) - threshold;
+      const rightOffset = altitudeAt(right) - threshold;
       const direction = crossingDirection(leftOffset, rightOffset);
       if (!direction) {
         continue;
@@ -143,7 +149,7 @@ export function findThresholdCrossings(
 
       events.push({
         direction,
-        es: refineCrossing(left, right, threshold, cachedAltitudeAt),
+        es: refineCrossing(left, right, threshold, altitudeAt),
       });
     }
 

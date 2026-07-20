@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react';
+import { memo, useMemo, useState, type JSX } from 'react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -33,8 +33,8 @@ function observingWindow(days: VisibilityDayDto[]): { from: number; to: number }
   if (!sunsets.length || !sunrises.length) return { from: 0, to: 1440 };
 
   return {
-    from: Math.max(0, Math.floor((Math.min(...sunsets) - 60) / 60) * 60),
-    to: Math.min(1440, Math.ceil((Math.max(...sunrises) + 60) / 60) * 60),
+    from: Math.max(0, Math.floor((sunsets.reduce((minimum, minute) => Math.min(minimum, minute)) - 60) / 60) * 60),
+    to: Math.min(1440, Math.ceil((sunrises.reduce((maximum, minute) => Math.max(maximum, minute)) + 60) / 60) * 60),
   };
 }
 
@@ -146,13 +146,18 @@ function trackSegments(points: ReturnType<typeof trackPoints>): (typeof points)[
   return segments;
 }
 
-export default function VisibilityChart({ days, timeZone }: Props): JSX.Element {
+function VisibilityChart({ days, timeZone }: Props): JSX.Element {
   const [visibleTargets, setVisibleTargets] = useState(() => new Set<AltitudeTargetName>(ALTITUDE_TARGET_NAMES));
   const [visibleEvents, setVisibleEvents] = useState(new Set(['rise', 'transit', 'set']));
-  const availableTargets = new Set<AltitudeTargetName>(days.flatMap(day => Object.keys(day.objects) as AltitudeTargetName[]));
-  const hasEvents = days.some(day => Object.values(day.objects).some(events => events?.rise || events?.transit || events?.set));
-  const phasePolygons = solarPhasePolygons(days);
-  const window = observingWindow(days);
+  const availableTargets = useMemo(() => new Set<AltitudeTargetName>(days.flatMap(day => Object.keys(day.objects) as AltitudeTargetName[])), [days]);
+  const hasEvents = useMemo(() => days.some(day => Object.values(day.objects).some(events => events?.rise || events?.transit || events?.set)), [days]);
+  const phasePolygons = useMemo(() => solarPhasePolygons(days), [days]);
+  const window = useMemo(() => observingWindow(days), [days]);
+  const tracks = useMemo(() => ALTITUDE_TARGET_NAMES.flatMap(target => (['rise', 'transit', 'set'] as const).map(kind => {
+    const points = trackPoints(days, target, kind);
+    return { target, kind, points, segments: trackSegments(points) };
+  })), [days]);
+  const tableTimeFormat = useMemo(() => new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit', timeZone }), [timeZone]);
   const formatObservingTime = (minute: number) => `${String((minute / 60 + 12) % 24).padStart(2, '0')}:00`;
   const rowHeight = Math.min(12, Math.max(3, (chartWidth * 1.5 - axisHeight) / Math.max(days.length, 1)));
   const height = Math.max(120, days.length * rowHeight + axisHeight);
@@ -184,16 +189,15 @@ export default function VisibilityChart({ days, timeZone }: Props): JSX.Element 
       {days.map((day, index) => <g key={day.date}>
         {isFirstAvailableDayOfMonth(day.date, days[index - 1]?.date) && <><line x1={plotLeft} x2={plotLeft + plotWidth} y1={y(index) - rowHeight / 2} y2={y(index) - rowHeight / 2} stroke="#64748b" strokeOpacity=".65" /><text x={plotLeft - 8} y={y(index) + 4} textAnchor="end" fontSize="11">{day.date}</text></>}
       </g>)}
-      <g clipPath="url(#visibility-night-clip)">{ALTITUDE_TARGET_NAMES.flatMap(target => !visibleTargets.has(target) ? [] : (['rise', 'transit', 'set'] as const).flatMap(kind => {
-          if (!visibleEvents.has(kind)) return [];
-          const points = trackPoints(days, target, kind);
-          return trackSegments(points).map((segment, segmentIndex) => segment.length > 1 && <polyline key={`${target}-${kind}-${segmentIndex}`} points={segment.map(point => `${x(point.minute)},${y(point.rowIndex)}`).join(' ')} fill="none" stroke={OBJECT_COLORS[target]} strokeWidth="1.8" strokeDasharray={EVENT_STYLES[kind].dash} strokeLinecap="round" strokeLinejoin="round" />);
-        }))}</g>
-      {ALTITUDE_TARGET_NAMES.flatMap(target => !visibleTargets.has(target) ? [] : (['rise', 'transit', 'set'] as const).flatMap(kind => {
-        if (!visibleEvents.has(kind)) return [];
-        return trackPoints(days, target, kind).map(point => { const transit = kind === 'transit' ? point.event as VisibilityEventDto & { altitude: number } : null; const muted = transit ? transit.altitude < 0 : false; const title = `${target} ${EVENT_STYLES[kind].label}, ${days[point.dayIndex].date}, ${new Date(point.event.tde).toISOString()}${transit ? `, ${transit.altitude.toFixed(2)} deg${muted ? ', below horizon' : ''}` : ''}`; return <circle key={`${target}-${kind}-${point.dayIndex}`} cx={x(point.minute)} cy={y(point.rowIndex)} r="5" fill="transparent" stroke="transparent" tabIndex={0} aria-label={title}><title>{title}</title></circle>; });
-      }))}
+      <g clipPath="url(#visibility-night-clip)">{tracks.flatMap(({ target, kind, segments }) => !visibleTargets.has(target) || !visibleEvents.has(kind)
+          ? []
+          : segments.map((segment, segmentIndex) => segment.length > 1 && <polyline key={`${target}-${kind}-${segmentIndex}`} points={segment.map(point => `${x(point.minute)},${y(point.rowIndex)}`).join(' ')} fill="none" stroke={OBJECT_COLORS[target]} strokeWidth="1.8" strokeDasharray={EVENT_STYLES[kind].dash} strokeLinecap="round" strokeLinejoin="round" />))}</g>
+      {tracks.flatMap(({ target, kind, points }) => !visibleTargets.has(target) || !visibleEvents.has(kind)
+        ? []
+        : points.map(point => { const transit = kind === 'transit' ? point.event as VisibilityEventDto & { altitude: number } : null; const muted = transit ? transit.altitude < 0 : false; const title = `${target} ${EVENT_STYLES[kind].label}, ${days[point.dayIndex].date}, ${new Date(point.event.tde).toISOString()}${transit ? `, ${transit.altitude.toFixed(2)} deg${muted ? ', below horizon' : ''}` : ''}`; return <circle key={`${target}-${kind}-${point.dayIndex}`} cx={x(point.minute)} cy={y(point.rowIndex)} r="5" fill="transparent" stroke="transparent" tabIndex={0} aria-label={title}><title>{title}</title></circle>; }))}
     </svg></Box>
-    <Box component="details"><summary>Accessible event table</summary><Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', '& td, & th': { p: .5, borderBottom: 1, borderColor: 'divider', textAlign: 'left' } }}><thead><tr><th>Date</th><th>Object</th><th>Rise</th><th>Highest altitude</th><th>Set</th></tr></thead><tbody>{days.flatMap(day => ALTITUDE_TARGET_NAMES.filter(target => visibleTargets.has(target)).map(target => { const events = day.objects[target]; const format = (event: { tde: string } | null | undefined, absent: string) => event ? new Date(event.tde).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone }) : absent; return <tr key={`${day.date}-${target}`}><td>{day.date}</td><td>{target}</td><td>{format(events?.rise, 'Does not rise')}</td><td>{events?.transit ? `${format(events.transit, 'No transit')} (${events.transit.altitude.toFixed(1)} deg)` : 'No transit'}</td><td>{format(events?.set, 'No set')}</td></tr>; }))}</tbody></Box></Box>
+    <Box component="details"><summary>Accessible event table</summary><Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', '& td, & th': { p: .5, borderBottom: 1, borderColor: 'divider', textAlign: 'left' } }}><thead><tr><th>Date</th><th>Object</th><th>Rise</th><th>Highest altitude</th><th>Set</th></tr></thead><tbody>{days.flatMap(day => ALTITUDE_TARGET_NAMES.filter(target => visibleTargets.has(target)).map(target => { const events = day.objects[target]; const format = (event: { tde: string } | null | undefined, absent: string) => event ? tableTimeFormat.format(new Date(event.tde)) : absent; return <tr key={`${day.date}-${target}`}><td>{day.date}</td><td>{target}</td><td>{format(events?.rise, 'Does not rise')}</td><td>{events?.transit ? `${format(events.transit, 'No transit')} (${events.transit.altitude.toFixed(1)} deg)` : 'No transit'}</td><td>{format(events?.set, 'No set')}</td></tr>; }))}</tbody></Box></Box>
   </Stack>;
 }
+
+export default memo(VisibilityChart);
