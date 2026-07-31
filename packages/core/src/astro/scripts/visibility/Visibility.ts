@@ -1,7 +1,7 @@
 import { type ObserverLocation } from '@astro/coords';
 import { JplBodyId } from '@jpl';
 import type { KernelsRepository } from '@jpl/kernels';
-import { buildAltitudeFunction, findSolarEvents, memoizeAltitudeAt, solarPhaseAt, type AltitudeTarget } from '../altitudes';
+import { buildSharedAltitudeFunctions, findSolarEvents, memoizeAltitudeAt, solarPhaseAt, type AltitudeTarget } from '../altitudes';
 import { findObjectEvents, sampleVisibilityTimes } from './ObjectEvents';
 import type { VisibilityResult } from './visibilityTypes';
 
@@ -32,13 +32,19 @@ export class Visibility {
     const times = sampleVisibilityTimes(fromEs - SAMPLE_PADDING_SECONDS, toEs + SAMPLE_PADDING_SECONDS);
     const inRange = (es: number) => es >= fromEs && es < toEs;
 
+    // Build altitude functions for all bodies (planets + sun) sharing a single memoized
+    // Earth rotation matrix per sample instant. This avoids recomputing the rotation
+    // (N_bodies) times at each instant, reducing total rotation-matrix work by ~N-fold.
+    const allBodyIds = [...targets.map(target => target.bodyId), JplBodyId.Sun];
+    const altitudeFunctions = buildSharedAltitudeFunctions(this.kernels, allBodyIds, observer);
+
     const objects: VisibilityResult['objects'] = {};
     for (const target of targets) {
-      const altitudeAt = buildAltitudeFunction(this.kernels, target.bodyId, observer);
+      const altitudeAt = altitudeFunctions.get(target.bodyId)!;
       objects[target.name] = findObjectEvents(times, altitudeAt).filter(event => inRange(event.es));
     }
 
-    const sunAltitudeAt = memoizeAltitudeAt(buildAltitudeFunction(this.kernels, JplBodyId.Sun, observer));
+    const sunAltitudeAt = memoizeAltitudeAt(altitudeFunctions.get(JplBodyId.Sun)!);
     return {
       objects,
       solar: {
