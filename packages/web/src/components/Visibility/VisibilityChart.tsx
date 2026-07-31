@@ -1,4 +1,4 @@
-import { memo, useMemo, useState, type JSX } from 'react';
+import { memo, useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -18,9 +18,9 @@ const NOON = 720;
 type EventKind = 'rise' | 'transit' | 'set';
 
 const EVENT_STYLES: Record<EventKind, { dash?: string; label: string }> = {
-  rise: { dash: '8 5', label: 'Rise' },
+  rise: { dash: '2 4', label: 'Rise' },
   transit: { label: 'Highest altitude' },
-  set: { dash: '2 5', label: 'Set' },
+  set: { dash: '8 5', label: 'Set' },
 };
 
 function observingMinute(minuteOfDay: number): number {
@@ -148,7 +148,6 @@ function trackSegments(points: ReturnType<typeof trackPoints>): (typeof points)[
 
 function VisibilityChart({ days, timeZone }: Props): JSX.Element {
   const [visibleTargets, setVisibleTargets] = useState(() => new Set<AltitudeTargetName>(ALTITUDE_TARGET_NAMES));
-  const [visibleEvents, setVisibleEvents] = useState(new Set(['rise', 'transit', 'set']));
   const availableTargets = useMemo(() => new Set<AltitudeTargetName>(days.flatMap(day => Object.keys(day.objects) as AltitudeTargetName[])), [days]);
   const hasEvents = useMemo(() => days.some(day => Object.values(day.objects).some(events => events?.rise || events?.transit || events?.set)), [days]);
   const phasePolygons = useMemo(() => solarPhasePolygons(days), [days]);
@@ -161,6 +160,23 @@ function VisibilityChart({ days, timeZone }: Props): JSX.Element {
   const formatObservingTime = (minute: number) => `${String((minute / 60 + 12) % 24).padStart(2, '0')}:00`;
   const rowHeight = Math.min(12, Math.max(3, (chartWidth * 1.5 - axisHeight) / Math.max(days.length, 1)));
   const height = Math.max(120, days.length * rowHeight + axisHeight);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [renderedWidth, setRenderedWidth] = useState(chartWidth);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver(entries => {
+      const width = entries[0]?.contentRect.width;
+      if (width > 0) setRenderedWidth(width);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const scale = chartWidth / renderedWidth;
+  const labelFontSize = 11 * scale;
+  const trackStrokeWidth = 1.8 * scale;
+  const gridStrokeWidthMidnight = 1.5 * scale;
+  const gridStrokeWidthHour = scale;
   const x = (minute: number) => plotLeft + (minute - window.from) / (window.to - window.from) * plotWidth;
   const y = (rowIndex: number) => axisHeight + (rowIndex + 0.5) * rowHeight;
   const phasePolygonPoints = (points: PhaseBandPoint[]) => [
@@ -168,16 +184,14 @@ function VisibilityChart({ days, timeZone }: Props): JSX.Element {
     ...points.slice().reverse().map(point => `${x(point.to)},${y(point.rowIndex)}`),
   ].join(' ');
   const toggleTarget = (target: AltitudeTargetName) => setVisibleTargets(previous => { const next = new Set(previous); next.has(target) ? next.delete(target) : next.add(target); return next; });
-  const toggleEvent = (event: string) => setVisibleEvents(previous => { const next = new Set(previous); next.has(event) ? next.delete(event) : next.add(event); return next; });
   return <Stack spacing={1} aria-label={`Visibility chart in ${timeZone}`}>
     <Typography variant="subtitle1">Visibility by local time ({timeZone})</Typography>
-    <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">{ALTITUDE_TARGET_NAMES.map(target => { const pressed = visibleTargets.has(target); return <Button key={target} size="small" variant={pressed ? 'contained' : 'outlined'} disabled={!availableTargets.has(target)} aria-pressed={pressed} onClick={() => toggleTarget(target)} sx={pressed ? { bgcolor: OBJECT_COLORS[target], color: '#fff', '&:hover': { bgcolor: OBJECT_COLORS[target], filter: 'brightness(.85)' } } : { color: OBJECT_COLORS[target], borderColor: OBJECT_COLORS[target] }}>{target}</Button>; })}
-      {(['rise', 'transit', 'set'] as const).map(event => { const pressed = visibleEvents.has(event); return <Button key={event} size="small" variant={pressed ? 'contained' : 'outlined'} aria-pressed={pressed} onClick={() => toggleEvent(event)}>{EVENT_STYLES[event].label}</Button>; })}</Stack>
+    <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">{ALTITUDE_TARGET_NAMES.map(target => { const pressed = visibleTargets.has(target); return <Button key={target} size="small" variant={pressed ? 'contained' : 'outlined'} disabled={!availableTargets.has(target)} aria-pressed={pressed} onClick={() => toggleTarget(target)} sx={pressed ? { bgcolor: OBJECT_COLORS[target], color: '#fff', '&:hover': { bgcolor: OBJECT_COLORS[target], filter: 'brightness(.85)' } } : { color: OBJECT_COLORS[target], borderColor: OBJECT_COLORS[target] }}>{target}</Button>; })}</Stack>
     <Stack direction="row" spacing={2.5} useFlexGap flexWrap="wrap" aria-label="Event line legend">
       {(['rise', 'transit', 'set'] as const).map(event => <Stack key={event} direction="row" spacing={.75} alignItems="center"><svg width="42" height="12" aria-hidden="true"><line x1="1" x2="41" y1="6" y2="6" stroke="#334155" strokeWidth="2" strokeDasharray={EVENT_STYLES[event].dash} strokeLinecap="round" /></svg><Typography variant="caption">{EVENT_STYLES[event].label}</Typography></Stack>)}
     </Stack>
     {!hasEvents && <Alert severity="info">No selected object has a rise, highest altitude, or set event in this range.</Alert>}
-    <Box sx={{ border: 1, borderColor: 'divider' }}><svg viewBox={`0 0 ${chartWidth} ${height}`} width="100%" role="img" aria-label={`Object rise, highest altitude, and set tracks from ${formatObservingTime(window.from)} to ${formatObservingTime(window.to)} in ${timeZone}`}>
+    <Box ref={containerRef} sx={{ border: 1, borderColor: 'divider' }}><svg viewBox={`0 0 ${chartWidth} ${height}`} width="100%" role="img" aria-label={`Object rise, highest altitude, and set tracks from ${formatObservingTime(window.from)} to ${formatObservingTime(window.to)} in ${timeZone}`}>
       <defs><clipPath id="visibility-night-clip" clipPathUnits="userSpaceOnUse">
         {phasePolygons.filter(polygon => polygon.phase === 'civilTwilight').map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} />)}
       </clipPath></defs>
@@ -185,14 +199,14 @@ function VisibilityChart({ days, timeZone }: Props): JSX.Element {
         <rect x={plotLeft} y={axisHeight} width={plotWidth} height={height - axisHeight} fill={SOLAR_PHASE_COLORS.day} />
         {phasePolygons.map((polygon, index) => <polygon key={`${polygon.phase}-${index}`} points={phasePolygonPoints(polygon.points)} fill={SOLAR_PHASE_COLORS[polygon.phase]} />)}
       </g>
-      {Array.from({ length: (window.to - window.from) / 60 + 1 }, (_, index) => window.from + index * 60).map(minute => { const hour = (minute / 60 + 12) % 24; const midnight = minute === 720; return <g key={minute}><line x1={x(minute)} x2={x(minute)} y1={0} y2={height} stroke={midnight ? '#334155' : '#94a3b8'} strokeWidth={midnight ? 1.5 : 1} strokeOpacity={midnight ? .9 : .45} /><text x={x(minute)} y={15} textAnchor="middle" fontSize="11">{minute === 1440 ? '12:00' : `${String(hour).padStart(2, '0')}:00`}</text></g>; })}
+      {Array.from({ length: (window.to - window.from) / 60 + 1 }, (_, index) => window.from + index * 60).map(minute => { const hour = (minute / 60 + 12) % 24; const midnight = minute === 720; return <g key={minute}><line x1={x(minute)} x2={x(minute)} y1={0} y2={height} stroke={midnight ? '#334155' : '#94a3b8'} strokeWidth={midnight ? gridStrokeWidthMidnight : gridStrokeWidthHour} strokeOpacity={midnight ? .9 : .45} /><text x={x(minute)} y={15} textAnchor="middle" fontSize={labelFontSize}>{minute === 1440 ? '12:00' : `${String(hour).padStart(2, '0')}:00`}</text></g>; })}
       {days.map((day, index) => <g key={day.date}>
-        {isFirstAvailableDayOfMonth(day.date, days[index - 1]?.date) && <><line x1={plotLeft} x2={plotLeft + plotWidth} y1={y(index) - rowHeight / 2} y2={y(index) - rowHeight / 2} stroke="#64748b" strokeOpacity=".65" /><text x={plotLeft - 8} y={y(index) + 4} textAnchor="end" fontSize="11">{day.date}</text></>}
+        {isFirstAvailableDayOfMonth(day.date, days[index - 1]?.date) && <><line x1={plotLeft} x2={plotLeft + plotWidth} y1={y(index) - rowHeight / 2} y2={y(index) - rowHeight / 2} stroke="#64748b" strokeOpacity=".65" /><text x={plotLeft - 8} y={y(index) + 4} textAnchor="end" fontSize={labelFontSize}>{day.date}</text></>}
       </g>)}
-      <g clipPath="url(#visibility-night-clip)">{tracks.flatMap(({ target, kind, segments }) => !visibleTargets.has(target) || !visibleEvents.has(kind)
+      <g clipPath="url(#visibility-night-clip)">{tracks.flatMap(({ target, kind, segments }) => !visibleTargets.has(target)
           ? []
-          : segments.map((segment, segmentIndex) => segment.length > 1 && <polyline key={`${target}-${kind}-${segmentIndex}`} points={segment.map(point => `${x(point.minute)},${y(point.rowIndex)}`).join(' ')} fill="none" stroke={OBJECT_COLORS[target]} strokeWidth="1.8" strokeDasharray={EVENT_STYLES[kind].dash} strokeLinecap="round" strokeLinejoin="round" />))}</g>
-      {tracks.flatMap(({ target, kind, points }) => !visibleTargets.has(target) || !visibleEvents.has(kind)
+          : segments.map((segment, segmentIndex) => segment.length > 1 && <polyline key={`${target}-${kind}-${segmentIndex}`} points={segment.map(point => `${x(point.minute)},${y(point.rowIndex)}`).join(' ')} fill="none" stroke={OBJECT_COLORS[target]} strokeWidth={trackStrokeWidth} strokeDasharray={EVENT_STYLES[kind].dash} strokeLinecap="round" strokeLinejoin="round" />))}</g>
+      {tracks.flatMap(({ target, kind, points }) => !visibleTargets.has(target)
         ? []
         : points.map(point => { const transit = kind === 'transit' ? point.event as VisibilityEventDto & { altitude: number } : null; const muted = transit ? transit.altitude < 0 : false; const title = `${target} ${EVENT_STYLES[kind].label}, ${days[point.dayIndex].date}, ${new Date(point.event.tde).toISOString()}${transit ? `, ${transit.altitude.toFixed(2)} deg${muted ? ', below horizon' : ''}` : ''}`; return <circle key={`${target}-${kind}-${point.dayIndex}`} cx={x(point.minute)} cy={y(point.rowIndex)} r="5" fill="transparent" stroke="transparent" tabIndex={0} aria-label={title}><title>{title}</title></circle>; }))}
     </svg></Box>

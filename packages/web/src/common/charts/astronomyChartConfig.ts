@@ -3,8 +3,8 @@ import type { AltitudeTargetName, SolarEventType } from '@/components/Altitudes/
 export type SolarPhase = 'day' | 'civilTwilight' | 'nauticalTwilight' | 'astronomicalTwilight' | 'night';
 
 export const OBJECT_COLORS: Record<AltitudeTargetName, string> = {
-  Moon: '#64748b', Mercury: '#7c3aed', Venus: '#db2777', Mars: '#dc2626',
-  Jupiter: '#92400e', Saturn: '#0891b2', Uranus: '#0f766e', Neptune: '#2563eb',
+  Moon: '#94a3b8', Mercury: '#a78bfa', Venus: '#f472b6', Mars: '#f87171',
+  Jupiter: '#fb923c', Saturn: '#22d3ee', Uranus: '#34d399', Neptune: '#818cf8',
 };
 
 export const SOLAR_PHASE_COLORS: Record<SolarPhase, string> = {
