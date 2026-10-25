@@ -37,6 +37,10 @@ Use SST stages to deploy isolated environments when needed:
 npx sst deploy --stage production
 ```
 
+### CI deployment
+
+Every push to `main` deploys the `int` stage from GitHub Actions (`.github/workflows/ci-int.yml`). The workflow signs in to AWS through GitHub OIDC as the IAM role `GitHub-Albedo`; no AWS access keys are stored in GitHub. See [infra/github/README.md](infra/github/README.md) for the role and its permissions.
+
 ## E2E Testing
 
 ### Prerequisites
