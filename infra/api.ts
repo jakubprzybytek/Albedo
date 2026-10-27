@@ -1,8 +1,24 @@
+import { accessGroups, isProd, TEST_USER } from "./stage.js";
+
+// Shared, manually managed pool (AlbedoUserPool) used by several apps. Each stage gets its own app client.
 const userPoolId = "eu-west-1_IVai0KEAA";
-const userPoolClientId = "3qt6td581r3qqsk23tgv9r5duh";
 const region = "eu-west-1";
 
 export function createApi() {
+  const userPoolClient = new aws.cognito.UserPoolClient("WebClient", {
+    name: `albedo-${$app.stage}-web`,
+    userPoolId,
+    explicitAuthFlows: ["ALLOW_USER_SRP_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"],
+    preventUserExistenceErrors: "ENABLED",
+  });
+  const userPoolClientId = userPoolClient.id;
+
+  // Test user (docs/development.md): read by the E2E tests through `sst shell`. Not on prod, where its group is rejected.
+  if (!isProd) {
+    new sst.Secret("TestUserPassword");
+    new sst.Linkable("TestUser", { properties: { email: TEST_USER } });
+  }
+
   const callerIdentity = aws.getCallerIdentityOutput({});
   const userPoolArn = $interpolate`arn:aws:cognito-idp:${region}:${callerIdentity.accountId}:userpool/${userPoolId}`;
 
@@ -21,8 +37,11 @@ export function createApi() {
     },
   };
 
+  // The authorizer accepts an ID token from any client of the shared pool; the handler wrapper (HandlerProxy)
+  // lets in only this stage's client and users in one of ACCESS_GROUPS.
+  const environment = { ACCESS_GROUPS: accessGroups.join(","), USER_POOL_CLIENT_ID: userPoolClientId };
   const route = (path: string, handler: string, memory?: "1024 MB" | "2048 MB") =>
-    api.route(path, { handler, memory: memory ?? "1024 MB", timeout: "30 seconds" }, { auth });
+    api.route(path, { handler, memory: memory ?? "1024 MB", timeout: "30 seconds", environment }, { auth });
 
   route("GET /api/states", "packages/functions/src/states/getStates.handler");
   route("GET /api/ephemeris", "packages/functions/src/ephemeris/getEphemeris.handler");

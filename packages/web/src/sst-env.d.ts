@@ -5,6 +5,7 @@
 
 /// <reference types="vite/client" />
 interface ImportMetaEnv {
+  readonly VITE_APP_VERSION: string
   readonly VITE_AWS_REGION: string
   readonly VITE_API_URL: string
   readonly VITE_USER_POOL_ID: string

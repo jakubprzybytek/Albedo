@@ -8,7 +8,7 @@ This repo deploys to AWS following the [aws-github-deploy standard](https://gith
 | Policies | `SST-Deployment` (shared), `Albedo-Deployment` (this repo, [deploy-policy.json](deploy-policy.json)) |
 | SST app name / resource prefix | `Albedo2-2` (S3 buckets: `albedo2-2-*`) |
 | Region | `eu-west-1` (certificate in `us-east-1` for CloudFront) |
-| Workflows that deploy | `.github/workflows/ci-int.yml` (stage `int` = albedoonline.com) |
+| Workflows that deploy | `.github/workflows/continuous-delivery.yaml` (stages `int` and `prod`) |
 | GitHub | secret `AWS_ACCOUNT_ID`, variable `AWS_REGION` |
 
 `deploy-policy.json` has `ACCOUNT_ID` in place of the account number. The rendered policy and the trust policy are in `private/` (gitignored).
@@ -21,6 +21,7 @@ The app is an API Gateway (REST) API with Lambda handlers behind a Cognito autho
 - `SstState`: SST parameters under `/sst/*`.
 - `Buckets`: S3 on the site bucket (`albedo2-2-*`) and the SST asset bucket (`sst-asset-*`, Lambda code uploads).
 - `ApiGateway`: API Gateway in eu-west-1 (REST API, stages, authorizer, account settings).
+- `UserPoolClients`: the stage's app client in the shared pool `AlbedoUserPool` (`eu-west-1_IVai0KEAA`): create, read, update, delete clients; read the pool. Added for the per-stage app clients.
 - `Functions`: Lambda functions `Albedo2-2-*`.
 - `Logs`: CloudWatch log groups in eu-west-1.
 - `Edge`: CloudFront (distribution, function, KeyValueStore), ACM certificate and Route 53 records. Account-wide; these services can't be scoped usefully.

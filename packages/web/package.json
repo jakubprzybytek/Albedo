@@ -7,11 +7,11 @@
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "test:e2e": "dotenv playwright test",
-    "test:e2e:ui": "dotenv playwright test --ui",
-    "test:e2e:headed": "dotenv playwright test --headed",
-    "test:e2e:debug": "dotenv playwright test --debug",
-    "test:e2e:report": "dotenv playwright show-report"
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.11.0",

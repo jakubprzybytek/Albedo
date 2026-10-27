@@ -10,7 +10,8 @@ export default $config({
           region: "eu-west-1",
         },
       },
-      removal: input?.stage === "production" ? "retain" : "remove",
+      removal: input?.stage === "prod" ? "retain" : "remove",
+      protect: input?.stage === "prod",
     };
   },
   async run() {

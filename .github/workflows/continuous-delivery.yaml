@@ -1,0 +1,154 @@
+# Continuous delivery per agent-playbook/continuous-delivery.
+# From main (every push, or a manual run with main selected): checks -> deploy int -> E2E tests
+#   -> tag the next release vM.N -> deploy prod from the tag.
+# From any other branch or tag (manual run, "Use workflow from"): the same checks, int deploy and tests, then prod,
+#   all from that ref, without a new version or tag (rollback: pick the release tag, v0.1 or later).
+# Needs the repo secret AWS_ACCOUNT_ID and variable AWS_REGION (aws-github-deploy's setup-role.sh sets both).
+
+name: Continuous Delivery
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["**/*.md", "docs/**"]
+  workflow_dispatch:
+    inputs:
+      major:
+        description: Bump major version number and release as v(N+1).0
+        type: boolean
+        default: false
+
+concurrency:
+  group: cd
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  int:
+    name: Deploy int + test
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write # push the release tag
+      id-token: write # OIDC -> AWS
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      release: ${{ steps.version.outputs.release }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # tags and history for the next version
+
+      # From main, releases only go forward: the latest vM.N tag + 1 (v0.147 -> v0.148); the first release is v0.1.
+      # The `major` input releases v(M+1).0 instead, also from a commit already released. Otherwise a commit that
+      # already has a tag (a re-run) keeps it.
+      # From another ref: no new version; the app shows the tag name, or <branch>-<short sha>.
+      - id: version
+        env:
+          MAJOR: ${{ inputs.major || false }}
+        run: |
+          tags() { git tag "$@" --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+$' | head -n1 || true; }
+          if [ "$GITHUB_REF" != refs/heads/main ]; then
+            if [ "$GITHUB_REF_TYPE" = tag ]; then version="$GITHUB_REF_NAME"; else version="${GITHUB_REF_NAME//\//-}-${GITHUB_SHA::7}"; fi
+            echo "version=$version" >> "$GITHUB_OUTPUT"; echo "release=false" >> "$GITHUB_OUTPUT"
+            echo "Deploying $GITHUB_REF as $version, no release"; exit 0
+          fi
+          echo "release=true" >> "$GITHUB_OUTPUT"
+          current=$(tags --points-at HEAD)
+          last=$(tags)
+          m=${last%%.*}; m=${m#v}; n=${last#*.}
+          if [ "$MAJOR" = "true" ]; then
+            # Also on a commit that is already released (v0.7 -> v1.0); a re-run of the major release keeps its tag.
+            if [ -n "$current" ] && [ "$current" = "$last" ] && [ "$n" = 0 ]; then version=$current
+            else version="v$(( ${m:-0} + 1 )).0"; fi
+          elif [ -n "$current" ]; then version=$current
+          elif [ -z "$last" ]; then version=v0.1
+          else version="v$m.$(( n + 1 ))"; fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "${last:-none} (HEAD: ${current:-none}) -> $version"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Generate SST types
+        run: npx sst install
+      - run: npm run typecheck
+      - run: npm test
+
+      - uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHub-Albedo
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: gh-albedo-${{ github.run_id }}
+          mask-aws-account-id: true
+
+      - name: Deploy int
+        run: npx sst deploy --stage int
+        env:
+          APP_VERSION: ${{ steps.version.outputs.version }}
+
+      # No integration tests (docs/development.md, Deviations). Inside sst shell the E2E tests get int's URL
+      # (Resource.Site) and sign in as the test user (Resource.TestUser, Resource.TestUserPassword).
+      - run: npx playwright install --with-deps chromium
+        working-directory: packages/web
+      - name: E2E tests
+        run: npx sst shell --stage int -- npm run test:e2e
+        env:
+          CI: true
+
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-results
+          path: |
+            packages/web/test-results/
+            packages/web/playwright-report/
+          retention-days: 3
+
+      - name: Tag ${{ steps.version.outputs.version }}
+        if: steps.version.outputs.release == 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if git rev-parse -q --verify "refs/tags/$VERSION" > /dev/null; then echo "$VERSION already tagged"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push origin "$VERSION"
+
+  prod:
+    name: Deploy prod
+    needs: int
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      id-token: write # OIDC -> AWS
+    env:
+      VERSION: ${{ needs.int.outputs.version }}
+    steps:
+      # A release deploys from its tag; any other ref from the commit int was tested on.
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.int.outputs.release == 'true' && format('refs/tags/{0}', needs.int.outputs.version) || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHub-Albedo
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: gh-albedo-${{ github.run_id }}
+          mask-aws-account-id: true
+      - name: Deploy prod
+        run: npx sst deploy --stage prod
+        env:
+          APP_VERSION: ${{ env.VERSION }}
+      - name: Site answers
+        run: curl -fsS -o /dev/null https://albedoonline.com/

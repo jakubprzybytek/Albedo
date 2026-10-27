@@ -25,6 +25,9 @@ export default function MainLayout({ title, children }: MainLayoutParams): JSX.E
             <Box component="main" sx={{ minHeight: '100vh' }}>
                 {children}
             </Box>
+            <Box component="footer" data-testid="app-version" sx={{ py: 1, textAlign: 'center', fontSize: 12, color: 'text.secondary' }}>
+                Albedo {import.meta.env.VITE_APP_VERSION ?? 'dev'}
+            </Box>
         </>
     )
 }

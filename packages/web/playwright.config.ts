@@ -1,4 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
+import { Resource } from 'sst';
+
+// E2E tests against a deployed stage: npx sst shell --stage <stage> -- npm run test:e2e (from the repo root).
+// They sign in as the test user, which prod rejects, and must never run there.
+if (Resource.App.stage === 'prod') {
+  throw new Error('E2E tests never run against prod');
+}
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -17,9 +24,9 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.TEST_BASE_URL,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    baseURL: process.env.BASE_URL ?? Resource.Site.url,
+    /* Keep a trace only for failed tests (uploaded by CI on failure). */
+    trace: 'retain-on-failure',
     /* Action timeout (for page.click, page.fill, etc.) */
     actionTimeout: 60 * 1000, // 60 seconds
     /* Navigation timeout (for page.goto, etc.) */
