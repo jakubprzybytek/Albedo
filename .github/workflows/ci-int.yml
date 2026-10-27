@@ -30,6 +30,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # Vitest 5 needs Node 22.12+; don't depend on the runner image's default.
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
 

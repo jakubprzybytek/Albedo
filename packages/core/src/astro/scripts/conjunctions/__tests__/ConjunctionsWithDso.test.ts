@@ -12,7 +12,7 @@ describe("ConjunctionsWithDso", () => {
   const filteredOpenNgcObjects = openNgcObjects.filter(ngcObject => ngcObject.name == 'IC4685');
   const conjuctionScripts = new ConjunctionsWithDso(kernels, filteredOpenNgcObjects);
 
-  it("should compute conjunctions for all bodies", () => {
+  it("should compute conjunctions for all bodies", { timeout: 10000 }, () => {
     const fromJde = JulianDay.fromDate(2026, 1, 1);
     const toJde = JulianDay.fromDate(2026, 1, 8);
     const conjunctions = conjuctionScripts.findConjunctionsWithDso(fromJde, toJde, { longitude: 52, latitude: 17, altitude: 50 });
@@ -43,5 +43,5 @@ describe("ConjunctionsWithDso", () => {
       separation: 0.004691771630202613,
       separationFactor: 2.6
     } satisfies DsoConjunction);
-  }, { timeout: 10000 });
+  });
 });
