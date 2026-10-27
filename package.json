@@ -19,7 +19,7 @@
   "devDependencies": {
     "@eslint/js": "^9.29.0",
     "eslint": "^9.29.0",
-    "sst": "4.17.1",
+    "sst": "4.17.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
