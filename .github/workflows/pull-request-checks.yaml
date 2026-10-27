@@ -1,0 +1,33 @@
+# Checks for every pull request (Dependabot's included), per agent-playbook/dependabot.
+# No AWS access and no secrets: Dependabot PRs don't get the repo's secrets anyway.
+
+name: Pull Request Checks
+
+on:
+  pull_request:
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Typecheck, unit tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Registry signatures
+        run: npm audit signatures
+      - run: npx sst install # the typecheck needs the generated SST types
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build -w albedo-web

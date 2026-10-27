@@ -1,11 +1,31 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
+# Dependabot per agent-playbook/dependabot. Security updates come from the repo setting, one PR per alert;
+# this file adds version updates. Add a block per extra npm folder (e.g. "/sst") if it has its own lockfile.
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: npm
+    directory: "/"
     schedule:
-      interval: "weekly"
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Warsaw
+    open-pull-requests-limit: 5
+    # Don't take a release in its first days (most malicious or broken releases are pulled within that time).
+    # Applies to version updates only; security updates come right away.
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types: [minor, patch]
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+      timezone: Europe/Warsaw
+    groups:
+      actions:
+        patterns: ["*"]
