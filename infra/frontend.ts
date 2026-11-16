@@ -10,7 +10,9 @@ export function createFrontend(api: Api) {
       output: "build/client",
     },
     domain: siteDomain,
-    errorPage: "index.html",
+    // No errorPage: SST's router then serves index.html for app routes itself. With errorPage,
+    // CloudFront fetches the error page from the distribution's placeholder origin, which
+    // fails (502) whenever /index.html isn't cached at the edge.
     environment: {
       // Release tag set by continuous-delivery.yaml; shown in the footer.
       VITE_APP_VERSION: process.env.APP_VERSION ?? "dev",
