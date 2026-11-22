@@ -39,7 +39,6 @@
     "@react-router/dev": "^7.18.4",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
-    "react-router-devtools": "^1.1.0",
     "typescript": "^5.7.2",
     "vite": "^7.3.7",
     "vite-tsconfig-paths": "^5.1.4"
