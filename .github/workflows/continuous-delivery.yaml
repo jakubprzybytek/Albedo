@@ -37,7 +37,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
       release: ${{ steps.version.outputs.release }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # tags and history for the next version
 
@@ -69,7 +69,7 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "${last:-none} (HEAD: ${current:-none}) -> $version"
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -132,10 +132,10 @@ jobs:
       VERSION: ${{ needs.int.outputs.version }}
     steps:
       # A release deploys from its tag; any other ref from the commit int was tested on.
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.int.outputs.release == 'true' && format('refs/tags/{0}', needs.int.outputs.version) || github.sha }}
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
