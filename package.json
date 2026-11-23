@@ -30,6 +30,6 @@
     "packages/*"
   ],
   "dependencies": {
-    "@tsconfig/node20": "^20.1.5"
+    "@tsconfig/node20": "^20.1.11"
   }
 }
